@@ -1,0 +1,87 @@
+[
+  {
+    "id": "facundo",
+    "name": "Barberis Facundo",
+    "image": "/assets/inicio/testimonials/facundo.png",
+    "quote": {
+      "es": "Nico es más que un profesional excepcional, es una gran persona. Su conocimiento en programación le permite comunicarse de manera efectiva con los desarrolladores, y su pasión por los proyectos lo lleva a involucrarse al punto de asumir roles adicionales. Sin duda, es un miembro valioso y distinguido en cualquier equipo.",
+      "en": "Nico is more than an exceptional professional — he's a great person. His programming knowledge lets him communicate effectively with developers, and his passion for projects leads him to take on extra roles. He's a valuable and standout member of any team."
+    },
+    "role": {
+      "es": "CEO de PUSH Software",
+      "en": "CEO of PUSH Software"
+    },
+    "company": {
+      "logo": "/assets/inicio/testimonials/logos/PUSH-vector.svg",
+      "href": "https://www.pushsoftware.com.ar/",
+      "name": "PUSH Software"
+    }
+  },
+  {
+    "id": "ezequiel",
+    "name": "Maranga Ezequiel",
+    "image": "/assets/inicio/testimonials/ezequiel.png",
+    "quote": {
+      "es": "Durante el tiempo que trabajamos juntos, Nico demostró gran responsabilidad y profesionalismo. Sus propuestas siempre aportaron valor al producto y a la experiencia del usuario, logrando resultados visibles y alineados con los objetivos del proyecto.",
+      "en": "While we worked together, Nico showed great responsibility and professionalism. His proposals always added value to the product and the user experience, achieving visible results aligned with project goals."
+    },
+    "role": {
+      "es": "CEO de AICORE IT Specialists",
+      "en": "CEO of AICORE IT Specialists"
+    },
+    "company": {
+      "logo": "/assets/inicio/testimonials/logos/aicore-Vector.svg",
+      "href": "https://aicore.com.ar/es",
+      "name": "AICORE IT Specialists"
+    }
+  },
+  {
+    "id": "joaquin",
+    "name": "Amarilla Joaquín",
+    "image": "/assets/inicio/testimonials/joaquin.png",
+    "quote": {
+      "es": "Gran creatividad y buena compresión para las necesidades de los proyectos.",
+      "en": "Great creativity and solid understanding of project needs."
+    },
+    "role": {
+      "es": "CEO de Lúdica Tech",
+      "en": "CEO of Lúdica Tech"
+    },
+    "company": {
+      "logo": "/assets/inicio/testimonials/logos/ludica-tech-Vector.svg",
+      "href": "https://www.ludicatech.com.ar/",
+      "name": "Lúdica Tech"
+    }
+  },
+  {
+    "id": "matias",
+    "name": "Mendoza Matías",
+    "image": "/assets/inicio/testimonials/matias.png",
+    "quote": {
+      "es": "5 palabras, CRACK",
+      "en": "5 words: LEGEND"
+    },
+    "role": {
+      "es": "CEO de Órbita LΔB",
+      "en": "CEO of Órbita LΔB"
+    },
+    "company": {
+      "logo": "/assets/inicio/testimonials/logos/orbitalab-Vector.svg",
+      "href": "https://www.instagram.com/orbitalab.ar/",
+      "name": "Órbita LΔB"
+    }
+  },
+  {
+    "id": "hornet",
+    "name": "Hornet",
+    "image": "/assets/inicio/testimonials/hornet.png",
+    "quote": {
+      "es": "shaw!",
+      "en": "shaw!"
+    },
+    "role": {
+      "es": "Hollow Knight: Silksong",
+      "en": "Hollow Knight: Silksong"
+    }
+  }
+]

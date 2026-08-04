@@ -1,0 +1,109 @@
+[
+  {
+    "id": "aml-casinos",
+    "title": {
+      "es": "Análisis contra el Lavado de Dinero en Casinos Digitales",
+      "en": "Anti-Money Laundering Analysis for Digital Casinos"
+    },
+    "meta": {
+      "es": "Colaboración con AICORE - septiembre 2024",
+      "en": "Collaboration with AICORE - September 2024"
+    },
+    "kind": "placeholder",
+    "prototypeUrl": null
+  },
+  {
+    "id": "aml-general",
+    "title": {
+      "es": "Análisis contra el Lavado de Dinero",
+      "en": "Anti-Money Laundering Analysis"
+    },
+    "meta": {
+      "es": "Colaboración con AICORE - octubre 2024",
+      "en": "Collaboration with AICORE - October 2024"
+    },
+    "kind": "placeholder",
+    "prototypeUrl": null
+  },
+  {
+    "id": "adapto-pay",
+    "title": {
+      "es": "Billetera Digital - ADAPTO PAY",
+      "en": "Digital Wallet - ADAPTO PAY"
+    },
+    "meta": {
+      "es": "Colaboración con AICORE - noviembre 2024",
+      "en": "Collaboration with AICORE - November 2024"
+    },
+    "kind": "placeholder",
+    "prototypeUrl": null
+  },
+  {
+    "id": "clearwater",
+    "title": {
+      "es": "Generación de Informes para compra e inversión - CLEARWATER",
+      "en": "Purchase & Investment Report Generation - CLEARWATER"
+    },
+    "meta": {
+      "es": "Colaboración con AICORE - enero 2024",
+      "en": "Collaboration with AICORE - January 2024"
+    },
+    "kind": "placeholder",
+    "prototypeUrl": null
+  },
+  {
+    "id": "mikrobiol",
+    "title": {
+      "es": "Tienda de Insumos Medicinales - MIKROBIOL",
+      "en": "Medical Supplies Store - MIKROBIOL"
+    },
+    "meta": {
+      "es": "Colaboración con AICORE - octubre 2024",
+      "en": "Collaboration with AICORE - October 2024"
+    },
+    "kind": "image",
+    "image": "/assets/interfaces/projects/web-mikrobiol-divi-161.png",
+    "prototypeUrl": null
+  },
+  {
+    "id": "casiba",
+    "title": {
+      "es": "Sistema de Gestión de Unidades de Tratamiento de Aire - CASIBA",
+      "en": "Air Treatment Units Management System - CASIBA"
+    },
+    "meta": {
+      "es": "Colaboración con AICORE - septiembre 2024",
+      "en": "Collaboration with AICORE - September 2024"
+    },
+    "kind": "text",
+    "label": "Casiba",
+    "prototypeUrl": null
+  },
+  {
+    "id": "casiba-2",
+    "title": {
+      "es": "Sistema de Gestión de Unidades de Tratamiento de Aire - CASIBA",
+      "en": "Air Treatment Units Management System - CASIBA"
+    },
+    "meta": {
+      "es": "Colaboración con AICORE - septiembre 2024",
+      "en": "Collaboration with AICORE - September 2024"
+    },
+    "kind": "text",
+    "label": "Casiba",
+    "prototypeUrl": null
+  },
+  {
+    "id": "proxi",
+    "title": {
+      "es": "Plataforma integral de ventas y pedidos B2B - PROXI",
+      "en": "Integrated B2B sales & orders platform - PROXI"
+    },
+    "meta": {
+      "es": "Colaboración con AICORE - enero 2024",
+      "en": "Collaboration with AICORE - January 2024"
+    },
+    "kind": "proxi",
+    "prototypeUrl": null
+  }
+]

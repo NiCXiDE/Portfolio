@@ -1,0 +1,102 @@
+[
+  {
+    "id": "kadaver-jez-ebel",
+    "src": "/assets/grafico/covers/kadaver-jez-ebel-bootleg.png",
+    "alt": "KADAVER - Jez_ebel bootleg",
+    "href": "https://soundcloud.com/kadaver1/kadaver-jez_ebel-bootleg",
+    "usage": {
+      "es": "Portada en SoundCloud — KADAVER · Jez_ebel bootleg",
+      "en": "SoundCloud cover — KADAVER · Jez_ebel bootleg"
+    }
+  },
+  {
+    "id": "ive-no-idea",
+    "src": "/assets/grafico/covers/ive-no-idea-but-i-love-it.png",
+    "alt": "I've No Idea But I Love It",
+    "href": null,
+    "usage": {
+      "es": "Artwork musical",
+      "en": "Music artwork"
+    }
+  },
+  {
+    "id": "barely-alive",
+    "src": "/assets/grafico/covers/this-is-barely-alive-24-update.png",
+    "alt": "This Is Barely Alive '24 Update",
+    "href": null,
+    "usage": {
+      "es": "Artwork musical",
+      "en": "Music artwork"
+    }
+  },
+  {
+    "id": "speeditious",
+    "src": "/assets/grafico/covers/speeditious.png",
+    "alt": "Speeditious",
+    "href": null,
+    "usage": {
+      "es": "Artwork musical",
+      "en": "Music artwork"
+    }
+  },
+  {
+    "id": "rockcito",
+    "src": "/assets/grafico/covers/rockcito-to-wake-up.png",
+    "alt": "Rockcito To Wake Up",
+    "href": null,
+    "usage": {
+      "es": "Artwork musical",
+      "en": "Music artwork"
+    }
+  },
+  {
+    "id": "sad-machine",
+    "src": "/assets/grafico/covers/sad-machine-makenix-remix.png",
+    "alt": "Sad Machine - Makenix Remix",
+    "href": null,
+    "usage": {
+      "es": "Artwork musical",
+      "en": "Music artwork"
+    }
+  },
+  {
+    "id": "cover-emoji",
+    "src": "/assets/grafico/covers/cover.png",
+    "alt": "Cover",
+    "href": null,
+    "usage": {
+      "es": "Artwork musical",
+      "en": "Music artwork"
+    }
+  },
+  {
+    "id": "bass2k24",
+    "src": "/assets/grafico/covers/bass-2-k24.png",
+    "alt": "Bass2k24",
+    "href": null,
+    "usage": {
+      "es": "Artwork musical",
+      "en": "Music artwork"
+    }
+  },
+  {
+    "id": "bass2025",
+    "src": "/assets/grafico/covers/bass-2025.png",
+    "alt": "bass2025",
+    "href": null,
+    "usage": {
+      "es": "Artwork musical",
+      "en": "Music artwork"
+    }
+  },
+  {
+    "id": "reggaeton",
+    "src": "/assets/grafico/covers/reggaeton-rukistrukis-1.png",
+    "alt": "Reggaeton Rukistrukis",
+    "href": null,
+    "usage": {
+      "es": "Artwork musical",
+      "en": "Music artwork"
+    }
+  }
+]

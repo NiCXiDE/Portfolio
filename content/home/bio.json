@@ -1,0 +1,11 @@
+{
+  "photo": "/assets/inicio/bio/portrait-v2.png",
+  "photoAlt": {
+    "es": "Nicolas Ayala",
+    "en": "Nicolas Ayala"
+  },
+  "text": {
+    "es": "¡Hola! Soy Nico, diseñador de interfaces, experiencias de usuario y gráfico. Tengo +10 años de experiencia en diseño gráfico y +1 en el diseño de interfaces y experiencias de usuario.",
+    "en": "Hi! I'm Nico, interface, UX and graphic designer. I have 10+ years of experience in graphic design and 1+ year in interface and user-experience design."
+  }
+}

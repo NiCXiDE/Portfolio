@@ -1,0 +1,431 @@
+@import "tailwindcss";
+@import "../fonts/satoshi.css";
+@import "../fonts/bigger-display.css";
+
+:root {
+  --ink: #404179;
+  --ink-deep: #2e387d;
+  --sky: #7cc4f8;
+  --sky-soft: #def0fd;
+  --sky-mid: #def0fd;
+  --sky-pale: #def0fd;
+  --pink: #f977cd;
+  --blue-select: #3fa5ee;
+  --figma-orange: #ff7262;
+  --background: #ffffff;
+  --foreground: #404179;
+}
+
+@theme inline {
+  --color-ink: var(--ink);
+  --color-ink-deep: var(--ink-deep);
+  --color-sky: var(--sky);
+  --color-sky-soft: var(--sky-soft);
+  --color-sky-mid: var(--sky-mid);
+  --color-sky-pale: var(--sky-pale);
+  --color-pink: var(--pink);
+  --color-blue-select: var(--blue-select);
+  --color-figma-orange: var(--figma-orange);
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-satoshi: "Satoshi", ui-sans-serif, system-ui, sans-serif;
+  --font-bigger: "BiggerDisplay", ui-sans-serif, system-ui, sans-serif;
+}
+
+html,
+body {
+  height: 100%;
+  overflow: hidden;
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-satoshi);
+  -webkit-font-smoothing: antialiased;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  .figma-gap--loop {
+    animation: none !important;
+    width: 1.75rem !important;
+  }
+
+  .hero-drift {
+    animation: none !important;
+  }
+}
+
+.site-scroll {
+  height: 100%;
+  min-width: 0;
+  overflow-x: hidden;
+  overflow-y: auto;
+  overscroll-behavior-y: contain;
+  -webkit-overflow-scrolling: touch;
+  scroll-behavior: smooth;
+  /* Scrollbar general de la página (celeste #DEF0FD) */
+  scrollbar-width: thin;
+  scrollbar-color: var(--sky-pale) transparent;
+}
+
+.site-scroll::-webkit-scrollbar {
+  width: 10px;
+}
+
+.site-scroll::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.site-scroll::-webkit-scrollbar-thumb {
+  background: var(--sky-pale);
+  border-radius: 999px;
+  border: 2px solid transparent;
+  background-clip: padding-box;
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--sky) 45%, transparent);
+}
+
+.site-scroll::-webkit-scrollbar-thumb:hover {
+  background: color-mix(in srgb, var(--sky-pale) 55%, var(--sky) 45%);
+  background-clip: padding-box;
+  border: 2px solid transparent;
+}
+
+.name-row,
+.surname-edit {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.name-row {
+  overflow-x: hidden;
+  overflow-y: visible;
+  padding-block: 0.65rem;
+  min-width: 0;
+  max-width: 100%;
+}
+
+.surname-edit {
+  overflow: visible;
+  caret-color: var(--blue-select);
+}
+
+.name-row::-webkit-scrollbar,
+.surname-edit::-webkit-scrollbar {
+  display: none;
+  width: 0;
+  height: 0;
+}
+
+.surname-box {
+  overflow: visible;
+  flex-shrink: 0;
+}
+
+/* Figma-style spacing hatch between Nicolas | Ayala */
+.figma-gap {
+  user-select: none;
+  align-self: stretch;
+  width: 0.75rem;
+  min-height: 2.5rem;
+  margin-inline: 0.15rem;
+  background: repeating-linear-gradient(
+    -45deg,
+    transparent,
+    transparent 3px,
+    var(--pink) 3px,
+    var(--pink) 5px
+  );
+  border-left: 1px solid color-mix(in srgb, var(--pink) 55%, white);
+  border-right: 1px solid color-mix(in srgb, var(--pink) 55%, white);
+  touch-action: none;
+}
+
+.figma-gap--loop {
+  animation: figma-gap-pulse 2.8s ease-in-out infinite;
+}
+
+.figma-gap--hold,
+.figma-gap--returning {
+  background: var(--pink);
+  border-left: none;
+  border-right: none;
+  animation: none;
+}
+
+.figma-gap--returning {
+  transition: width 0.55s ease-in-out;
+}
+
+.figma-gap-label {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  z-index: 2;
+  translate: -50% -50%;
+  border-radius: 4px;
+  background: var(--pink);
+  padding: 2px 6px;
+  font-family: var(--font-satoshi);
+  font-size: 11px;
+  font-weight: 700;
+  line-height: 1.2;
+  color: #fff;
+  box-shadow: 0 0 0 1px color-mix(in srgb, var(--pink) 40%, white);
+  pointer-events: none;
+  white-space: nowrap;
+}
+
+.figma-constraint {
+  position: absolute;
+  top: -8px;
+  bottom: -8px;
+  width: 2px;
+  background: transparent;
+  pointer-events: none;
+  transition: background 120ms ease;
+}
+
+.figma-constraint--left {
+  left: -1px;
+}
+
+.figma-constraint--right {
+  right: -1px;
+}
+
+.figma-constraint.is-active {
+  background: var(--figma-orange);
+  box-shadow: 0 0 0 1px color-mix(in srgb, var(--figma-orange) 40%, white);
+}
+
+@keyframes figma-gap-pulse {
+  0%,
+  100% {
+    width: 0.55rem;
+    opacity: 0.85;
+  }
+  50% {
+    width: 2.35rem;
+    opacity: 1;
+  }
+}
+
+@media (min-width: 768px) {
+  @keyframes figma-gap-pulse {
+    0%,
+    100% {
+      width: 0.85rem;
+      opacity: 0.85;
+    }
+    50% {
+      width: 3.25rem;
+      opacity: 1;
+    }
+  }
+}
+
+.name-hero-text {
+  font-size: clamp(1.75rem, 6vw, 4rem);
+  /* > 1 para no cortar descendentes (j, p, q, g, y…) */
+  line-height: 1.2;
+  font-weight: 700;
+}
+
+.name-row {
+  min-height: calc(clamp(1.75rem, 6vw, 4rem) * 1.2 + 1.25rem);
+}
+
+/* Subtle 2px swing matching gap easing (uses translate so rotate still works) */
+.hero-drift {
+  animation: hero-drift 2.8s ease-in-out infinite;
+  will-change: translate;
+}
+
+@keyframes hero-drift {
+  0%,
+  100% {
+    translate: 0 0;
+  }
+  50% {
+    translate: 0 -2px;
+  }
+}
+
+.surname-edit:focus {
+  caret-color: var(--blue-select);
+}
+
+.surname-edit::selection {
+  background: color-mix(in srgb, var(--blue-select) 35%, white);
+}
+
+/* Header corners: tamaño fijo + fade (sin “salto”) */
+.header-corner {
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.35s ease;
+}
+
+.header-corner.is-visible {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.header-corner.is-visible:hover {
+  opacity: 0.7;
+}
+
+.font-bigger {
+  font-family: var(--font-bigger);
+  font-weight: 400;
+  letter-spacing: 0.04em;
+}
+
+/* Filas del footer alineadas (mismas alturas con/sin ícono) */
+.footer-list > li {
+  display: flex;
+  align-items: center;
+  min-height: 1.375rem;
+}
+
+@media (min-width: 640px) {
+  .footer-list > li {
+    min-height: 1.5rem;
+  }
+}
+
+/* Bio: mismo contenido; centrado óptico en el viewport del pane */
+.bio-scene {
+  --bio-photo-w: 165px;
+  --bio-photo-h: calc(var(--bio-photo-w) * 2399 / 1888);
+  position: relative;
+  width: fit-content;
+  max-width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: calc(var(--bio-photo-w) / 2);
+  /* Compensa la mitad del portrait que sobresale a la izquierda */
+  transform: translateX(calc(var(--bio-photo-w) / 4));
+}
+
+.bio-mesa {
+  position: relative;
+  display: flow-root;
+  width: fit-content;
+  max-width: min(100%, 26rem);
+  background: var(--sky-pale);
+  padding: 0.65rem 0.95rem 0.7rem 0;
+}
+
+.bio-shape {
+  float: left;
+  width: var(--bio-photo-w);
+  height: min(var(--bio-photo-h), 8.75rem);
+  margin: 0 0.15rem 0.1rem calc(var(--bio-photo-w) / -2);
+  shape-outside: url("/assets/inicio/bio/portrait-v2.png");
+  shape-image-threshold: 0.12;
+  shape-margin: 0.12rem;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.bio-cutout {
+  position: absolute;
+  left: 0;
+  top: 50%;
+  z-index: 1;
+  width: var(--bio-photo-w);
+  height: auto;
+  translate: -50% -50%;
+  pointer-events: none;
+  user-select: none;
+}
+
+.bio-wrap-text {
+  margin: 0;
+  color: var(--ink);
+  font-size: 0.95rem;
+  line-height: 1.5;
+  text-align: left;
+}
+
+.testimonial-logo {
+  display: block;
+  height: 2.625rem;
+  width: auto;
+  max-width: 13.5rem;
+  object-fit: contain;
+  object-position: left center;
+}
+
+@media (min-width: 768px) {
+  .bio-scene {
+    --bio-photo-w: 195px;
+  }
+
+  .bio-mesa {
+    max-width: min(100%, 28rem);
+    padding: 0.75rem 1.1rem 0.8rem 0;
+  }
+
+  .bio-shape {
+    height: min(var(--bio-photo-h), 9.5rem);
+    shape-margin: 0.18rem;
+  }
+
+  .bio-wrap-text {
+    font-size: 1.05rem;
+    line-height: 1.55;
+  }
+
+  .testimonial-logo {
+    height: 3rem;
+    max-width: 15.75rem;
+  }
+}
+
+@media (max-width: 639px) {
+  .bio-scene {
+    --bio-photo-w: 140px;
+    width: 100%;
+    max-width: 22rem;
+    padding-left: 0;
+    transform: none;
+    display: flex;
+    justify-content: center;
+  }
+
+  .bio-mesa {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    max-width: 22rem;
+    padding: 1rem 1.15rem 1.15rem;
+  }
+
+  .bio-shape {
+    display: none;
+  }
+
+  .bio-cutout {
+    position: static;
+    translate: none;
+    margin: 0 auto 0.75rem;
+    order: -1;
+  }
+
+  .bio-wrap-text {
+    text-align: center;
+  }
+}

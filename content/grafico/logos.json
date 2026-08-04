@@ -1,0 +1,15 @@
+[
+  { "id": "buhoprofe", "src": "/assets/grafico/logos/buhoprofe-1.svg", "alt": "Buho Profe", "row": 1 },
+  { "id": "seyier", "src": "/assets/grafico/logos/seyier.svg", "alt": "Seyier", "row": 1, "flex": true },
+  { "id": "s-mark", "src": "/assets/grafico/logos/vector.svg", "alt": "S mark", "row": 1 },
+  { "id": "push", "src": "/assets/grafico/logos/push-software.svg", "alt": "PUSH Software", "row": 2 },
+  { "id": "microtime", "src": "/assets/grafico/logos/vector-1.svg", "alt": "Microtime", "row": 2 },
+  { "id": "futulab", "src": "/assets/grafico/logos/futulb.svg", "alt": "futulΔb", "row": 3 },
+  { "id": "fablab", "src": "/assets/grafico/logos/fab-lab.svg", "alt": "FabLab", "row": 3 },
+  { "id": "labcom", "src": "/assets/grafico/logos/labcom.svg", "alt": "labcom", "row": 3 },
+  { "id": "sessions", "src": "/assets/grafico/logos/sessions.svg", "alt": "sessions", "row": 4 },
+  { "id": "concitar", "src": "/assets/grafico/logos/concitar.svg", "alt": "CONCITAR", "row": 4 },
+  { "id": "apsmm", "src": "/assets/grafico/logos/ellipse-2.svg", "alt": "APSMM", "row": 5, "overlay": "/assets/grafico/logos/mask-group.svg" },
+  { "id": "itf", "src": "/assets/grafico/logos/vector-52.svg", "alt": "ITF Cluster", "row": 5 },
+  { "id": "taily", "src": "/assets/grafico/logos/taily.svg", "alt": "Taily", "row": 5 }
+]

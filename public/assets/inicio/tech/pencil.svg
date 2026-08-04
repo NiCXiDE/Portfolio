@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none">
+  <path d="M18 54l4-18 28-28 6 6-28 28-10 12z" fill="#E8C39E" stroke="#404179" stroke-width="2"/>
+  <path d="M46 14l6 6" stroke="#404179" stroke-width="2"/>
+  <path d="M20 48l8-2" stroke="#8B5A2B" stroke-width="2"/>
+  <text x="28" y="42" font-family="Satoshi,Arial,sans-serif" font-size="8" fill="#404179" transform="rotate(-45 32 36)">HB</text>
+</svg>

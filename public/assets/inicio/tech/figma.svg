@@ -1,0 +1,9 @@
+<svg preserveAspectRatio="none" overflow="visible" style="display: block;" width="192" height="192" viewBox="0 0 192 192" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g id="figma">
+<path id="Vector" fill-rule="evenodd" clip-rule="evenodd" d="M96.0001 96C96.0001 81.0882 108.088 69 123 69C137.912 69 150 81.0882 150 96C150 110.912 137.912 123 123 123C108.088 123 96.0001 110.912 96.0001 96Z" fill="#1ABCFE"/>
+<path id="Vector_2" fill-rule="evenodd" clip-rule="evenodd" d="M42 150C42 135.088 54.0884 123 69 123H96V150C96 164.912 83.9118 177 69 177C54.0884 177 42 164.912 42 150Z" fill="#0ACF83"/>
+<path id="Vector_3" fill-rule="evenodd" clip-rule="evenodd" d="M96.0001 15V69H123C137.912 69 150 56.9117 150 42C150 27.0883 137.912 15 123 15H96.0001Z" fill="#FF7262"/>
+<path id="Vector_4" fill-rule="evenodd" clip-rule="evenodd" d="M42.0001 42C42.0001 56.9117 54.0884 69 69.0001 69H96.0001V15H69.0001C54.0884 15 42.0001 27.0883 42.0001 42Z" fill="#F24E1E"/>
+<path id="Vector_5" fill-rule="evenodd" clip-rule="evenodd" d="M42 96C42 110.912 54.0884 123 69 123H96V69H69C54.0884 69 42 81.0882 42 96Z" fill="#A259FF"/>
+</g>
+</svg>
