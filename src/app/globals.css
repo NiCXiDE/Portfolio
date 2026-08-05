@@ -304,59 +304,95 @@ body {
   }
 }
 
-/* Bio: mismo contenido; centrado óptico en el viewport del pane */
+/* Bio: proporción Figma foto/mesa ≈ 469/688; centrado óptica (mesa + overhang) */
 .bio-scene {
-  --bio-photo-w: 165px;
-  --bio-photo-h: calc(var(--bio-photo-w) * 2399 / 1888);
+  --bio-text: 0.9375rem;
+  --bio-photo-w: 15.5rem;
+  --bio-mesa-w: calc(var(--bio-photo-w) * 620 / 469);
+  --bio-overhang-x: calc(var(--bio-photo-w) * 235 / 469);
+  /* Baja la foto: borde inferior del celeste ≈ abdomen / línea roja */
+  --bio-photo-shift-y: calc(var(--bio-photo-w) * 594 / 469 * 0.24);
+  --bio-overhang-top: calc(var(--bio-photo-w) * 594 / 469 * 0.12);
   position: relative;
-  width: fit-content;
-  max-width: 100%;
-  margin-left: auto;
-  margin-right: auto;
-  padding-left: calc(var(--bio-photo-w) / 2);
-  /* Compensa la mitad del portrait que sobresale a la izquierda */
-  transform: translateX(calc(var(--bio-photo-w) / 4));
+  display: flex;
+  width: 100%;
+  flex: 0 0 auto;
+  box-sizing: border-box;
+  justify-content: center;
+  padding-top: var(--bio-overhang-top);
+  padding-bottom: var(--bio-photo-shift-y);
+  overflow: visible;
 }
 
 .bio-mesa {
   position: relative;
+  z-index: 0;
   display: flow-root;
-  width: fit-content;
-  max-width: min(100%, 26rem);
+  /* margin-right reserva el vuelo de la foto → el flex centra el bloque visual entero */
+  width: min(var(--bio-mesa-w), calc(100% - var(--bio-overhang-x)));
+  /* Alto hasta el abdomen (raya); overflow visible = foto/firma pueden pintar afuera */
+  height: calc(var(--bio-photo-w) * 594 / 469 * 0.684);
+  margin-right: var(--bio-overhang-x);
+  box-sizing: border-box;
   background: var(--sky-pale);
-  padding: 0.65rem 0.95rem 0.7rem 0;
+  padding: 0.85rem 1rem 0.75rem;
+  overflow: visible;
 }
 
-.bio-shape {
-  float: left;
-  width: var(--bio-photo-w);
-  height: min(var(--bio-photo-h), 8.75rem);
-  margin: 0 0.15rem 0.1rem calc(var(--bio-photo-w) / -2);
-  shape-outside: url("/assets/inicio/bio/portrait-v2.png");
-  shape-image-threshold: 0.12;
-  shape-margin: 0.12rem;
-  visibility: hidden;
-  pointer-events: none;
-}
-
+/*
+  Wrap = silueta real del PNG (shape-outside + alpha).
+  Si preferís SVG: dejá el archivo en public/ y cambiá --bio-wrap-shape.
+*/
 .bio-cutout {
-  position: absolute;
-  left: 0;
-  top: 50%;
-  z-index: 1;
+  --bio-wrap-shape: url("/assets/inicio/bio/portrait-v3.png");
+  float: right;
   width: var(--bio-photo-w);
-  height: auto;
-  translate: -50% -50%;
-  pointer-events: none;
-  user-select: none;
+  height: calc(var(--bio-photo-w) * 594 / 469);
+  object-fit: contain;
+  max-width: none;
+  margin-top: calc(-1 * var(--bio-overhang-top));
+  margin-right: calc(-1 * var(--bio-overhang-x));
+  margin-bottom: calc(-1 * var(--bio-photo-shift-y));
+  margin-left: 0.45rem;
+  shape-outside: var(--bio-wrap-shape);
+  shape-image-threshold: 0.15;
+  shape-margin: 0.5rem;
+  position: relative;
+  z-index: 1;
 }
 
 .bio-wrap-text {
   margin: 0;
   color: var(--ink);
-  font-size: 0.95rem;
-  line-height: 1.5;
+  font-size: var(--bio-text);
+  font-weight: 400;
+  line-height: 1.4;
   text-align: left;
+  white-space: normal;
+  overflow-wrap: normal;
+  word-break: normal;
+  position: relative;
+  z-index: 0;
+}
+
+.bio-signature {
+  position: absolute;
+  left: 1rem;
+  bottom: 1rem; /* +4px vs 0.75rem ≈ aire bajo ≈ aire sobre la firma */
+  z-index: 0;
+  float: none;
+  clear: none;
+  width: auto;
+  height: 3.25rem;
+  margin: 0;
+  object-fit: contain;
+  object-position: left bottom;
+}
+
+.bio-asset {
+  pointer-events: none;
+  user-select: none;
+  -webkit-user-drag: none;
 }
 
 .testimonial-logo {
@@ -370,22 +406,18 @@ body {
 
 @media (min-width: 768px) {
   .bio-scene {
-    --bio-photo-w: 195px;
+    --bio-text: 1.0625rem;
+    --bio-photo-w: 18.5rem;
   }
 
   .bio-mesa {
-    max-width: min(100%, 28rem);
-    padding: 0.75rem 1.1rem 0.8rem 0;
+    padding: 1rem 1.15rem 0.8rem;
   }
 
-  .bio-shape {
-    height: min(var(--bio-photo-h), 9.5rem);
-    shape-margin: 0.18rem;
-  }
-
-  .bio-wrap-text {
-    font-size: 1.05rem;
-    line-height: 1.55;
+  .bio-signature {
+    left: 1.15rem;
+    bottom: 1.05rem;
+    height: 3.75rem;
   }
 
   .testimonial-logo {
@@ -394,38 +426,50 @@ body {
   }
 }
 
-@media (max-width: 639px) {
+@media (max-width: 767px) {
+  /* Bio: foto arriba, texto + firma abajo (sin wrap de desktop) */
   .bio-scene {
-    --bio-photo-w: 140px;
-    width: 100%;
-    max-width: 22rem;
-    padding-left: 0;
-    transform: none;
     display: flex;
-    justify-content: center;
+    width: min(22rem, 100%);
+    max-width: 100%;
+    flex-direction: column;
+    align-items: center;
+    padding: 0;
   }
 
   .bio-mesa {
     display: flex;
+    width: 100%;
+    height: auto;
+    margin-right: 0;
     flex-direction: column;
     align-items: center;
-    width: 100%;
-    max-width: 22rem;
     padding: 1rem 1.15rem 1.15rem;
   }
 
-  .bio-shape {
-    display: none;
-  }
-
   .bio-cutout {
-    position: static;
-    translate: none;
-    margin: 0 auto 0.75rem;
+    float: none;
+    shape-outside: none;
+    shape-margin: 0;
     order: -1;
+    width: min(12rem, 55%);
+    height: auto;
+    margin: 0 auto 0.85rem;
   }
 
   .bio-wrap-text {
+    width: 100%;
+    line-height: 1.45;
     text-align: center;
+  }
+
+  .bio-signature {
+    position: static;
+    float: none;
+    width: auto;
+    height: 2.75rem;
+    margin-top: 0.75rem;
+    margin-inline: auto;
+    object-fit: contain;
   }
 }

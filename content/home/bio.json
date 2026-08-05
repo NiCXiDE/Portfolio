@@ -1,11 +1,16 @@
 {
-  "photo": "/assets/inicio/bio/portrait-v2.png",
+  "photo": "/assets/inicio/bio/portrait-v3.png",
   "photoAlt": {
     "es": "Nicolas Ayala",
     "en": "Nicolas Ayala"
   },
+  "signature": "/assets/inicio/bio/signature-ayala.svg",
+  "signatureAlt": {
+    "es": "",
+    "en": ""
+  },
   "text": {
-    "es": "¡Hola! Soy Nico, diseñador de interfaces, experiencias de usuario y gráfico. Tengo +10 años de experiencia en diseño gráfico y +1 en el diseño de interfaces y experiencias de usuario.",
-    "en": "Hi! I'm Nico, interface, UX and graphic designer. I have 10+ years of experience in graphic design and 1+ year in interface and user-experience design."
+    "es": "¡Hola! Soy Nico, diseñador de interfaces y experiencias de usuario, también soy diseñador gráfico. Tengo más de 10 años en diseño gráfico y ya más de 2 años en diseño de interfaces y experiencias de usuario.",
+    "en": "Hi! I'm Nico, an interface and user-experience designer — also a graphic designer. I have over 10 years in graphic design and more than 2 years in interface and user-experience design."
   }
 }

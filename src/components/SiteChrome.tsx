@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { AnimatePresence, motion } from "motion/react";
 import type { Dictionary } from "@/i18n/dictionaries";
 import type { Locale } from "@/i18n/config";
 import { pathForLayer, type LayerId } from "@/lib/layers";
@@ -24,10 +25,7 @@ export function Header({
   onAbout,
   onPortfolio,
 }: HeaderProps) {
-  const otherLocale = locale === "es" ? "en" : "es";
-  const base =
-    layer === "inicio" ? `/${otherLocale}` : `/${otherLocale}/${layer}`;
-
+  const [menuOpen, setMenuOpen] = useState(false);
   const [showCorners, setShowCorners] = useState(layer !== "inicio");
 
   useEffect(() => {
@@ -51,108 +49,218 @@ export function Header({
     return () => io.disconnect();
   }, [layer]);
 
+  useEffect(() => {
+    setMenuOpen(false);
+  }, [layer]);
+
+  useEffect(() => {
+    if (!menuOpen) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setMenuOpen(false);
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [menuOpen]);
+
   const showLeft = showCorners && layer !== "grafico";
   const showRight = showCorners && layer !== "interfaces";
 
+  const closeAnd = (fn: () => void) => {
+    setMenuOpen(false);
+    fn();
+  };
+
   return (
-    <header className="sticky top-0 z-40 grid w-full grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] items-center gap-2 bg-sky-soft px-3 py-2.5 text-sm text-ink sm:gap-3 sm:px-5 sm:py-3 sm:text-base md:px-6 md:py-4">
-      {/* Esquina izq: garabato + flecha + texto (sin vector “Gráfico”) */}
-      <div className="flex min-h-9 min-w-0 items-center justify-self-start sm:min-h-10">
-        <Link
-          href={pathForLayer(locale, "grafico")}
-          className={`header-corner group flex max-w-full items-center gap-1.5 sm:gap-2 ${
-            showLeft ? "is-visible" : ""
-          }`}
-          aria-label={dict.footer.graphic}
-          tabIndex={showLeft ? 0 : -1}
-          aria-hidden={!showLeft}
+    <header className="sticky top-0 z-40 w-full bg-sky-soft text-sm text-ink sm:text-base">
+      {/* Mobile: volver al inicio (si aplica) + burger a la derecha */}
+      <div className="flex h-11 items-center justify-between md:hidden">
+        {layer !== "inicio" ? (
+          <button
+            type="button"
+            onClick={() => closeAnd(onPortfolio)}
+            className="ml-3 text-sm font-normal text-ink transition-opacity hover:opacity-70"
+          >
+            {dict.nav.backHome}
+          </button>
+        ) : (
+          <span className="ml-3" aria-hidden />
+        )}
+        <button
+          type="button"
+          className="mr-2 inline-flex size-9 shrink-0 flex-col items-center justify-center gap-1.5"
+          aria-expanded={menuOpen}
+          aria-controls="mobile-nav-menu"
+          aria-label={menuOpen ? "Cerrar menú" : "Abrir menú"}
+          onClick={() => setMenuOpen((o) => !o)}
         >
-          <span className="relative size-7 shrink-0 sm:size-8 md:size-9">
-            <Image
-              src="/assets/inicio/brand/scribble-mouse.svg"
-              alt=""
-              fill
-              className="object-contain object-left"
-            />
-          </span>
-          <span className="relative size-4 shrink-0 -scale-x-100 sm:size-5">
-            <Image
-              src="/assets/inicio/brand/arrow-right.svg"
-              alt=""
-              fill
-              className="object-contain"
-            />
-          </span>
-          <span className="truncate font-normal text-ink">
-            {dict.home.graphic}
-          </span>
-        </Link>
+          <span
+            className={`block h-0.5 w-5 bg-ink transition ${
+              menuOpen ? "translate-y-[7px] rotate-45" : ""
+            }`}
+          />
+          <span
+            className={`block h-0.5 w-5 bg-ink transition ${
+              menuOpen ? "opacity-0" : ""
+            }`}
+          />
+          <span
+            className={`block h-0.5 w-5 bg-ink transition ${
+              menuOpen ? "-translate-y-[7px] -rotate-45" : ""
+            }`}
+          />
+        </button>
       </div>
 
-      {/* Nav central */}
-      <nav className="flex shrink-0 items-center justify-center gap-3 sm:gap-5 md:gap-6">
-        <button
-          type="button"
-          onClick={onPortfolio}
-          className="font-bold transition-opacity hover:opacity-70"
-        >
-          {dict.nav.portfolio}
-        </button>
-        <button
-          type="button"
-          onClick={onContact}
-          className="font-normal transition-opacity hover:opacity-70"
-        >
-          {dict.nav.contact}
-        </button>
-        <button
-          type="button"
-          onClick={onAbout}
-          className="whitespace-nowrap font-normal transition-opacity hover:opacity-70"
-        >
-          {dict.nav.about}
-        </button>
-        <Link
-          href={base}
-          className="rounded border border-ink/20 px-2 py-0.5 text-sm font-medium tracking-wide transition-opacity hover:opacity-70 sm:text-base"
-          aria-label={`Switch to ${otherLocale.toUpperCase()}`}
-        >
-          {dict.nav.lang}
-        </Link>
-      </nav>
+      {/* Desktop */}
+      <div className="hidden w-full grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] items-center gap-3 px-5 py-3 md:grid md:px-6 md:py-4">
+        <div className="flex min-h-10 min-w-0 items-center justify-self-start">
+          <Link
+            href={pathForLayer(locale, "grafico")}
+            className={`header-corner group flex max-w-full items-center gap-2 ${
+              showLeft ? "is-visible" : ""
+            }`}
+            aria-label={dict.footer.graphic}
+            tabIndex={showLeft ? 0 : -1}
+            aria-hidden={!showLeft}
+          >
+            <span className="relative size-8 shrink-0 md:size-9">
+              <Image
+                src="/assets/inicio/brand/scribble-mouse.svg"
+                alt=""
+                fill
+                className="object-contain object-left"
+              />
+            </span>
+            <span className="relative size-5 shrink-0 -scale-x-100">
+              <Image
+                src="/assets/inicio/brand/arrow-right.svg"
+                alt=""
+                fill
+                className="object-contain"
+              />
+            </span>
+            <span className="truncate font-normal text-ink">
+              {dict.home.graphic}
+            </span>
+          </Link>
+        </div>
 
-      {/* Esquina der: texto + flecha + regla */}
-      <div className="flex min-h-9 min-w-0 items-center justify-self-end sm:min-h-10">
-        <Link
-          href={pathForLayer(locale, "interfaces")}
-          className={`header-corner group flex max-w-full items-center gap-1.5 sm:gap-2 ${
-            showRight ? "is-visible" : ""
-          }`}
-          aria-label={dict.footer.interfaces}
-          tabIndex={showRight ? 0 : -1}
-          aria-hidden={!showRight}
-        >
-          <span className="truncate font-normal text-ink">
-            {dict.home.interfaces}
-          </span>
-          <span className="relative size-4 shrink-0 sm:size-5">
-            <Image
-              src="/assets/inicio/brand/arrow-right.svg"
-              alt=""
-              fill
-              className="object-contain"
-            />
-          </span>
-          <span className="relative size-7 shrink-0 sm:size-8 md:size-9">
-            <Image
-              src="/assets/inicio/brand/ruler.svg"
-              alt=""
-              fill
-              className="object-contain"
-            />
-          </span>
-        </Link>
+        <nav className="flex shrink-0 items-center justify-center gap-5 md:gap-6">
+          <button
+            type="button"
+            onClick={onPortfolio}
+            className={`transition-opacity hover:opacity-70 ${
+              layer === "inicio" ? "font-bold" : "font-normal"
+            }`}
+          >
+            {dict.nav.portfolio}
+          </button>
+          <button
+            type="button"
+            onClick={onContact}
+            className="font-normal transition-opacity hover:opacity-70"
+          >
+            {dict.nav.contact}
+          </button>
+          <button
+            type="button"
+            onClick={onAbout}
+            className="whitespace-nowrap font-normal transition-opacity hover:opacity-70"
+          >
+            {dict.nav.about}
+          </button>
+        </nav>
+
+        <div className="flex min-h-10 min-w-0 items-center justify-self-end">
+          <Link
+            href={pathForLayer(locale, "interfaces")}
+            className={`header-corner group flex max-w-full items-center gap-2 ${
+              showRight ? "is-visible" : ""
+            }`}
+            aria-label={dict.footer.interfaces}
+            tabIndex={showRight ? 0 : -1}
+            aria-hidden={!showRight}
+          >
+            <span className="truncate font-normal text-ink">
+              {dict.home.interfaces}
+            </span>
+            <span className="relative size-5 shrink-0">
+              <Image
+                src="/assets/inicio/brand/arrow-right.svg"
+                alt=""
+                fill
+                className="object-contain"
+              />
+            </span>
+            <span className="relative size-8 shrink-0 md:size-9">
+              <Image
+                src="/assets/inicio/brand/ruler.svg"
+                alt=""
+                fill
+                className="object-contain"
+              />
+            </span>
+          </Link>
+        </div>
       </div>
+
+      <AnimatePresence initial={false}>
+        {menuOpen && (
+          <motion.div
+            id="mobile-nav-menu"
+            key="mobile-nav"
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: "auto", opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }}
+            transition={{ duration: 0.28, ease: [0.32, 0.72, 0, 1] }}
+            className="overflow-hidden md:hidden"
+          >
+            <nav className="flex flex-col gap-1 px-4 pb-3 pt-1">
+              <button
+                type="button"
+                onClick={() => closeAnd(onPortfolio)}
+                className={`rounded px-2 py-2.5 text-left transition-opacity hover:opacity-70 ${
+                  layer === "inicio" ? "font-bold" : "font-normal"
+                }`}
+              >
+                {dict.nav.portfolio}
+              </button>
+              <button
+                type="button"
+                onClick={() => closeAnd(onContact)}
+                className="rounded px-2 py-2.5 text-left font-normal transition-opacity hover:opacity-70"
+              >
+                {dict.nav.contact}
+              </button>
+              <button
+                type="button"
+                onClick={() => closeAnd(onAbout)}
+                className="rounded px-2 py-2.5 text-left font-normal transition-opacity hover:opacity-70"
+              >
+                {dict.nav.about}
+              </button>
+              <Link
+                href={pathForLayer(locale, "grafico")}
+                onClick={() => setMenuOpen(false)}
+                className={`rounded px-2 py-2.5 transition-opacity hover:opacity-70 ${
+                  layer === "grafico" ? "font-bold" : "font-normal"
+                }`}
+              >
+                {dict.footer.graphic}
+              </Link>
+              <Link
+                href={pathForLayer(locale, "interfaces")}
+                onClick={() => setMenuOpen(false)}
+                className={`rounded px-2 py-2.5 transition-opacity hover:opacity-70 ${
+                  layer === "interfaces" ? "font-bold" : "font-normal"
+                }`}
+              >
+                {dict.footer.interfaces}
+              </Link>
+            </nav>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </header>
   );
 }

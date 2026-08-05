@@ -34,7 +34,11 @@ export function LayerShell({ locale, dict }: Props) {
   const index = layerIndex(active);
   const lock = useRef(false);
   const shellRef = useRef<HTMLDivElement>(null);
-  const [paneW, setPaneW] = useState(0);
+  const [paneW, setPaneW] = useState(() =>
+    typeof window !== "undefined" ? window.innerWidth : 0,
+  );
+  /** Evita animar el primer layout (paneW 0 → medido = flash grafico→inicio) */
+  const [allowSlide, setAllowSlide] = useState(false);
   const scrollRefs = useRef<Record<LayerId, HTMLElement | null>>({
     grafico: null,
     inicio: null,
@@ -50,7 +54,13 @@ export function LayerShell({ locale, dict }: Props) {
     measure();
     const ro = new ResizeObserver(measure);
     ro.observe(el);
-    return () => ro.disconnect();
+    const unlock = requestAnimationFrame(() => {
+      requestAnimationFrame(() => setAllowSlide(true));
+    });
+    return () => {
+      ro.disconnect();
+      cancelAnimationFrame(unlock);
+    };
   }, []);
 
   const go = useCallback(
@@ -174,7 +184,7 @@ export function LayerShell({ locale, dict }: Props) {
         initial={false}
         animate={{ x: paneW ? -index * paneW : 0 }}
         transition={
-          reduceMotion
+          reduceMotion || !allowSlide || !paneW
             ? { duration: 0 }
             : {
                 type: "tween",

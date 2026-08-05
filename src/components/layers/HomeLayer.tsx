@@ -24,7 +24,7 @@ export function HomeLayer({ locale, dict }: Props) {
           <h1 className="name-hero-text shrink-0 border border-transparent px-1.5 pb-1.5 pt-1 font-bold text-ink sm:px-2.5 sm:pb-2 sm:pt-1.5">
             Nicolas
           </h1>
-          <FigmaGap className="mx-1 hidden shrink-0 self-stretch sm:block md:mx-2" />
+          <FigmaGap className="mx-0.5 shrink-0 self-stretch sm:mx-1 md:mx-2" />
           <EditableSurname />
         </div>
       </div>
@@ -32,12 +32,12 @@ export function HomeLayer({ locale, dict }: Props) {
       <div className="flex w-full max-w-6xl flex-col items-center gap-8 px-4 pb-12 pt-6 sm:gap-10 sm:px-6 md:px-8 md:pt-8 lg:px-10">
         {/* Designer + original vectors */}
         <div className="relative flex w-full flex-col items-center">
-          <div className="relative flex items-center justify-center gap-3">
-            <p className="hero-drift text-[clamp(1.25rem,3vw,2rem)] font-normal text-ink">
+          <div className="relative flex items-center justify-center gap-2 sm:gap-3">
+            <p className="hero-drift text-[clamp(1.1rem,3vw,2rem)] font-normal text-ink">
               {dict.home.designer}
             </p>
             <div
-              className="pointer-events-none absolute -right-14 top-[-40%] hidden size-14 rotate-[-18deg] sm:-right-16 sm:block sm:size-16 md:-right-20 md:size-20"
+              className="pointer-events-none absolute -right-9 top-[-35%] size-9 rotate-[-18deg] sm:-right-14 sm:top-[-40%] sm:size-14 md:-right-16 md:size-16 lg:-right-20 lg:size-20"
               aria-hidden
             >
               {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -49,50 +49,50 @@ export function HomeLayer({ locale, dict }: Props) {
             </div>
           </div>
 
-          {/* & como eje central; lados simétricos */}
+          {/* Misma composición que desktop; en mobile solo más chico */}
           <div
             id="hero-layer-links"
-            className="hero-split mt-4 grid w-full grid-cols-1 items-center gap-5 md:mt-5 md:grid-cols-[1fr_auto_1fr] md:gap-6 lg:gap-8"
+            className="hero-split mt-2 grid w-full grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] items-center gap-1 sm:mt-3 sm:gap-3 md:mt-5 md:gap-6 lg:gap-8"
           >
             <Link
               href={pathForLayer(locale, "grafico")}
-              className="hero-drift relative mx-auto block h-16 w-full max-w-[18rem] transition-opacity hover:opacity-80 sm:h-20 sm:max-w-[22rem] md:mx-0 md:h-[5.5rem] md:max-w-none md:justify-self-end md:w-[min(100%,26rem)]"
+              className="hero-drift relative h-11 w-full max-w-[8.5rem] justify-self-end transition-opacity hover:opacity-80 sm:h-16 sm:max-w-[14rem] md:h-[5.5rem] md:max-w-none md:w-[min(100%,26rem)]"
               aria-label={dict.footer.graphic}
             >
               <Image
                 src="/assets/inicio/brand/hero-grafico.svg"
                 alt=""
                 fill
-                className="object-contain object-center md:object-right"
+                className="object-contain object-right"
                 priority
               />
             </Link>
 
-            <div className="hero-drift mx-auto flex size-10 shrink-0 items-center justify-center bg-sky-pale sm:size-11 md:mx-0">
-              <span className="text-2xl font-bold leading-none text-ink-deep sm:text-3xl">
+            <div className="hero-drift flex size-7 shrink-0 items-center justify-center bg-sky-pale sm:size-10 md:size-11">
+              <span className="text-base font-bold leading-none text-ink-deep sm:text-2xl md:text-3xl">
                 &
               </span>
             </div>
 
             <Link
               href={pathForLayer(locale, "interfaces")}
-              className="hero-drift flex flex-col items-center gap-2 transition-opacity hover:opacity-80 md:flex-row md:items-center md:justify-self-start md:gap-2"
+              className="hero-drift flex flex-row items-center gap-1 justify-self-start transition-opacity hover:opacity-80 sm:gap-1.5 md:gap-2"
               aria-label={dict.footer.interfaces}
             >
-              <span className="relative order-1 size-12 shrink-0 md:order-3 md:size-16 lg:size-[4.5rem]">
+              <span className="text-[clamp(0.8rem,2.7vw,2.15rem)] font-normal leading-none whitespace-nowrap text-ink">
+                {dict.home.interfaces}
+              </span>
+              <span className="relative size-4 shrink-0 sm:size-6 md:size-8">
                 <Image
-                  src="/assets/inicio/brand/ruler.svg"
+                  src="/assets/inicio/brand/arrow-right.svg"
                   alt=""
                   fill
                   className="object-contain"
                 />
               </span>
-              <span className="order-2 text-[clamp(1.35rem,3.2vw,2.15rem)] font-normal leading-none whitespace-nowrap text-ink md:order-1">
-                {dict.home.interfaces}
-              </span>
-              <span className="relative order-3 size-7 shrink-0 md:order-2 md:size-8">
+              <span className="relative size-7 shrink-0 sm:size-10 md:size-16 lg:size-[4.5rem]">
                 <Image
-                  src="/assets/inicio/brand/arrow-right.svg"
+                  src="/assets/inicio/brand/ruler.svg"
                   alt=""
                   fill
                   className="object-contain"
@@ -113,21 +113,29 @@ export function HomeLayer({ locale, dict }: Props) {
           </div>
         </div>
 
-        {/* Acerca: tamaño anterior; solo centrado horizontal */}
+        {/* Acerca — Figma 432:1617 */}
         <div
           id="acerca"
           className="flex w-full scroll-mt-24 justify-center"
         >
           <div className="bio-scene">
             <div className="bio-mesa">
-              <span className="bio-shape" aria-hidden />
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 src={content.bio.photo}
                 alt={t(content.bio.photoAlt, locale)}
-                className="bio-cutout"
+                className="bio-cutout bio-asset"
+                draggable={false}
               />
               <p className="bio-wrap-text">{t(content.bio.text, locale)}</p>
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src={content.bio.signature}
+                alt=""
+                aria-hidden
+                className="bio-signature bio-asset"
+                draggable={false}
+              />
             </div>
           </div>
         </div>

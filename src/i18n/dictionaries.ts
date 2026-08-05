@@ -7,9 +7,10 @@ const es = {
       "Diseñador gráfico y de interfaces. Portfolio de Nico Ayala.",
   },
   nav: {
-    portfolio: "Portfolio",
+    portfolio: "Inicio",
     contact: "Contacto",
-    about: "Acerca de mi",
+    about: "Acerca de",
+    backHome: "Volver al inicio",
     lang: "EN",
   },
   home: {
@@ -63,9 +64,10 @@ const en: typeof es = {
       "Graphic and interface designer. Nico Ayala's portfolio.",
   },
   nav: {
-    portfolio: "Portfolio",
+    portfolio: "Home",
     contact: "Contact",
-    about: "About me",
+    about: "About",
+    backHome: "Back to home",
     lang: "ES",
   },
   home: {
