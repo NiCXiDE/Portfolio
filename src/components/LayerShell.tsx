@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useRef, useState, type ReactNode } from "react";
+import { useCallback, useEffect, useRef, type ReactNode } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import { motion, useReducedMotion } from "motion/react";
 import type { Dictionary } from "@/i18n/dictionaries";
@@ -25,6 +25,8 @@ type Props = {
 };
 
 const SLIDE_MS = 420;
+const LAYER_COUNT = LAYER_ORDER.length;
+const PANE_PCT = 100 / LAYER_COUNT;
 
 export function LayerShell({ locale, dict }: Props) {
   const pathname = usePathname();
@@ -33,12 +35,8 @@ export function LayerShell({ locale, dict }: Props) {
   const active = layerFromPathname(pathname);
   const index = layerIndex(active);
   const lock = useRef(false);
-  const shellRef = useRef<HTMLDivElement>(null);
-  const [paneW, setPaneW] = useState(() =>
-    typeof window !== "undefined" ? window.innerWidth : 0,
-  );
-  /** Evita animar el primer layout (paneW 0 → medido = flash grafico→inicio) */
-  const [allowSlide, setAllowSlide] = useState(false);
+  /** Tras el primer paint: animate en navegaciones; en reload va a la capa correcta sin slide */
+  const canAnimate = useRef(false);
   const scrollRefs = useRef<Record<LayerId, HTMLElement | null>>({
     grafico: null,
     inicio: null,
@@ -46,21 +44,8 @@ export function LayerShell({ locale, dict }: Props) {
   });
   const touchStart = useRef<{ x: number; y: number } | null>(null);
 
-  // Ancho real del shell (no 100vw) para evitar desfase por scrollbar / resize
   useEffect(() => {
-    const el = shellRef.current;
-    if (!el) return;
-    const measure = () => setPaneW(el.clientWidth);
-    measure();
-    const ro = new ResizeObserver(measure);
-    ro.observe(el);
-    const unlock = requestAnimationFrame(() => {
-      requestAnimationFrame(() => setAllowSlide(true));
-    });
-    return () => {
-      ro.disconnect();
-      cancelAnimationFrame(unlock);
-    };
+    canAnimate.current = true;
   }, []);
 
   const go = useCallback(
@@ -171,7 +156,6 @@ export function LayerShell({ locale, dict }: Props) {
 
   return (
     <div
-      ref={shellRef}
       className="relative h-dvh w-full overflow-hidden bg-white"
       onPointerDown={onPointerDown}
       onPointerUp={onPointerUp}
@@ -181,10 +165,11 @@ export function LayerShell({ locale, dict }: Props) {
     >
       <motion.div
         className="flex h-full will-change-transform"
+        style={{ width: `${LAYER_COUNT * 100}%` }}
         initial={false}
-        animate={{ x: paneW ? -index * paneW : 0 }}
+        animate={{ x: `${-index * PANE_PCT}%` }}
         transition={
-          reduceMotion || !allowSlide || !paneW
+          reduceMotion || !canAnimate.current
             ? { duration: 0 }
             : {
                 type: "tween",
@@ -192,10 +177,6 @@ export function LayerShell({ locale, dict }: Props) {
                 ease: [0.32, 0.72, 0, 1],
               }
         }
-        style={{
-          width: paneW ? paneW * LAYER_ORDER.length : "100%",
-          maxWidth: paneW ? paneW * LAYER_ORDER.length : "100%",
-        }}
       >
         {LAYER_ORDER.map((id) => (
           <section
@@ -203,10 +184,9 @@ export function LayerShell({ locale, dict }: Props) {
             aria-hidden={id !== active}
             className="h-full shrink-0 overflow-hidden"
             style={{
-              width: paneW || "100%",
-              minWidth: paneW || "100%",
-              maxWidth: paneW || "100%",
-              flex: paneW ? `0 0 ${paneW}px` : "0 0 100%",
+              flex: `0 0 ${PANE_PCT}%`,
+              width: `${PANE_PCT}%`,
+              maxWidth: `${PANE_PCT}%`,
             }}
           >
             <div

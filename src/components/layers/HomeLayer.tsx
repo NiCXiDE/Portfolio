@@ -165,26 +165,30 @@ export function HomeLayer({ locale, dict }: Props) {
           <h2 className="text-center text-xl font-bold text-ink md:text-2xl">
             {dict.home.testimonialsTitle}
           </h2>
-          {content.testimonials.map((item) => (
+          {content.testimonials
+            .filter((item) => !("hidden" in item && item.hidden))
+            .map((item) => (
             <article
               key={item.id}
-              className="flex flex-col gap-4 sm:flex-row sm:gap-6"
+              className="flex flex-row items-start gap-3 bg-sky-pale p-3 md:gap-6 md:p-5"
             >
-              <div className="relative aspect-square w-full max-w-[220px] shrink-0 overflow-hidden sm:max-w-[260px]">
+              <div className="relative aspect-square w-[110px] shrink-0 overflow-hidden md:w-[260px]">
                 <Image
                   src={item.image}
                   alt={item.name}
                   fill
                   className="object-cover"
-                  sizes="260px"
+                  sizes="(max-width: 767px) 110px, 260px"
                 />
               </div>
-              <div className="flex flex-1 flex-col gap-2 py-1">
-                <p className="text-base leading-relaxed text-ink md:text-lg">
+              <div className="flex min-w-0 flex-1 flex-col gap-1.5 py-0.5 md:gap-2 md:py-1">
+                <p className="text-sm leading-relaxed text-ink md:text-lg">
                   {t(item.quote, locale)}
                 </p>
-                <p className="text-lg font-bold text-ink">{item.name}</p>
-                <p className="text-base font-medium text-ink/80">
+                <p className="text-sm font-bold text-ink md:text-lg">
+                  {item.name}
+                </p>
+                <p className="text-sm font-medium text-ink/80 md:text-base">
                   {t(item.role, locale)}
                 </p>
                 {"company" in item && item.company && (

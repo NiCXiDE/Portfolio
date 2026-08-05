@@ -1,7 +1,8 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  /* config options here */
+  /* Oculta el indicador de desarrollo (ícono N) en local */
+  devIndicators: false,
 };
 
 export default nextConfig;

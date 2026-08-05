@@ -55,6 +55,7 @@
   },
   {
     "id": "matias",
+    "hidden": true,
     "name": "Mendoza Matías",
     "image": "/assets/inicio/testimonials/matias.png",
     "quote": {
@@ -69,19 +70,6 @@
       "logo": "/assets/inicio/testimonials/logos/orbitalab-Vector.svg",
       "href": "https://www.instagram.com/orbitalab.ar/",
       "name": "Órbita LΔB"
-    }
-  },
-  {
-    "id": "hornet",
-    "name": "Hornet",
-    "image": "/assets/inicio/testimonials/hornet.png",
-    "quote": {
-      "es": "shaw!",
-      "en": "shaw!"
-    },
-    "role": {
-      "es": "Hollow Knight: Silksong",
-      "en": "Hollow Knight: Silksong"
     }
   }
 ]
