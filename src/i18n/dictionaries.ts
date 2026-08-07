@@ -58,6 +58,7 @@ const es = {
     catPersonales: "Proyectos personales",
     carouselPrev: "Anterior",
     carouselNext: "Siguiente",
+    seeMore: "Ver más",
   },
   grafico: {
     title: "Diseñador Gráfico",
@@ -74,6 +75,8 @@ const es = {
     viewManual: "Ver manual completo",
     visitLink: "Visitar web",
     expandHint: "Tocá una pieza para ver detalle · Esc para cerrar",
+    seeMore: "Ver más",
+    seeAll: "Ver todas",
     hintCovers:
       "Artworks y portadas de música / playlists (disco, single, lista).",
     hintLogos: "Marcas, wordmarks e íconos con identidad propia.",
@@ -166,6 +169,7 @@ const en: typeof es = {
     catPersonales: "Personal projects",
     carouselPrev: "Previous",
     carouselNext: "Next",
+    seeMore: "See more",
   },
   grafico: {
     title: "Graphic Designer",
@@ -182,6 +186,8 @@ const en: typeof es = {
     viewManual: "View full manual",
     visitLink: "Visit website",
     expandHint: "Tap a piece for details · Esc to close",
+    seeMore: "See more",
+    seeAll: "See all",
     hintCovers: "Music / playlist artworks and covers (release, single, list).",
     hintLogos: "Brands, wordmarks, and icons with their own identity.",
     hintManuals: "Documented brand systems (cover + PDF).",

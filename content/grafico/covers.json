@@ -1,7 +1,7 @@
 [
   {
     "id": "kadaver-jez-ebel",
-    "src": "/assets/grafico/covers/kadaver-jez-ebel-bootleg.png",
+    "src": "/assets/grafico/covers/kadaver-jez-ebel-bootleg.jpg",
     "alt": "KADAVER - Jez_ebel bootleg",
     "href": "https://soundcloud.com/kadaver1/kadaver-jez_ebel-bootleg",
     "hrefLabel": { "es": "Abrir en SoundCloud", "en": "Open on SoundCloud" },
@@ -93,7 +93,7 @@
   },
   {
     "id": "twenty-twenty-two-spotify",
-    "src": "/assets/grafico/covers/twenty-twenty-two-spotify.png",
+    "src": "/assets/grafico/covers/twenty-twenty-two-spotify.jpg",
     "alt": "Twenty Twenty Two",
     "href": null,
     "tags": ["bass-series"],
@@ -104,7 +104,7 @@
   },
   {
     "id": "twenty-twenty-3",
-    "src": "/assets/grafico/covers/twenty-twenty-3.png",
+    "src": "/assets/grafico/covers/twenty-twenty-3.jpg",
     "alt": "Twenty Twenty 3",
     "href": null,
     "tags": ["bass-series"],

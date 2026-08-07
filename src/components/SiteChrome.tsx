@@ -7,6 +7,7 @@ import { AnimatePresence, motion } from "motion/react";
 import type { Dictionary } from "@/i18n/dictionaries";
 import type { Locale } from "@/i18n/config";
 import { pathForLayer, type LayerId } from "@/lib/layers";
+import type { PortfolioContent } from "@/lib/content";
 
 type HeaderProps = {
   locale: Locale;
@@ -268,9 +269,12 @@ export function Header({
 type FooterProps = {
   locale: Locale;
   dict: Dictionary;
+  socialLinks: PortfolioContent["socialLinks"];
+  settings: PortfolioContent["settings"];
 };
 
-export function Footer({ locale, dict }: FooterProps) {
+export function Footer({ locale, dict, socialLinks, settings }: FooterProps) {
+  const note = settings.note[locale] ?? settings.note.es;
   return (
     <footer className="w-full">
       <div className="flex flex-col gap-8 bg-sky-soft px-6 py-8 sm:flex-row sm:flex-wrap sm:justify-center sm:gap-10 sm:px-10 md:gap-14 lg:px-20">
@@ -279,60 +283,28 @@ export function Footer({ locale, dict }: FooterProps) {
             {dict.footer.social}
           </h3>
           <ul className="footer-list flex flex-col gap-2.5 text-sm text-ink md:text-base">
-            <li>
-              <a
-                href="https://x.com/nicoasinormal"
-                target="_blank"
-                rel="noreferrer"
-                className="inline-flex items-center gap-2.5 transition-opacity hover:opacity-70"
-              >
-                <span className="relative inline-block size-4 shrink-0 sm:size-[1.375rem]">
-                  <Image
-                    src="/assets/shared/x.svg"
-                    alt=""
-                    fill
-                    className="object-contain"
-                  />
-                </span>
-                {dict.footer.x}
-              </a>
-            </li>
-            <li>
-              <a
-                href="https://www.instagram.com/nicxayala"
-                target="_blank"
-                rel="noreferrer"
-                className="inline-flex items-center gap-2.5 transition-opacity hover:opacity-70"
-              >
-                <span className="relative inline-block size-4 shrink-0 sm:size-[1.375rem]">
-                  <Image
-                    src="/assets/shared/instagram.svg"
-                    alt=""
-                    fill
-                    className="object-contain"
-                  />
-                </span>
-                {dict.footer.instagram}
-              </a>
-            </li>
-            <li>
-              <a
-                href="https://www.linkedin.com/in/nicoayala-design"
-                target="_blank"
-                rel="noreferrer"
-                className="inline-flex items-center gap-2.5 transition-opacity hover:opacity-70"
-              >
-                <span className="relative inline-block size-4 shrink-0 sm:size-[1.375rem]">
-                  <Image
-                    src="/assets/shared/linkedin.svg"
-                    alt=""
-                    fill
-                    className="object-contain"
-                  />
-                </span>
-                {dict.footer.linkedin}
-              </a>
-            </li>
+            {socialLinks.map((link) => (
+              <li key={link.id}>
+                <a
+                  href={link.href}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="inline-flex items-center gap-2.5 transition-opacity hover:opacity-70"
+                >
+                  {link.icon ? (
+                    <span className="relative inline-block size-4 shrink-0 sm:size-[1.375rem]">
+                      <Image
+                        src={link.icon}
+                        alt=""
+                        fill
+                        className="object-contain"
+                      />
+                    </span>
+                  ) : null}
+                  {link.label}
+                </a>
+              </li>
+            ))}
           </ul>
         </div>
 
@@ -375,28 +347,28 @@ export function Footer({ locale, dict }: FooterProps) {
           <ul className="footer-list flex flex-col gap-2.5 text-sm text-ink md:text-base">
             <li>
               <a
-                href={`mailto:${dict.footer.email}`}
+                href={`mailto:${settings.email}`}
                 className="transition-opacity hover:opacity-70"
               >
-                {dict.footer.email}
+                {settings.email}
               </a>
             </li>
             <li>
               <a
-                href={`tel:${dict.footer.phone.replace(/\s/g, "")}`}
+                href={`tel:${settings.phone.replace(/\s/g, "")}`}
                 className="transition-opacity hover:opacity-70"
               >
-                {dict.footer.phone}
+                {settings.phone}
               </a>
             </li>
-            <li>{dict.footer.note}</li>
+            <li>{note}</li>
           </ul>
         </div>
       </div>
 
       <div className="flex items-center justify-center bg-ink px-6 py-3">
         <p className="font-bigger text-lg uppercase tracking-wide text-sky-pale md:text-2xl">
-          POWERED BY PUSH
+          {settings.poweredBy}
         </p>
       </div>
     </footer>

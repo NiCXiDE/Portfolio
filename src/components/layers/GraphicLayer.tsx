@@ -7,10 +7,10 @@ import {
   type ReactNode,
 } from "react";
 import Image from "next/image";
+import Link from "next/link";
 import {
   BookOpen,
   Disc3,
-  Inbox,
   Palette,
   PenTool,
   Printer,
@@ -19,7 +19,11 @@ import {
 } from "lucide-react";
 import type { Dictionary } from "@/i18n/dictionaries";
 import type { Locale } from "@/i18n/config";
-import { content, t, type LocalizedString } from "@/lib/content";
+import {
+  t,
+  type LocalizedString,
+  type PortfolioContent,
+} from "@/lib/content";
 import {
   ExpandableArtGrid,
   type ArtItem,
@@ -30,6 +34,7 @@ import { TagFilter } from "@/components/TagFilter";
 type Props = {
   locale: Locale;
   dict: Dictionary;
+  content: PortfolioContent;
 };
 
 type BrandManual = {
@@ -62,8 +67,7 @@ type SectionKey =
   | "manuals"
   | "illustration"
   | "banners"
-  | "personal"
-  | "pending";
+  | "personal";
 
 type IconType = ComponentType<LucideProps>;
 
@@ -151,23 +155,33 @@ function sortItems(
   mode: SortMode,
   locale: Locale,
 ): ArtItem[] {
-  const copy = [...items];
+  const copy = items.map((item, index) => ({ item, index }));
   if (mode === "year") {
     copy.sort((a, b) => {
-      const ya = a.year ? Number(a.year) : Number.NEGATIVE_INFINITY;
-      const yb = b.year ? Number(b.year) : Number.NEGATIVE_INFINITY;
+      const ya = a.item.year ? Number(a.item.year) : Number.NEGATIVE_INFINITY;
+      const yb = b.item.year ? Number(b.item.year) : Number.NEGATIVE_INFINITY;
       if (yb !== ya) return yb - ya;
-      return itemLabel(a, locale).localeCompare(itemLabel(b, locale), locale);
+      return a.index - b.index;
     });
   } else {
-    copy.sort((a, b) =>
-      itemLabel(a, locale).localeCompare(itemLabel(b, locale), locale),
-    );
+    copy.sort((a, b) => {
+      const cmp = itemLabel(a.item, locale).localeCompare(
+        itemLabel(b.item, locale),
+        "en",
+      );
+      return cmp !== 0 ? cmp : a.index - b.index;
+    });
   }
-  return copy;
+  return copy.map(({ item }) => item);
 }
 
-export function GraphicLayer({ locale, dict }: Props) {
+export function GraphicLayer({ locale, dict, content }: Props) {
+  const limit = content.settings.graphicPreviewLimit;
+  const nsfwSlugs = content.tags.filter((t) => t.isNsfw).map((t) => t.slug);
+  const tagLabels = Object.fromEntries(
+    content.tags.map((t) => [t.slug, locale === "en" ? t.labelEn : t.labelEs]),
+  );
+
   const [sorts, setSorts] = useState<Record<SectionKey, SortMode>>({
     covers: "year",
     logos: "year",
@@ -175,7 +189,6 @@ export function GraphicLayer({ locale, dict }: Props) {
     illustration: "year",
     banners: "year",
     personal: "year",
-    pending: "alpha",
   });
   const [tagFilter, setTagFilter] = useState<
     Partial<Record<SectionKey, string | null>>
@@ -201,11 +214,22 @@ export function GraphicLayer({ locale, dict }: Props) {
     },
     { id: "grafico-banners", label: dict.grafico.banners, icon: Printer },
     { id: "grafico-personal", label: dict.grafico.personal, icon: Sparkles },
-    { id: "grafico-pending", label: dict.grafico.pending, icon: Inbox },
   ];
 
+  const seeMore = (section: string, total: number) =>
+    total > limit ? (
+      <div className="mt-4 flex w-full justify-center">
+        <Link
+          href={`/${locale}/grafico/${section}`}
+          className="text-sm text-ink underline underline-offset-4 transition-opacity hover:opacity-70 md:text-base"
+        >
+          {dict.grafico.seeMore}
+        </Link>
+      </div>
+    ) : null;
+
   const coverItems = useMemo(() => {
-    const mapped = content.covers.map((c) => ({
+    const mapped = content.covers.slice(0, limit).map((c) => ({
       id: c.id,
       src: c.src,
       alt: c.alt,
@@ -230,7 +254,7 @@ export function GraphicLayer({ locale, dict }: Props) {
   }, [sorts.covers, locale, dict.grafico.visitLink, tagFilter.covers]);
 
   const logoItems = useMemo(() => {
-    const mapped = content.logos.map((logo) => ({
+    const mapped = content.logos.slice(0, limit).map((logo) => ({
       id: logo.id,
       src: logo.src,
       alt: logo.alt,
@@ -256,7 +280,7 @@ export function GraphicLayer({ locale, dict }: Props) {
   const manualItems = useMemo(
     () =>
       sortItems(
-        manuals.map((m) => ({
+        manuals.slice(0, limit).map((m) => ({
           id: m.id,
           src: m.cover,
           alt: t(m.title, locale),
@@ -284,7 +308,7 @@ export function GraphicLayer({ locale, dict }: Props) {
   );
 
   const illustrationItems = useMemo(() => {
-    const mapped = drawings.map((item) => ({
+    const mapped = drawings.slice(0, limit).map((item) => ({
       id: item.id,
       src: item.src,
       alt: item.alt,
@@ -317,7 +341,7 @@ export function GraphicLayer({ locale, dict }: Props) {
   ]);
 
   const bannerItems = useMemo(() => {
-    const mapped = content.banners.map((b) => ({
+    const mapped = content.banners.slice(0, limit).map((b) => ({
       id: b.id,
       src: b.src,
       alt: b.alt,
@@ -344,7 +368,7 @@ export function GraphicLayer({ locale, dict }: Props) {
   ]);
 
   const personalItems = useMemo(() => {
-    const mapped = content.personal.map((item) => ({
+    const mapped = content.personal.slice(0, limit).map((item) => ({
       id: item.id,
       src: item.src,
       alt: item.alt,
@@ -363,25 +387,7 @@ export function GraphicLayer({ locale, dict }: Props) {
       sorts.personal,
       locale,
     );
-  }, [sorts.personal, locale, tagFilter.personal]);
-
-  const pendingItems = useMemo(() => {
-    const mapped = content.pending.map((c) => ({
-      id: c.id,
-      src: c.src,
-      alt: c.alt,
-      title: c.alt,
-      detail: c.usage,
-      href: c.href,
-      tags: readTags("tags" in c ? c.tags : []),
-      fit: "cover" as const,
-    }));
-    return sortItems(
-      applyTagFilter(mapped, tagFilter.pending ?? null),
-      sorts.pending,
-      locale,
-    );
-  }, [sorts.pending, locale, tagFilter.pending]);
+  }, [sorts.personal, locale, tagFilter.personal, content.personal, limit]);
 
   const coverTagList = useMemo(
     () =>
@@ -389,7 +395,7 @@ export function GraphicLayer({ locale, dict }: Props) {
         content.covers.map((c) => ({ tags: readTags("tags" in c ? c.tags : []) })),
         locale,
       ),
-    [locale],
+    [locale, content.covers],
   );
   const logoTagList = useMemo(
     () =>
@@ -399,7 +405,7 @@ export function GraphicLayer({ locale, dict }: Props) {
         })),
         locale,
       ),
-    [locale],
+    [locale, content.logos],
   );
   const illustrationTagList = useMemo(
     () => uniqueTags(drawings.map((d) => ({ tags: readTags(d.tags) })), locale),
@@ -411,7 +417,7 @@ export function GraphicLayer({ locale, dict }: Props) {
         content.banners.map((b) => ({ tags: readTags(b.tags) })),
         locale,
       ),
-    [locale],
+    [locale, content.banners],
   );
   const personalTagList = useMemo(
     () =>
@@ -421,27 +427,18 @@ export function GraphicLayer({ locale, dict }: Props) {
         })),
         locale,
       ),
-    [locale],
-  );
-  const pendingTagList = useMemo(
-    () =>
-      uniqueTags(
-        content.pending.map((c) => ({
-          tags: readTags("tags" in c ? c.tags : []),
-        })),
-        locale,
-      ),
-    [locale],
+    [locale, content.personal],
   );
 
   const gridExtras = {
     visitLabel: dict.grafico.visitLink,
     closeLabel: dict.common.close,
     enlargeLabel: dict.common.enlarge,
-    tagLabels: dict.common.tagLabels,
+    tagLabels: { ...dict.common.tagLabels, ...tagLabels },
     nsfwLabel: dict.common.nsfwLabel,
     nsfwRevealLabel: dict.common.nsfwReveal,
     nsfwHideLabel: dict.common.nsfwHide,
+    nsfwSlugs,
   };
 
   const sortActions = (key: SectionKey) => (
@@ -534,6 +531,7 @@ export function GraphicLayer({ locale, dict }: Props) {
             {...gridExtras}
           />
         </div>
+        {seeMore("covers", content.covers.length)}
 
         <div className="relative h-8 w-full sm:h-12">
           <Image
@@ -567,6 +565,7 @@ export function GraphicLayer({ locale, dict }: Props) {
           onTagClick={(tag) => setTag("logos", tag)}
           {...gridExtras}
         />
+        {seeMore("logos", content.logos.length)}
 
         <div className="relative h-8 w-full sm:h-12">
           <Image
@@ -597,6 +596,7 @@ export function GraphicLayer({ locale, dict }: Props) {
             {...gridExtras}
           />
         )}
+        {seeMore("manuals", manuals.length)}
 
         <SectionTitle
           id="grafico-ilustracion"
@@ -627,6 +627,7 @@ export function GraphicLayer({ locale, dict }: Props) {
             {...gridExtras}
           />
         )}
+        {seeMore("illustration", drawings.length)}
 
         <SectionTitle
           id="grafico-banners"
@@ -657,6 +658,7 @@ export function GraphicLayer({ locale, dict }: Props) {
             {...gridExtras}
           />
         )}
+        {seeMore("banners", content.banners.length)}
 
         <SectionTitle
           id="grafico-personal"
@@ -681,29 +683,7 @@ export function GraphicLayer({ locale, dict }: Props) {
             {...gridExtras}
           />
         </div>
-
-        <SectionTitle
-          id="grafico-pending"
-          icon={Inbox}
-          hint={dict.grafico.hintPending}
-          actions={sortActions("pending")}
-        >
-          {dict.grafico.pending}
-        </SectionTitle>
-        <TagFilter
-          tags={pendingTagList}
-          active={tagFilter.pending ?? null}
-          onChange={(tag) => setTag("pending", tag)}
-          labels={dict.common.tagLabels}
-          clearLabel={dict.common.clearFilter}
-        />
-        <ExpandableArtGrid
-          items={pendingItems}
-          locale={locale}
-          cellClassName="bg-sky-pale"
-          onTagClick={(tag) => setTag("pending", tag)}
-          {...gridExtras}
-        />
+        {seeMore("personal", content.personal.length)}
       </div>
     </main>
   );

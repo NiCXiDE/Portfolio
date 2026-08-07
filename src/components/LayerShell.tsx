@@ -5,6 +5,7 @@ import { usePathname, useRouter } from "next/navigation";
 import { motion, useReducedMotion } from "motion/react";
 import type { Dictionary } from "@/i18n/dictionaries";
 import type { Locale } from "@/i18n/config";
+import type { PortfolioContent } from "@/lib/content";
 import {
   LAYER_ORDER,
   layerFromPathname,
@@ -22,6 +23,7 @@ import { InterfacesLayer } from "@/components/layers/InterfacesLayer";
 type Props = {
   locale: Locale;
   dict: Dictionary;
+  content: PortfolioContent;
   children?: ReactNode;
 };
 
@@ -29,20 +31,30 @@ const SLIDE_MS = 420;
 const LAYER_COUNT = LAYER_ORDER.length;
 const PANE_PCT = 100 / LAYER_COUNT;
 
-export function LayerShell({ locale, dict }: Props) {
+const GRAPHIC_SECTIONS =
+  /\/grafico\/(covers|logos|personal|illustration|banners|manuals)\/?$/;
+const INTERFACE_SECTIONS =
+  /\/interfaces\/(preventas|sistemas-a-medida|proyectos-personales)\/?$/;
+
+function isCatalogDetailPath(pathname: string) {
+  return GRAPHIC_SECTIONS.test(pathname) || INTERFACE_SECTIONS.test(pathname);
+}
+
+export function LayerShell({ locale, dict, content, children }: Props) {
   const pathname = usePathname();
   const router = useRouter();
   const reduceMotion = useReducedMotion();
+  const catalogDetail = isCatalogDetailPath(pathname);
   const active = layerFromPathname(pathname);
   const index = layerIndex(active);
   const lock = useRef(false);
-  /** Tras el primer paint: animate en navegaciones; en reload va a la capa correcta sin slide */
   const canAnimate = useRef(false);
   const scrollRefs = useRef<Record<LayerId, HTMLElement | null>>({
     grafico: null,
     inicio: null,
     interfaces: null,
   });
+  const detailScrollRef = useRef<HTMLElement | null>(null);
   const touchStart = useRef<{ x: number; y: number } | null>(null);
 
   useEffect(() => {
@@ -50,8 +62,9 @@ export function LayerShell({ locale, dict }: Props) {
   }, []);
 
   const getActiveScroller = useCallback(
-    () => scrollRefs.current[active],
-    [active],
+    () =>
+      catalogDetail ? detailScrollRef.current : scrollRefs.current[active],
+    [active, catalogDetail],
   );
 
   const go = useCallback(
@@ -68,13 +81,13 @@ export function LayerShell({ locale, dict }: Props) {
 
   const goDir = useCallback(
     (dir: -1 | 1) => {
+      if (catalogDetail) return;
       const next = neighborLayer(active, dir);
       if (next) go(next);
     },
-    [active, go],
+    [active, catalogDetail, go],
   );
 
-  /** Scroll vertical solo dentro del pane activo — nunca scrollIntoView (rompe el traslape). */
   const scrollPaneTo = useCallback(
     (layer: LayerId, selector: string, smooth: boolean) => {
       const scroller = scrollRefs.current[layer];
@@ -97,6 +110,7 @@ export function LayerShell({ locale, dict }: Props) {
   );
 
   useEffect(() => {
+    if (catalogDetail) return;
     const onKey = (e: KeyboardEvent) => {
       const tag = (e.target as HTMLElement | null)?.tagName;
       if (
@@ -115,9 +129,15 @@ export function LayerShell({ locale, dict }: Props) {
     };
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
-  }, [goDir]);
+  }, [catalogDetail, goDir]);
 
   const onContact = () => {
+    if (catalogDetail) {
+      document
+        .getElementById("contacto")
+        ?.scrollIntoView({ behavior: reduceMotion ? "auto" : "smooth" });
+      return;
+    }
     scrollPaneTo(active, "#contacto", !reduceMotion);
   };
 
@@ -132,7 +152,7 @@ export function LayerShell({ locale, dict }: Props) {
   };
 
   const onPortfolio = () => {
-    if (active === "inicio") {
+    if (active === "inicio" && !catalogDetail) {
       scrollRefs.current.inicio?.scrollTo({
         top: 0,
         behavior: reduceMotion ? "auto" : "smooth",
@@ -146,12 +166,13 @@ export function LayerShell({ locale, dict }: Props) {
   };
 
   const onPointerDown = (e: React.PointerEvent) => {
+    if (catalogDetail) return;
     if (e.pointerType === "mouse") return;
     touchStart.current = { x: e.clientX, y: e.clientY };
   };
 
   const onPointerUp = (e: React.PointerEvent) => {
-    if (!touchStart.current) return;
+    if (catalogDetail || !touchStart.current) return;
     const dx = e.clientX - touchStart.current.x;
     const dy = e.clientY - touchStart.current.y;
     touchStart.current = null;
@@ -159,6 +180,40 @@ export function LayerShell({ locale, dict }: Props) {
     if (dx < 0) goDir(1);
     else goDir(-1);
   };
+
+  if (catalogDetail) {
+    return (
+      <div className="relative h-dvh w-full overflow-hidden bg-white">
+        <div
+          ref={(node) => {
+            detailScrollRef.current = node;
+          }}
+          className="site-scroll site-scroll-detail h-full"
+        >
+          <Header
+            locale={locale}
+            dict={dict}
+            layer={active}
+            onContact={onContact}
+            onAbout={onAbout}
+            onPortfolio={onPortfolio}
+          />
+          {children}
+          <Footer
+            locale={locale}
+            dict={dict}
+            socialLinks={content.socialLinks}
+            settings={content.settings}
+          />
+        </div>
+        <BackToTop
+          label={dict.common.backToTop}
+          layer={active}
+          getScroller={getActiveScroller}
+        />
+      </div>
+    );
+  }
 
   return (
     <div
@@ -209,12 +264,25 @@ export function LayerShell({ locale, dict }: Props) {
                 onAbout={onAbout}
                 onPortfolio={onPortfolio}
               />
-              {id === "grafico" && <GraphicLayer locale={locale} dict={dict} />}
-              {id === "inicio" && <HomeLayer locale={locale} dict={dict} />}
-              {id === "interfaces" && (
-                <InterfacesLayer locale={locale} dict={dict} />
+              {id === "grafico" && (
+                <GraphicLayer locale={locale} dict={dict} content={content} />
               )}
-              <Footer locale={locale} dict={dict} />
+              {id === "inicio" && (
+                <HomeLayer locale={locale} dict={dict} content={content} />
+              )}
+              {id === "interfaces" && (
+                <InterfacesLayer
+                  locale={locale}
+                  dict={dict}
+                  content={content}
+                />
+              )}
+              <Footer
+                locale={locale}
+                dict={dict}
+                socialLinks={content.socialLinks}
+                settings={content.settings}
+              />
             </div>
           </section>
         ))}

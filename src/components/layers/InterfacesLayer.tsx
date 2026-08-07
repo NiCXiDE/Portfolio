@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useState } from "react";
 import Image from "next/image";
+import Link from "next/link";
 import {
   ChevronLeft,
   ChevronRight,
@@ -14,12 +15,17 @@ import type { ComponentType } from "react";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import type { Dictionary } from "@/i18n/dictionaries";
 import type { Locale } from "@/i18n/config";
-import { content, t, type LocalizedString } from "@/lib/content";
+import {
+  t,
+  type LocalizedString,
+  type PortfolioContent,
+} from "@/lib/content";
 import { SortButtons, type SortMode } from "@/components/SortButtons";
 
 type Props = {
   locale: Locale;
   dict: Dictionary;
+  content: PortfolioContent;
 };
 
 type UiCategory = "preventas" | "sistemas-a-medida" | "proyectos-personales";
@@ -44,7 +50,6 @@ const CATEGORY_META: {
   { id: "proyectos-personales", icon: Lightbulb },
 ];
 
-const AUTO_MS = 2000;
 const slideEase = [0.32, 0.72, 0, 1] as const;
 
 function scrollWithinPane(targetId: string) {
@@ -92,10 +97,12 @@ function ProjectCarousel({
   images,
   alt,
   dict,
+  autoMs,
 }: {
   images: readonly string[];
   alt: string;
   dict: Dictionary;
+  autoMs: number;
 }) {
   const reduceMotion = useReducedMotion();
   const [index, setIndex] = useState(0);
@@ -118,10 +125,9 @@ function ProjectCarousel({
     if (!hovering || total <= 1 || reduceMotion) return;
     const id = window.setTimeout(() => {
       goTo(index + 1, 1);
-    }, AUTO_MS);
+    }, autoMs);
     return () => window.clearTimeout(id);
-    // progressKey reinicia el timer al entrar hover / cambiar slide
-  }, [hovering, index, total, reduceMotion, progressKey]);
+  }, [hovering, index, total, reduceMotion, progressKey, autoMs]);
 
   if (total === 0) {
     return (
@@ -216,7 +222,7 @@ function ProjectCarousel({
                       key={progressKey}
                       className="absolute inset-y-0 left-0 bg-ink"
                       style={{
-                        animation: `carousel-progress ${AUTO_MS}ms linear forwards`,
+                        animation: `carousel-progress ${autoMs}ms linear forwards`,
                       }}
                     />
                   ) : (
@@ -232,8 +238,10 @@ function ProjectCarousel({
   );
 }
 
-export function InterfacesLayer({ locale, dict }: Props) {
+export function InterfacesLayer({ locale, dict, content }: Props) {
   const projects = content.uiProjects as readonly UiProject[];
+  const limit = content.settings.interfacesPreviewLimit;
+  const autoMs = content.settings.carouselIntervalMs;
   const [sorts, setSorts] = useState<Record<UiCategory, SortMode>>({
     "sistemas-a-medida": "year",
     preventas: "year",
@@ -257,14 +265,23 @@ export function InterfacesLayer({ locale, dict }: Props) {
   const sortedByCategory = useMemo(() => {
     const map = {} as Record<UiCategory, UiProject[]>;
     for (const cat of CATEGORY_META.map((c) => c.id)) {
-      map[cat] = sortProjects(
+      const full = sortProjects(
         projects.filter((p) => p.category === cat),
         sorts[cat],
         locale,
       );
+      map[cat] = full.slice(0, limit);
     }
     return map;
-  }, [projects, sorts, locale]);
+  }, [projects, sorts, locale, limit]);
+
+  const totals = useMemo(() => {
+    const map = {} as Record<UiCategory, number>;
+    for (const cat of CATEGORY_META.map((c) => c.id)) {
+      map[cat] = projects.filter((p) => p.category === cat).length;
+    }
+    return map;
+  }, [projects]);
 
   return (
     <main className="flex w-full flex-col items-center overflow-x-clip">
@@ -358,6 +375,7 @@ export function InterfacesLayer({ locale, dict }: Props) {
                         images={project.images}
                         alt={t(project.title, locale)}
                         dict={dict}
+                        autoMs={autoMs}
                       />
                       <div className="flex flex-wrap items-center justify-between gap-2 text-sm text-ink">
                         <span>{t(project.meta, locale)}</span>
@@ -383,6 +401,16 @@ export function InterfacesLayer({ locale, dict }: Props) {
                   );
                 })}
               </div>
+              {totals[cat] > limit ? (
+                <div className="flex justify-center">
+                  <Link
+                    href={`/${locale}/interfaces/${cat}`}
+                    className="text-sm underline underline-offset-4 transition-opacity hover:opacity-70"
+                  >
+                    {dict.interfaces.seeMore}
+                  </Link>
+                </div>
+              ) : null}
             </section>
           );
         })}

@@ -2,21 +2,23 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { Download } from "lucide-react";
+import { Download, ExternalLink } from "lucide-react";
 import type { Dictionary } from "@/i18n/dictionaries";
 import type { Locale } from "@/i18n/config";
 import { pathForLayer } from "@/lib/layers";
 import { TagCloud } from "@/components/SiteChrome";
-import { content, t } from "@/lib/content";
+import { t, type PortfolioContent } from "@/lib/content";
 import { FigmaGap } from "@/components/FigmaGap";
 import { EditableSurname } from "@/components/EditableSurname";
+import type { CSSProperties } from "react";
 
 type Props = {
   locale: Locale;
   dict: Dictionary;
+  content: PortfolioContent;
 };
 
-export function HomeLayer({ locale, dict }: Props) {
+export function HomeLayer({ locale, dict, content }: Props) {
   return (
     <main className="flex w-full min-w-0 max-w-full flex-col items-center overflow-x-hidden">
       {/* Clip duro: el apellido puede pintar más allá, pero no ensancha ni scrollea */}
@@ -108,7 +110,14 @@ export function HomeLayer({ locale, dict }: Props) {
           id="acerca"
           className="flex w-full scroll-mt-24 justify-center"
         >
-          <div className="bio-scene">
+          <div
+            className="bio-scene"
+            style={
+              {
+                ["--bio-wrap-shape"]: `url("${content.bio.photo}")`,
+              } as CSSProperties
+            }
+          >
             <div className="bio-mesa">
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
@@ -169,9 +178,7 @@ export function HomeLayer({ locale, dict }: Props) {
           <h2 className="text-center text-xl font-bold text-ink md:text-2xl">
             {dict.home.testimonialsTitle}
           </h2>
-          {content.testimonials
-            .filter((item) => !("hidden" in item && item.hidden))
-            .map((item) => (
+          {content.testimonials.map((item) => (
             <article
               key={item.id}
               className="flex flex-row items-start gap-3 bg-sky-pale p-3 md:gap-6 md:p-5"
@@ -195,22 +202,39 @@ export function HomeLayer({ locale, dict }: Props) {
                 <p className="text-sm font-medium text-ink/80 md:text-base">
                   {t(item.role, locale)}
                 </p>
-                {"company" in item && item.company && (
-                  <a
-                    href={item.company.href}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="mt-1 inline-flex w-fit max-w-full items-center transition-opacity hover:opacity-70"
-                    aria-label={item.company.name}
-                  >
-                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img
-                      src={item.company.logo}
-                      alt={item.company.name}
-                      className="testimonial-logo"
-                    />
-                  </a>
-                )}
+                {item.company.href ? (
+                  item.company.logo ? (
+                    <a
+                      href={item.company.href}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="mt-1 inline-flex w-fit max-w-full items-center transition-opacity hover:opacity-70"
+                      aria-label={item.company.name}
+                    >
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      <img
+                        src={item.company.logo}
+                        alt={item.company.name}
+                        className="testimonial-logo"
+                      />
+                    </a>
+                  ) : (
+                    <a
+                      href={item.company.href}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="mt-1 inline-flex w-fit items-center gap-1.5 text-sm text-ink underline underline-offset-4 transition-opacity hover:opacity-70 md:text-base"
+                    >
+                      <ExternalLink
+                        className="size-3.5 shrink-0"
+                        strokeWidth={1.75}
+                      />
+                      {item.company.linkLabel
+                        ? t(item.company.linkLabel, locale)
+                        : item.company.name}
+                    </a>
+                  )
+                ) : null}
               </div>
             </article>
           ))}

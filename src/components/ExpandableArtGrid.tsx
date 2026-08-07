@@ -4,6 +4,7 @@ import {
   useCallback,
   useEffect,
   useLayoutEffect,
+  useMemo,
   useRef,
   useState,
 } from "react";
@@ -50,6 +51,8 @@ type Props = {
   nsfwLabel?: string;
   nsfwRevealLabel?: string;
   nsfwHideLabel?: string;
+  /** Tag slugs that trigger NSFW blur (defaults include "nsfw") */
+  nsfwSlugs?: string[];
   onTagClick?: (tag: string) => void;
 };
 
@@ -82,9 +85,14 @@ export function ExpandableArtGrid({
   nsfwLabel = "NSFW",
   nsfwRevealLabel = "Ver a discreción",
   nsfwHideLabel = "Ocultar",
+  nsfwSlugs = ["nsfw"],
   onTagClick,
 }: Props) {
   const reduceMotion = useReducedMotion();
+  const nsfwSet = useMemo(
+    () => new Set([...nsfwSlugs, "nsfw"]),
+    [nsfwSlugs],
+  );
   const gridRef = useRef<HTMLDivElement>(null);
   const pendingOpenId = useRef<string | null>(null);
   const [openId, setOpenId] = useState<string | null>(null);
@@ -214,7 +222,7 @@ export function ExpandableArtGrid({
               (previewKind === "pdf" ? item.downloadHref : item.src);
             const itemEnlarge = item.enlargeLabel ?? enlargeLabel;
             const tags = item.tags ?? [];
-            const isNsfw = tags.includes("nsfw");
+            const isNsfw = tags.some((tag) => nsfwSet.has(tag));
             const nsfwLocked = isNsfw && !revealedNsfw.has(item.id);
 
             if (isCollapsed) {
@@ -322,7 +330,11 @@ export function ExpandableArtGrid({
                         src={item.src}
                         alt={item.alt}
                         fill
-                        unoptimized={/\.svg($|\?)/i.test(item.src)}
+                        unoptimized={
+                          item.src.startsWith("/assets") ||
+                          /\.svg($|\?)/i.test(item.src)
+                        }
+                        loading="eager"
                         className={`${
                           fit === "contain" ||
                           (isOpen &&
@@ -431,7 +443,7 @@ export function ExpandableArtGrid({
                                   onTagClick?.(tag);
                                 }}
                                 className={`rounded-full px-2 py-0.5 text-[0.7rem] font-medium transition-opacity hover:opacity-70 md:text-xs ${
-                                  tag === "nsfw"
+                                  tag === "nsfw" || nsfwSet.has(tag)
                                     ? "bg-ink text-sky-pale"
                                     : "bg-ink/10 text-ink"
                                 }`}
