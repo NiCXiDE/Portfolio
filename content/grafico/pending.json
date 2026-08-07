@@ -1,0 +1,24 @@
+[
+  {
+    "id": "maxi-boo",
+    "src": "/assets/grafico/pending/maxi-boo.png",
+    "alt": "Maxi Boo",
+    "tags": ["fan-art"],
+    "usage": {
+      "es": "Pendiente de clasificar",
+      "en": "Pending classification"
+    },
+    "href": null
+  },
+  {
+    "id": "ux-and-x",
+    "src": "/assets/grafico/pending/ux-and-x.png",
+    "alt": "UX & X",
+    "tags": [],
+    "usage": {
+      "es": "Pendiente de clasificar",
+      "en": "Pending classification"
+    },
+    "href": null
+  }
+]

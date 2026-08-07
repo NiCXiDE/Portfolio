@@ -2,6 +2,164 @@
   {
     "id": "mantis",
     "src": "/assets/grafico/personal/mantis.png",
-    "alt": "Mantis by Magnetude"
+    "alt": "Mantis by Magnetude",
+    "title": {
+      "es": "Mantis",
+      "en": "Mantis"
+    },
+    "year": "",
+    "tags": [],
+    "detail": {
+      "es": "By Magnetude",
+      "en": "By Magnetude"
+    },
+    "href": null,
+    "hrefLabel": { "es": "Ver más", "en": "See more" }
+  },
+  {
+    "id": "marauda-type-logo-ayala",
+    "src": "/assets/grafico/personal/marauda-type-logo-ayala.png",
+    "alt": "Marauda type logo — Ayala",
+    "title": {
+      "es": "Marauda type (Ayala)",
+      "en": "Marauda type (Ayala)"
+    },
+    "tags": ["vector", "fan-art"],
+    "detail": {
+      "es": "Interpretación propia inspirada en Marauda (~2020)",
+      "en": "Personal take inspired by Marauda (~2020)"
+    },
+    "href": null,
+    "hrefLabel": { "es": "Ver más", "en": "See more" }
+  },
+  {
+    "id": "banana-thinking",
+    "src": "/assets/grafico/personal/banana-thinking.png",
+    "alt": "Banana thinking illustration",
+    "title": {
+      "es": "Banana thinking",
+      "en": "Banana thinking"
+    },
+    "tags": [],
+    "detail": {
+      "es": "Diseño personal",
+      "en": "Personal design"
+    },
+    "href": null,
+    "hrefLabel": { "es": "Ver más", "en": "See more" }
+  },
+  {
+    "id": "demon-no-scape",
+    "src": "/assets/grafico/personal/demon-no-scape.png",
+    "alt": "Demon illustration — No Scape",
+    "title": {
+      "es": "No Scape",
+      "en": "No Scape"
+    },
+    "tags": [],
+    "detail": {
+      "es": "Diseño personal",
+      "en": "Personal design"
+    },
+    "href": null,
+    "hrefLabel": { "es": "Ver más", "en": "See more" }
+  },
+  {
+    "id": "grime-marauda",
+    "src": "/assets/grafico/personal/grime-marauda.png",
+    "alt": "Grime — Marauda",
+    "title": {
+      "es": "Grime — Marauda",
+      "en": "Grime — Marauda"
+    },
+    "tags": ["grime"],
+    "detail": {
+      "es": "Diseño personal",
+      "en": "Personal design"
+    },
+    "href": null,
+    "hrefLabel": { "es": "Ver más", "en": "See more" }
+  },
+  {
+    "id": "grime-pawn",
+    "src": "/assets/grafico/personal/grime-pawn.png",
+    "alt": "Grime pawn — Ayala",
+    "title": {
+      "es": "Grime pawn",
+      "en": "Grime pawn"
+    },
+    "tags": ["grime"],
+    "detail": {
+      "es": "Diseño personal",
+      "en": "Personal design"
+    },
+    "href": null,
+    "hrefLabel": { "es": "Ver más", "en": "See more" }
+  },
+  {
+    "id": "nicoide-not-impostor",
+    "src": "/assets/grafico/personal/nicoide-not-impostor.png",
+    "alt": "Nicoide was not an Impostor",
+    "title": {
+      "es": "Nicoide was not an Impostor",
+      "en": "Nicoide was not an Impostor"
+    },
+    "tags": ["fan-art", "pixel-art"],
+    "detail": {
+      "es": "Diseño personal",
+      "en": "Personal design"
+    },
+    "href": null,
+    "hrefLabel": { "es": "Ver más", "en": "See more" }
+  },
+  {
+    "id": "nicoide-geometry-dash",
+    "src": "/assets/grafico/personal/nicoide-geometry-dash.png",
+    "alt": "NICOIDE — Geometry Dash wordmark",
+    "title": {
+      "es": "NICOIDE (Geometry Dash)",
+      "en": "NICOIDE (Geometry Dash)"
+    },
+    "tags": ["fan-art"],
+    "detail": {
+      "es": "Origen de la N de marca · armado en Geometry Dash, luego vectorizado",
+      "en": "Origin of the brand N · built in Geometry Dash, later vectorized"
+    },
+    "href": null,
+    "hrefLabel": { "es": "Ver más", "en": "See more" }
+  },
+  {
+    "id": "we-are-barely-world",
+    "src": "/assets/grafico/personal/we-are-barely-world.png",
+    "alt": "We Are Barely Alive — Mario world parody",
+    "title": {
+      "es": "We Are Barely Alive World",
+      "en": "We Are Barely Alive World"
+    },
+    "tags": ["fan-art"],
+    "fit": "cover",
+    "detail": {
+      "es": "Fan art / parodia Mario World",
+      "en": "Fan art / Mario World parody"
+    },
+    "href": "https://www.facebook.com/photo/?fbid=1879021562200562&set=gm.2473603869382970",
+    "hrefLabel": { "es": "Post original en Facebook", "en": "Original Facebook post" }
+  },
+  {
+    "id": "sad-machine-makenix",
+    "src": "/assets/grafico/personal/sad-machine-makenix-remix.png",
+    "alt": "Sad Machine - Makenix Remix",
+    "title": {
+      "es": "Sad Machine — Makenix Remix",
+      "en": "Sad Machine — Makenix Remix"
+    },
+    "tags": ["fan-art"],
+    "fit": "cover",
+    "detail": {
+      "es": "Fan art · no es portada oficial · remix de Makenix",
+      "en": "Fan art · not an official cover · Makenix remix"
+    },
+    "href": null,
+    "hrefLabel": { "es": "Ver más", "en": "See more" }
   }
 ]

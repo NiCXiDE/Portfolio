@@ -14,6 +14,7 @@ import {
   type LayerId,
 } from "@/lib/layers";
 import { Footer, Header } from "@/components/SiteChrome";
+import { BackToTop } from "@/components/BackToTop";
 import { HomeLayer } from "@/components/layers/HomeLayer";
 import { GraphicLayer } from "@/components/layers/GraphicLayer";
 import { InterfacesLayer } from "@/components/layers/InterfacesLayer";
@@ -47,6 +48,11 @@ export function LayerShell({ locale, dict }: Props) {
   useEffect(() => {
     canAnimate.current = true;
   }, []);
+
+  const getActiveScroller = useCallback(
+    () => scrollRefs.current[active],
+    [active],
+  );
 
   const go = useCallback(
     (id: LayerId) => {
@@ -213,6 +219,11 @@ export function LayerShell({ locale, dict }: Props) {
           </section>
         ))}
       </motion.div>
+      <BackToTop
+        label={dict.common.backToTop}
+        layer={active}
+        getScroller={getActiveScroller}
+      />
     </div>
   );
 }

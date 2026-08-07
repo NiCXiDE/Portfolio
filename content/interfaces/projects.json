@@ -1,6 +1,25 @@
 [
   {
+    "id": "apsmm",
+    "category": "sistemas-a-medida",
+    "title": {
+      "es": "Sistema de gestión — APSMM",
+      "en": "Management system — APSMM"
+    },
+    "meta": {
+      "es": "Asociación de Profesionales de Salud de la Marina Mercante · interfaz UI",
+      "en": "Merchant Navy Health Professionals Association · UI interface"
+    },
+    "images": [
+      "/assets/interfaces/projects/sistemas-a-medida/apsmm/apsmm-01.png",
+      "/assets/interfaces/projects/sistemas-a-medida/apsmm/apsmm-02.png",
+      "/assets/interfaces/projects/sistemas-a-medida/apsmm/apsmm-03.png"
+    ],
+    "prototypeUrl": null
+  },
+  {
     "id": "aml-casinos",
+    "category": "sistemas-a-medida",
     "title": {
       "es": "Análisis contra el Lavado de Dinero en Casinos Digitales",
       "en": "Anti-Money Laundering Analysis for Digital Casinos"
@@ -9,11 +28,14 @@
       "es": "Colaboración con AICORE - septiembre 2024",
       "en": "Collaboration with AICORE - September 2024"
     },
-    "kind": "placeholder",
+    "images": [
+      "/assets/interfaces/projects/sistemas-a-medida/aml-casinos/aml-casinos-01.png"
+    ],
     "prototypeUrl": null
   },
   {
     "id": "aml-general",
+    "category": "sistemas-a-medida",
     "title": {
       "es": "Análisis contra el Lavado de Dinero",
       "en": "Anti-Money Laundering Analysis"
@@ -22,11 +44,14 @@
       "es": "Colaboración con AICORE - octubre 2024",
       "en": "Collaboration with AICORE - October 2024"
     },
-    "kind": "placeholder",
+    "images": [
+      "/assets/interfaces/projects/sistemas-a-medida/aml-general/aml-general-01.png"
+    ],
     "prototypeUrl": null
   },
   {
     "id": "adapto-pay",
+    "category": "preventas",
     "title": {
       "es": "Billetera Digital - ADAPTO PAY",
       "en": "Digital Wallet - ADAPTO PAY"
@@ -35,11 +60,14 @@
       "es": "Colaboración con AICORE - noviembre 2024",
       "en": "Collaboration with AICORE - November 2024"
     },
-    "kind": "placeholder",
+    "images": [
+      "/assets/interfaces/projects/preventas/adapto-pay/adapto-pay-01.png"
+    ],
     "prototypeUrl": null
   },
   {
     "id": "clearwater",
+    "category": "sistemas-a-medida",
     "title": {
       "es": "Generación de Informes para compra e inversión - CLEARWATER",
       "en": "Purchase & Investment Report Generation - CLEARWATER"
@@ -48,11 +76,14 @@
       "es": "Colaboración con AICORE - enero 2024",
       "en": "Collaboration with AICORE - January 2024"
     },
-    "kind": "placeholder",
+    "images": [
+      "/assets/interfaces/projects/sistemas-a-medida/clearwater/clearwater-01.png"
+    ],
     "prototypeUrl": null
   },
   {
     "id": "mikrobiol",
+    "category": "sistemas-a-medida",
     "title": {
       "es": "Tienda de Insumos Medicinales - MIKROBIOL",
       "en": "Medical Supplies Store - MIKROBIOL"
@@ -61,12 +92,14 @@
       "es": "Colaboración con AICORE - octubre 2024",
       "en": "Collaboration with AICORE - October 2024"
     },
-    "kind": "image",
-    "image": "/assets/interfaces/projects/web-mikrobiol-divi-161.png",
+    "images": [
+      "/assets/interfaces/projects/sistemas-a-medida/mikrobiol/mikrobiol-01.png"
+    ],
     "prototypeUrl": null
   },
   {
     "id": "casiba",
+    "category": "sistemas-a-medida",
     "title": {
       "es": "Sistema de Gestión de Unidades de Tratamiento de Aire - CASIBA",
       "en": "Air Treatment Units Management System - CASIBA"
@@ -75,26 +108,14 @@
       "es": "Colaboración con AICORE - septiembre 2024",
       "en": "Collaboration with AICORE - September 2024"
     },
-    "kind": "text",
-    "label": "Casiba",
-    "prototypeUrl": null
-  },
-  {
-    "id": "casiba-2",
-    "title": {
-      "es": "Sistema de Gestión de Unidades de Tratamiento de Aire - CASIBA",
-      "en": "Air Treatment Units Management System - CASIBA"
-    },
-    "meta": {
-      "es": "Colaboración con AICORE - septiembre 2024",
-      "en": "Collaboration with AICORE - September 2024"
-    },
-    "kind": "text",
-    "label": "Casiba",
+    "images": [
+      "/assets/interfaces/projects/sistemas-a-medida/casiba/casiba-01.png"
+    ],
     "prototypeUrl": null
   },
   {
     "id": "proxi",
+    "category": "sistemas-a-medida",
     "title": {
       "es": "Plataforma integral de ventas y pedidos B2B - PROXI",
       "en": "Integrated B2B sales & orders platform - PROXI"
@@ -103,7 +124,7 @@
       "es": "Colaboración con AICORE - enero 2024",
       "en": "Collaboration with AICORE - January 2024"
     },
-    "kind": "proxi",
+    "images": [],
     "prototypeUrl": null
   }
 ]

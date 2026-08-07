@@ -1,15 +1,169 @@
 [
-  { "id": "buhoprofe", "src": "/assets/grafico/logos/buhoprofe-1.svg", "alt": "Buho Profe", "row": 1 },
-  { "id": "seyier", "src": "/assets/grafico/logos/seyier.svg", "alt": "Seyier", "row": 1, "flex": true },
-  { "id": "s-mark", "src": "/assets/grafico/logos/vector.svg", "alt": "S mark", "row": 1 },
-  { "id": "push", "src": "/assets/grafico/logos/push-software.svg", "alt": "PUSH Software", "row": 2 },
-  { "id": "microtime", "src": "/assets/grafico/logos/vector-1.svg", "alt": "Microtime", "row": 2 },
-  { "id": "futulab", "src": "/assets/grafico/logos/futulb.svg", "alt": "futulΔb", "row": 3 },
-  { "id": "fablab", "src": "/assets/grafico/logos/fab-lab.svg", "alt": "FabLab", "row": 3 },
-  { "id": "labcom", "src": "/assets/grafico/logos/labcom.svg", "alt": "labcom", "row": 3 },
-  { "id": "sessions", "src": "/assets/grafico/logos/sessions.svg", "alt": "sessions", "row": 4 },
-  { "id": "concitar", "src": "/assets/grafico/logos/concitar.svg", "alt": "CONCITAR", "row": 4 },
-  { "id": "apsmm", "src": "/assets/grafico/logos/ellipse-2.svg", "alt": "APSMM", "row": 5, "overlay": "/assets/grafico/logos/mask-group.svg" },
-  { "id": "itf", "src": "/assets/grafico/logos/vector-52.svg", "alt": "ITF Cluster", "row": 5 },
-  { "id": "taily", "src": "/assets/grafico/logos/taily.svg", "alt": "Taily", "row": 5 }
+  {
+    "id": "buhoprofe",
+    "src": "/assets/grafico/logos/buhoprofe-1.svg",
+    "alt": "Buho Profe",
+    "title": { "es": "Buho Profe", "en": "Buho Profe" },
+    "year": "",
+    "detail": { "es": "", "en": "" },
+    "href": null,
+    "hrefLabel": { "es": "Visitar web", "en": "Visit website" }
+  },
+  {
+    "id": "seyier",
+    "src": "/assets/grafico/logos/seyier.svg",
+    "alt": "Seyier",
+    "title": { "es": "Seyier", "en": "Seyier" },
+    "year": "",
+    "detail": { "es": "", "en": "" },
+    "href": null,
+    "hrefLabel": { "es": "Visitar web", "en": "Visit website" }
+  },
+  {
+    "id": "s-mark",
+    "src": "/assets/grafico/logos/vector.svg",
+    "alt": "S mark",
+    "title": { "es": "S mark", "en": "S mark" },
+    "year": "",
+    "detail": { "es": "", "en": "" },
+    "href": null,
+    "hrefLabel": { "es": "Visitar web", "en": "Visit website" }
+  },
+  {
+    "id": "push",
+    "src": "/assets/grafico/logos/push-software.svg",
+    "alt": "PUSH Software",
+    "title": { "es": "PUSH Software", "en": "PUSH Software" },
+    "year": "2024",
+    "detail": {
+      "es": "Software factory · identidad de marca",
+      "en": "Software factory · brand identity"
+    },
+    "href": "https://www.pushsoftware.com.ar/",
+    "hrefLabel": { "es": "Visitar web", "en": "Visit website" }
+  },
+  {
+    "id": "microtime",
+    "src": "/assets/grafico/logos/vector-1.svg",
+    "alt": "Microtime",
+    "title": { "es": "Microtime", "en": "Microtime" },
+    "year": "",
+    "detail": { "es": "", "en": "" },
+    "href": null,
+    "hrefLabel": { "es": "Visitar web", "en": "Visit website" }
+  },
+  {
+    "id": "futulab",
+    "src": "/assets/grafico/logos/futulb.svg",
+    "alt": "futulΔb",
+    "title": { "es": "futulΔb", "en": "futulΔb" },
+    "year": "",
+    "detail": { "es": "", "en": "" },
+    "href": null,
+    "hrefLabel": { "es": "Visitar web", "en": "Visit website" }
+  },
+  {
+    "id": "fablab",
+    "src": "/assets/grafico/logos/fab-lab.svg",
+    "alt": "FabLab",
+    "title": { "es": "FabLab", "en": "FabLab" },
+    "year": "",
+    "detail": { "es": "", "en": "" },
+    "href": null,
+    "hrefLabel": { "es": "Visitar web", "en": "Visit website" }
+  },
+  {
+    "id": "labcom",
+    "src": "/assets/grafico/logos/labcom.svg",
+    "alt": "labcom",
+    "title": { "es": "labcom", "en": "labcom" },
+    "year": "",
+    "detail": { "es": "", "en": "" },
+    "href": null,
+    "hrefLabel": { "es": "Visitar web", "en": "Visit website" }
+  },
+  {
+    "id": "sessions",
+    "src": "/assets/grafico/logos/sessions.svg",
+    "alt": "sessions",
+    "title": { "es": "sessions", "en": "sessions" },
+    "year": "",
+    "detail": { "es": "", "en": "" },
+    "href": null,
+    "hrefLabel": { "es": "Visitar web", "en": "Visit website" }
+  },
+  {
+    "id": "concitar",
+    "src": "/assets/grafico/logos/concitar.svg",
+    "alt": "CONCITAR",
+    "title": { "es": "CONCITAR", "en": "CONCITAR" },
+    "year": "",
+    "detail": { "es": "", "en": "" },
+    "href": null,
+    "hrefLabel": { "es": "Visitar web", "en": "Visit website" }
+  },
+  {
+    "id": "apsmm",
+    "src": "/assets/grafico/logos/apsmm.png",
+    "alt": "Asociación de Profesionales de Salud de la Marina Mercante",
+    "title": {
+      "es": "APSMM",
+      "en": "APSMM"
+    },
+    "year": "",
+    "detail": {
+      "es": "Asociación de Profesionales de Salud de la Marina Mercante",
+      "en": "Merchant Navy Health Professionals Association"
+    },
+    "href": null,
+    "hrefLabel": { "es": "Visitar web", "en": "Visit website" }
+  },
+  {
+    "id": "itf",
+    "src": "/assets/grafico/logos/vector-52.svg",
+    "alt": "ITF Cluster",
+    "title": { "es": "CITF / ITF Cluster", "en": "CITF / ITF Cluster" },
+    "year": "",
+    "detail": { "es": "", "en": "" },
+    "href": null,
+    "hrefLabel": { "es": "Visitar web", "en": "Visit website" }
+  },
+  {
+    "id": "taily",
+    "src": "/assets/grafico/logos/taily.svg",
+    "alt": "Taily",
+    "title": { "es": "Taily", "en": "Taily" },
+    "year": "",
+    "detail": { "es": "", "en": "" },
+    "href": null,
+    "hrefLabel": { "es": "Visitar web", "en": "Visit website" }
+  },
+  {
+    "id": "tdt",
+    "src": "/assets/grafico/logos/tdt-isotype.svg",
+    "alt": "TDT — The Dream Team",
+    "title": { "es": "TDT", "en": "TDT" },
+    "year": "",
+    "tags": ["vector"],
+    "detail": {
+      "es": "The Dream Team · isotipo",
+      "en": "The Dream Team · isotype"
+    },
+    "href": null,
+    "hrefLabel": { "es": "Visitar web", "en": "Visit website" }
+  },
+  {
+    "id": "magic-cell",
+    "src": "/assets/grafico/logos/magic-cell.svg",
+    "alt": "MAGIC CELL",
+    "title": { "es": "MAGIC CELL", "en": "MAGIC CELL" },
+    "year": "",
+    "tags": ["vector"],
+    "detail": {
+      "es": "Emprendimiento de fundas · logotipo",
+      "en": "Phone-case venture · wordmark"
+    },
+    "href": null,
+    "hrefLabel": { "es": "Visitar web", "en": "Visit website" }
+  }
 ]

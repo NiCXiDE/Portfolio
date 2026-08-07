@@ -1,0 +1,70 @@
+[
+  {
+    "id": "banner-push",
+    "src": "/assets/grafico/banners/banner-push.jpg",
+    "alt": "Banner PUSH",
+    "title": {
+      "es": "Banner PUSH",
+      "en": "PUSH banner"
+    },
+    "year": "",
+    "tags": ["impreso"],
+    "detail": {
+      "es": "Pieza impresa · foto IRL pendiente",
+      "en": "Printed piece · IRL photo TBD"
+    },
+    "relatedSrc": null,
+    "href": null
+  },
+  {
+    "id": "banner-cluster",
+    "src": "/assets/grafico/banners/banner-cluster.jpg",
+    "alt": "Banner Cluster",
+    "title": {
+      "es": "Banner Cluster",
+      "en": "Cluster banner"
+    },
+    "year": "",
+    "tags": ["impreso"],
+    "detail": {
+      "es": "Pieza impresa · foto IRL pendiente",
+      "en": "Printed piece · IRL photo TBD"
+    },
+    "relatedSrc": null,
+    "href": null
+  },
+  {
+    "id": "banner-samsung",
+    "src": "/assets/grafico/banners/banner-samsung.jpg",
+    "alt": "Banner Samsung",
+    "title": {
+      "es": "Banner Samsung",
+      "en": "Samsung banner"
+    },
+    "year": "",
+    "tags": ["impreso"],
+    "detail": {
+      "es": "Pieza impresa · foto IRL pendiente",
+      "en": "Printed piece · IRL photo TBD"
+    },
+    "relatedSrc": null,
+    "href": null
+  },
+  {
+    "id": "banner-alfaj-metro",
+    "src": "/assets/grafico/banners/banner-alfaj-metro.jpg",
+    "alt": "Banner Alfaj / Metro",
+    "title": {
+      "es": "Banner Alfaj / Metro",
+      "en": "Alfaj / Metro banner"
+    },
+    "year": "",
+    "tags": ["impreso"],
+    "detail": {
+      "es": "Pieza impresa · foto IRL pendiente",
+      "en": "Printed piece · IRL photo TBD"
+    },
+    "relatedSrc": null,
+    "href": null
+  }
+]

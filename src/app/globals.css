@@ -261,6 +261,15 @@ body {
   }
 }
 
+@keyframes carousel-progress {
+  from {
+    width: 0%;
+  }
+  to {
+    width: 100%;
+  }
+}
+
 .surname-edit:focus {
   caret-color: var(--blue-select);
 }
@@ -304,89 +313,113 @@ body {
   }
 }
 
-/* Bio: proporción Figma foto/mesa ≈ 469/688; centrado óptica (mesa + overhang) */
+/* Bio — mobile/tablet apilado; wrap lateral solo en desktop ancho */
 .bio-scene {
   --bio-text: 0.9375rem;
-  --bio-photo-w: 15.5rem;
-  --bio-mesa-w: calc(var(--bio-photo-w) * 620 / 469);
+  --bio-photo-w: 14rem;
+  --bio-mesa-w: calc(var(--bio-photo-w) * 620 / 469 * 2);
   --bio-overhang-x: calc(var(--bio-photo-w) * 235 / 469);
-  /* Baja la foto: borde inferior del celeste ≈ abdomen / línea roja */
-  --bio-photo-shift-y: calc(var(--bio-photo-w) * 594 / 469 * 0.24);
+  --bio-photo-shift-y: calc(var(--bio-photo-w) * 594 / 469 * 0.38);
   --bio-overhang-top: calc(var(--bio-photo-w) * 594 / 469 * 0.12);
+  --bio-mesa-h: calc(var(--bio-photo-w) * 594 / 469 * 0.684);
   position: relative;
   display: flex;
-  width: 100%;
+  width: min(24rem, 100%);
+  max-width: 100%;
   flex: 0 0 auto;
+  flex-direction: column;
+  align-items: center;
   box-sizing: border-box;
-  justify-content: center;
-  padding-top: var(--bio-overhang-top);
-  padding-bottom: var(--bio-photo-shift-y);
+  padding: 0;
+  gap: 0.75rem;
   overflow: visible;
 }
 
 .bio-mesa {
   position: relative;
   z-index: 0;
-  display: flow-root;
-  /* margin-right reserva el vuelo de la foto → el flex centra el bloque visual entero */
-  width: min(var(--bio-mesa-w), calc(100% - var(--bio-overhang-x)));
-  /* Alto hasta el abdomen (raya); overflow visible = foto/firma pueden pintar afuera */
-  height: calc(var(--bio-photo-w) * 594 / 469 * 0.684);
-  margin-right: var(--bio-overhang-x);
+  display: flex;
+  width: 100%;
+  height: auto;
+  margin-right: 0;
+  flex-direction: column;
+  align-items: center;
   box-sizing: border-box;
   background: var(--sky-pale);
-  padding: 0.85rem 1rem 0.75rem;
+  padding: 1rem 1.15rem 1.15rem;
   overflow: visible;
 }
 
-/*
-  Wrap = silueta real del PNG (shape-outside + alpha).
-  Si preferís SVG: dejá el archivo en public/ y cambiá --bio-wrap-shape.
-*/
 .bio-cutout {
   --bio-wrap-shape: url("/assets/inicio/bio/portrait-v3.png");
-  float: right;
-  width: var(--bio-photo-w);
-  height: calc(var(--bio-photo-w) * 594 / 469);
-  object-fit: contain;
+  float: none;
+  shape-outside: none;
+  shape-margin: 0;
+  order: -1;
+  width: min(12.5rem, 58%);
+  height: auto;
   max-width: none;
-  margin-top: calc(-1 * var(--bio-overhang-top));
-  margin-right: calc(-1 * var(--bio-overhang-x));
-  margin-bottom: calc(-1 * var(--bio-photo-shift-y));
-  margin-left: 0.45rem;
-  shape-outside: var(--bio-wrap-shape);
-  shape-image-threshold: 0.15;
-  shape-margin: 0.5rem;
+  margin: 0 auto 0.85rem;
+  object-fit: contain;
   position: relative;
   z-index: 1;
 }
 
 .bio-wrap-text {
   margin: 0;
+  width: 100%;
   color: var(--ink);
   font-size: var(--bio-text);
   font-weight: 400;
-  line-height: 1.4;
-  text-align: left;
-  white-space: normal;
+  line-height: 1.45;
+  text-align: center;
+  white-space: pre-line;
   overflow-wrap: normal;
   word-break: normal;
   position: relative;
   z-index: 0;
 }
 
+.bio-meta {
+  display: flex;
+  width: 100%;
+  max-width: 100%;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-top: 0.65rem;
+  padding-inline: 0.1rem;
+  box-sizing: border-box;
+  position: relative;
+  z-index: 2;
+}
+
 .bio-signature {
-  position: absolute;
-  left: 1rem;
-  bottom: 1rem; /* +4px vs 0.75rem ≈ aire bajo ≈ aire sobre la firma */
-  z-index: 0;
-  float: none;
-  clear: none;
+  display: block;
   width: auto;
-  height: 3.25rem;
+  height: 2.75rem;
   margin: 0;
   object-fit: contain;
-  object-position: left bottom;
+  object-position: right bottom;
+  flex-shrink: 0;
+}
+
+.bio-cv {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  flex-shrink: 0;
+  font-size: var(--bio-text);
+  font-weight: 500;
+  color: var(--ink);
+  text-decoration: underline;
+  text-decoration-color: color-mix(in srgb, var(--ink) 30%, transparent);
+  text-underline-offset: 4px;
+  transition: opacity 0.15s ease;
+}
+
+.bio-cv:hover {
+  opacity: 0.7;
 }
 
 .bio-asset {
@@ -404,72 +437,62 @@ body {
   object-position: left center;
 }
 
-@media (min-width: 768px) {
+/* Desktop ancho: wrap con foto al costado */
+@media (min-width: 1100px) {
   .bio-scene {
     --bio-text: 1.0625rem;
     --bio-photo-w: 18.5rem;
+    width: 100%;
+    align-items: center;
+    padding-top: var(--bio-overhang-top);
+    padding-bottom: var(--bio-photo-shift-y);
+    gap: 0;
   }
 
   .bio-mesa {
-    padding: 1rem 1.15rem 0.8rem;
+    display: flow-root;
+    width: min(var(--bio-mesa-w), calc(100% - var(--bio-overhang-x)));
+    min-height: var(--bio-mesa-h);
+    height: auto;
+    margin-right: var(--bio-overhang-x);
+    align-items: stretch;
+    padding: 1rem 1.15rem 1.25rem;
+  }
+
+  .bio-cutout {
+    float: right;
+    order: 0;
+    width: var(--bio-photo-w);
+    height: calc(var(--bio-photo-w) * 594 / 469);
+    margin-top: calc(-1 * var(--bio-overhang-top));
+    margin-right: calc(-1 * var(--bio-overhang-x));
+    margin-bottom: calc(-1 * var(--bio-photo-shift-y));
+    margin-left: 0.45rem;
+    shape-outside: var(--bio-wrap-shape);
+    shape-image-threshold: 0.15;
+    shape-margin: 0.5rem;
+  }
+
+  .bio-wrap-text {
+    text-align: left;
+    line-height: 1.4;
+  }
+
+  .bio-meta {
+    /* Dentro del celeste, pegado debajo del texto */
+    clear: both;
+    width: auto;
+    margin-right: 0;
+    margin-top: 0.35rem;
+    padding-right: calc(var(--bio-photo-w) * 0.55);
   }
 
   .bio-signature {
-    left: 1.15rem;
-    bottom: 1.05rem;
     height: 3.75rem;
   }
 
   .testimonial-logo {
     height: 3rem;
     max-width: 15.75rem;
-  }
-}
-
-@media (max-width: 767px) {
-  /* Bio: foto arriba, texto + firma abajo (sin wrap de desktop) */
-  .bio-scene {
-    display: flex;
-    width: min(22rem, 100%);
-    max-width: 100%;
-    flex-direction: column;
-    align-items: center;
-    padding: 0;
-  }
-
-  .bio-mesa {
-    display: flex;
-    width: 100%;
-    height: auto;
-    margin-right: 0;
-    flex-direction: column;
-    align-items: center;
-    padding: 1rem 1.15rem 1.15rem;
-  }
-
-  .bio-cutout {
-    float: none;
-    shape-outside: none;
-    shape-margin: 0;
-    order: -1;
-    width: min(12rem, 55%);
-    height: auto;
-    margin: 0 auto 0.85rem;
-  }
-
-  .bio-wrap-text {
-    width: 100%;
-    line-height: 1.45;
-    text-align: center;
-  }
-
-  .bio-signature {
-    position: static;
-    float: none;
-    width: auto;
-    height: 2.75rem;
-    margin-top: 0.75rem;
-    margin-inline: auto;
-    object-fit: contain;
   }
 }

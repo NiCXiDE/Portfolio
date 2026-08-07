@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import { Download } from "lucide-react";
 import type { Dictionary } from "@/i18n/dictionaries";
 import type { Locale } from "@/i18n/config";
 import { pathForLayer } from "@/lib/layers";
@@ -102,17 +103,6 @@ export function HomeLayer({ locale, dict }: Props) {
           </div>
         </div>
 
-        <div className="hero-drift">
-          <div className="relative size-9 rotate-90 -scale-y-100 sm:size-10">
-            <Image
-              src="/assets/inicio/brand/arrow-down.svg"
-              alt=""
-              fill
-              className="object-contain"
-            />
-          </div>
-        </div>
-
         {/* Acerca — Figma 432:1617 */}
         <div
           id="acerca"
@@ -128,34 +118,48 @@ export function HomeLayer({ locale, dict }: Props) {
                 draggable={false}
               />
               <p className="bio-wrap-text">{t(content.bio.text, locale)}</p>
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
-                src={content.bio.signature}
-                alt=""
-                aria-hidden
-                className="bio-signature bio-asset"
-                draggable={false}
-              />
+              <div className="bio-meta">
+                {"cv" in content.bio && content.bio.cv && (
+                  <a
+                    href={content.bio.cv}
+                    download
+                    target="_blank"
+                    rel="noreferrer"
+                    className="bio-cv"
+                  >
+                    <Download className="size-4 shrink-0" strokeWidth={1.75} />
+                    {dict.home.downloadCv}
+                  </a>
+                )}
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src={content.bio.signature}
+                  alt=""
+                  aria-hidden
+                  className="bio-signature bio-asset"
+                  draggable={false}
+                />
+              </div>
             </div>
           </div>
         </div>
 
-        <section className="flex w-full flex-col items-center gap-3">
-          <h2 className="text-center text-xl font-bold text-ink md:text-2xl">
+        <section className="flex w-full flex-col items-stretch gap-3 md:items-center">
+          <h2 className="text-left text-xl font-bold text-ink md:text-center md:text-2xl">
             {dict.home.companiesTitle}
           </h2>
           <TagCloud items={content.companies} />
         </section>
 
-        <section className="flex w-full flex-col items-center gap-3">
-          <h2 className="text-center text-xl font-bold text-ink md:text-2xl">
+        <section className="flex w-full flex-col items-stretch gap-3 md:items-center">
+          <h2 className="text-left text-xl font-bold text-ink md:text-center md:text-2xl">
             {dict.home.pastProjectsTitle}
           </h2>
           <TagCloud items={content.pastProjects} />
         </section>
 
-        <section className="flex w-full flex-col items-center gap-3">
-          <h2 className="text-center text-xl font-bold text-ink md:text-2xl">
+        <section className="flex w-full flex-col items-stretch gap-3 md:items-center">
+          <h2 className="text-left text-xl font-bold text-ink md:text-center md:text-2xl">
             {dict.home.currentProjectsTitle}
           </h2>
           <TagCloud items={content.currentProjects} />

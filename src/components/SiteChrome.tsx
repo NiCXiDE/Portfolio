@@ -405,18 +405,16 @@ export function Footer({ locale, dict }: FooterProps) {
 
 export function TagCloud({ items }: { items: string[] }) {
   return (
-    <div className="flex w-full flex-wrap content-center items-center justify-center gap-y-2 py-2 text-center text-sm text-ink md:text-base">
+    <div className="flex w-full flex-wrap content-start items-center justify-start gap-x-2.5 gap-y-2 py-2 text-left text-sm text-ink md:content-center md:justify-center md:gap-x-3.5 md:text-center md:text-base">
       {items.map((item, i) => (
         <span
           key={`${item}-${i}`}
-          className="inline-flex max-w-full items-center whitespace-nowrap"
+          className="inline-flex max-w-full items-center gap-2.5 whitespace-nowrap md:gap-3.5"
         >
-          {i > 0 && (
-            <span
-              aria-hidden
-              className="mx-2.5 inline-block size-1 shrink-0 rounded-full bg-ink/70 md:mx-3.5"
-            />
-          )}
+          <span
+            aria-hidden
+            className="inline-block size-1 shrink-0 rounded-full bg-ink/70"
+          />
           <span>{item}</span>
         </span>
       ))}

@@ -1,0 +1,51 @@
+[
+  {
+    "id": "odyssey-plant-head",
+    "src": "/assets/grafico/illustration/odyssey-plant-head.png",
+    "alt": "Odyssey — plant head figure",
+    "title": {
+      "es": "Odyssey",
+      "en": "Odyssey"
+    },
+    "tags": ["nsfw"],
+    "fit": "cover",
+    "detail": {
+      "es": "Ilustración digital",
+      "en": "Digital illustration"
+    },
+    "href": null
+  },
+  {
+    "id": "nick-tdt-beach",
+    "src": "/assets/grafico/illustration/nick-tdt-beach.png",
+    "alt": "Nick TDT Beach",
+    "title": {
+      "es": "Nick TDT Beach",
+      "en": "Nick TDT Beach"
+    },
+    "tags": ["pixel-art"],
+    "fit": "contain",
+    "detail": {
+      "es": "Ilustración pixel art · sin fondo",
+      "en": "Pixel art illustration · no background"
+    },
+    "href": null
+  },
+  {
+    "id": "penguin-knife",
+    "src": "/assets/grafico/illustration/penguin-knife.png",
+    "alt": "Penguin tattoo concept",
+    "title": {
+      "es": "Pingüino",
+      "en": "Penguin"
+    },
+    "tags": ["vector", "tattoo"],
+    "fit": "cover",
+    "detail": {
+      "es": "Concepto de tatuaje (vector) + foto del resultado",
+      "en": "Tattoo concept (vector) + photo of the result"
+    },
+    "relatedSrc": "/assets/grafico/illustration/penguin-tattoo-irl.jpg",
+    "href": null
+  }
+]

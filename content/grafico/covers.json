@@ -4,6 +4,8 @@
     "src": "/assets/grafico/covers/kadaver-jez-ebel-bootleg.png",
     "alt": "KADAVER - Jez_ebel bootleg",
     "href": "https://soundcloud.com/kadaver1/kadaver-jez_ebel-bootleg",
+    "hrefLabel": { "es": "Abrir en SoundCloud", "en": "Open on SoundCloud" },
+    "tags": [],
     "usage": {
       "es": "Portada en SoundCloud — KADAVER · Jez_ebel bootleg",
       "en": "SoundCloud cover — KADAVER · Jez_ebel bootleg"
@@ -13,20 +15,24 @@
     "id": "ive-no-idea",
     "src": "/assets/grafico/covers/ive-no-idea-but-i-love-it.png",
     "alt": "I've No Idea But I Love It",
-    "href": null,
+    "href": "https://open.spotify.com/playlist/5VZa7bjQY841My9YyR0e20?si=04207f16b916419a",
+    "hrefLabel": { "es": "Abrir en Spotify", "en": "Open in Spotify" },
+    "tags": [],
     "usage": {
-      "es": "Artwork musical",
-      "en": "Music artwork"
+      "es": "Portada de playlist · artwork propio",
+      "en": "Playlist cover · own artwork"
     }
   },
   {
     "id": "barely-alive",
     "src": "/assets/grafico/covers/this-is-barely-alive-24-update.png",
     "alt": "This Is Barely Alive '24 Update",
-    "href": null,
+    "href": "https://open.spotify.com/playlist/2sLUF5gn32SSaZYqciFMdn?si=dacfbb9471ef490b",
+    "hrefLabel": { "es": "Abrir en Spotify", "en": "Open in Spotify" },
+    "tags": [],
     "usage": {
-      "es": "Artwork musical",
-      "en": "Music artwork"
+      "es": "Portada de playlist · artwork propio",
+      "en": "Playlist cover · own artwork"
     }
   },
   {
@@ -34,6 +40,7 @@
     "src": "/assets/grafico/covers/speeditious.png",
     "alt": "Speeditious",
     "href": null,
+    "tags": [],
     "usage": {
       "es": "Artwork musical",
       "en": "Music artwork"
@@ -44,16 +51,7 @@
     "src": "/assets/grafico/covers/rockcito-to-wake-up.png",
     "alt": "Rockcito To Wake Up",
     "href": null,
-    "usage": {
-      "es": "Artwork musical",
-      "en": "Music artwork"
-    }
-  },
-  {
-    "id": "sad-machine",
-    "src": "/assets/grafico/covers/sad-machine-makenix-remix.png",
-    "alt": "Sad Machine - Makenix Remix",
-    "href": null,
+    "tags": [],
     "usage": {
       "es": "Artwork musical",
       "en": "Music artwork"
@@ -64,6 +62,7 @@
     "src": "/assets/grafico/covers/cover.png",
     "alt": "Cover",
     "href": null,
+    "tags": [],
     "usage": {
       "es": "Artwork musical",
       "en": "Music artwork"
@@ -74,19 +73,56 @@
     "src": "/assets/grafico/covers/bass-2-k24.png",
     "alt": "Bass2k24",
     "href": null,
+    "tags": ["bass-series"],
     "usage": {
-      "es": "Artwork musical",
-      "en": "Music artwork"
+      "es": "Portada de playlist — Bass series",
+      "en": "Playlist cover — Bass series"
     }
   },
   {
     "id": "bass2025",
     "src": "/assets/grafico/covers/bass-2025.png",
-    "alt": "bass2025",
-    "href": null,
+    "alt": "2025 IN BASS",
+    "href": "https://open.spotify.com/playlist/4at8Avh8UsHUUJe6FuEpc1?si=d056fd5833984fdd",
+    "hrefLabel": { "es": "Abrir en Spotify", "en": "Open in Spotify" },
+    "tags": ["bass-series"],
     "usage": {
-      "es": "Artwork musical",
-      "en": "Music artwork"
+      "es": "Portada de playlist — Bass series",
+      "en": "Playlist cover — Bass series"
+    }
+  },
+  {
+    "id": "twenty-twenty-two-spotify",
+    "src": "/assets/grafico/covers/twenty-twenty-two-spotify.png",
+    "alt": "Twenty Twenty Two",
+    "href": null,
+    "tags": ["bass-series"],
+    "usage": {
+      "es": "Portada de playlist — Bass series",
+      "en": "Playlist cover — Bass series"
+    }
+  },
+  {
+    "id": "twenty-twenty-3",
+    "src": "/assets/grafico/covers/twenty-twenty-3.png",
+    "alt": "Twenty Twenty 3",
+    "href": null,
+    "tags": ["bass-series"],
+    "usage": {
+      "es": "Portada de playlist — Bass series",
+      "en": "Playlist cover — Bass series"
+    }
+  },
+  {
+    "id": "bass2026",
+    "src": "/assets/grafico/covers/bass-2026.jpg",
+    "alt": "BASS 2026",
+    "href": "https://open.spotify.com/playlist/54H6iqEZl80wuI9RIY72tw?si=8d64f346ca214851",
+    "hrefLabel": { "es": "Abrir en Spotify", "en": "Open in Spotify" },
+    "tags": ["bass-series"],
+    "usage": {
+      "es": "Portada de playlist — Bass series · NICXIDE",
+      "en": "Playlist cover — Bass series · NICXIDE"
     }
   },
   {
@@ -94,6 +130,7 @@
     "src": "/assets/grafico/covers/reggaeton-rukistrukis-1.png",
     "alt": "Reggaeton Rukistrukis",
     "href": null,
+    "tags": [],
     "usage": {
       "es": "Artwork musical",
       "en": "Music artwork"
