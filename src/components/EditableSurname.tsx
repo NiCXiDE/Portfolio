@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 
 const DEFAULT = "Ayala";
 const MAX_CHARS = 50;
@@ -12,6 +12,8 @@ export function EditableSurname() {
   const idleTimer = useRef<number | null>(null);
   const typeTimer = useRef<number | null>(null);
   const typing = useRef(false);
+  /** Espejo del texto para el ancho flexible del layout / selección */
+  const [layoutText, setLayoutText] = useState("");
 
   const clearTimers = () => {
     if (idleTimer.current) window.clearTimeout(idleTimer.current);
@@ -20,18 +22,26 @@ export function EditableSurname() {
     typeTimer.current = null;
   };
 
+  const syncLayout = (text: string) => {
+    setLayoutText(text);
+  };
+
   const typewrite = (text: string) => {
     const el = ref.current;
     if (!el) return;
     typing.current = true;
+    clearTimers();
     el.textContent = "";
+    syncLayout("");
     window.getSelection()?.removeAllRanges();
 
     let i = 0;
     const step = () => {
       if (!ref.current) return;
       i += 1;
-      ref.current.textContent = text.slice(0, i);
+      const next = text.slice(0, i);
+      ref.current.textContent = next;
+      syncLayout(next);
       if (i < text.length) {
         typeTimer.current = window.setTimeout(step, MS_PER_CHAR);
       } else {
@@ -71,7 +81,9 @@ export function EditableSurname() {
   useEffect(() => {
     const el = ref.current;
     if (!el) return;
-    el.textContent = DEFAULT;
+
+    // Al cargar: typewriter, no aparición instantánea
+    typewrite(DEFAULT);
 
     const onFocus = () => {
       if (typing.current) return;
@@ -105,18 +117,19 @@ export function EditableSurname() {
       el.removeEventListener("keydown", onKeyDown);
       clearTimers();
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- mount only
   }, []);
 
   return (
-    /* Ghost fija el ancho del layout en “Ayala”; el box real crece en absolute → no hay scroll X */
     <div className="relative shrink-0">
+      {/* Ghost: mismo texto que se escribe → el contenedor / selección crece con el contenido */}
       <span
         className="name-hero-text invisible block select-none whitespace-nowrap border border-transparent px-1.5 pb-1.5 pt-1 sm:px-2.5 sm:pb-2 sm:pt-1.5"
         aria-hidden
       >
-        {DEFAULT}
+        {layoutText || "\u00A0"}
       </span>
-      <div className="surname-box absolute left-0 top-0 inline-flex items-end whitespace-nowrap border border-blue-select px-1.5 pb-1.5 pt-1 sm:px-2.5 sm:pb-2 sm:pt-1.5">
+      <div className="surname-box absolute left-0 top-0 inline-flex min-w-full items-end whitespace-nowrap border border-blue-select px-1.5 pb-1.5 pt-1 sm:px-2.5 sm:pb-2 sm:pt-1.5">
         <span
           ref={ref}
           role="textbox"
@@ -127,6 +140,7 @@ export function EditableSurname() {
           aria-label="Apellido editable"
           className="surname-edit name-hero-text block whitespace-nowrap text-ink outline-none"
           onInput={(e) => {
+            if (typing.current) return;
             const el = e.currentTarget;
             const cleaned = sanitize(el.textContent ?? "");
             if (cleaned !== el.textContent) {
@@ -138,9 +152,13 @@ export function EditableSurname() {
               sel?.removeAllRanges();
               sel?.addRange(range);
             }
+            syncLayout(cleaned);
             scheduleReset();
           }}
-          onKeyUp={scheduleReset}
+          onKeyUp={() => {
+            if (typing.current) return;
+            scheduleReset();
+          }}
           onBlur={() => {
             if (typing.current) return;
             if (!(ref.current?.textContent ?? "").trim()) {
@@ -164,7 +182,10 @@ export function EditableSurname() {
           className="surname-handle pointer-events-none absolute bottom-0 right-0 size-2.5 translate-x-1/2 translate-y-1/2 border border-blue-select bg-white sm:size-3"
           aria-hidden
         />
-        <span className="pointer-events-none absolute bottom-[22%] left-2 right-2 h-px bg-blue-select/80" />
+        <span
+          className="surname-baseline pointer-events-none absolute bottom-[22%] left-2 right-2 h-px bg-blue-select/80"
+          aria-hidden
+        />
       </div>
     </div>
   );

@@ -8,6 +8,7 @@ import {
   Clock,
 } from "lucide-react";
 import type { GraphicSection } from "@/db/entities";
+import { NewCategoryCard } from "@/components/admin/NewCategoryCard";
 
 const SECTIONS: {
   id: GraphicSection;
@@ -56,7 +57,7 @@ const SECTIONS: {
 export default function AdminGraphicIndex() {
   return (
     <div>
-      <h1 className="font-bigger text-3xl uppercase">Gráfico</h1>
+      <h1 className="font-admin-title text-3xl">Gráfico</h1>
       <p className="mt-2 text-sm text-ink/70">
         Elegí una sección. Las pendientes no aparecen en el sitio público.
       </p>
@@ -67,10 +68,10 @@ export default function AdminGraphicIndex() {
             <li key={s.id}>
               <Link
                 href={`/admin/graphic/${s.id}`}
-                className="flex items-start gap-3 bg-sky-pale px-4 py-5 transition-opacity hover:opacity-80"
+                className="flex flex-col items-center gap-3 bg-sky-pale px-4 py-6 text-center transition-opacity hover:opacity-80"
               >
                 <Icon
-                  className="mt-0.5 size-5 shrink-0 opacity-60"
+                  className="size-10 shrink-0 opacity-60"
                   strokeWidth={1.5}
                 />
                 <span>
@@ -83,6 +84,7 @@ export default function AdminGraphicIndex() {
             </li>
           );
         })}
+        <NewCategoryCard scope="graphic" />
       </ul>
     </div>
   );

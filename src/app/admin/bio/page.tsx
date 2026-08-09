@@ -21,6 +21,7 @@ export default async function AdminBioPage({
         signaturePath: bio.signaturePath,
         signatureAlt: bio.signatureAlt,
         cvPath: bio.cvPath,
+        cvPathEn: bio.cvPathEn,
       }}
     />
   );

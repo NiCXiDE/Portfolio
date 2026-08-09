@@ -11,6 +11,10 @@ type Props = {
   /** Acción eliminar opcional */
   onDelete?: ReactNode;
   defaultOpen?: boolean;
+  /**
+   * Botón “nuevo”: ancho al contenido, sin etiqueta EDITAR.
+   */
+  compact?: boolean;
 };
 
 export function CollapsibleEditor({
@@ -18,11 +22,14 @@ export function CollapsibleEditor({
   children,
   onDelete,
   defaultOpen = false,
+  compact = false,
 }: Props) {
   const [open, setOpen] = useState(defaultOpen);
 
   return (
-    <div className="border border-ink/10">
+    <div
+      className={`border border-ink/10 ${compact && !open ? "inline-block w-fit max-w-full" : "w-full"}`}
+    >
       <div
         role="button"
         tabIndex={0}
@@ -33,22 +40,36 @@ export function CollapsibleEditor({
             setOpen((o) => !o);
           }
         }}
-        className="flex w-full cursor-pointer items-start gap-3 bg-sky-pale/40 p-3 text-left transition-colors hover:bg-sky-pale/70"
+        className={`flex cursor-pointer items-start gap-3 bg-white p-3 text-left transition-colors hover:bg-ink/[0.03] ${
+          compact && !open ? "w-fit" : "w-full"
+        }`}
       >
-        <div className="min-w-0 flex-1">{summary}</div>
-        <span className="mt-1 inline-flex shrink-0 items-center gap-1 text-[0.65rem] font-medium uppercase tracking-wide text-ink/55">
-          {open ? (
-            <>
-              Cerrar
-              <ChevronDown className="size-3.5 rotate-180" strokeWidth={1.75} />
-            </>
-          ) : (
-            <>
-              <Pencil className="size-3.5" strokeWidth={1.75} />
-              Editar
-            </>
-          )}
-        </span>
+        <div className={`min-w-0 ${compact && !open ? "" : "flex-1"}`}>
+          {summary}
+        </div>
+        {!compact ? (
+          <span className="mt-1 inline-flex shrink-0 items-center gap-1 text-[0.65rem] font-medium uppercase tracking-wide text-ink/55">
+            {open ? (
+              <>
+                Cerrar
+                <ChevronDown
+                  className="size-3.5 rotate-180"
+                  strokeWidth={1.75}
+                />
+              </>
+            ) : (
+              <>
+                <Pencil className="size-3.5" strokeWidth={1.75} />
+                Editar
+              </>
+            )}
+          </span>
+        ) : open ? (
+          <span className="mt-1 inline-flex shrink-0 items-center gap-1 text-[0.65rem] font-medium uppercase tracking-wide text-ink/55">
+            Cerrar
+            <ChevronDown className="size-3.5 rotate-180" strokeWidth={1.75} />
+          </span>
+        ) : null}
       </div>
 
       {open ? (

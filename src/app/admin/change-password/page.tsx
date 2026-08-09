@@ -43,7 +43,7 @@ export default async function ChangePasswordPage({
 
   return (
     <div className="w-full">
-      <h1 className="font-bigger text-3xl uppercase tracking-wide">
+      <h1 className="font-admin-title text-3xl">
         Nueva contraseña
       </h1>
       <p className="mt-2 text-sm text-ink/70">

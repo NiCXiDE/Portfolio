@@ -3,6 +3,7 @@
 import { ImagePlus, Loader2, Upload, X } from "lucide-react";
 import { useEffect, useRef, useState, type DragEvent } from "react";
 import { uploadLocalAsset } from "@/app/admin/upload-local";
+import { FieldLabel } from "@/components/admin/FieldLabel";
 
 type Props = {
   /** Si se omite, no envía el path en el form (solo callback) */
@@ -70,8 +71,7 @@ export function ImageDropField({
 
   return (
     <div className="space-y-1.5">
-      <p className="text-sm font-medium text-ink">{label}</p>
-      {hint ? <p className="text-xs text-ink/55">{hint}</p> : null}
+      <FieldLabel hint={hint}>{label}</FieldLabel>
 
       {name ? (
         <input ref={inputRef} type="hidden" name={name} value={path} />

@@ -133,7 +133,7 @@ const en: typeof es = {
     pastProjectsTitle: "Projects I've been part of",
     currentProjectsTitle: "Projects I'm currently part of",
     testimonialsTitle: "Testimonials",
-    downloadCv: "Download CV",
+    downloadCv: "Download résumé",
   },
   common: {
     backToTop: "Back to top",

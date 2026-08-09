@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import { Eye, Hash, Link2, Plus, Save } from "lucide-react";
 import { saveUiListItem, saveUiProject } from "@/app/admin/actions";
 import { CollapsibleEditor } from "@/components/admin/CollapsibleEditor";
-import { FieldLabel, fieldClass } from "@/components/admin/FieldLabel";
+import { FieldLabel, fieldClass, selectClass } from "@/components/admin/FieldLabel";
 import { ImageDropField } from "@/components/admin/ImageDropField";
 import {
   WithUiListPreview,
@@ -87,7 +87,7 @@ function ProjectFields({
         <select
           name="category"
           defaultValue={item?.category ?? "sistemas-a-medida"}
-          className={fieldClass}
+          className={selectClass}
         >
           <option value="preventas">Preventas</option>
           <option value="sistemas-a-medida">Sistemas a medida</option>
@@ -237,125 +237,128 @@ function ListFields({
   );
 }
 
-export function InterfacesClient({
+export function InterfacesProjectsClient({
   projects,
-  list,
   saved,
 }: {
   projects: UiProjectDTO[];
+  saved?: string;
+}) {
+  return (
+    <div>
+      <h1 className="font-admin-title text-3xl">Proyectos</h1>
+      {saved ? <p className="mt-2 text-sm text-green-700">Guardado.</p> : null}
+      <p className="mt-2 text-sm text-ink/60">
+        Tocá un proyecto para editarlo.
+      </p>
+
+      <div className="mt-6">
+        <CollapsibleEditor
+          compact
+          summary={
+            <div className="flex items-center gap-2 py-1 text-sm font-medium">
+              <Plus className="size-4" /> Nuevo proyecto
+            </div>
+          }
+        >
+          <WithUiProjectPreview>
+            <form action={saveUiProject} className="space-y-4">
+              <ProjectFields showId />
+              <button
+                type="submit"
+                className="inline-flex items-center gap-1.5 bg-ink px-3 py-2 text-sm text-sky-pale"
+              >
+                <Save className="size-3.5" /> Crear
+              </button>
+            </form>
+          </WithUiProjectPreview>
+        </CollapsibleEditor>
+      </div>
+
+      <div className="mt-8 space-y-4">
+        {projects.map((p) => (
+          <CollapsibleEditor
+            key={p.id}
+            summary={<UiProjectPreview draft={projectDraft(p)} locale="es" />}
+          >
+            <WithUiProjectPreview initialDraft={projectDraft(p)}>
+              <form action={saveUiProject} className="space-y-4">
+                <input type="hidden" name="id" value={p.id} />
+                <p className="text-xs text-ink/45">ID: {p.id}</p>
+                <ProjectFields item={p} />
+                <button
+                  type="submit"
+                  className="inline-flex items-center gap-1.5 bg-ink px-3 py-2 text-sm text-sky-pale"
+                >
+                  <Save className="size-3.5" /> Guardar cambios
+                </button>
+              </form>
+            </WithUiProjectPreview>
+          </CollapsibleEditor>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+export function InterfacesListClient({
+  list,
+  saved,
+}: {
   list: UiListDTO[];
   saved?: string;
 }) {
   return (
     <div>
-      <h1 className="font-bigger text-3xl uppercase">Interfaces</h1>
+      <h1 className="font-admin-title text-3xl">Lista simple</h1>
       {saved ? <p className="mt-2 text-sm text-green-700">Guardado.</p> : null}
+      <p className="mt-2 text-sm text-ink/60">Logos / wordmarks en grilla.</p>
 
-      <section id="proyectos" className="scroll-mt-6">
-        <h2 className="mt-8 text-xl font-bold">Proyectos</h2>
-        <p className="mt-1 text-sm text-ink/60">
-          Tocá un proyecto para editarlo.
-        </p>
+      <div className="mt-6">
+        <CollapsibleEditor
+          compact
+          summary={
+            <div className="flex items-center gap-2 py-1 text-sm font-medium">
+              <Plus className="size-4" /> Nuevo ítem
+            </div>
+          }
+        >
+          <WithUiListPreview>
+            <form action={saveUiListItem} className="space-y-4">
+              <ListFields showId />
+              <button
+                type="submit"
+                className="inline-flex items-center gap-1.5 bg-ink px-3 py-2 text-sm text-sky-pale"
+              >
+                <Save className="size-3.5" /> Crear
+              </button>
+            </form>
+          </WithUiListPreview>
+        </CollapsibleEditor>
+      </div>
 
-        <div className="mt-4">
+      <div className="mt-8 space-y-4">
+        {list.map((item) => (
           <CollapsibleEditor
-            summary={
-              <div className="flex items-center gap-2 py-1 text-sm font-medium">
-                <Plus className="size-4" /> Nuevo proyecto
-              </div>
-            }
+            key={item.id}
+            summary={<UiListPreview draft={listDraft(item)} locale="es" />}
           >
-            <WithUiProjectPreview>
-              <form action={saveUiProject} className="space-y-4">
-                <ProjectFields showId />
-                <button
-                  type="submit"
-                  className="inline-flex items-center gap-1.5 bg-ink px-3 py-2 text-sm text-sky-pale"
-                >
-                  <Save className="size-3.5" /> Crear
-                </button>
-              </form>
-            </WithUiProjectPreview>
-          </CollapsibleEditor>
-        </div>
-
-        <div className="mt-4 space-y-4">
-          {projects.map((p) => (
-            <CollapsibleEditor
-              key={p.id}
-              summary={
-                <UiProjectPreview draft={projectDraft(p)} locale="es" />
-              }
-            >
-              <WithUiProjectPreview initialDraft={projectDraft(p)}>
-                <form action={saveUiProject} className="space-y-4">
-                  <input type="hidden" name="id" value={p.id} />
-                  <p className="text-xs text-ink/45">ID: {p.id}</p>
-                  <ProjectFields item={p} />
-                  <button
-                    type="submit"
-                    className="inline-flex items-center gap-1.5 bg-ink px-3 py-2 text-sm text-sky-pale"
-                  >
-                    <Save className="size-3.5" /> Guardar cambios
-                  </button>
-                </form>
-              </WithUiProjectPreview>
-            </CollapsibleEditor>
-          ))}
-        </div>
-      </section>
-
-      <section id="lista" className="scroll-mt-6">
-        <h2 className="mt-12 text-xl font-bold">Lista simple</h2>
-        <p className="mt-1 text-sm text-ink/60">Logos / wordmarks en grilla.</p>
-
-        <div className="mt-4">
-          <CollapsibleEditor
-            summary={
-              <div className="flex items-center gap-2 py-1 text-sm font-medium">
-                <Plus className="size-4" /> Nuevo ítem
-              </div>
-            }
-          >
-            <WithUiListPreview>
+            <WithUiListPreview initialDraft={listDraft(item)}>
               <form action={saveUiListItem} className="space-y-4">
-                <ListFields showId />
+                <input type="hidden" name="id" value={item.id} />
+                <p className="text-xs text-ink/45">ID: {item.id}</p>
+                <ListFields item={item} />
                 <button
                   type="submit"
                   className="inline-flex items-center gap-1.5 bg-ink px-3 py-2 text-sm text-sky-pale"
                 >
-                  <Save className="size-3.5" /> Crear
+                  <Save className="size-3.5" /> Guardar cambios
                 </button>
               </form>
             </WithUiListPreview>
           </CollapsibleEditor>
-        </div>
-
-        <div className="mt-4 space-y-4">
-          {list.map((item) => (
-            <CollapsibleEditor
-              key={item.id}
-              summary={
-                <UiListPreview draft={listDraft(item)} locale="es" />
-              }
-            >
-              <WithUiListPreview initialDraft={listDraft(item)}>
-                <form action={saveUiListItem} className="space-y-4">
-                  <input type="hidden" name="id" value={item.id} />
-                  <p className="text-xs text-ink/45">ID: {item.id}</p>
-                  <ListFields item={item} />
-                  <button
-                    type="submit"
-                    className="inline-flex items-center gap-1.5 bg-ink px-3 py-2 text-sm text-sky-pale"
-                  >
-                    <Save className="size-3.5" /> Guardar cambios
-                  </button>
-                </form>
-              </WithUiListPreview>
-            </CollapsibleEditor>
-          ))}
-        </div>
-      </section>
+        ))}
+      </div>
     </div>
   );
 }

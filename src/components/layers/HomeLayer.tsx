@@ -2,14 +2,15 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { Download, ExternalLink } from "lucide-react";
+import { ExternalLink } from "lucide-react";
 import type { Dictionary } from "@/i18n/dictionaries";
 import type { Locale } from "@/i18n/config";
 import { pathForLayer } from "@/lib/layers";
-import { TagCloud } from "@/components/SiteChrome";
 import { t, type PortfolioContent } from "@/lib/content";
 import { FigmaGap } from "@/components/FigmaGap";
 import { EditableSurname } from "@/components/EditableSurname";
+import { CvDownloadButton } from "@/components/CvDownloadButton";
+import { InfiniteMarquee } from "@/components/InfiniteMarquee";
 import type { CSSProperties } from "react";
 
 type Props = {
@@ -23,7 +24,7 @@ export function HomeLayer({ locale, dict, content }: Props) {
     <main className="flex w-full min-w-0 max-w-full flex-col items-center overflow-x-hidden">
       {/* Clip duro: el apellido puede pintar más allá, pero no ensancha ni scrollea */}
       <div className="name-row flex w-full min-w-0 max-w-full items-center justify-center overflow-x-hidden px-4 py-2 sm:px-6 md:px-8">
-        <div className="flex w-max max-w-full items-end">
+        <div className="name-hero-group relative flex w-max max-w-full items-end">
           <h1 className="name-hero-text shrink-0 border border-transparent px-1.5 pb-1.5 pt-1 font-bold text-ink sm:px-2.5 sm:pb-2 sm:pt-1.5">
             Nicolas
           </h1>
@@ -128,18 +129,12 @@ export function HomeLayer({ locale, dict, content }: Props) {
               />
               <p className="bio-wrap-text">{t(content.bio.text, locale)}</p>
               <div className="bio-meta">
-                {"cv" in content.bio && content.bio.cv && (
-                  <a
-                    href={content.bio.cv}
-                    download
-                    target="_blank"
-                    rel="noreferrer"
-                    className="bio-cv"
-                  >
-                    <Download className="size-4 shrink-0" strokeWidth={1.75} />
-                    {dict.home.downloadCv}
-                  </a>
-                )}
+                <CvDownloadButton
+                  cvEs={content.bio.cv}
+                  cvEn={content.bio.cvEn}
+                  label={dict.home.downloadCv}
+                  closeLabel={dict.common.close}
+                />
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
                   src={content.bio.signature}
@@ -153,92 +148,117 @@ export function HomeLayer({ locale, dict, content }: Props) {
           </div>
         </div>
 
-        <section className="flex w-full flex-col items-stretch gap-3 md:items-center">
-          <h2 className="text-left text-xl font-bold text-ink md:text-center md:text-2xl">
-            {dict.home.companiesTitle}
-          </h2>
-          <TagCloud items={content.companies} />
-        </section>
+        {content.settings.homeLayout.sectionOrder.map((sectionId) => {
+          if (sectionId === "testimonials") {
+            return (
+              <div
+                key={sectionId}
+                className="flex w-full flex-col gap-8 md:gap-10"
+              >
+                <h2 className="text-center text-xl font-bold text-ink md:text-2xl">
+                  {dict.home.testimonialsTitle}
+                </h2>
+                {content.testimonials.map((item) => (
+                  <article
+                    key={item.id}
+                    className="flex flex-row items-start gap-3 bg-sky-pale p-3 md:gap-6 md:p-5"
+                  >
+                    <div className="relative aspect-square w-[110px] shrink-0 overflow-hidden bg-ink/5 md:w-[260px]">
+                      {item.image ? (
+                        <Image
+                          src={item.image}
+                          alt={item.name}
+                          fill
+                          className="object-cover"
+                          sizes="(max-width: 767px) 110px, 260px"
+                        />
+                      ) : null}
+                    </div>
+                    <div className="flex min-w-0 flex-1 flex-col gap-1.5 py-0.5 md:gap-2 md:py-1">
+                      <p className="text-sm leading-relaxed text-ink md:text-lg">
+                        {t(item.quote, locale)}
+                      </p>
+                      <p className="text-sm font-bold text-ink md:text-lg">
+                        {item.name}
+                      </p>
+                      <p className="text-sm font-medium text-ink/80 md:text-base">
+                        {t(item.role, locale)}
+                      </p>
+                      {item.company.href ? (
+                        item.company.logo ? (
+                          <a
+                            href={item.company.href}
+                            target="_blank"
+                            rel="noreferrer"
+                            className="mt-1 inline-flex w-fit max-w-full items-center transition-opacity hover:opacity-70"
+                            aria-label={item.company.name}
+                          >
+                            {/* eslint-disable-next-line @next/next/no-img-element */}
+                            <img
+                              src={item.company.logo}
+                              alt={item.company.name}
+                              className="testimonial-logo"
+                            />
+                          </a>
+                        ) : (
+                          <a
+                            href={item.company.href}
+                            target="_blank"
+                            rel="noreferrer"
+                            className="mt-1 inline-flex w-fit items-center gap-1.5 text-sm text-ink underline underline-offset-4 transition-opacity hover:opacity-70 md:text-base"
+                          >
+                            <ExternalLink
+                              className="size-3.5 shrink-0"
+                              strokeWidth={1.75}
+                            />
+                            {item.company.linkLabel
+                              ? t(item.company.linkLabel, locale)
+                              : item.company.name}
+                          </a>
+                        )
+                      ) : null}
+                    </div>
+                  </article>
+                ))}
+              </div>
+            );
+          }
 
-        <section className="flex w-full flex-col items-stretch gap-3 md:items-center">
-          <h2 className="text-left text-xl font-bold text-ink md:text-center md:text-2xl">
-            {dict.home.pastProjectsTitle}
-          </h2>
-          <TagCloud items={content.pastProjects} />
-        </section>
+          const meta = {
+            companies: {
+              title: dict.home.companiesTitle,
+              items: content.companies,
+              kind: "company" as const,
+            },
+            past_projects: {
+              title: dict.home.pastProjectsTitle,
+              items: content.pastProjects,
+              kind: "past_project" as const,
+            },
+            current_projects: {
+              title: dict.home.currentProjectsTitle,
+              items: content.currentProjects,
+              kind: "current_project" as const,
+            },
+          }[sectionId];
 
-        <section className="flex w-full flex-col items-stretch gap-3 md:items-center">
-          <h2 className="text-left text-xl font-bold text-ink md:text-center md:text-2xl">
-            {dict.home.currentProjectsTitle}
-          </h2>
-          <TagCloud items={content.currentProjects} />
-        </section>
+          if (!meta) return null;
 
-        <div className="flex w-full flex-col gap-8 md:gap-10">
-          <h2 className="text-center text-xl font-bold text-ink md:text-2xl">
-            {dict.home.testimonialsTitle}
-          </h2>
-          {content.testimonials.map((item) => (
-            <article
-              key={item.id}
-              className="flex flex-row items-start gap-3 bg-sky-pale p-3 md:gap-6 md:p-5"
+          return (
+            <section
+              key={sectionId}
+              className="flex w-full flex-col items-stretch gap-3 md:items-center"
             >
-              <div className="relative aspect-square w-[110px] shrink-0 overflow-hidden md:w-[260px]">
-                <Image
-                  src={item.image}
-                  alt={item.name}
-                  fill
-                  className="object-cover"
-                  sizes="(max-width: 767px) 110px, 260px"
-                />
-              </div>
-              <div className="flex min-w-0 flex-1 flex-col gap-1.5 py-0.5 md:gap-2 md:py-1">
-                <p className="text-sm leading-relaxed text-ink md:text-lg">
-                  {t(item.quote, locale)}
-                </p>
-                <p className="text-sm font-bold text-ink md:text-lg">
-                  {item.name}
-                </p>
-                <p className="text-sm font-medium text-ink/80 md:text-base">
-                  {t(item.role, locale)}
-                </p>
-                {item.company.href ? (
-                  item.company.logo ? (
-                    <a
-                      href={item.company.href}
-                      target="_blank"
-                      rel="noreferrer"
-                      className="mt-1 inline-flex w-fit max-w-full items-center transition-opacity hover:opacity-70"
-                      aria-label={item.company.name}
-                    >
-                      {/* eslint-disable-next-line @next/next/no-img-element */}
-                      <img
-                        src={item.company.logo}
-                        alt={item.company.name}
-                        className="testimonial-logo"
-                      />
-                    </a>
-                  ) : (
-                    <a
-                      href={item.company.href}
-                      target="_blank"
-                      rel="noreferrer"
-                      className="mt-1 inline-flex w-fit items-center gap-1.5 text-sm text-ink underline underline-offset-4 transition-opacity hover:opacity-70 md:text-base"
-                    >
-                      <ExternalLink
-                        className="size-3.5 shrink-0"
-                        strokeWidth={1.75}
-                      />
-                      {item.company.linkLabel
-                        ? t(item.company.linkLabel, locale)
-                        : item.company.name}
-                    </a>
-                  )
-                ) : null}
-              </div>
-            </article>
-          ))}
-        </div>
+              <h2 className="text-left text-xl font-bold text-ink md:text-center md:text-2xl">
+                {meta.title}
+              </h2>
+              <InfiniteMarquee
+                items={meta.items}
+                config={content.settings.homeLayout.marquees[meta.kind]}
+              />
+            </section>
+          );
+        })}
       </div>
     </main>
   );

@@ -5,6 +5,7 @@ import { resolve } from "node:path";
 import { createDataSource } from "../src/db/data-source";
 import {
   AdminUserEntity,
+  AdminAuditLogEntity,
   BioEntity,
   BrandManualEntity,
   GraphicItemEntity,
@@ -42,6 +43,7 @@ function readJson<T>(relativePath: string): T {
 }
 
 async function clearAll(ds: ReturnType<typeof createDataSource>) {
+  await ds.getRepository(AdminAuditLogEntity).clear();
   await ds.getRepository(GraphicItemEntity).clear();
   await ds.getRepository(BrandManualEntity).clear();
   await ds.getRepository(UiProjectEntity).clear();
@@ -63,8 +65,10 @@ function seedNamed(
   return labels.map((label, sortOrder) => ({
     kind,
     label,
+    logoPath: null,
     sortOrder,
     published: true,
+    createdAt: new Date(),
   }));
 }
 
@@ -124,6 +128,7 @@ async function main() {
     carouselIntervalMs: 2000,
     graphicPreviewLimit: 7,
     interfacesPreviewLimit: 7,
+    homeLayout: null,
   };
   await ds.getRepository(SiteSettingsEntity).save(settings);
 
@@ -218,6 +223,7 @@ async function main() {
     signature: string;
     signatureAlt: Localized;
     cv: string;
+    cvEn?: string;
     text: Localized;
   }>("content/home/bio.json");
 
@@ -228,6 +234,7 @@ async function main() {
     signaturePath: bioJson.signature,
     signatureAlt: bioJson.signatureAlt,
     cvPath: bioJson.cv,
+    cvPathEn: bioJson.cvEn ?? null,
     text: bioJson.text,
   };
   await ds.getRepository(BioEntity).save(bio);

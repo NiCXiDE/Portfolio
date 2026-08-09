@@ -10,6 +10,7 @@ export type BioRow = {
   signaturePath: string;
   signatureAlt: LocalizedJson;
   cvPath: string | null;
+  cvPathEn: string | null;
   text: LocalizedJson;
 };
 
@@ -19,8 +20,10 @@ export type NamedListItemRow = {
   id: number;
   kind: NamedListKind;
   label: string;
+  logoPath: string | null;
   sortOrder: number;
   published: boolean;
+  createdAt: Date;
 };
 
 export type TestimonialRow = {
@@ -134,6 +137,8 @@ export type SiteSettingsRow = {
   carouselIntervalMs: number;
   graphicPreviewLimit: number;
   interfacesPreviewLimit: number;
+  /** Section order + marquee settings for home lists */
+  homeLayout: Record<string, unknown> | null;
 };
 
 export type SocialLinkRow = {
@@ -146,6 +151,36 @@ export type SocialLinkRow = {
   published: boolean;
 };
 
+export type AuditAction = "create" | "update" | "delete" | "replace";
+
+export type AuditEntityType =
+  | "bio"
+  | "site_settings"
+  | "home_layout"
+  | "named_list"
+  | "testimonial"
+  | "graphic_item"
+  | "brand_manual"
+  | "ui_project"
+  | "ui_list_item"
+  | "tag"
+  | "social_link";
+
+export type AdminAuditLogRow = {
+  id: string;
+  userId: number;
+  username: string;
+  action: AuditAction;
+  entityType: AuditEntityType;
+  entityId: string;
+  summary: string;
+  beforeJson: Record<string, unknown> | null;
+  afterJson: Record<string, unknown> | null;
+  undoable: boolean;
+  undoneAt: Date | null;
+  createdAt: Date;
+};
+
 export const BioEntity = new EntitySchema<BioRow>({
   name: "bio",
   tableName: "bio",
@@ -156,6 +191,12 @@ export const BioEntity = new EntitySchema<BioRow>({
     signaturePath: { name: "signature_path", type: String, length: 512 },
     signatureAlt: { name: "signature_alt", type: "json" },
     cvPath: { name: "cv_path", type: String, length: 512, nullable: true },
+    cvPathEn: {
+      name: "cv_path_en",
+      type: String,
+      length: 512,
+      nullable: true,
+    },
     text: { type: "json" },
   },
 });
@@ -167,8 +208,15 @@ export const NamedListItemEntity = new EntitySchema<NamedListItemRow>({
     id: { type: Number, primary: true, generated: true },
     kind: { type: String, length: 32 },
     label: { type: String, length: 255 },
+    logoPath: {
+      name: "logo_path",
+      type: String,
+      length: 512,
+      nullable: true,
+    },
     sortOrder: { name: "sort_order", type: Number },
     published: { type: Boolean, default: true },
+    createdAt: { name: "created_at", type: Date, createDate: true },
   },
   indices: [{ columns: ["kind", "sortOrder"] }],
 });
@@ -344,6 +392,11 @@ export const SiteSettingsEntity = new EntitySchema<SiteSettingsRow>({
       type: Number,
       default: 7,
     },
+    homeLayout: {
+      name: "home_layout",
+      type: "json",
+      nullable: true,
+    },
   },
 });
 
@@ -359,4 +412,28 @@ export const SocialLinkEntity = new EntitySchema<SocialLinkRow>({
     sortOrder: { name: "sort_order", type: Number },
     published: { type: Boolean, default: true },
   },
+});
+
+export const AdminAuditLogEntity = new EntitySchema<AdminAuditLogRow>({
+  name: "admin_audit_logs",
+  tableName: "admin_audit_logs",
+  columns: {
+    id: { type: String, primary: true, length: 36 },
+    userId: { name: "user_id", type: Number },
+    username: { type: String, length: 64 },
+    action: { type: String, length: 16 },
+    entityType: { name: "entity_type", type: String, length: 32 },
+    entityId: { name: "entity_id", type: String, length: 128 },
+    summary: { type: String, length: 512 },
+    beforeJson: { name: "before_json", type: "json", nullable: true },
+    afterJson: { name: "after_json", type: "json", nullable: true },
+    undoable: { type: Boolean, default: true },
+    undoneAt: { name: "undone_at", type: Date, nullable: true },
+    createdAt: { name: "created_at", type: Date, createDate: true },
+  },
+  indices: [
+    { columns: ["createdAt"] },
+    { columns: ["entityType", "entityId", "createdAt"] },
+    { columns: ["userId", "createdAt"] },
+  ],
 });

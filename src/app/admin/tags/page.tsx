@@ -16,7 +16,7 @@ export default async function AdminTagsPage({
 
   return (
     <div>
-      <h1 className="font-bigger text-3xl uppercase">Etiquetas</h1>
+      <h1 className="font-admin-title text-3xl">Etiquetas</h1>
       {saved ? <p className="mt-2 text-sm text-green-700">Guardado.</p> : null}
       <p className="mt-2 text-sm text-ink/70">
         Marcá NSFW para aplicar blur en el portfolio.

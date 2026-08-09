@@ -27,10 +27,10 @@ function toDraft(item: TestimonialDTO): Draft {
   return {
     name: item.name,
     imagePath: item.imagePath,
-    quoteEs: item.quote.es,
-    quoteEn: item.quote.en,
-    roleEs: item.role.es,
-    roleEn: item.role.en,
+    quoteEs: item.quote?.es ?? "",
+    quoteEn: item.quote?.en ?? "",
+    roleEs: item.role?.es ?? "",
+    roleEn: item.role?.en ?? "",
     companyName: item.companyName,
     companyLogoPath: item.companyLogoPath ?? "",
     companyHref: item.companyHref ?? "",
@@ -75,20 +75,20 @@ function Fields({
       />
       <label className="block">
         <FieldLabel>Cita (español)</FieldLabel>
-        <textarea name="quoteEs" defaultValue={item?.quote.es} rows={3} className={fieldClass} />
+        <textarea name="quoteEs" defaultValue={item?.quote?.es ?? ""} rows={3} className={fieldClass} />
       </label>
       <label className="block">
         <FieldLabel>Cita (inglés)</FieldLabel>
-        <textarea name="quoteEn" defaultValue={item?.quote.en} rows={3} className={fieldClass} />
+        <textarea name="quoteEn" defaultValue={item?.quote?.en ?? ""} rows={3} className={fieldClass} />
       </label>
       <div className="grid gap-3 sm:grid-cols-2">
         <label className="block">
           <FieldLabel>Cargo (español)</FieldLabel>
-          <input name="roleEs" defaultValue={item?.role.es} className={fieldClass} />
+          <input name="roleEs" defaultValue={item?.role?.es ?? ""} className={fieldClass} />
         </label>
         <label className="block">
           <FieldLabel>Cargo (inglés)</FieldLabel>
-          <input name="roleEn" defaultValue={item?.role.en} className={fieldClass} />
+          <input name="roleEn" defaultValue={item?.role?.en ?? ""} className={fieldClass} />
         </label>
       </div>
       <label className="block">
@@ -125,7 +125,9 @@ function Fields({
           />
         </label>
         <label className="block">
-          <FieldLabel>Texto del enlace (inglés)</FieldLabel>
+          <FieldLabel hint="Solo si no hay logo.">
+            Texto del enlace (inglés)
+          </FieldLabel>
           <input
             name="linkLabelEn"
             defaultValue={item?.linkLabel?.en ?? ""}
@@ -162,7 +164,7 @@ export function TestimonialsClient({
 }) {
   return (
     <div>
-      <h1 className="font-bigger text-3xl uppercase">Testimonios</h1>
+      <h1 className="font-admin-title text-3xl">Testimonios</h1>
       {saved ? <p className="mt-2 text-sm text-green-700">Guardado.</p> : null}
       <p className="mt-2 text-sm text-ink/60">
         Tocá un testimonio para editarlo.
@@ -170,6 +172,7 @@ export function TestimonialsClient({
 
       <div className="mt-6">
         <CollapsibleEditor
+          compact
           summary={
             <div className="flex items-center gap-2 py-1 text-sm font-medium">
               <Plus className="size-4" /> Nuevo testimonio

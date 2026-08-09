@@ -1,5 +1,6 @@
 import { DataSource } from "typeorm";
 import {
+  AdminAuditLogEntity,
   AdminUserEntity,
   BioEntity,
   BrandManualEntity,
@@ -27,6 +28,7 @@ export const portfolioEntities = [
   TagEntity,
   SiteSettingsEntity,
   SocialLinkEntity,
+  AdminAuditLogEntity,
 ];
 
 function parseDatabaseUrl(url: string) {

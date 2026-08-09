@@ -27,7 +27,7 @@ export default async function AdminDashboard() {
 
   return (
     <div>
-      <h1 className="font-bigger text-3xl uppercase tracking-wide">Dashboard</h1>
+      <h1 className="font-admin-title text-3xl">Dashboard</h1>
       <p className="mt-2 text-sm text-ink/70">
         Centro de control del contenido del portfolio.
       </p>

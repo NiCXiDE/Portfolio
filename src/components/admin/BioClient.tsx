@@ -17,12 +17,13 @@ export function BioClient({
     signaturePath: string;
     signatureAlt: { es: string; en: string };
     cvPath: string | null;
+    cvPathEn: string | null;
   };
   saved?: string;
 }) {
   return (
     <div>
-      <h1 className="font-bigger text-3xl uppercase">Bio / CV</h1>
+      <h1 className="font-admin-title text-3xl">Bio / CV</h1>
       {saved ? (
         <p className="mt-2 text-sm text-green-700">Guardado.</p>
       ) : null}
@@ -100,15 +101,26 @@ export function BioClient({
                 />
               </label>
             </div>
-            <ImageDropField
-              name="cvPath"
-              label="CV (PDF)"
-              hint="Arrastrá el PDF del currículum."
-              folder="assets/inicio"
-              defaultValue={bio.cvPath ?? ""}
-              accept="application/pdf,.pdf"
-              kind="file"
-            />
+            <div className="grid gap-4 sm:grid-cols-2">
+              <ImageDropField
+                name="cvPath"
+                label="CV en español (PDF)"
+                hint="Currículum en español."
+                folder="assets/cv"
+                defaultValue={bio.cvPath ?? ""}
+                accept="application/pdf,.pdf"
+                kind="file"
+              />
+              <ImageDropField
+                name="cvPathEn"
+                label="Résumé in English (PDF)"
+                hint="English résumé / CV."
+                folder="assets/cv"
+                defaultValue={bio.cvPathEn ?? ""}
+                accept="application/pdf,.pdf"
+                kind="file"
+              />
+            </div>
             <button
               type="submit"
               className="inline-flex w-fit items-center gap-1.5 bg-ink px-4 py-2 text-sm text-sky-pale"

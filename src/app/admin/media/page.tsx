@@ -22,7 +22,7 @@ export default async function AdminMediaPage({
 
   return (
     <div>
-      <h1 className="font-bigger text-3xl uppercase">Archivos</h1>
+      <h1 className="font-admin-title text-3xl">Archivos</h1>
       <p className="mt-2 text-sm text-ink/70">
         En cada sección del admin podés arrastrar imágenes directo al form.
         Acá también podés subir a la carpeta local{" "}

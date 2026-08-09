@@ -58,8 +58,8 @@ export function AdminEditorShell({
       </div>
 
       <aside className="min-w-0 lg:sticky lg:top-4 lg:self-start">
-        <div className="border border-ink/10 bg-sky-pale/60">
-          <div className="flex flex-wrap items-center justify-between gap-2 border-b border-ink/10 px-3 py-2">
+        <div className="border border-ink/10 bg-white">
+          <div className="flex flex-wrap items-center justify-between gap-2 border-b border-ink/10 bg-sky-pale/40 px-3 py-2">
             <button
               type="button"
               className="text-xs font-bold uppercase tracking-wide text-ink lg:pointer-events-none"
@@ -77,7 +77,7 @@ export function AdminEditorShell({
                     className={`px-2 py-0.5 uppercase ${
                       locale === l
                         ? "bg-ink text-sky-pale"
-                        : "bg-white/70 text-ink/70"
+                        : "bg-white text-ink/70"
                     }`}
                   >
                     {l}

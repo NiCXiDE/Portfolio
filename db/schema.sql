@@ -8,6 +8,7 @@ CREATE TABLE IF NOT EXISTS bio (
   signature_path VARCHAR(512) NOT NULL,
   signature_alt JSON NOT NULL,
   cv_path VARCHAR(512) NULL,
+  cv_path_en VARCHAR(512) NULL,
   text JSON NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
@@ -15,8 +16,10 @@ CREATE TABLE IF NOT EXISTS named_list_items (
   id INT AUTO_INCREMENT PRIMARY KEY,
   kind VARCHAR(32) NOT NULL,
   label VARCHAR(255) NOT NULL,
+  logo_path VARCHAR(512) NULL,
   sort_order INT NOT NULL DEFAULT 0,
   published TINYINT(1) NOT NULL DEFAULT 1,
+  created_at DATETIME(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6),
   INDEX idx_named_kind_order (kind, sort_order)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
@@ -119,7 +122,8 @@ CREATE TABLE IF NOT EXISTS site_settings (
   powered_by VARCHAR(255) NOT NULL,
   carousel_interval_ms INT NOT NULL DEFAULT 2000,
   graphic_preview_limit INT NOT NULL DEFAULT 7,
-  interfaces_preview_limit INT NOT NULL DEFAULT 7
+  interfaces_preview_limit INT NOT NULL DEFAULT 7,
+  home_layout JSON NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 CREATE TABLE IF NOT EXISTS social_links (
@@ -130,4 +134,22 @@ CREATE TABLE IF NOT EXISTS social_links (
   icon_path VARCHAR(512) NULL,
   sort_order INT NOT NULL DEFAULT 0,
   published TINYINT(1) NOT NULL DEFAULT 1
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE IF NOT EXISTS admin_audit_logs (
+  id VARCHAR(36) PRIMARY KEY,
+  user_id INT NOT NULL,
+  username VARCHAR(64) NOT NULL,
+  action VARCHAR(16) NOT NULL,
+  entity_type VARCHAR(32) NOT NULL,
+  entity_id VARCHAR(128) NOT NULL,
+  summary VARCHAR(512) NOT NULL,
+  before_json JSON NULL,
+  after_json JSON NULL,
+  undoable TINYINT(1) NOT NULL DEFAULT 1,
+  undone_at DATETIME(6) NULL,
+  created_at DATETIME(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6),
+  INDEX idx_audit_created (created_at),
+  INDEX idx_audit_entity (entity_type, entity_id, created_at),
+  INDEX idx_audit_user (user_id, created_at)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;

@@ -12,7 +12,7 @@ import {
 } from "lucide-react";
 import { deleteGraphicItem, saveGraphicItem } from "@/app/admin/actions";
 import { CollapsibleEditor } from "@/components/admin/CollapsibleEditor";
-import { FieldLabel, fieldClass } from "@/components/admin/FieldLabel";
+import { FieldLabel, fieldClass, selectClass } from "@/components/admin/FieldLabel";
 import { ImageDropField } from "@/components/admin/ImageDropField";
 import { WithGraphicPreview } from "@/components/admin/WithPreview";
 import { GraphicItemPreview } from "@/components/admin/previews";
@@ -240,7 +240,7 @@ function GraphicFields({
           <select
             name="fit"
             defaultValue={item?.fit ?? ""}
-            className={fieldClass}
+            className={selectClass}
           >
             <option value="">Automático</option>
             <option value="cover">Recortar (cover)</option>
@@ -283,7 +283,7 @@ export function GraphicSectionClient({
 }) {
   return (
     <div>
-      <h1 className="font-bigger text-3xl uppercase">
+      <h1 className="font-admin-title text-3xl">
         {SECTION_LABELS[section] ?? section}
       </h1>
       {saved ? (
@@ -296,6 +296,7 @@ export function GraphicSectionClient({
 
       <div className="mt-6">
         <CollapsibleEditor
+          compact
           defaultOpen={false}
           summary={
             <div className="flex items-center gap-2 py-1 text-sm font-medium">

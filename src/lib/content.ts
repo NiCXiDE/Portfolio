@@ -20,11 +20,20 @@ import {
 } from "@/db/entities";
 import { mediaUrl, mediaUrls } from "@/lib/media";
 import type { Locale } from "@/i18n/config";
+import {
+  DEFAULT_HOME_LAYOUT,
+  normalizeHomeLayout,
+  type HomeLayoutConfig,
+} from "@/lib/home-layout";
 
 export type LocalizedString = LocalizedJson;
 
-export function t(value: LocalizedString, locale: Locale): string {
-  return value[locale] ?? value.es;
+export function t(
+  value: LocalizedString | null | undefined,
+  locale: Locale,
+): string {
+  if (!value) return "";
+  return value[locale] ?? value.es ?? "";
 }
 
 export type BioContent = {
@@ -32,8 +41,17 @@ export type BioContent = {
   photoAlt: LocalizedString;
   signature: string;
   signatureAlt: LocalizedString;
+  /** Spanish CV PDF URL (empty if unset) */
   cv: string;
+  /** English résumé PDF URL (empty if unset) */
+  cvEn: string;
   text: LocalizedString;
+};
+
+export type NamedListItemContent = {
+  id: number;
+  label: string;
+  logo: string | null;
 };
 
 export type TestimonialContent = {
@@ -114,14 +132,15 @@ export type SiteSettingsContent = {
   carouselIntervalMs: number;
   graphicPreviewLimit: number;
   interfacesPreviewLimit: number;
+  homeLayout: HomeLayoutConfig;
 };
 
 export type PortfolioContent = {
   bio: BioContent;
   techIcons: TechIconContent[];
-  companies: string[];
-  pastProjects: string[];
-  currentProjects: string[];
+  companies: NamedListItemContent[];
+  pastProjects: NamedListItemContent[];
+  currentProjects: NamedListItemContent[];
   testimonials: TestimonialContent[];
   covers: GraphicItemContent[];
   logos: GraphicItemContent[];
@@ -191,7 +210,18 @@ const defaultSettings: SiteSettingsContent = {
   carouselIntervalMs: 2000,
   graphicPreviewLimit: 7,
   interfacesPreviewLimit: 7,
+  homeLayout: DEFAULT_HOME_LAYOUT,
 };
+
+function mapNamed(kind: NamedListItemRow["kind"], named: NamedListItemRow[]) {
+  return named
+    .filter((n) => n.kind === kind && n.published)
+    .map((n) => ({
+      id: n.id,
+      label: n.label,
+      logo: n.logoPath ? mediaUrl(n.logoPath) : null,
+    }));
+}
 
 export async function loadPortfolioContent(): Promise<PortfolioContent> {
   const ds = await getDataSource();
@@ -240,11 +270,6 @@ export async function loadPortfolioContent(): Promise<PortfolioContent> {
     }),
   ]);
 
-  const labels = (kind: NamedListItemRow["kind"]) =>
-    named
-      .filter((n) => n.kind === kind && n.published)
-      .map((n) => n.label);
-
   const settings: SiteSettingsContent = settingsRow
     ? {
         email: settingsRow.email,
@@ -254,6 +279,9 @@ export async function loadPortfolioContent(): Promise<PortfolioContent> {
         carouselIntervalMs: settingsRow.carouselIntervalMs,
         graphicPreviewLimit: settingsRow.graphicPreviewLimit,
         interfacesPreviewLimit: settingsRow.interfacesPreviewLimit,
+        homeLayout: normalizeHomeLayout(
+          settingsRow.homeLayout as HomeLayoutConfig | null,
+        ),
       }
     : defaultSettings;
 
@@ -272,6 +300,7 @@ export async function loadPortfolioContent(): Promise<PortfolioContent> {
       signature: mediaUrl(bio.signaturePath),
       signatureAlt: bio.signatureAlt,
       cv: mediaUrl(bio.cvPath),
+      cvEn: mediaUrl(bio.cvPathEn),
       text: bio.text,
     },
     techIcons: techIcons
@@ -281,9 +310,9 @@ export async function loadPortfolioContent(): Promise<PortfolioContent> {
         src: mediaUrl(icon.srcPath),
         ...(icon.label ? { label: icon.label } : {}),
       })),
-    companies: labels("company"),
-    pastProjects: labels("past_project"),
-    currentProjects: labels("current_project"),
+    companies: mapNamed("company", named),
+    pastProjects: mapNamed("past_project", named),
+    currentProjects: mapNamed("current_project", named),
     testimonials: testimonials
       .filter((row) => !row.hidden)
       .map((row) => ({

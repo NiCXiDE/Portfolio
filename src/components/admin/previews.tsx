@@ -149,8 +149,8 @@ export function TestimonialPreview({
           Oculto
         </p>
       ) : null}
-      <article className="flex flex-row items-start gap-3 bg-white p-3">
-        <div className="aspect-square w-[72px] shrink-0 overflow-hidden bg-sky-pale sm:w-[100px]">
+      <article className="flex flex-row items-start gap-3 bg-sky-pale p-3">
+        <div className="aspect-square w-[72px] shrink-0 overflow-hidden bg-white/50 sm:w-[100px]">
           <PreviewImg src={image} alt={name} className="size-full object-cover" />
         </div>
         <div className="flex min-w-0 flex-1 flex-col gap-1">
@@ -191,6 +191,7 @@ export function BioPreview({
   const signature = mediaSrc(draftStr(draft, "signaturePath"));
   const text = draftLoc(draft, "textEs", "textEn", locale);
   const cv = draftStr(draft, "cvPath");
+  const cvEn = draftStr(draft, "cvPathEn");
 
   return (
     <div className="space-y-3 bg-white p-3">
@@ -205,7 +206,10 @@ export function BioPreview({
         {text || "Texto de bio…"}
       </p>
       {cv ? (
-        <p className="text-[0.65rem] text-ink/60 underline">CV: {cv}</p>
+        <p className="text-[0.65rem] text-ink/60 underline">CV ES: {cv}</p>
+      ) : null}
+      {cvEn ? (
+        <p className="text-[0.65rem] text-ink/60 underline">Résumé EN: {cvEn}</p>
       ) : null}
       {signature ? (
         // eslint-disable-next-line @next/next/no-img-element
@@ -333,14 +337,10 @@ export function NamedListPreview({ draft }: { draft: Draft }) {
   }
 
   return (
-    <div className="flex flex-wrap content-start items-center gap-x-2 gap-y-1.5 bg-white p-3 text-xs text-ink">
+    <div className="flex flex-wrap content-start items-center gap-x-4 gap-y-1.5 bg-white p-3 text-xs text-ink">
       {lines.map((item, i) => (
-        <span key={`${item}-${i}`} className="inline-flex items-center gap-1.5">
-          <span
-            aria-hidden
-            className="inline-block size-1 shrink-0 rounded-full bg-ink/70"
-          />
-          <span>{item}</span>
+        <span key={`${item}-${i}`} className="whitespace-nowrap">
+          {item}
         </span>
       ))}
     </div>

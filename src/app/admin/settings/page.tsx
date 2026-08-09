@@ -5,6 +5,7 @@ import {
   WithSettingsPreview,
   WithSocialPreview,
 } from "@/components/admin/WithPreview";
+import { ImageDropField } from "@/components/admin/ImageDropField";
 
 export default async function AdminSettingsPage({
   searchParams,
@@ -20,7 +21,7 @@ export default async function AdminSettingsPage({
 
   return (
     <div>
-      <h1 className="font-bigger text-3xl uppercase">Ajustes</h1>
+      <h1 className="font-admin-title text-3xl">Ajustes</h1>
       {saved ? <p className="mt-2 text-sm text-green-700">Guardado.</p> : null}
 
       <div className="mt-6">
@@ -115,10 +116,13 @@ export default async function AdminSettingsPage({
                   defaultValue={s.href}
                   className="w-full border border-ink/20 px-3 py-2 text-sm"
                 />
-                <input
+                <ImageDropField
                   name="iconPath"
+                  label="Ícono"
+                  hint="Arrastrá el SVG o PNG del ícono."
+                  folder="assets/shared"
                   defaultValue={s.iconPath ?? ""}
-                  className="w-full border border-ink/20 px-3 py-2 text-sm"
+                  accept="image/*,.svg,.png,.webp,.jpg,.jpeg"
                 />
                 <div className="flex gap-4 text-sm">
                   <label className="inline-flex items-center gap-2">
@@ -177,10 +181,13 @@ export default async function AdminSettingsPage({
                 placeholder="https://..."
                 className="w-full border border-ink/20 px-3 py-2 text-sm"
               />
-              <input
+              <ImageDropField
                 name="iconPath"
-                placeholder="/assets/shared/…"
-                className="w-full border border-ink/20 px-3 py-2 text-sm"
+                label="Ícono"
+                hint="Arrastrá el SVG o PNG del ícono."
+                folder="assets/shared"
+                defaultValue=""
+                accept="image/*,.svg,.png,.webp,.jpg,.jpeg"
               />
               <label className="inline-flex items-center gap-2 text-sm">
                 <input type="checkbox" name="published" defaultChecked />

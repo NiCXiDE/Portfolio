@@ -114,12 +114,13 @@ export function ManualsClient({
 }) {
   return (
     <div>
-      <h1 className="font-bigger text-3xl uppercase">Manuales</h1>
+      <h1 className="font-admin-title text-3xl">Manuales</h1>
       {saved ? <p className="mt-2 text-sm text-green-700">Guardado.</p> : null}
       <p className="mt-2 text-sm text-ink/60">Tocá un manual para editarlo.</p>
 
       <div className="mt-6">
         <CollapsibleEditor
+          compact
           summary={
             <div className="flex items-center gap-2 py-1 text-sm font-medium">
               <Plus className="size-4" /> <FileText className="size-4 opacity-50" /> Nuevo
