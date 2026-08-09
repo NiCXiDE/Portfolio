@@ -1,13 +1,16 @@
 "use client";
 
+import { useState } from "react";
 import { EyeOff, Hash, Plus, Save, User } from "lucide-react";
 import { deleteTestimonial, saveTestimonial } from "@/app/admin/actions";
 import { CollapsibleEditor } from "@/components/admin/CollapsibleEditor";
-import { FieldLabel, fieldClass } from "@/components/admin/FieldLabel";
+import { FieldLabel, fieldClass, selectClass } from "@/components/admin/FieldLabel";
 import { ImageDropField } from "@/components/admin/ImageDropField";
+import { MentionTextarea } from "@/components/admin/MentionTextarea";
 import { WithTestimonialPreview } from "@/components/admin/WithPreview";
 import { TestimonialPreview } from "@/components/admin/previews";
 import type { Draft } from "@/components/admin/draft";
+import type { BrandRef } from "@/lib/brands";
 
 export type TestimonialDTO = {
   id: string;
@@ -18,6 +21,7 @@ export type TestimonialDTO = {
   companyName: string;
   companyLogoPath: string | null;
   companyHref: string | null;
+  companyBrandId: string | null;
   linkLabel: { es: string; en: string } | null;
   hidden: boolean;
   sortOrder: number;
@@ -34,6 +38,7 @@ function toDraft(item: TestimonialDTO): Draft {
     companyName: item.companyName,
     companyLogoPath: item.companyLogoPath ?? "",
     companyHref: item.companyHref ?? "",
+    companyBrandId: item.companyBrandId ?? "",
     linkLabelEs: item.linkLabel?.es ?? "",
     linkLabelEn: item.linkLabel?.en ?? "",
     hidden: item.hidden,
@@ -44,10 +49,33 @@ function toDraft(item: TestimonialDTO): Draft {
 function Fields({
   item,
   showId,
+  brands,
 }: {
   item?: TestimonialDTO;
   showId?: boolean;
+  brands: BrandRef[];
 }) {
+  const [quoteEs, setQuoteEs] = useState(item?.quote?.es ?? "");
+  const [quoteEn, setQuoteEn] = useState(item?.quote?.en ?? "");
+  const [roleEs, setRoleEs] = useState(item?.role?.es ?? "");
+  const [roleEn, setRoleEn] = useState(item?.role?.en ?? "");
+  const [brandId, setBrandId] = useState(item?.companyBrandId ?? "");
+  const [companyName, setCompanyName] = useState(item?.companyName ?? "");
+  const [companyHref, setCompanyHref] = useState(item?.companyHref ?? "");
+  const [companyLogoPath, setCompanyLogoPath] = useState(
+    item?.companyLogoPath ?? "",
+  );
+
+  function applyBrand(id: string) {
+    setBrandId(id);
+    const brand = brands.find((b) => b.id === id);
+    if (!brand) return;
+    setCompanyName(brand.name);
+    setCompanyHref(brand.href ?? "");
+    if (brand.logoPath) setCompanyLogoPath(brand.logoPath);
+    else if (brand.logo) setCompanyLogoPath(brand.logo);
+  }
+
   return (
     <>
       {showId ? (
@@ -73,34 +101,84 @@ function Fields({
         folder="assets/inicio/testimonials"
         defaultValue={item?.imagePath}
       />
-      <label className="block">
+      <div>
         <FieldLabel>Cita (español)</FieldLabel>
-        <textarea name="quoteEs" defaultValue={item?.quote?.es ?? ""} rows={3} className={fieldClass} />
-      </label>
-      <label className="block">
+        <MentionTextarea
+          name="quoteEs"
+          value={quoteEs}
+          onChange={setQuoteEs}
+          brands={brands}
+          rows={3}
+        />
+      </div>
+      <div>
         <FieldLabel>Cita (inglés)</FieldLabel>
-        <textarea name="quoteEn" defaultValue={item?.quote?.en ?? ""} rows={3} className={fieldClass} />
-      </label>
+        <MentionTextarea
+          name="quoteEn"
+          value={quoteEn}
+          onChange={setQuoteEn}
+          brands={brands}
+          rows={3}
+        />
+      </div>
       <div className="grid gap-3 sm:grid-cols-2">
-        <label className="block">
+        <div>
           <FieldLabel>Cargo (español)</FieldLabel>
-          <input name="roleEs" defaultValue={item?.role?.es ?? ""} className={fieldClass} />
-        </label>
-        <label className="block">
+          <MentionTextarea
+            name="roleEs"
+            value={roleEs}
+            onChange={setRoleEs}
+            brands={brands}
+            rows={2}
+          />
+        </div>
+        <div>
           <FieldLabel>Cargo (inglés)</FieldLabel>
-          <input name="roleEn" defaultValue={item?.role?.en ?? ""} className={fieldClass} />
-        </label>
+          <MentionTextarea
+            name="roleEn"
+            value={roleEn}
+            onChange={setRoleEn}
+            brands={brands}
+            rows={2}
+          />
+        </div>
       </div>
       <label className="block">
-        <FieldLabel>Empresa o marca</FieldLabel>
-        <input name="companyName" defaultValue={item?.companyName} className={fieldClass} />
+        <FieldLabel hint="Vinculá una marca del catálogo para reutilizar nombre, logo y web.">
+          Marca vinculada
+        </FieldLabel>
+        <select
+          name="companyBrandId"
+          value={brandId}
+          onChange={(e) => applyBrand(e.target.value)}
+          className={selectClass}
+        >
+          <option value="">Sin marca (manual)</option>
+          {brands.map((b) => (
+            <option key={b.id} value={b.id}>
+              {b.name} (@{b.id})
+            </option>
+          ))}
+        </select>
+      </label>
+      <label className="block">
+        <FieldLabel hint="Se rellena desde la marca; podés sobrescribir.">
+          Empresa o marca
+        </FieldLabel>
+        <input
+          name="companyName"
+          value={companyName}
+          onChange={(e) => setCompanyName(e.target.value)}
+          className={fieldClass}
+        />
       </label>
       <ImageDropField
         name="companyLogoPath"
         label="Logo de la empresa (opcional)"
-        hint="Si no hay logo, se muestra un enlace de texto."
+        hint="Si hay marca vinculada, usá su logo salvo que subas otro."
         folder="assets/inicio/testimonials"
-        defaultValue={item?.companyLogoPath ?? ""}
+        defaultValue={companyLogoPath}
+        key={companyLogoPath || "empty-logo"}
       />
       <label className="block">
         <FieldLabel hint="Web o red social de la empresa/persona.">
@@ -108,7 +186,8 @@ function Fields({
         </FieldLabel>
         <input
           name="companyHref"
-          defaultValue={item?.companyHref ?? ""}
+          value={companyHref}
+          onChange={(e) => setCompanyHref(e.target.value)}
           placeholder="https://…"
           className={fieldClass}
         />
@@ -157,9 +236,11 @@ function Fields({
 
 export function TestimonialsClient({
   items,
+  brands,
   saved,
 }: {
   items: TestimonialDTO[];
+  brands: BrandRef[];
   saved?: string;
 }) {
   return (
@@ -167,7 +248,7 @@ export function TestimonialsClient({
       <h1 className="font-admin-title text-3xl">Testimonios</h1>
       {saved ? <p className="mt-2 text-sm text-green-700">Guardado.</p> : null}
       <p className="mt-2 text-sm text-ink/60">
-        Tocá un testimonio para editarlo.
+        Tocá un testimonio para editarlo. Vinculá marcas del catálogo o citá con @.
       </p>
 
       <div className="mt-6">
@@ -181,7 +262,7 @@ export function TestimonialsClient({
         >
           <WithTestimonialPreview>
             <form action={saveTestimonial} className="space-y-4">
-              <Fields showId />
+              <Fields showId brands={brands} />
               <button
                 type="submit"
                 className="inline-flex items-center gap-1.5 bg-ink px-3 py-2 text-sm text-sky-pale"
@@ -212,7 +293,7 @@ export function TestimonialsClient({
             <WithTestimonialPreview initialDraft={toDraft(item)}>
               <form action={saveTestimonial} className="space-y-4">
                 <input type="hidden" name="id" value={item.id} />
-                <Fields item={item} />
+                <Fields item={item} brands={brands} />
                 <button
                   type="submit"
                   className="inline-flex items-center gap-1.5 bg-ink px-3 py-2 text-sm text-sky-pale"

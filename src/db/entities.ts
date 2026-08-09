@@ -14,6 +14,16 @@ export type BioRow = {
   text: LocalizedJson;
 };
 
+export type BrandRow = {
+  id: string;
+  name: string;
+  logoPath: string | null;
+  href: string | null;
+  sortOrder: number;
+  published: boolean;
+  createdAt: Date;
+};
+
 export type NamedListKind = "company" | "past_project" | "current_project";
 
 export type NamedListItemRow = {
@@ -21,6 +31,7 @@ export type NamedListItemRow = {
   kind: NamedListKind;
   label: string;
   logoPath: string | null;
+  brandId: string | null;
   sortOrder: number;
   published: boolean;
   createdAt: Date;
@@ -35,6 +46,7 @@ export type TestimonialRow = {
   companyName: string;
   companyLogoPath: string | null;
   companyHref: string | null;
+  companyBrandId: string | null;
   linkLabel: LocalizedJson | null;
   hidden: boolean;
   sortOrder: number;
@@ -164,7 +176,8 @@ export type AuditEntityType =
   | "ui_project"
   | "ui_list_item"
   | "tag"
-  | "social_link";
+  | "social_link"
+  | "brand";
 
 export type AdminAuditLogRow = {
   id: string;
@@ -214,11 +227,36 @@ export const NamedListItemEntity = new EntitySchema<NamedListItemRow>({
       length: 512,
       nullable: true,
     },
+    brandId: {
+      name: "brand_id",
+      type: String,
+      length: 64,
+      nullable: true,
+    },
     sortOrder: { name: "sort_order", type: Number },
     published: { type: Boolean, default: true },
     createdAt: { name: "created_at", type: Date, createDate: true },
   },
   indices: [{ columns: ["kind", "sortOrder"] }],
+});
+
+export const BrandEntity = new EntitySchema<BrandRow>({
+  name: "brands",
+  tableName: "brands",
+  columns: {
+    id: { type: String, primary: true, length: 64 },
+    name: { type: String, length: 255 },
+    logoPath: {
+      name: "logo_path",
+      type: String,
+      length: 512,
+      nullable: true,
+    },
+    href: { type: String, length: 1024, nullable: true },
+    sortOrder: { name: "sort_order", type: Number },
+    published: { type: Boolean, default: true },
+    createdAt: { name: "created_at", type: Date, createDate: true },
+  },
 });
 
 export const TestimonialEntity = new EntitySchema<TestimonialRow>({
@@ -241,6 +279,12 @@ export const TestimonialEntity = new EntitySchema<TestimonialRow>({
       name: "company_href",
       type: String,
       length: 512,
+      nullable: true,
+    },
+    companyBrandId: {
+      name: "company_brand_id",
+      type: String,
+      length: 64,
       nullable: true,
     },
     linkLabel: { name: "link_label", type: "json", nullable: true },

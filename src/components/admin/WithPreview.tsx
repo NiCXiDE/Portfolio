@@ -15,11 +15,16 @@ import {
   UiListPreview,
   UiProjectPreview,
 } from "@/components/admin/previews";
+import type { BrandRef } from "@/lib/brands";
 
 type WrapProps = {
   children: ReactNode;
   initialDraft?: Draft;
   showLocaleToggle?: boolean;
+};
+
+type UiProjectWrapProps = WrapProps & {
+  brands?: BrandRef[];
 };
 
 export function WithGraphicPreview({ children, initialDraft }: WrapProps) {
@@ -74,12 +79,16 @@ export function WithManualPreview({ children, initialDraft }: WrapProps) {
   );
 }
 
-export function WithUiProjectPreview({ children, initialDraft }: WrapProps) {
+export function WithUiProjectPreview({
+  children,
+  initialDraft,
+  brands = [],
+}: UiProjectWrapProps) {
   return (
     <AdminEditorShell
       initialDraft={initialDraft}
       renderPreview={(draft, locale) => (
-        <UiProjectPreview draft={draft} locale={locale} />
+        <UiProjectPreview draft={draft} locale={locale} brands={brands} />
       )}
     >
       {children}

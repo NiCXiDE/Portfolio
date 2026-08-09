@@ -1,6 +1,7 @@
 import { getDataSource } from "@/db/data-source";
 import {
   BioEntity,
+  BrandEntity,
   BrandManualEntity,
   GraphicItemEntity,
   NamedListItemEntity,
@@ -25,6 +26,7 @@ import {
   normalizeHomeLayout,
   type HomeLayoutConfig,
 } from "@/lib/home-layout";
+import type { BrandRef } from "@/lib/brands";
 
 export type LocalizedString = LocalizedJson;
 
@@ -155,6 +157,8 @@ export type PortfolioContent = {
   settings: SiteSettingsContent;
   socialLinks: SocialLinkContent[];
   tags: TagRow[];
+  /** Publicado; para @menciones y resolución de logos */
+  brands: BrandRef[];
 };
 
 function mapGraphic(
@@ -213,14 +217,23 @@ const defaultSettings: SiteSettingsContent = {
   homeLayout: DEFAULT_HOME_LAYOUT,
 };
 
-function mapNamed(kind: NamedListItemRow["kind"], named: NamedListItemRow[]) {
+function mapNamed(
+  kind: NamedListItemRow["kind"],
+  named: NamedListItemRow[],
+  brandsById: Record<string, BrandRef>,
+) {
   return named
     .filter((n) => n.kind === kind && n.published)
-    .map((n) => ({
-      id: n.id,
-      label: n.label,
-      logo: n.logoPath ? mediaUrl(n.logoPath) : null,
-    }));
+    .map((n) => {
+      const brand = n.brandId ? brandsById[n.brandId] : undefined;
+      const label = brand?.name || n.label;
+      const logoPath = brand?.logo ?? (n.logoPath ? mediaUrl(n.logoPath) : null);
+      return {
+        id: n.id,
+        label,
+        logo: logoPath,
+      };
+    });
 }
 
 export async function loadPortfolioContent(): Promise<PortfolioContent> {
@@ -238,6 +251,7 @@ export async function loadPortfolioContent(): Promise<PortfolioContent> {
     settingsRow,
     socials,
     tags,
+    brandRows,
   ] = await Promise.all([
     ds.getRepository(BioEntity).findOneByOrFail({ id: "main" }),
     ds.getRepository(NamedListItemEntity).find({
@@ -268,7 +282,20 @@ export async function loadPortfolioContent(): Promise<PortfolioContent> {
     ds.getRepository(TagEntity).find({
       order: { sortOrder: "ASC", slug: "ASC" },
     }),
+    ds.getRepository(BrandEntity).find({
+      order: { sortOrder: "ASC", name: "ASC" },
+    }),
   ]);
+
+  const brands: BrandRef[] = brandRows
+    .filter((b) => b.published)
+    .map((b) => ({
+      id: b.id,
+      name: b.name,
+      logo: b.logoPath ? mediaUrl(b.logoPath) : null,
+      href: b.href,
+    }));
+  const brandsById = Object.fromEntries(brands.map((b) => [b.id, b]));
 
   const settings: SiteSettingsContent = settingsRow
     ? {
@@ -310,24 +337,31 @@ export async function loadPortfolioContent(): Promise<PortfolioContent> {
         src: mediaUrl(icon.srcPath),
         ...(icon.label ? { label: icon.label } : {}),
       })),
-    companies: mapNamed("company", named),
-    pastProjects: mapNamed("past_project", named),
-    currentProjects: mapNamed("current_project", named),
+    companies: mapNamed("company", named, brandsById),
+    pastProjects: mapNamed("past_project", named, brandsById),
+    currentProjects: mapNamed("current_project", named, brandsById),
     testimonials: testimonials
       .filter((row) => !row.hidden)
-      .map((row) => ({
-        id: row.id,
-        name: row.name,
-        image: mediaUrl(row.imagePath),
-        quote: row.quote,
-        role: row.role,
-        company: {
-          name: row.companyName,
-          logo: row.companyLogoPath ? mediaUrl(row.companyLogoPath) : null,
-          href: row.companyHref,
-          linkLabel: row.linkLabel,
-        },
-      })),
+      .map((row) => {
+        const brand = row.companyBrandId
+          ? brandsById[row.companyBrandId]
+          : undefined;
+        return {
+          id: row.id,
+          name: row.name,
+          image: mediaUrl(row.imagePath),
+          quote: row.quote,
+          role: row.role,
+          company: {
+            name: row.companyName || brand?.name || "",
+            logo: row.companyLogoPath
+              ? mediaUrl(row.companyLogoPath)
+              : brand?.logo ?? null,
+            href: row.companyHref || brand?.href || null,
+            linkLabel: row.linkLabel,
+          },
+        };
+      }),
     covers: bySection(graphics, "covers"),
     logos: bySection(graphics, "logos"),
     personal: bySection(graphics, "personal"),
@@ -366,6 +400,7 @@ export async function loadPortfolioContent(): Promise<PortfolioContent> {
     settings,
     socialLinks: socials.filter((s) => s.published).map(mapSocial),
     tags,
+    brands,
   };
 }
 

@@ -1,6 +1,7 @@
 import { getDataSource } from "@/db/data-source";
-import { TestimonialEntity } from "@/db/entities";
+import { BrandEntity, TestimonialEntity } from "@/db/entities";
 import { TestimonialsClient } from "@/components/admin/TestimonialsClient";
+import { mediaUrl } from "@/lib/media";
 
 export default async function AdminTestimonialsPage({
   searchParams,
@@ -9,13 +10,26 @@ export default async function AdminTestimonialsPage({
 }) {
   const { saved } = await searchParams;
   const ds = await getDataSource();
-  const items = await ds.getRepository(TestimonialEntity).find({
-    order: { sortOrder: "ASC" },
-  });
+  const [items, brands] = await Promise.all([
+    ds.getRepository(TestimonialEntity).find({
+      order: { sortOrder: "ASC" },
+    }),
+    ds.getRepository(BrandEntity).find({
+      where: { published: true },
+      order: { name: "ASC" },
+    }),
+  ]);
 
   return (
     <TestimonialsClient
       saved={saved}
+      brands={brands.map((b) => ({
+        id: b.id,
+        name: b.name,
+        logo: b.logoPath ? mediaUrl(b.logoPath) : null,
+        logoPath: b.logoPath,
+        href: b.href,
+      }))}
       items={items.map((item) => ({
         id: item.id,
         name: item.name,
@@ -25,6 +39,7 @@ export default async function AdminTestimonialsPage({
         companyName: item.companyName,
         companyLogoPath: item.companyLogoPath,
         companyHref: item.companyHref,
+        companyBrandId: item.companyBrandId,
         linkLabel: item.linkLabel,
         hidden: item.hidden,
         sortOrder: item.sortOrder,

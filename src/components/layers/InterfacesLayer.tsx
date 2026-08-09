@@ -21,6 +21,7 @@ import {
   type PortfolioContent,
 } from "@/lib/content";
 import { SortButtons, type SortMode } from "@/components/SortButtons";
+import { renderMentionedText } from "@/components/MentionText";
 
 type Props = {
   locale: Locale;
@@ -242,6 +243,10 @@ export function InterfacesLayer({ locale, dict, content }: Props) {
   const projects = content.uiProjects as readonly UiProject[];
   const limit = content.settings.interfacesPreviewLimit;
   const autoMs = content.settings.carouselIntervalMs;
+  const brandsById = useMemo(
+    () => Object.fromEntries(content.brands.map((b) => [b.id, b])),
+    [content.brands],
+  );
   const [sorts, setSorts] = useState<Record<UiCategory, SortMode>>({
     "sistemas-a-medida": "year",
     preventas: "year",
@@ -378,7 +383,12 @@ export function InterfacesLayer({ locale, dict, content }: Props) {
                         autoMs={autoMs}
                       />
                       <div className="flex flex-wrap items-center justify-between gap-2 text-sm text-ink">
-                        <span>{t(project.meta, locale)}</span>
+                        <span>
+                          {renderMentionedText(
+                            t(project.meta, locale),
+                            brandsById,
+                          )}
+                        </span>
                         {href ? (
                           <a
                             href={href}

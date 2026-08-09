@@ -5,6 +5,7 @@ import { getDataSource } from "@/db/data-source";
 import {
   AdminAuditLogEntity,
   BioEntity,
+  BrandEntity,
   BrandManualEntity,
   GraphicItemEntity,
   NamedListItemEntity,
@@ -46,6 +47,7 @@ export const ENTITY_LABELS: Record<AuditEntityType, string> = {
   ui_list_item: "Ítem UI",
   tag: "Etiqueta",
   social_link: "Red social",
+  brand: "Marca",
 };
 
 export const ACTION_LABELS: Record<AuditAction, string> = {
@@ -134,6 +136,7 @@ async function restoreNamedList(payload: {
   items: Array<{
     label: string;
     logoPath?: string | null;
+    brandId?: string | null;
     sortOrder?: number;
     published?: boolean;
     createdAt?: string | null;
@@ -149,6 +152,7 @@ async function restoreNamedList(payload: {
         kind: payload.kind,
         label: item.label,
         logoPath: item.logoPath ?? null,
+        brandId: item.brandId ?? null,
         sortOrder: item.sortOrder ?? sortOrder,
         published: item.published ?? true,
         createdAt: item.createdAt ? new Date(item.createdAt) : new Date(),
@@ -275,6 +279,17 @@ async function applySnapshot(
     }
     case "social_link": {
       const repo = ds.getRepository(SocialLinkEntity);
+      if (action === "create") {
+        const id = String(after?.id ?? "");
+        if (id) await repo.delete({ id });
+        return;
+      }
+      if (!before) throw new Error("No hay snapshot previo");
+      await repo.save(before as never);
+      return;
+    }
+    case "brand": {
+      const repo = ds.getRepository(BrandEntity);
       if (action === "create") {
         const id = String(after?.id ?? "");
         if (id) await repo.delete({ id });

@@ -5,6 +5,7 @@ import { getDictionary } from "@/i18n/dictionaries";
 import { isLocale, type Locale } from "@/i18n/config";
 import { loadPortfolioContent, t } from "@/lib/content";
 import { pathForLayer } from "@/lib/layers";
+import { MentionedText } from "@/components/MentionText";
 
 const CATS = [
   "preventas",
@@ -66,7 +67,9 @@ export default async function InterfacesCategoryPage({
                 />
               </div>
             ) : null}
-            <p className="text-sm text-ink">{t(project.meta, locale)}</p>
+            <p className="text-sm text-ink">
+              <MentionedText text={t(project.meta, locale)} brands={content.brands} />
+            </p>
             {project.prototypeUrl ? (
               <a
                 href={project.prototypeUrl}

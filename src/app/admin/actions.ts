@@ -4,6 +4,7 @@ import { redirect } from "next/navigation";
 import { getDataSource } from "@/db/data-source";
 import {
   BioEntity,
+  BrandEntity,
   BrandManualEntity,
   GraphicItemEntity,
   NamedListItemEntity,
@@ -32,6 +33,7 @@ import {
   undoAuditLog,
 } from "@/lib/audit";
 import { withToastQuery } from "@/lib/admin-toast";
+import { slugifyBrand } from "@/lib/brands";
 import { revalidatePath } from "next/cache";
 
 function loc(es: FormDataEntryValue | null, en: FormDataEntryValue | null): LocalizedJson {
@@ -69,6 +71,62 @@ export async function undoAdminChange(formData: FormData) {
 export async function undoAdminChangeAction(auditId: string) {
   const session = await requireSession();
   return undoAuditLog(auditId, session);
+}
+
+export async function saveBrand(formData: FormData) {
+  const session = await requireSession();
+  let id = String(formData.get("id") ?? "")
+    .trim()
+    .toLowerCase()
+    .replace(/[^a-z0-9-]/g, "-");
+  const name = String(formData.get("name") ?? "").trim();
+  if (!name) redirect("/admin/brands?error=name");
+  if (!id) id = slugifyBrand(name);
+  const ds = await getDataSource();
+  const repo = ds.getRepository(BrandEntity);
+  const existing = await repo.findOneBy({ id });
+  const before = snap(existing);
+  const after = {
+    id,
+    name,
+    logoPath: String(formData.get("logoPath") ?? "") || null,
+    href: String(formData.get("href") ?? "") || null,
+    sortOrder: Number(formData.get("sortOrder") ?? 0),
+    published: bool(formData.get("published")),
+    createdAt: existing?.createdAt ?? new Date(),
+  };
+  await repo.save(after);
+  await finishAdminMutation({
+    session,
+    action: existing ? "update" : "create",
+    entityType: "brand",
+    entityId: id,
+    summary: existing ? `Actualizó marca “${name}”` : `Creó marca “${name}”`,
+    before,
+    after: snap(after),
+    redirectTo: "/admin/brands",
+    toastMessage: existing ? "Marca guardada" : "Marca creada",
+  });
+}
+
+export async function deleteBrand(formData: FormData) {
+  const session = await requireSession();
+  const id = String(formData.get("id") ?? "");
+  const ds = await getDataSource();
+  const repo = ds.getRepository(BrandEntity);
+  const before = snap(await repo.findOneBy({ id }));
+  await repo.delete({ id });
+  await finishAdminMutation({
+    session,
+    action: "delete",
+    entityType: "brand",
+    entityId: id,
+    summary: `Eliminó marca “${id}”`,
+    before,
+    after: null,
+    redirectTo: "/admin/brands",
+    toastMessage: "Marca eliminada",
+  });
 }
 
 export async function saveBio(formData: FormData) {
@@ -177,6 +235,7 @@ export async function saveNamedList(formData: FormData) {
   let items: {
     label: string;
     logoPath?: string | null;
+    brandId?: string | null;
     createdAt?: string | null;
   }[] = [];
   const itemsJson = String(formData.get("itemsJson") ?? "").trim();
@@ -187,21 +246,33 @@ export async function saveNamedList(formData: FormData) {
         items = parsed
           .map((row) => {
             if (typeof row === "string") {
-              return { label: row.trim(), logoPath: null, createdAt: null };
+              return {
+                label: row.trim(),
+                logoPath: null,
+                brandId: null,
+                createdAt: null,
+              };
             }
             if (row && typeof row === "object") {
               const r = row as {
                 label?: unknown;
                 logoPath?: unknown;
+                brandId?: unknown;
                 createdAt?: unknown;
               };
               return {
                 label: String(r.label ?? "").trim(),
                 logoPath: String(r.logoPath ?? "").trim() || null,
+                brandId: String(r.brandId ?? "").trim() || null,
                 createdAt: String(r.createdAt ?? "").trim() || null,
               };
             }
-            return { label: "", logoPath: null, createdAt: null };
+            return {
+              label: "",
+              logoPath: null,
+              brandId: null,
+              createdAt: null,
+            };
           })
           .filter((r) => r.label);
       }
@@ -214,7 +285,12 @@ export async function saveNamedList(formData: FormData) {
       .split("\n")
       .map((l) => l.trim())
       .filter(Boolean)
-      .map((label) => ({ label, logoPath: null, createdAt: null }));
+      .map((label) => ({
+        label,
+        logoPath: null,
+        brandId: null,
+        createdAt: null,
+      }));
   }
 
   const repo = ds.getRepository(NamedListItemEntity);
@@ -233,6 +309,7 @@ export async function saveNamedList(formData: FormData) {
     items: prevItems.map((i) => ({
       label: i.label,
       logoPath: i.logoPath,
+      brandId: i.brandId,
       sortOrder: i.sortOrder,
       published: i.published,
       createdAt: i.createdAt?.toISOString?.() ?? i.createdAt,
@@ -246,6 +323,7 @@ export async function saveNamedList(formData: FormData) {
       kind,
       label: item.label,
       logoPath: item.logoPath ?? null,
+      brandId: item.brandId ?? null,
       sortOrder,
       published: true,
       createdAt: item.createdAt ? new Date(item.createdAt) : new Date(),
@@ -285,6 +363,7 @@ export async function saveNamedList(formData: FormData) {
     items: items.map((item, sortOrder) => ({
       label: item.label,
       logoPath: item.logoPath ?? null,
+      brandId: item.brandId ?? null,
       sortOrder,
       published: true,
       createdAt: item.createdAt ?? null,
@@ -322,6 +401,7 @@ export async function saveTestimonial(formData: FormData) {
     companyName: String(formData.get("companyName") ?? ""),
     companyLogoPath: String(formData.get("companyLogoPath") ?? "") || null,
     companyHref: String(formData.get("companyHref") ?? "") || null,
+    companyBrandId: String(formData.get("companyBrandId") ?? "").trim() || null,
     linkLabel:
       String(formData.get("linkLabelEs") ?? "").trim() ||
       String(formData.get("linkLabelEn") ?? "").trim()

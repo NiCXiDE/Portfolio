@@ -11,6 +11,7 @@ import { FigmaGap } from "@/components/FigmaGap";
 import { EditableSurname } from "@/components/EditableSurname";
 import { CvDownloadButton } from "@/components/CvDownloadButton";
 import { InfiniteMarquee } from "@/components/InfiniteMarquee";
+import { MentionedText } from "@/components/MentionText";
 import type { CSSProperties } from "react";
 
 type Props = {
@@ -176,13 +177,19 @@ export function HomeLayer({ locale, dict, content }: Props) {
                     </div>
                     <div className="flex min-w-0 flex-1 flex-col gap-1.5 py-0.5 md:gap-2 md:py-1">
                       <p className="text-sm leading-relaxed text-ink md:text-lg">
-                        {t(item.quote, locale)}
+                        <MentionedText
+                          text={t(item.quote, locale)}
+                          brands={content.brands}
+                        />
                       </p>
                       <p className="text-sm font-bold text-ink md:text-lg">
                         {item.name}
                       </p>
                       <p className="text-sm font-medium text-ink/80 md:text-base">
-                        {t(item.role, locale)}
+                        <MentionedText
+                          text={t(item.role, locale)}
+                          brands={content.brands}
+                        />
                       </p>
                       {item.company.href ? (
                         item.company.logo ? (

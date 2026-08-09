@@ -1,6 +1,7 @@
 import { getDataSource } from "@/db/data-source";
-import { UiProjectEntity } from "@/db/entities";
+import { BrandEntity, UiProjectEntity } from "@/db/entities";
 import { InterfacesProjectsClient } from "@/components/admin/InterfacesClient";
+import { mediaUrl } from "@/lib/media";
 
 export default async function AdminInterfacesProjectsPage({
   searchParams,
@@ -9,13 +10,26 @@ export default async function AdminInterfacesProjectsPage({
 }) {
   const { saved } = await searchParams;
   const ds = await getDataSource();
-  const projects = await ds.getRepository(UiProjectEntity).find({
-    order: { sortOrder: "ASC" },
-  });
+  const [projects, brands] = await Promise.all([
+    ds.getRepository(UiProjectEntity).find({
+      order: { sortOrder: "ASC" },
+    }),
+    ds.getRepository(BrandEntity).find({
+      where: { published: true },
+      order: { name: "ASC" },
+    }),
+  ]);
 
   return (
     <InterfacesProjectsClient
       saved={saved}
+      brands={brands.map((b) => ({
+        id: b.id,
+        name: b.name,
+        logo: b.logoPath ? mediaUrl(b.logoPath) : null,
+        logoPath: b.logoPath,
+        href: b.href,
+      }))}
       projects={projects.map((p) => ({
         id: p.id,
         category: p.category,

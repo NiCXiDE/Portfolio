@@ -7,6 +7,7 @@ import {
   AdminUserEntity,
   AdminAuditLogEntity,
   BioEntity,
+  BrandEntity,
   BrandManualEntity,
   GraphicItemEntity,
   NamedListItemEntity,
@@ -19,6 +20,7 @@ import {
   UiProjectEntity,
   type BioRow,
   type BrandManualRow,
+  type BrandRow,
   type GraphicItemRow,
   type GraphicSection,
   type LocalizedJson,
@@ -32,6 +34,7 @@ import {
   type UiListItemRow,
   type UiProjectRow,
 } from "../src/db/entities";
+import { slugifyBrand } from "../src/lib/brands";
 
 loadEnv({ path: resolve(process.cwd(), ".env") });
 
@@ -50,6 +53,7 @@ async function clearAll(ds: ReturnType<typeof createDataSource>) {
   await ds.getRepository(UiListItemEntity).clear();
   await ds.getRepository(TestimonialEntity).clear();
   await ds.getRepository(NamedListItemEntity).clear();
+  await ds.getRepository(BrandEntity).clear();
   await ds.getRepository(TechIconEntity).clear();
   await ds.getRepository(BioEntity).clear();
   await ds.getRepository(SocialLinkEntity).clear();
@@ -61,11 +65,13 @@ async function clearAll(ds: ReturnType<typeof createDataSource>) {
 function seedNamed(
   kind: NamedListKind,
   labels: string[],
+  brandByName: Map<string, string>,
 ): Omit<NamedListItemRow, "id">[] {
   return labels.map((label, sortOrder) => ({
     kind,
     label,
     logoPath: null,
+    brandId: brandByName.get(label.toLowerCase()) ?? null,
     sortOrder,
     published: true,
     createdAt: new Date(),
@@ -244,11 +250,6 @@ async function main() {
   const currentProjects = readJson<string[]>(
     "content/home/current-projects.json",
   );
-  await ds.getRepository(NamedListItemEntity).save([
-    ...seedNamed("company", companies),
-    ...seedNamed("past_project", pastProjects),
-    ...seedNamed("current_project", currentProjects),
-  ]);
 
   const testimonials = readJson<
     Array<{
@@ -262,6 +263,38 @@ async function main() {
     }>
   >("content/home/testimonials.json");
 
+  const brandRows: BrandRow[] = [];
+  const brandByName = new Map<string, string>();
+  const preferredIds: Record<string, string> = {
+    "push software": "push",
+    "aicore it specialists": "aicore",
+    "lúdica tech": "ludica",
+    "órbita lΔb": "orbita",
+    "orbita lab": "orbita",
+  };
+  for (const item of testimonials) {
+    const key = item.company.name.toLowerCase();
+    if (brandByName.has(key)) continue;
+    const id = preferredIds[key] ?? slugifyBrand(item.company.name);
+    brandByName.set(key, id);
+    brandRows.push({
+      id,
+      name: item.company.name,
+      logoPath: item.company.logo,
+      href: item.company.href,
+      sortOrder: brandRows.length,
+      published: true,
+      createdAt: new Date(),
+    });
+  }
+  await ds.getRepository(BrandEntity).save(brandRows);
+
+  await ds.getRepository(NamedListItemEntity).save([
+    ...seedNamed("company", companies, brandByName),
+    ...seedNamed("past_project", pastProjects, brandByName),
+    ...seedNamed("current_project", currentProjects, brandByName),
+  ]);
+
   const testimonialRows: TestimonialRow[] = testimonials.map(
     (item, sortOrder) => ({
       id: item.id,
@@ -272,6 +305,8 @@ async function main() {
       companyName: item.company.name,
       companyLogoPath: item.company.logo,
       companyHref: item.company.href,
+      companyBrandId:
+        brandByName.get(item.company.name.toLowerCase()) ?? null,
       linkLabel: null,
       hidden: Boolean(item.hidden),
       sortOrder,
@@ -376,6 +411,7 @@ async function main() {
   }
 
   console.log("Seed complete:");
+  console.log(`  brands: ${brandRows.length}`);
   console.log(`  graphic_items: ${graphicRows.length}`);
   console.log(`  testimonials: ${testimonials.length}`);
   console.log(`  ui_projects: ${uiProjects.length}`);

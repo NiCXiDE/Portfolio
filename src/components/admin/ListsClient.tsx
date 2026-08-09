@@ -28,6 +28,7 @@ import { uploadLocalAsset } from "@/app/admin/upload-local";
 import { FieldLabel, fieldClass, selectClass } from "@/components/admin/FieldLabel";
 import { pushAdminToast } from "@/lib/admin-toast";
 import type { NamedListKind } from "@/db/entities";
+import type { BrandRef } from "@/lib/brands";
 import {
   HOME_SECTION_LABELS,
   type HomeLayoutConfig,
@@ -41,12 +42,14 @@ export type NamedListAdminItem = {
   id?: number;
   label: string;
   logoPath: string | null;
+  brandId?: string | null;
   createdAt?: string | null;
 };
 
 type Props = {
   initialLayout: HomeLayoutConfig;
   lists: Record<NamedListKind, NamedListAdminItem[]>;
+  brands: BrandRef[];
 };
 
 const KINDS: { kind: NamedListKind; title: string }[] = [
@@ -61,6 +64,7 @@ type DraftItem = {
   key: string;
   label: string;
   logoPath: string;
+  brandId: string;
   createdAt: string;
 };
 
@@ -79,6 +83,7 @@ function toDrafts(items: NamedListAdminItem[]): DraftItem[] {
     key: item.id != null ? `id-${item.id}` : `i-${i}-${newKey()}`,
     label: item.label,
     logoPath: item.logoPath ?? "",
+    brandId: item.brandId ?? "",
     createdAt: item.createdAt ?? new Date(0).toISOString(),
   }));
 }
@@ -383,11 +388,13 @@ function ListEditor({
   title,
   initialItems,
   initialConfig,
+  brands,
 }: {
   kind: NamedListKind;
   title: string;
   initialItems: NamedListAdminItem[];
   initialConfig: MarqueeSectionConfig;
+  brands: BrandRef[];
 }) {
   const [items, setItems] = useState(() => toDrafts(initialItems));
   const [config, setConfig] = useState(initialConfig);
@@ -541,6 +548,7 @@ function ListEditor({
             .map((i) => ({
               label: i.label.trim(),
               logoPath: i.logoPath.trim() || null,
+              brandId: i.brandId.trim() || null,
               createdAt: i.createdAt,
             }))
             .filter((i) => i.label),
@@ -684,7 +692,7 @@ function ListEditor({
                 />
               </div>
 
-              <div className="min-w-0">
+              <div className="min-w-0 space-y-1.5">
                 <label className="block">
                   <FieldLabel>Nombre</FieldLabel>
                   <input
@@ -702,6 +710,42 @@ function ListEditor({
                     placeholder="Nombre / etiqueta"
                   />
                 </label>
+                {brands.length ? (
+                  <label className="block">
+                    <span className="text-[10px] text-ink/45">Marca</span>
+                    <select
+                      value={item.brandId}
+                      onChange={(e) => {
+                        const id = e.target.value;
+                        const brand = brands.find((b) => b.id === id);
+                        setItems((prev) =>
+                          prev.map((row, i) =>
+                            i === index
+                              ? {
+                                  ...row,
+                                  brandId: id,
+                                  label: brand
+                                    ? brand.name
+                                    : row.label,
+                                  logoPath: brand
+                                    ? brand.logoPath || brand.logo || row.logoPath
+                                    : row.logoPath,
+                                }
+                              : row,
+                          ),
+                        );
+                      }}
+                      className={`${selectClass} py-1 text-xs`}
+                    >
+                      <option value="">Manual</option>
+                      {brands.map((b) => (
+                        <option key={b.id} value={b.id}>
+                          {b.name}
+                        </option>
+                      ))}
+                    </select>
+                  </label>
+                ) : null}
               </div>
 
               <button
@@ -735,6 +779,7 @@ function ListEditor({
                 key: newKey(),
                 label: "",
                 logoPath: "",
+                brandId: "",
                 createdAt: new Date().toISOString(),
               },
             ])
@@ -768,7 +813,7 @@ function ListEditor({
   );
 }
 
-export function ListsClient({ initialLayout, lists }: Props) {
+export function ListsClient({ initialLayout, lists, brands }: Props) {
   const [order, setOrder] = useState<HomeSectionId[]>(
     initialLayout.sectionOrder,
   );
@@ -849,6 +894,7 @@ export function ListsClient({ initialLayout, lists }: Props) {
           title={title}
           initialItems={lists[kind]}
           initialConfig={initialLayout.marquees[kind]}
+          brands={brands}
         />
       ))}
     </div>

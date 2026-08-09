@@ -3,6 +3,7 @@ import {
   AdminAuditLogEntity,
   AdminUserEntity,
   BioEntity,
+  BrandEntity,
   BrandManualEntity,
   GraphicItemEntity,
   NamedListItemEntity,
@@ -17,6 +18,7 @@ import {
 
 export const portfolioEntities = [
   BioEntity,
+  BrandEntity,
   NamedListItemEntity,
   TestimonialEntity,
   GraphicItemEntity,

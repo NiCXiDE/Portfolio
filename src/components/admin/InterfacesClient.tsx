@@ -1,17 +1,20 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useState } from "react";
 import { Eye, Hash, Link2, Plus, Save } from "lucide-react";
 import { saveUiListItem, saveUiProject } from "@/app/admin/actions";
 import { CollapsibleEditor } from "@/components/admin/CollapsibleEditor";
 import { FieldLabel, fieldClass, selectClass } from "@/components/admin/FieldLabel";
 import { ImageDropField } from "@/components/admin/ImageDropField";
+import { ImageGalleryField } from "@/components/admin/ImageGalleryField";
 import {
   WithUiListPreview,
   WithUiProjectPreview,
 } from "@/components/admin/WithPreview";
 import { UiListPreview, UiProjectPreview } from "@/components/admin/previews";
 import type { Draft } from "@/components/admin/draft";
+import type { BrandRef } from "@/lib/brands";
+import { MentionTextarea } from "@/components/admin/MentionTextarea";
 
 export type UiProjectDTO = {
   id: string;
@@ -63,16 +66,15 @@ function listDraft(item: UiListDTO): Draft {
 function ProjectFields({
   item,
   showId,
+  brands,
 }: {
   item?: UiProjectDTO;
   showId?: boolean;
+  brands: BrandRef[];
 }) {
-  const [images, setImages] = useState(item?.images.join("\n") ?? "");
-  const imagesRef = useRef<HTMLTextAreaElement>(null);
-
-  useEffect(() => {
-    imagesRef.current?.dispatchEvent(new Event("input", { bubbles: true }));
-  }, [images]);
+  const [images, setImages] = useState(item?.images ?? []);
+  const [metaEs, setMetaEs] = useState(item?.meta.es ?? "");
+  const [metaEn, setMetaEn] = useState(item?.meta.en ?? "");
 
   return (
     <>
@@ -105,39 +107,32 @@ function ProjectFields({
         </label>
       </div>
       <div className="grid gap-3 sm:grid-cols-2">
-        <label className="block">
+        <div>
           <FieldLabel>Detalle (español)</FieldLabel>
-          <input name="metaEs" defaultValue={item?.meta.es} className={fieldClass} />
-        </label>
-        <label className="block">
-          <FieldLabel>Detalle (inglés)</FieldLabel>
-          <input name="metaEn" defaultValue={item?.meta.en} className={fieldClass} />
-        </label>
-      </div>
-      <div className="space-y-2">
-        <FieldLabel hint="La primera imagen es la de la card. Cada subida se agrega sola al listado.">
-          Imágenes del proyecto
-        </FieldLabel>
-        <ImageDropField
-          label="Arrastrá para agregar una imagen"
-          folder="assets/interfaces"
-          onUploaded={(path) =>
-            setImages((prev) => (prev.trim() ? `${prev.trim()}\n${path}` : path))
-          }
-        />
-        <label className="block">
-          <FieldLabel>Listado de imágenes</FieldLabel>
-          <textarea
-            ref={imagesRef}
-            name="images"
-            value={images}
-            onChange={(e) => setImages(e.target.value)}
+          <MentionTextarea
+            name="metaEs"
+            value={metaEs}
+            onChange={setMetaEs}
+            brands={brands}
             rows={3}
-            className={`${fieldClass} font-mono text-xs`}
-            placeholder="/assets/interfaces/…"
           />
-        </label>
+        </div>
+        <div>
+          <FieldLabel>Detalle (inglés)</FieldLabel>
+          <MentionTextarea
+            name="metaEn"
+            value={metaEn}
+            onChange={setMetaEn}
+            brands={brands}
+            rows={3}
+          />
+        </div>
       </div>
+      <ImageGalleryField
+        folder="assets/interfaces"
+        value={images}
+        onChange={setImages}
+      />
       <label className="block">
         <FieldLabel icon={Link2} hint="Link al Figma, Framer u otro prototipo.">
           Enlace al prototipo
@@ -239,9 +234,11 @@ function ListFields({
 
 export function InterfacesProjectsClient({
   projects,
+  brands,
   saved,
 }: {
   projects: UiProjectDTO[];
+  brands: BrandRef[];
   saved?: string;
 }) {
   return (
@@ -261,9 +258,9 @@ export function InterfacesProjectsClient({
             </div>
           }
         >
-          <WithUiProjectPreview>
+          <WithUiProjectPreview brands={brands}>
             <form action={saveUiProject} className="space-y-4">
-              <ProjectFields showId />
+              <ProjectFields showId brands={brands} />
               <button
                 type="submit"
                 className="inline-flex items-center gap-1.5 bg-ink px-3 py-2 text-sm text-sky-pale"
@@ -279,13 +276,22 @@ export function InterfacesProjectsClient({
         {projects.map((p) => (
           <CollapsibleEditor
             key={p.id}
-            summary={<UiProjectPreview draft={projectDraft(p)} locale="es" />}
+            summary={
+              <UiProjectPreview
+                draft={projectDraft(p)}
+                locale="es"
+                brands={brands}
+              />
+            }
           >
-            <WithUiProjectPreview initialDraft={projectDraft(p)}>
+            <WithUiProjectPreview
+              initialDraft={projectDraft(p)}
+              brands={brands}
+            >
               <form action={saveUiProject} className="space-y-4">
                 <input type="hidden" name="id" value={p.id} />
                 <p className="text-xs text-ink/45">ID: {p.id}</p>
-                <ProjectFields item={p} />
+                <ProjectFields item={p} brands={brands} />
                 <button
                   type="submit"
                   className="inline-flex items-center gap-1.5 bg-ink px-3 py-2 text-sm text-sky-pale"

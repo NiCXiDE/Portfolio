@@ -17,6 +17,7 @@ import {
   Settings,
   Tags,
   User,
+  Building2,
 } from "lucide-react";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import { useEffect, useState } from "react";
@@ -95,44 +96,36 @@ function NavGroup({
   const router = useRouter();
   const reduceMotion = useReducedMotion();
 
+  function toggle() {
+    const next = !open;
+    onOpenChange(next);
+    if (next) router.push(href);
+  }
+
   return (
     <div>
-      <div
-        className={`flex items-center rounded transition-colors ${
+      <button
+        type="button"
+        aria-expanded={open}
+        aria-label={open ? `Cerrar ${label}` : `Abrir ${label}`}
+        onClick={toggle}
+        className={`flex w-full items-center gap-2 rounded px-2 py-1.5 text-left text-sm transition-colors ${
           hubActive
             ? "bg-white text-ink shadow-sm"
             : active
               ? "bg-white/70 text-ink"
-              : "text-ink/80 hover:bg-white/70"
+              : "text-ink/80 hover:bg-white/70 hover:text-ink"
         }`}
       >
-        <Link
-          href={href}
-          onClick={() => onOpenChange(true)}
-          className="flex min-w-0 flex-1 items-center gap-2 px-2 py-1.5 text-left text-sm"
-        >
-          <Icon className="size-3.5 shrink-0 opacity-70" strokeWidth={1.75} />
-          <span className="flex-1 truncate">{label}</span>
-        </Link>
-        <button
-          type="button"
-          aria-label={open ? `Cerrar ${label}` : `Abrir ${label}`}
-          aria-expanded={open}
-          onClick={() => {
-            const next = !open;
-            onOpenChange(next);
-            if (next) router.push(href);
-          }}
-          className="shrink-0 px-2 py-1.5 text-ink/50 transition-colors hover:text-ink"
-        >
-          <ChevronDown
-            className={`size-3.5 transition-transform duration-300 ease-out ${
-              open ? "rotate-180" : ""
-            }`}
-            strokeWidth={1.75}
-          />
-        </button>
-      </div>
+        <Icon className="size-3.5 shrink-0 opacity-70" strokeWidth={1.75} />
+        <span className="min-w-0 flex-1 truncate">{label}</span>
+        <ChevronDown
+          className={`size-3.5 shrink-0 text-ink/50 transition-transform duration-300 ease-out ${
+            open ? "rotate-180" : ""
+          }`}
+          strokeWidth={1.75}
+        />
+      </button>
 
       <AnimatePresence initial={false}>
         {open ? (
@@ -199,6 +192,12 @@ export function AdminSidebar({ username, logoutAction }: Props) {
           label="Listas / marquees"
           icon={List}
           active={pathname.startsWith("/admin/lists")}
+        />
+        <NavLink
+          href="/admin/brands"
+          label="Marcas"
+          icon={Building2}
+          active={pathname.startsWith("/admin/brands")}
         />
         <NavLink
           href="/admin/testimonials"
@@ -307,6 +306,7 @@ export function AdminMobileNav() {
   const links = [
     { href: "/admin", label: "Inicio" },
     { href: "/admin/bio", label: "Bio" },
+    { href: "/admin/brands", label: "Marcas" },
     { href: "/admin/testimonials", label: "Testimonios" },
     { href: "/admin/graphic", label: "Gráfico" },
     { href: "/admin/graphic/covers", label: "Portadas" },

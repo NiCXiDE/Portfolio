@@ -9,6 +9,9 @@ import {
   mediaSrc,
   type Draft,
 } from "@/components/admin/draft";
+import { PreviewImageCarousel } from "@/components/admin/ImageGalleryField";
+import { renderMentionedText } from "@/components/MentionText";
+import type { BrandRef } from "@/lib/brands";
 
 function PreviewImg({
   src,
@@ -261,20 +264,23 @@ export function ManualPreview({
 export function UiProjectPreview({
   draft,
   locale,
+  brands = [],
 }: {
   draft: Draft;
   locale: Locale;
+  brands?: BrandRef[];
 }) {
   const images = draftStr(draft, "images")
     .split("\n")
     .map((l) => l.trim())
-    .filter(Boolean);
-  const first = mediaSrc(images[0] ?? "");
+    .filter(Boolean)
+    .map((src) => mediaSrc(src) || src);
   const title =
     draftLoc(draft, "titleEs", "titleEn", locale) || "Proyecto";
   const meta = draftLoc(draft, "metaEs", "metaEn", locale);
   const proto = draftStr(draft, "prototypeUrl");
   const published = draftBool(draft, "published");
+  const brandsById = Object.fromEntries(brands.map((b) => [b.id, b]));
 
   return (
     <div className="space-y-2 bg-white p-2">
@@ -285,9 +291,13 @@ export function UiProjectPreview({
       ) : null}
       <p className="text-sm font-bold text-ink">{title}</p>
       <div className="relative aspect-[644/362] w-full overflow-hidden bg-sky-pale">
-        <PreviewImg src={first} alt={title} className="size-full object-cover" />
+        <PreviewImageCarousel images={images} alt={title} />
       </div>
-      {meta ? <p className="text-xs text-ink/80">{meta}</p> : null}
+      {meta ? (
+        <p className="text-xs text-ink/80">
+          {renderMentionedText(meta, brandsById)}
+        </p>
+      ) : null}
       {proto ? (
         <p className="text-xs underline">ver prototipo completo</p>
       ) : (
