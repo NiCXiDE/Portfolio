@@ -34,7 +34,7 @@ const PANE_PCT = 100 / LAYER_COUNT;
 const GRAPHIC_SECTIONS =
   /\/grafico\/(covers|logos|personal|illustration|banners|manuals)\/?$/;
 const INTERFACE_SECTIONS =
-  /\/interfaces\/(preventas|sistemas-a-medida|proyectos-personales)\/?$/;
+  /\/interfaces\/(preventas|sistemas-a-medida|proyectos-personales|system-design)\/?$/;
 
 function isCatalogDetailPath(pathname: string) {
   return GRAPHIC_SECTIONS.test(pathname) || INTERFACE_SECTIONS.test(pathname);

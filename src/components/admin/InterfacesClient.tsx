@@ -94,6 +94,7 @@ function ProjectFields({
           <option value="preventas">Preventas</option>
           <option value="sistemas-a-medida">Sistemas a medida</option>
           <option value="proyectos-personales">Proyectos personales</option>
+          <option value="system-design">System design</option>
         </select>
       </label>
       <div className="grid gap-3 sm:grid-cols-2">

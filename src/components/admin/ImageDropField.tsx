@@ -5,41 +5,58 @@ import { useEffect, useRef, useState, type DragEvent } from "react";
 import { uploadLocalAsset } from "@/app/admin/upload-local";
 import { FieldLabel } from "@/components/admin/FieldLabel";
 
+type LibraryItem = {
+  id: string;
+  path: string;
+  originalName: string | null;
+};
+
 type Props = {
   /** Si se omite, no envía el path en el form (solo callback) */
   name?: string;
+  /** Campo oculto para media_assets.id */
+  assetName?: string;
   label: string;
   hint?: string;
   defaultValue?: string;
+  defaultAssetId?: string;
   /** Carpeta bajo public/, p.ej. assets/grafico/covers */
   folder: string;
   accept?: string;
   /** Si es PDF u otro no-imagen */
   kind?: "image" | "file";
-  onUploaded?: (path: string) => void;
+  onUploaded?: (path: string, assetId: string) => void;
+  /** Piezas recientes de la biblioteca para reutilizar */
+  library?: LibraryItem[];
 };
 
 export function ImageDropField({
   name,
+  assetName,
   label,
   hint,
   defaultValue = "",
+  defaultAssetId = "",
   folder,
   accept = "image/*,.jpg,.jpeg,.png,.webp,.gif,.svg",
   kind = "image",
   onUploaded,
+  library = [],
 }: Props) {
   const inputRef = useRef<HTMLInputElement>(null);
+  const assetRef = useRef<HTMLInputElement>(null);
   const fileRef = useRef<HTMLInputElement>(null);
   const [path, setPath] = useState(defaultValue);
+  const [assetId, setAssetId] = useState(defaultAssetId);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [dragging, setDragging] = useState(false);
+  const [showLibrary, setShowLibrary] = useState(false);
 
   useEffect(() => {
     // Notifica al AdminEditorShell (delegation onInput)
     inputRef.current?.dispatchEvent(new Event("input", { bubbles: true }));
-  }, [path]);
+  }, [path, assetId]);
 
   async function handleFile(file: File | undefined) {
     if (!file) return;
@@ -49,13 +66,35 @@ export function ImageDropField({
       const fd = new FormData();
       fd.set("file", file);
       fd.set("folder", folder);
+      if (kind === "image" && file.type.startsWith("image/") && !file.type.includes("svg")) {
+        const size = await new Promise<{ w: number; h: number } | null>(
+          (resolve) => {
+            const url = URL.createObjectURL(file);
+            const img = new Image();
+            img.onload = () => {
+              resolve({ w: img.naturalWidth, h: img.naturalHeight });
+              URL.revokeObjectURL(url);
+            };
+            img.onerror = () => {
+              resolve(null);
+              URL.revokeObjectURL(url);
+            };
+            img.src = url;
+          },
+        );
+        if (size) {
+          fd.set("width", String(size.w));
+          fd.set("height", String(size.h));
+        }
+      }
       const res = await uploadLocalAsset(fd);
       if (!res.ok) {
         setError(res.error);
         return;
       }
       setPath(res.path);
-      onUploaded?.(res.path);
+      setAssetId(res.assetId);
+      onUploaded?.(res.path, res.assetId);
     } catch {
       setError("No se pudo subir. Probá de nuevo.");
     } finally {
@@ -78,6 +117,9 @@ export function ImageDropField({
       ) : (
         <input ref={inputRef} type="hidden" value={path} readOnly aria-hidden />
       )}
+      {assetName ? (
+        <input ref={assetRef} type="hidden" name={assetName} value={assetId} />
+      ) : null}
 
       <div
         onDragOver={(e) => {
@@ -127,11 +169,24 @@ export function ImageDropField({
             <Upload className="size-3.5" strokeWidth={1.75} />
             {path ? "Reemplazar" : "Subir"}
           </button>
+          {library.length ? (
+            <button
+              type="button"
+              disabled={busy}
+              onClick={() => setShowLibrary((v) => !v)}
+              className="text-xs text-ink/60 underline hover:text-ink"
+            >
+              Biblioteca
+            </button>
+          ) : null}
           {path ? (
             <button
               type="button"
               disabled={busy}
-              onClick={() => setPath("")}
+              onClick={() => {
+                setPath("");
+                setAssetId("");
+              }}
               className="inline-flex items-center gap-1 text-xs text-ink/60 hover:text-ink"
             >
               <X className="size-3.5" strokeWidth={1.75} />
@@ -151,6 +206,33 @@ export function ImageDropField({
           }}
         />
       </div>
+
+      {showLibrary && library.length ? (
+        <ul className="grid max-h-48 grid-cols-4 gap-1 overflow-auto border border-ink/10 p-1">
+          {library.slice(0, 24).map((item) => (
+            <li key={item.id}>
+              <button
+                type="button"
+                className="block w-full border border-transparent p-0.5 hover:border-ink"
+                title={item.originalName || item.path}
+                onClick={() => {
+                  setPath(item.path);
+                  setAssetId(item.id);
+                  setShowLibrary(false);
+                  onUploaded?.(item.path, item.id);
+                }}
+              >
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src={item.path}
+                  alt=""
+                  className="aspect-square w-full object-contain bg-sky-pale/50"
+                />
+              </button>
+            </li>
+          ))}
+        </ul>
+      ) : null}
 
       {path ? (
         <p className="truncate font-mono text-[0.65rem] text-ink/40" title={path}>

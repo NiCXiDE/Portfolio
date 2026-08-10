@@ -6,6 +6,8 @@ import {
   BrandEntity,
   BrandManualEntity,
   GraphicItemEntity,
+  MediaAssetEntity,
+  InboxItemEntity,
   NamedListItemEntity,
   SiteSettingsEntity,
   SocialLinkEntity,
@@ -18,6 +20,8 @@ import {
 
 export const portfolioEntities = [
   BioEntity,
+  MediaAssetEntity,
+  InboxItemEntity,
   BrandEntity,
   NamedListItemEntity,
   TestimonialEntity,

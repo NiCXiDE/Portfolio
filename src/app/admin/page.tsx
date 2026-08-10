@@ -1,28 +1,89 @@
-import Link from "next/link";
 import { getDataSource } from "@/db/data-source";
 import {
   GraphicItemEntity,
+  InboxItemEntity,
   TestimonialEntity,
   UiProjectEntity,
 } from "@/db/entities";
 import { isR2Configured } from "@/lib/r2";
+import { DashboardInbox } from "@/components/admin/DashboardInbox";
+import { DashboardKpiGrid } from "@/components/admin/DashboardKpiGrid";
+import { migrateGraphicPendingToInbox } from "@/lib/inbox";
+import { mediaUrl } from "@/lib/media";
+import Link from "next/link";
+
+const THUMB_LIMIT = 32;
 
 export default async function AdminDashboard() {
+  await migrateGraphicPendingToInbox();
   const ds = await getDataSource();
-  const [graphics, pending, hiddenTestimonials, projects] = await Promise.all([
-    ds.getRepository(GraphicItemEntity).count(),
-    ds.getRepository(GraphicItemEntity).count({
-      where: { section: "pending" },
-    }),
-    ds.getRepository(TestimonialEntity).count({ where: { hidden: true } }),
-    ds.getRepository(UiProjectEntity).count(),
-  ]);
+
+  const [allGraphics, inboxRows, inboxCount, hiddenTestimonials, projects] =
+    await Promise.all([
+      ds.getRepository(GraphicItemEntity).find({
+        order: { sortOrder: "ASC" },
+      }),
+      ds.getRepository(InboxItemEntity).find({
+        order: { createdAt: "DESC" },
+        take: THUMB_LIMIT,
+      }),
+      ds.getRepository(InboxItemEntity).count(),
+      ds.getRepository(TestimonialEntity).find({
+        where: { hidden: true },
+        order: { sortOrder: "ASC" },
+        take: THUMB_LIMIT,
+      }),
+      ds.getRepository(UiProjectEntity).find({
+        order: { sortOrder: "ASC" },
+      }),
+    ]);
+
+  const graphics = allGraphics.filter((g) => g.section !== "pending");
+  const unpublishedUi = projects.filter((p) => !p.published);
+  const graphicThumbs = graphics
+    .slice(0, THUMB_LIMIT)
+    .map((r) => mediaUrl(r.srcPath))
+    .filter(Boolean);
+  const projectThumbs = projects
+    .slice(0, THUMB_LIMIT)
+    .map((p) => (p.images[0] ? mediaUrl(p.images[0]) : ""))
+    .filter(Boolean);
+
+  const hiddenThumbs = [
+    ...inboxRows.map((r) => mediaUrl(r.path)),
+    ...hiddenTestimonials.map((t) => mediaUrl(t.imagePath)),
+    ...unpublishedUi
+      .map((p) => (p.images[0] ? mediaUrl(p.images[0]) : ""))
+      .filter(Boolean),
+  ]
+    .filter(Boolean)
+    .slice(0, THUMB_LIMIT);
+
+  const hiddenCount =
+    inboxCount + hiddenTestimonials.length + unpublishedUi.length;
 
   const cards = [
-    { label: "Piezas gráficas", value: graphics },
-    { label: "Pendientes (ocultos público)", value: pending },
-    { label: "Testimonios ocultos", value: hiddenTestimonials },
-    { label: "Proyectos UI", value: projects },
+    {
+      id: "graphics",
+      label: "Piezas gráficas",
+      count: graphics.length,
+      href: "/admin/graphic",
+      thumbs: graphicThumbs,
+    },
+    {
+      id: "pending-hidden",
+      label: "Ocultos",
+      count: hiddenCount,
+      href: "/admin/pending",
+      thumbs: hiddenThumbs,
+    },
+    {
+      id: "ui-projects",
+      label: "Proyectos UI",
+      count: projects.length,
+      href: "/admin/interfaces/projects",
+      thumbs: projectThumbs,
+    },
   ];
 
   return (
@@ -31,16 +92,14 @@ export default async function AdminDashboard() {
       <p className="mt-2 text-sm text-ink/70">
         Centro de control del contenido del portfolio.
       </p>
-      <div className="mt-8 grid gap-3 sm:grid-cols-2">
-        {cards.map((c) => (
-          <div key={c.label} className="bg-sky-pale px-4 py-5">
-            <p className="text-xs uppercase tracking-wide text-ink/50">
-              {c.label}
-            </p>
-            <p className="mt-1 text-3xl font-bold">{c.value}</p>
-          </div>
-        ))}
-      </div>
+
+      <DashboardKpiGrid cards={cards} />
+
+      <DashboardInbox
+        pendingCount={inboxCount}
+        hiddenExtras={hiddenTestimonials.length + unpublishedUi.length}
+      />
+
       <div className="mt-8 space-y-2 text-sm">
         <p>
           R2 uploads:{" "}
@@ -54,8 +113,12 @@ export default async function AdminDashboard() {
         </p>
         <p>
           Atajos:{" "}
-          <Link href="/admin/graphic/pending" className="underline">
-            pendientes
+          <Link href="/admin/pending" className="underline">
+            ocultos
+          </Link>
+          {" · "}
+          <Link href="/admin/media" className="underline">
+            biblioteca de archivos
           </Link>
           {" · "}
           <Link href="/admin/settings" className="underline">

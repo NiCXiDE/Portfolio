@@ -11,6 +11,7 @@ import {
   Type,
 } from "lucide-react";
 import { deleteGraphicItem, saveGraphicItem } from "@/app/admin/actions";
+import { ClassifyGraphicForm } from "@/components/admin/ClassifyGraphicForm";
 import { CollapsibleEditor } from "@/components/admin/CollapsibleEditor";
 import { FieldLabel, fieldClass, selectClass } from "@/components/admin/FieldLabel";
 import { ImageDropField } from "@/components/admin/ImageDropField";
@@ -22,6 +23,7 @@ import type { GraphicSection } from "@/db/entities";
 export type GraphicItemDTO = {
   id: string;
   srcPath: string;
+  srcAssetId: string | null;
   alt: string;
   title: { es: string; en: string } | null;
   year: string | null;
@@ -31,8 +33,16 @@ export type GraphicItemDTO = {
   tags: string[] | null;
   fit: "cover" | "contain" | null;
   relatedSrcPath: string | null;
+  relatedAssetId: string | null;
   sortOrder: number;
   published: boolean;
+  /** Metadatos del asset para heurística de clasificación */
+  assetMeta?: {
+    originalName: string | null;
+    mime: string | null;
+    width: number | null;
+    height: number | null;
+  } | null;
 };
 
 const SECTION_LABELS: Record<GraphicSection, string> = {
@@ -68,10 +78,12 @@ function GraphicFields({
   item,
   section,
   showIdInput,
+  library,
 }: {
   item?: GraphicItemDTO;
   section: GraphicSection;
   showIdInput?: boolean;
+  library?: { id: string; path: string; originalName: string | null }[];
 }) {
   const folder = `assets/grafico/${section}`;
 
@@ -96,10 +108,13 @@ function GraphicFields({
 
       <ImageDropField
         name="srcPath"
+        assetName="srcAssetId"
         label="Imagen principal"
         hint="Arrastrá la imagen. No hace falta escribir la ruta."
         defaultValue={item?.srcPath}
+        defaultAssetId={item?.srcAssetId ?? ""}
         folder={folder}
+        library={library}
       />
 
       <label className="block">
@@ -226,10 +241,13 @@ function GraphicFields({
 
       <ImageDropField
         name="relatedSrcPath"
+        assetName="relatedAssetId"
         label="Imagen relacionada (opcional)"
         hint="Segunda imagen que aparece al abrir la card."
         defaultValue={item?.relatedSrcPath ?? ""}
+        defaultAssetId={item?.relatedAssetId ?? ""}
         folder={folder}
+        library={library}
       />
 
       <div className="flex flex-wrap gap-4 text-sm">
@@ -275,11 +293,13 @@ export function GraphicSectionClient({
   items,
   tagSlugs,
   saved,
+  library = [],
 }: {
   section: GraphicSection;
   items: GraphicItemDTO[];
   tagSlugs: string[];
   saved?: string;
+  library?: { id: string; path: string; originalName: string | null }[];
 }) {
   return (
     <div>
@@ -290,7 +310,10 @@ export function GraphicSectionClient({
         <p className="mt-2 text-sm text-green-700">Guardado.</p>
       ) : null}
       <p className="mt-2 text-sm text-ink/60">
-        Tocá una pieza para editarla. Etiquetas disponibles:{" "}
+        {section === "pending"
+          ? "Clasificá cada pieza a su sección definitiva. La sugerencia es solo una guía."
+          : "Tocá una pieza para editarla."}{" "}
+        Etiquetas disponibles:{" "}
         {tagSlugs.length ? tagSlugs.join(", ") : "ninguna todavía"}.
       </p>
 
@@ -308,7 +331,7 @@ export function GraphicSectionClient({
           <WithGraphicPreview>
             <form action={saveGraphicItem} className="space-y-4">
               <input type="hidden" name="section" value={section} />
-              <GraphicFields section={section} showIdInput />
+              <GraphicFields section={section} showIdInput library={library} />
               <button
                 type="submit"
                 className="inline-flex items-center gap-1.5 bg-ink px-3 py-2 text-sm text-sky-pale"
@@ -343,7 +366,7 @@ export function GraphicSectionClient({
                 <input type="hidden" name="section" value={section} />
                 <input type="hidden" name="id" value={item.id} />
                 <p className="text-xs text-ink/45">ID: {item.id}</p>
-                <GraphicFields item={item} section={section} />
+                <GraphicFields item={item} section={section} library={library} />
                 <button
                   type="submit"
                   className="inline-flex items-center gap-1.5 bg-ink px-3 py-2 text-sm text-sky-pale"
@@ -353,6 +376,16 @@ export function GraphicSectionClient({
                 </button>
               </form>
             </WithGraphicPreview>
+            {section === "pending" ? (
+              <ClassifyGraphicForm
+                itemId={item.id}
+                srcPath={item.srcPath}
+                originalName={item.assetMeta?.originalName}
+                mime={item.assetMeta?.mime}
+                width={item.assetMeta?.width}
+                height={item.assetMeta?.height}
+              />
+            ) : null}
           </CollapsibleEditor>
         ))}
       </div>

@@ -12,10 +12,36 @@ CREATE TABLE IF NOT EXISTS bio (
   text JSON NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+CREATE TABLE IF NOT EXISTS media_assets (
+  id VARCHAR(36) PRIMARY KEY,
+  path VARCHAR(512) NOT NULL,
+  mime VARCHAR(128) NULL,
+  width INT NULL,
+  height INT NULL,
+  original_name VARCHAR(255) NULL,
+  byte_size INT NULL,
+  created_at DATETIME(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6),
+  INDEX idx_media_created (created_at),
+  INDEX idx_media_path (path)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE IF NOT EXISTS inbox_items (
+  id VARCHAR(36) PRIMARY KEY,
+  path VARCHAR(512) NOT NULL,
+  asset_id VARCHAR(36) NULL,
+  original_name VARCHAR(255) NULL,
+  mime VARCHAR(128) NULL,
+  width INT NULL,
+  height INT NULL,
+  created_at DATETIME(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6),
+  INDEX idx_inbox_created (created_at)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
 CREATE TABLE IF NOT EXISTS brands (
   id VARCHAR(64) PRIMARY KEY,
   name VARCHAR(255) NOT NULL,
   logo_path VARCHAR(512) NULL,
+  logo_asset_id VARCHAR(36) NULL,
   href VARCHAR(1024) NULL,
   sort_order INT NOT NULL DEFAULT 0,
   published TINYINT(1) NOT NULL DEFAULT 1,
@@ -53,6 +79,7 @@ CREATE TABLE IF NOT EXISTS graphic_items (
   id VARCHAR(128) PRIMARY KEY,
   section VARCHAR(32) NOT NULL,
   src_path VARCHAR(512) NOT NULL,
+  src_asset_id VARCHAR(36) NULL,
   alt VARCHAR(512) NOT NULL,
   title JSON NULL,
   year VARCHAR(32) NULL,
@@ -62,6 +89,7 @@ CREATE TABLE IF NOT EXISTS graphic_items (
   tags JSON NULL,
   fit VARCHAR(16) NULL,
   related_src_path VARCHAR(512) NULL,
+  related_asset_id VARCHAR(36) NULL,
   sort_order INT NOT NULL DEFAULT 0,
   published TINYINT(1) NOT NULL DEFAULT 1,
   INDEX idx_graphic_section_order (section, sort_order)

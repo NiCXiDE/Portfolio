@@ -9,6 +9,7 @@ import {
   FileText,
   History,
   Image as ImageIcon,
+  Inbox,
   LayoutDashboard,
   LayoutGrid,
   List,
@@ -28,7 +29,6 @@ const GRAPHIC_SECTIONS = [
   { href: "/admin/graphic/personal", label: "Personales" },
   { href: "/admin/graphic/illustration", label: "Ilustración" },
   { href: "/admin/graphic/banners", label: "Banners" },
-  { href: "/admin/graphic/pending", label: "Pendientes" },
 ];
 
 const INTERFACE_SECTIONS = [
@@ -200,6 +200,12 @@ export function AdminSidebar({ username, logoutAction }: Props) {
           active={pathname.startsWith("/admin/brands")}
         />
         <NavLink
+          href="/admin/pending"
+          label="Ocultos"
+          icon={Inbox}
+          active={pathname.startsWith("/admin/pending")}
+        />
+        <NavLink
           href="/admin/testimonials"
           label="Testimonios"
           icon={MessageSquareQuote}
@@ -307,6 +313,7 @@ export function AdminMobileNav() {
     { href: "/admin", label: "Inicio" },
     { href: "/admin/bio", label: "Bio" },
     { href: "/admin/brands", label: "Marcas" },
+    { href: "/admin/pending", label: "Ocultos" },
     { href: "/admin/testimonials", label: "Testimonios" },
     { href: "/admin/graphic", label: "Gráfico" },
     { href: "/admin/graphic/covers", label: "Portadas" },

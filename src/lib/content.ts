@@ -97,7 +97,7 @@ export type BrandManualContent = {
 
 export type UiProjectContent = {
   id: string;
-  category: "preventas" | "sistemas-a-medida" | "proyectos-personales";
+  category: "preventas" | "sistemas-a-medida" | "proyectos-personales" | "system-design";
   title: LocalizedString;
   meta: LocalizedString;
   images: string[];

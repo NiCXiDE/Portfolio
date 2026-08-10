@@ -98,6 +98,7 @@ function BrandForm({ item }: { item?: BrandDTO }) {
       </div>
       <ImageDropField
         name="logoPath"
+        assetName="logoAssetId"
         label="Logo"
         folder="assets/inicio/brands"
         defaultValue={item?.logoPath ?? ""}

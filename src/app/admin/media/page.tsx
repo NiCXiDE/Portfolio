@@ -1,6 +1,8 @@
 import { isR2Configured, listR2Prefix } from "@/lib/r2";
 import { uploadMedia } from "@/app/admin/actions";
 import { ImageDropField } from "@/components/admin/ImageDropField";
+import { listRecentMediaAssets } from "@/lib/media-assets";
+import { mediaUrl } from "@/lib/media";
 
 export default async function AdminMediaPage({
   searchParams,
@@ -11,6 +13,7 @@ export default async function AdminMediaPage({
   const configured = isR2Configured();
   let objects: { key: string; size: number; path: string }[] = [];
   let listError: string | null = null;
+  const library = await listRecentMediaAssets(60);
 
   if (configured) {
     try {
@@ -24,8 +27,9 @@ export default async function AdminMediaPage({
     <div>
       <h1 className="font-admin-title text-3xl">Archivos</h1>
       <p className="mt-2 text-sm text-ink/70">
-        En cada sección del admin podés arrastrar imágenes directo al form.
-        Acá también podés subir a la carpeta local{" "}
+        Biblioteca central: cada subida se registra en{" "}
+        <code className="text-xs">media_assets</code> y se puede vincular desde
+        gráfico / marcas. También podés subir a{" "}
         <code className="text-xs">public/assets/uploads</code>.
       </p>
 
@@ -33,9 +37,50 @@ export default async function AdminMediaPage({
         <ImageDropField
           label="Subir a assets/uploads"
           folder="assets/uploads"
-          hint="Se guarda en el disco local del proyecto."
+          hint="Se guarda en disco y entra a la biblioteca."
         />
       </div>
+
+      <h2 className="mt-12 text-lg font-bold">Biblioteca reciente</h2>
+      {library.length === 0 ? (
+        <p className="mt-2 text-sm text-ink/55">
+          Todavía no hay archivos registrados. Subí algo arriba o desde el
+          dashboard.
+        </p>
+      ) : (
+        <ul className="mt-4 grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4">
+          {library.map((asset) => (
+            <li
+              key={asset.id}
+              className="border border-ink/10 bg-white p-2"
+              title={asset.path}
+            >
+              {asset.mime?.startsWith("image/") ||
+              /\.(jpe?g|png|webp|gif|svg)$/i.test(asset.path) ? (
+                // eslint-disable-next-line @next/next/no-img-element
+                <img
+                  src={mediaUrl(asset.path)}
+                  alt=""
+                  className="aspect-square w-full object-contain bg-sky-pale/40"
+                />
+              ) : (
+                <div className="flex aspect-square items-center justify-center bg-sky-pale/40 font-mono text-[10px] text-ink/50">
+                  {asset.mime || "file"}
+                </div>
+              )}
+              <p className="mt-1 truncate text-[10px] text-ink/70">
+                {asset.originalName || asset.path.split("/").pop()}
+              </p>
+              <p className="truncate font-mono text-[9px] text-ink/35">
+                {asset.id.slice(0, 8)}…
+                {asset.width && asset.height
+                  ? ` · ${asset.width}×${asset.height}`
+                  : ""}
+              </p>
+            </li>
+          ))}
+        </ul>
+      )}
 
       <h2 className="mt-12 text-lg font-bold">Cloudflare R2 (opcional)</h2>
       {!configured ? (

@@ -703,6 +703,24 @@ body {
   }
 }
 
+.kpi-marquee-track {
+  animation: marquee-x var(--kpi-marquee-duration, 28s) linear infinite;
+}
+
+.kpi-marquee-viewport[data-direction="right"] .kpi-marquee-track {
+  animation-direction: reverse;
+}
+
+.kpi-marquee-viewport:hover .kpi-marquee-track {
+  animation-play-state: paused;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .kpi-marquee-track {
+    animation: none;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .marquee-track {
     animation: none !important;

@@ -8,6 +8,7 @@ import {
   BrandEntity,
   BrandManualEntity,
   GraphicItemEntity,
+  InboxItemEntity,
   NamedListItemEntity,
   SiteSettingsEntity,
   SocialLinkEntity,
@@ -48,6 +49,8 @@ export const ENTITY_LABELS: Record<AuditEntityType, string> = {
   tag: "Etiqueta",
   social_link: "Red social",
   brand: "Marca",
+  media_asset: "Archivo",
+  inbox_item: "Pendiente",
 };
 
 export const ACTION_LABELS: Record<AuditAction, string> = {
@@ -102,12 +105,17 @@ export async function finishAdminMutation(input: {
   undoable?: boolean;
   redirectTo: string;
   toastMessage?: string;
-}) {
+  /** Si false, no hace redirect (para acciones client-callable). */
+  skipRedirect?: boolean;
+}): Promise<{ auditId: string } | void> {
   const log = await writeAuditLog(input);
   revalidatePublic();
   const undoable =
     (input.undoable ?? true) &&
     (input.action === "create" || Boolean(input.before));
+  if (input.skipRedirect) {
+    return { auditId: log.id };
+  }
   redirect(
     withToastQuery(input.redirectTo, {
       message: input.toastMessage ?? input.summary,
@@ -290,6 +298,17 @@ async function applySnapshot(
     }
     case "brand": {
       const repo = ds.getRepository(BrandEntity);
+      if (action === "create") {
+        const id = String(after?.id ?? "");
+        if (id) await repo.delete({ id });
+        return;
+      }
+      if (!before) throw new Error("No hay snapshot previo");
+      await repo.save(before as never);
+      return;
+    }
+    case "inbox_item": {
+      const repo = ds.getRepository(InboxItemEntity);
       if (action === "create") {
         const id = String(after?.id ?? "");
         if (id) await repo.delete({ id });

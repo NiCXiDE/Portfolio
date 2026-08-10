@@ -14,10 +14,34 @@ export type BioRow = {
   text: LocalizedJson;
 };
 
+export type MediaAssetRow = {
+  id: string;
+  path: string;
+  mime: string | null;
+  width: number | null;
+  height: number | null;
+  originalName: string | null;
+  byteSize: number | null;
+  createdAt: Date;
+};
+
+/** Cola unificada de archivos a clasificar (gráfico o interfaces). */
+export type InboxItemRow = {
+  id: string;
+  path: string;
+  assetId: string | null;
+  originalName: string | null;
+  mime: string | null;
+  width: number | null;
+  height: number | null;
+  createdAt: Date;
+};
+
 export type BrandRow = {
   id: string;
   name: string;
   logoPath: string | null;
+  logoAssetId: string | null;
   href: string | null;
   sortOrder: number;
   published: boolean;
@@ -64,6 +88,7 @@ export type GraphicItemRow = {
   id: string;
   section: GraphicSection;
   srcPath: string;
+  srcAssetId: string | null;
   alt: string;
   title: LocalizedJson | null;
   year: string | null;
@@ -73,6 +98,7 @@ export type GraphicItemRow = {
   tags: string[] | null;
   fit: "cover" | "contain" | null;
   relatedSrcPath: string | null;
+  relatedAssetId: string | null;
   sortOrder: number;
   published: boolean;
 };
@@ -91,7 +117,8 @@ export type BrandManualRow = {
 export type UiCategory =
   | "preventas"
   | "sistemas-a-medida"
-  | "proyectos-personales";
+  | "proyectos-personales"
+  | "system-design";
 
 export type UiProjectRow = {
   id: string;
@@ -177,7 +204,9 @@ export type AuditEntityType =
   | "ui_list_item"
   | "tag"
   | "social_link"
-  | "brand";
+  | "brand"
+  | "media_asset"
+  | "inbox_item";
 
 export type AdminAuditLogRow = {
   id: string;
@@ -240,6 +269,53 @@ export const NamedListItemEntity = new EntitySchema<NamedListItemRow>({
   indices: [{ columns: ["kind", "sortOrder"] }],
 });
 
+export const MediaAssetEntity = new EntitySchema<MediaAssetRow>({
+  name: "media_assets",
+  tableName: "media_assets",
+  columns: {
+    id: { type: String, primary: true, length: 36 },
+    path: { type: String, length: 512 },
+    mime: { type: String, length: 128, nullable: true },
+    width: { type: Number, nullable: true },
+    height: { type: Number, nullable: true },
+    originalName: {
+      name: "original_name",
+      type: String,
+      length: 255,
+      nullable: true,
+    },
+    byteSize: { name: "byte_size", type: Number, nullable: true },
+    createdAt: { name: "created_at", type: Date, createDate: true },
+  },
+  indices: [{ columns: ["createdAt"] }, { columns: ["path"] }],
+});
+
+export const InboxItemEntity = new EntitySchema<InboxItemRow>({
+  name: "inbox_items",
+  tableName: "inbox_items",
+  columns: {
+    id: { type: String, primary: true, length: 36 },
+    path: { type: String, length: 512 },
+    assetId: {
+      name: "asset_id",
+      type: String,
+      length: 36,
+      nullable: true,
+    },
+    originalName: {
+      name: "original_name",
+      type: String,
+      length: 255,
+      nullable: true,
+    },
+    mime: { type: String, length: 128, nullable: true },
+    width: { type: Number, nullable: true },
+    height: { type: Number, nullable: true },
+    createdAt: { name: "created_at", type: Date, createDate: true },
+  },
+  indices: [{ columns: ["createdAt"] }],
+});
+
 export const BrandEntity = new EntitySchema<BrandRow>({
   name: "brands",
   tableName: "brands",
@@ -250,6 +326,12 @@ export const BrandEntity = new EntitySchema<BrandRow>({
       name: "logo_path",
       type: String,
       length: 512,
+      nullable: true,
+    },
+    logoAssetId: {
+      name: "logo_asset_id",
+      type: String,
+      length: 36,
       nullable: true,
     },
     href: { type: String, length: 1024, nullable: true },
@@ -300,6 +382,12 @@ export const GraphicItemEntity = new EntitySchema<GraphicItemRow>({
     id: { type: String, primary: true, length: 128 },
     section: { type: String, length: 32 },
     srcPath: { name: "src_path", type: String, length: 512 },
+    srcAssetId: {
+      name: "src_asset_id",
+      type: String,
+      length: 36,
+      nullable: true,
+    },
     alt: { type: String, length: 512 },
     title: { type: "json", nullable: true },
     year: { type: String, length: 32, nullable: true },
@@ -312,6 +400,12 @@ export const GraphicItemEntity = new EntitySchema<GraphicItemRow>({
       name: "related_src_path",
       type: String,
       length: 512,
+      nullable: true,
+    },
+    relatedAssetId: {
+      name: "related_asset_id",
+      type: String,
+      length: 36,
       nullable: true,
     },
     sortOrder: { name: "sort_order", type: Number },

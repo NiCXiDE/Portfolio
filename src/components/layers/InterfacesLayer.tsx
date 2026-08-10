@@ -8,6 +8,7 @@ import {
   ChevronRight,
   LayoutDashboard,
   Lightbulb,
+  Network,
   Presentation,
   type LucideProps,
 } from "lucide-react";
@@ -22,14 +23,13 @@ import {
 } from "@/lib/content";
 import { SortButtons, type SortMode } from "@/components/SortButtons";
 import { renderMentionedText } from "@/components/MentionText";
+import type { UiCategory } from "@/db/entities";
 
 type Props = {
   locale: Locale;
   dict: Dictionary;
   content: PortfolioContent;
 };
-
-type UiCategory = "preventas" | "sistemas-a-medida" | "proyectos-personales";
 
 type UiProject = {
   id: string;
@@ -49,6 +49,7 @@ const CATEGORY_META: {
   { id: "sistemas-a-medida", icon: LayoutDashboard },
   { id: "preventas", icon: Presentation },
   { id: "proyectos-personales", icon: Lightbulb },
+  { id: "system-design", icon: Network },
 ];
 
 const slideEase = [0.32, 0.72, 0, 1] as const;
@@ -251,11 +252,13 @@ export function InterfacesLayer({ locale, dict, content }: Props) {
     "sistemas-a-medida": "year",
     preventas: "year",
     "proyectos-personales": "year",
+    "system-design": "year",
   });
 
   const categoryLabel = (cat: UiCategory) => {
     if (cat === "preventas") return dict.interfaces.catPreventas;
     if (cat === "sistemas-a-medida") return dict.interfaces.catSistemas;
+    if (cat === "system-design") return dict.interfaces.catSystemDesign;
     return dict.interfaces.catPersonales;
   };
 

@@ -3,9 +3,10 @@
 import { mkdir, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { requireSession } from "@/lib/admin-auth";
+import { registerMediaAsset } from "@/lib/media-assets";
 
 export type UploadLocalResult =
-  | { ok: true; path: string }
+  | { ok: true; path: string; assetId: string }
   | { ok: false; error: string };
 
 export async function uploadLocalAsset(
@@ -36,6 +37,12 @@ export async function uploadLocalAsset(
     return { ok: false, error: "Solo imágenes o PDF." };
   }
 
+  const widthRaw = Number(formData.get("width") ?? "");
+  const heightRaw = Number(formData.get("height") ?? "");
+  const width = Number.isFinite(widthRaw) && widthRaw > 0 ? widthRaw : null;
+  const height =
+    Number.isFinite(heightRaw) && heightRaw > 0 ? heightRaw : null;
+
   const safeName = file.name.replace(/[^\w.\-]+/g, "_");
   const rel = path.posix.join(
     folder || "assets/uploads",
@@ -46,5 +53,15 @@ export async function uploadLocalAsset(
   await mkdir(path.dirname(abs), { recursive: true });
   await writeFile(abs, Buffer.from(await file.arrayBuffer()));
 
-  return { ok: true, path: `/${rel}` };
+  const publicPath = `/${rel}`;
+  const asset = await registerMediaAsset({
+    path: publicPath,
+    mime: file.type || null,
+    width,
+    height,
+    originalName: file.name,
+    byteSize: file.size,
+  });
+
+  return { ok: true, path: publicPath, assetId: asset.id };
 }

@@ -10,6 +10,8 @@ import {
   BrandEntity,
   BrandManualEntity,
   GraphicItemEntity,
+  InboxItemEntity,
+  MediaAssetEntity,
   NamedListItemEntity,
   SiteSettingsEntity,
   SocialLinkEntity,
@@ -54,6 +56,8 @@ async function clearAll(ds: ReturnType<typeof createDataSource>) {
   await ds.getRepository(TestimonialEntity).clear();
   await ds.getRepository(NamedListItemEntity).clear();
   await ds.getRepository(BrandEntity).clear();
+  await ds.getRepository(MediaAssetEntity).clear();
+  await ds.getRepository(InboxItemEntity).clear();
   await ds.getRepository(TechIconEntity).clear();
   await ds.getRepository(BioEntity).clear();
   await ds.getRepository(SocialLinkEntity).clear();
@@ -86,6 +90,7 @@ function seedGraphics(
     id: String(raw.id),
     section,
     srcPath: String(raw.src),
+    srcAssetId: null,
     alt: String(raw.alt ?? ""),
     title: (raw.title as Localized | undefined) ?? null,
     year: raw.year ? String(raw.year) : null,
@@ -102,6 +107,7 @@ function seedGraphics(
       raw.relatedSrc === undefined || raw.relatedSrc === null
         ? null
         : String(raw.relatedSrc),
+    relatedAssetId: null,
     sortOrder,
     // pending stays in DB but unpublished from public grids via section filter
     published: section !== "pending" ? true : false,
@@ -281,6 +287,7 @@ async function main() {
       id,
       name: item.company.name,
       logoPath: item.company.logo,
+      logoAssetId: null,
       href: item.company.href,
       sortOrder: brandRows.length,
       published: true,

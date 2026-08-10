@@ -11,45 +11,52 @@ import type { GraphicSection } from "@/db/entities";
 import { NewCategoryCard } from "@/components/admin/NewCategoryCard";
 
 const SECTIONS: {
-  id: GraphicSection;
+  id: GraphicSection | "pending-hub";
   label: string;
   hint: string;
+  href: string;
   icon: typeof ImageIcon;
 }[] = [
   {
     id: "covers",
     label: "Portadas",
     hint: "Covers de discos / releases",
+    href: "/admin/graphic/covers",
     icon: ImageIcon,
   },
   {
     id: "logos",
     label: "Logos",
     hint: "Identidades y wordmarks",
+    href: "/admin/graphic/logos",
     icon: Sparkles,
   },
   {
     id: "personal",
     label: "Personales",
     hint: "Trabajos personales",
+    href: "/admin/graphic/personal",
     icon: Palette,
   },
   {
     id: "illustration",
     label: "Ilustración",
     hint: "Piezas ilustradas",
+    href: "/admin/graphic/illustration",
     icon: Layers,
   },
   {
     id: "banners",
     label: "Banners",
     hint: "Banners y piezas largas",
+    href: "/admin/graphic/banners",
     icon: RectangleHorizontal,
   },
   {
-    id: "pending",
+    id: "pending-hub",
     label: "Pendientes",
-    hint: "Solo visibles en el admin",
+    hint: "Bandeja unificada (gráfico + UI)",
+    href: "/admin/pending",
     icon: Clock,
   },
 ];
@@ -59,7 +66,8 @@ export default function AdminGraphicIndex() {
     <div>
       <h1 className="font-admin-title text-3xl">Gráfico</h1>
       <p className="mt-2 text-sm text-ink/70">
-        Elegí una sección. Las pendientes no aparecen en el sitio público.
+        Elegí una sección. Los pendientes viven en una bandeja única para todo
+        el admin.
       </p>
       <ul className="mt-8 grid gap-3 sm:grid-cols-2">
         {SECTIONS.map((s) => {
@@ -67,7 +75,7 @@ export default function AdminGraphicIndex() {
           return (
             <li key={s.id}>
               <Link
-                href={`/admin/graphic/${s.id}`}
+                href={s.href}
                 className="flex flex-col items-center gap-3 bg-sky-pale px-4 py-6 text-center transition-opacity hover:opacity-80"
               >
                 <Icon

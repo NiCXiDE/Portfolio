@@ -1,5 +1,6 @@
 "use server";
 
+import { randomUUID } from "crypto";
 import { redirect } from "next/navigation";
 import { getDataSource } from "@/db/data-source";
 import {
@@ -7,6 +8,7 @@ import {
   BrandEntity,
   BrandManualEntity,
   GraphicItemEntity,
+  InboxItemEntity,
   NamedListItemEntity,
   SiteSettingsEntity,
   SocialLinkEntity,
@@ -34,6 +36,8 @@ import {
 } from "@/lib/audit";
 import { withToastQuery } from "@/lib/admin-toast";
 import { slugifyBrand } from "@/lib/brands";
+import { findMediaAssetByPath } from "@/lib/media-assets";
+import { isClassifiableSection } from "@/lib/suggest-graphic-section";
 import { revalidatePath } from "next/cache";
 
 function loc(es: FormDataEntryValue | null, en: FormDataEntryValue | null): LocalizedJson {
@@ -86,10 +90,17 @@ export async function saveBrand(formData: FormData) {
   const repo = ds.getRepository(BrandEntity);
   const existing = await repo.findOneBy({ id });
   const before = snap(existing);
+  const logoPath = String(formData.get("logoPath") ?? "") || null;
+  const logoAssetId =
+    String(formData.get("logoAssetId") ?? "").trim() ||
+    (logoPath
+      ? (await findMediaAssetByPath(logoPath))?.id ?? null
+      : null);
   const after = {
     id,
     name,
-    logoPath: String(formData.get("logoPath") ?? "") || null,
+    logoPath,
+    logoAssetId,
     href: String(formData.get("href") ?? "") || null,
     sortOrder: Number(formData.get("sortOrder") ?? 0),
     published: bool(formData.get("published")),
@@ -460,10 +471,22 @@ export async function saveGraphicItem(formData: FormData) {
   const repo = ds.getRepository(GraphicItemEntity);
   const existing = await repo.findOneBy({ id });
   const before = snap(existing);
+  const srcPath = String(formData.get("srcPath") ?? "");
+  const relatedSrcPath =
+    String(formData.get("relatedSrcPath") ?? "") || null;
+  const srcAssetId =
+    String(formData.get("srcAssetId") ?? "").trim() ||
+    (srcPath ? (await findMediaAssetByPath(srcPath))?.id ?? null : null);
+  const relatedAssetId =
+    String(formData.get("relatedAssetId") ?? "").trim() ||
+    (relatedSrcPath
+      ? (await findMediaAssetByPath(relatedSrcPath))?.id ?? null
+      : null);
   const after = {
     id,
     section,
-    srcPath: String(formData.get("srcPath") ?? ""),
+    srcPath,
+    srcAssetId,
     alt: String(formData.get("alt") ?? ""),
     title: loc(formData.get("titleEs"), formData.get("titleEn")),
     year: String(formData.get("year") ?? "") || null,
@@ -475,7 +498,8 @@ export async function saveGraphicItem(formData: FormData) {
       formData.get("fit") === "contain" || formData.get("fit") === "cover"
         ? (formData.get("fit") as "cover" | "contain")
         : null,
-    relatedSrcPath: String(formData.get("relatedSrcPath") ?? "") || null,
+    relatedSrcPath,
+    relatedAssetId,
     sortOrder: Number(formData.get("sortOrder") ?? 0),
     published: bool(formData.get("published")),
   };
@@ -492,6 +516,197 @@ export async function saveGraphicItem(formData: FormData) {
     after: snap(after),
     redirectTo: `/admin/graphic/${section}`,
     toastMessage: existing ? "Ítem guardado" : "Ítem creado",
+  });
+}
+
+export async function enqueueInboxItem(formData: FormData) {
+  const session = await requireSession();
+  const srcPath = String(formData.get("path") ?? "").trim();
+  if (!srcPath) {
+    return { ok: false as const, error: "Falta la ruta del archivo." };
+  }
+  const asset =
+    (await findMediaAssetByPath(srcPath)) ??
+    null;
+  const assetId =
+    String(formData.get("assetId") ?? "").trim() || asset?.id || null;
+  const originalName =
+    String(formData.get("originalName") ?? "").trim() ||
+    asset?.originalName ||
+    null;
+  const id = randomUUID();
+  const ds = await getDataSource();
+  const after = {
+    id,
+    path: srcPath,
+    assetId,
+    originalName,
+    mime: asset?.mime ?? null,
+    width: asset?.width ?? null,
+    height: asset?.height ?? null,
+    createdAt: new Date(),
+  };
+  await ds.getRepository(InboxItemEntity).save(after);
+  await finishAdminMutation({
+    session,
+    action: "create",
+    entityType: "inbox_item",
+    entityId: id,
+    summary: `Encoló pendiente “${originalName || id}”`,
+    before: null,
+    after: snap(after),
+    redirectTo: "/admin",
+    toastMessage: "Agregado a pendientes",
+    skipRedirect: true,
+  });
+  revalidatePath("/admin");
+  revalidatePath("/admin/pending");
+  return { ok: true as const, id };
+}
+
+/** @deprecated alias */
+export const enqueuePendingGraphic = enqueueInboxItem;
+
+export async function classifyInboxItem(formData: FormData) {
+  const session = await requireSession();
+  const id = String(formData.get("id") ?? "").trim();
+  const destination = String(formData.get("destination") ?? "graphic").trim();
+  if (!id) redirect("/admin/pending?error=id");
+
+  const ds = await getDataSource();
+  const inboxRepo = ds.getRepository(InboxItemEntity);
+  const existing = await inboxRepo.findOneBy({ id });
+  if (!existing) redirect("/admin/pending?error=missing");
+  const before = snap(existing);
+  const published = formData.has("published")
+    ? bool(formData.get("published"))
+    : true;
+  const baseName =
+    slugifyBrand(
+      (existing.originalName || existing.path).replace(/\.[^.]+$/, ""),
+    ) || "pieza";
+  const entityId = `${baseName}-${Date.now().toString(36).slice(-5)}`;
+
+  if (destination === "ui") {
+    const uiRepo = ds.getRepository(UiProjectEntity);
+    const sortOrder = await uiRepo.count();
+    const uiAfter = {
+      id: entityId,
+      category: "sistemas-a-medida" as UiCategory,
+      title: { es: existing.originalName || entityId, en: existing.originalName || entityId },
+      meta: { es: "", en: "" },
+      images: [existing.path],
+      prototypeUrl: null,
+      sortOrder,
+      published: false,
+    };
+    await uiRepo.save(uiAfter);
+    await inboxRepo.delete({ id });
+    await finishAdminMutation({
+      session,
+      action: "create",
+      entityType: "ui_project",
+      entityId,
+      summary: `Clasificó inbox → proyecto UI “${entityId}”`,
+      before,
+      after: snap(uiAfter),
+      redirectTo: "/admin/interfaces/projects",
+      toastMessage: "Creado como proyecto UI (borrador)",
+    });
+  }
+
+  const toSection = String(formData.get("toSection") ?? "").trim();
+  if (!isClassifiableSection(toSection)) {
+    redirect("/admin/pending?error=section");
+  }
+  const graphicRepo = ds.getRepository(GraphicItemEntity);
+  const sortOrder = await graphicRepo.count({ where: { section: toSection } });
+  const graphicAfter = {
+    id: entityId,
+    section: toSection,
+    srcPath: existing.path,
+    srcAssetId: existing.assetId,
+    alt: existing.originalName || entityId,
+    title: null,
+    year: null,
+    detail: null,
+    href: null,
+    hrefLabel: null,
+    tags: null,
+    fit: null,
+    relatedSrcPath: null,
+    relatedAssetId: null,
+    sortOrder,
+    published,
+  };
+  await graphicRepo.save(graphicAfter);
+  await inboxRepo.delete({ id });
+  await finishAdminMutation({
+    session,
+    action: "create",
+    entityType: "graphic_item",
+    entityId,
+    summary: `Clasificó inbox → ${toSection} “${entityId}”`,
+    before,
+    after: snap(graphicAfter),
+    redirectTo: `/admin/graphic/${toSection}`,
+    toastMessage: `Movido a ${toSection}`,
+  });
+}
+
+export async function deleteInboxItem(formData: FormData) {
+  const session = await requireSession();
+  const id = String(formData.get("id") ?? "");
+  const ds = await getDataSource();
+  const repo = ds.getRepository(InboxItemEntity);
+  const before = snap(await repo.findOneBy({ id }));
+  await repo.delete({ id });
+  await finishAdminMutation({
+    session,
+    action: "delete",
+    entityType: "inbox_item",
+    entityId: id,
+    summary: `Eliminó pendiente ${id}`,
+    before,
+    after: null,
+    redirectTo: "/admin/pending",
+    toastMessage: "Pendiente eliminado",
+  });
+}
+
+export async function classifyGraphicItem(formData: FormData) {
+  // Legacy: piezas que aún estén en graphic pending
+  const session = await requireSession();
+  const id = String(formData.get("id") ?? "").trim();
+  const toSection = String(formData.get("toSection") ?? "").trim();
+  if (!id) redirect("/admin/pending?error=id");
+  if (!isClassifiableSection(toSection)) {
+    redirect("/admin/pending?error=section");
+  }
+  const ds = await getDataSource();
+  const repo = ds.getRepository(GraphicItemEntity);
+  const existing = await repo.findOneBy({ id });
+  if (!existing) redirect("/admin/pending?error=missing");
+  const before = snap(existing);
+  const published = formData.has("published")
+    ? bool(formData.get("published"))
+    : true;
+  const after = {
+    ...existing,
+    section: toSection,
+    published,
+  };
+  await repo.save(after);
+  await finishAdminMutation({
+    session,
+    action: "update",
+    entityType: "graphic_item",
+    entityId: id,
+    summary: `Clasificó “${id}” → ${toSection}`,
+    before,
+    after: snap(after),
+    redirectTo: `/admin/graphic/${toSection}`,
+    toastMessage: `Movido a ${toSection}`,
   });
 }
 
