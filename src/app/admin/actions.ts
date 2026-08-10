@@ -21,7 +21,7 @@ import {
   type NamedListKind,
   type UiCategory,
 } from "@/db/entities";
-import { requireSession } from "@/lib/admin-auth";
+import { requireAdmin } from "@/lib/admin-auth";
 import { isR2Configured, uploadToR2 } from "@/lib/r2";
 import {
   normalizeHomeLayout,
@@ -49,7 +49,7 @@ function bool(v: FormDataEntryValue | null) {
 }
 
 export async function undoAdminChange(formData: FormData) {
-  const session = await requireSession();
+  const session = await requireAdmin();
   const auditId = String(formData.get("auditId") ?? "");
   const redirectTo = String(formData.get("redirectTo") ?? "/admin");
   const result = await undoAuditLog(auditId, session);
@@ -73,12 +73,12 @@ export async function undoAdminChange(formData: FormData) {
 
 /** Client-callable undo for toast button */
 export async function undoAdminChangeAction(auditId: string) {
-  const session = await requireSession();
+  const session = await requireAdmin();
   return undoAuditLog(auditId, session);
 }
 
 export async function saveBrand(formData: FormData) {
-  const session = await requireSession();
+  const session = await requireAdmin();
   let id = String(formData.get("id") ?? "")
     .trim()
     .toLowerCase()
@@ -121,7 +121,7 @@ export async function saveBrand(formData: FormData) {
 }
 
 export async function deleteBrand(formData: FormData) {
-  const session = await requireSession();
+  const session = await requireAdmin();
   const id = String(formData.get("id") ?? "");
   const ds = await getDataSource();
   const repo = ds.getRepository(BrandEntity);
@@ -141,7 +141,7 @@ export async function deleteBrand(formData: FormData) {
 }
 
 export async function saveBio(formData: FormData) {
-  const session = await requireSession();
+  const session = await requireAdmin();
   const ds = await getDataSource();
   const repo = ds.getRepository(BioEntity);
   const before = snap(await repo.findOneBy({ id: "main" }));
@@ -173,7 +173,7 @@ export async function saveBio(formData: FormData) {
 }
 
 export async function saveSettings(formData: FormData) {
-  const session = await requireSession();
+  const session = await requireAdmin();
   const ds = await getDataSource();
   const repo = ds.getRepository(SiteSettingsEntity);
   const existing = await repo.findOneBy({ id: "main" });
@@ -207,7 +207,7 @@ export async function saveSettings(formData: FormData) {
 }
 
 export async function saveHomeLayout(formData: FormData) {
-  const session = await requireSession();
+  const session = await requireAdmin();
   const ds = await getDataSource();
   const repo = ds.getRepository(SiteSettingsEntity);
   const existing = await repo.findOneByOrFail({ id: "main" });
@@ -239,7 +239,7 @@ export async function saveHomeLayout(formData: FormData) {
 }
 
 export async function saveNamedList(formData: FormData) {
-  const session = await requireSession();
+  const session = await requireAdmin();
   const kind = String(formData.get("kind")) as NamedListKind;
   const ds = await getDataSource();
 
@@ -396,7 +396,7 @@ export async function saveNamedList(formData: FormData) {
 }
 
 export async function saveTestimonial(formData: FormData) {
-  const session = await requireSession();
+  const session = await requireAdmin();
   const id = String(formData.get("id") ?? "").trim();
   if (!id) redirect("/admin/testimonials?error=id");
   const ds = await getDataSource();
@@ -438,7 +438,7 @@ export async function saveTestimonial(formData: FormData) {
 }
 
 export async function deleteTestimonial(formData: FormData) {
-  const session = await requireSession();
+  const session = await requireAdmin();
   const id = String(formData.get("id") ?? "");
   const ds = await getDataSource();
   const repo = ds.getRepository(TestimonialEntity);
@@ -458,7 +458,7 @@ export async function deleteTestimonial(formData: FormData) {
 }
 
 export async function saveGraphicItem(formData: FormData) {
-  const session = await requireSession();
+  const session = await requireAdmin();
   const id = String(formData.get("id") ?? "").trim();
   const section = String(formData.get("section")) as GraphicSection;
   if (!id) redirect(`/admin/graphic/${section}?error=id`);
@@ -520,7 +520,7 @@ export async function saveGraphicItem(formData: FormData) {
 }
 
 export async function enqueueInboxItem(formData: FormData) {
-  const session = await requireSession();
+  const session = await requireAdmin();
   const srcPath = String(formData.get("path") ?? "").trim();
   if (!srcPath) {
     return { ok: false as const, error: "Falta la ruta del archivo." };
@@ -568,7 +568,7 @@ export async function enqueueInboxItem(formData: FormData) {
 export const enqueuePendingGraphic = enqueueInboxItem;
 
 export async function classifyInboxItem(formData: FormData) {
-  const session = await requireSession();
+  const session = await requireAdmin();
   const id = String(formData.get("id") ?? "").trim();
   const destination = String(formData.get("destination") ?? "graphic").trim();
   if (!id) redirect("/admin/pending?error=id");
@@ -655,7 +655,7 @@ export async function classifyInboxItem(formData: FormData) {
 }
 
 export async function deleteInboxItem(formData: FormData) {
-  const session = await requireSession();
+  const session = await requireAdmin();
   const id = String(formData.get("id") ?? "");
   const ds = await getDataSource();
   const repo = ds.getRepository(InboxItemEntity);
@@ -676,7 +676,7 @@ export async function deleteInboxItem(formData: FormData) {
 
 export async function classifyGraphicItem(formData: FormData) {
   // Legacy: piezas que aún estén en graphic pending
-  const session = await requireSession();
+  const session = await requireAdmin();
   const id = String(formData.get("id") ?? "").trim();
   const toSection = String(formData.get("toSection") ?? "").trim();
   if (!id) redirect("/admin/pending?error=id");
@@ -711,7 +711,7 @@ export async function classifyGraphicItem(formData: FormData) {
 }
 
 export async function deleteGraphicItem(formData: FormData) {
-  const session = await requireSession();
+  const session = await requireAdmin();
   const id = String(formData.get("id") ?? "");
   const section = String(formData.get("section") ?? "covers");
   const ds = await getDataSource();
@@ -732,7 +732,7 @@ export async function deleteGraphicItem(formData: FormData) {
 }
 
 export async function saveManual(formData: FormData) {
-  const session = await requireSession();
+  const session = await requireAdmin();
   const id = String(formData.get("id") ?? "").trim();
   if (!id) redirect("/admin/manuals?error=id");
   const ds = await getDataSource();
@@ -764,7 +764,7 @@ export async function saveManual(formData: FormData) {
 }
 
 export async function saveUiProject(formData: FormData) {
-  const session = await requireSession();
+  const session = await requireAdmin();
   const id = String(formData.get("id") ?? "").trim();
   if (!id) redirect("/admin/interfaces/projects?error=id");
   const images = String(formData.get("images") ?? "")
@@ -802,7 +802,7 @@ export async function saveUiProject(formData: FormData) {
 }
 
 export async function saveUiListItem(formData: FormData) {
-  const session = await requireSession();
+  const session = await requireAdmin();
   const id = String(formData.get("id") ?? "").trim();
   if (!id) redirect("/admin/interfaces/list?error=id");
   const ds = await getDataSource();
@@ -833,7 +833,7 @@ export async function saveUiListItem(formData: FormData) {
 }
 
 export async function saveTag(formData: FormData) {
-  const session = await requireSession();
+  const session = await requireAdmin();
   const slug = String(formData.get("slug") ?? "")
     .trim()
     .toLowerCase()
@@ -865,7 +865,7 @@ export async function saveTag(formData: FormData) {
 }
 
 export async function deleteTag(formData: FormData) {
-  const session = await requireSession();
+  const session = await requireAdmin();
   const slug = String(formData.get("slug") ?? "");
   const ds = await getDataSource();
   const repo = ds.getRepository(TagEntity);
@@ -885,7 +885,7 @@ export async function deleteTag(formData: FormData) {
 }
 
 export async function saveSocial(formData: FormData) {
-  const session = await requireSession();
+  const session = await requireAdmin();
   const id = String(formData.get("id") ?? "").trim();
   if (!id) redirect("/admin/settings?error=id");
   const ds = await getDataSource();
@@ -916,7 +916,7 @@ export async function saveSocial(formData: FormData) {
 }
 
 export async function uploadMedia(formData: FormData) {
-  await requireSession();
+  await requireAdmin();
   if (!isR2Configured()) {
     redirect("/admin/media?error=r2");
   }

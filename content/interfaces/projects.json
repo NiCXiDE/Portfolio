@@ -126,5 +126,21 @@
     },
     "images": [],
     "prototypeUrl": null
+  },
+  {
+    "id": "cms-portfolio",
+    "category": "proyectos-personales",
+    "title": {
+      "es": "Sistema de gestión de contenido del portfolio",
+      "en": "Portfolio content management system"
+    },
+    "meta": {
+      "es": "CMS propio · panel de administración de este sitio",
+      "en": "Custom CMS · this site's admin panel"
+    },
+    "images": [
+      "/assets/interfaces/projects/proyectos-personales/cms-portfolio/cms-portfolio-01.png"
+    ],
+    "prototypeUrl": "/admin/login"
   }
 ]

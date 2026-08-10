@@ -1,6 +1,7 @@
 import { getDataSource } from "@/db/data-source";
 import { BrandEntity, UiProjectEntity } from "@/db/entities";
 import { InterfacesProjectsClient } from "@/components/admin/InterfacesClient";
+import { getSession, isGuestSession } from "@/lib/admin-auth";
 import { mediaUrl } from "@/lib/media";
 
 export default async function AdminInterfacesProjectsPage({
@@ -9,9 +10,11 @@ export default async function AdminInterfacesProjectsPage({
   searchParams: Promise<{ saved?: string }>;
 }) {
   const { saved } = await searchParams;
+  const guest = isGuestSession(await getSession());
   const ds = await getDataSource();
   const [projects, brands] = await Promise.all([
     ds.getRepository(UiProjectEntity).find({
+      ...(guest ? { where: { published: true } } : {}),
       order: { sortOrder: "ASC" },
     }),
     ds.getRepository(BrandEntity).find({

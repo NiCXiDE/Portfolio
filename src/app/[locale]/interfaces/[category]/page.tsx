@@ -76,8 +76,9 @@ export default async function InterfacesCategoryPage({
             {project.prototypeUrl ? (
               <a
                 href={project.prototypeUrl}
-                target="_blank"
-                rel="noreferrer"
+                {...(project.prototypeUrl.startsWith("/")
+                  ? {}
+                  : { target: "_blank", rel: "noreferrer" })}
                 className="text-sm underline underline-offset-2"
               >
                 {dict.interfaces.prototype}

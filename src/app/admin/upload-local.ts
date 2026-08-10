@@ -2,7 +2,7 @@
 
 import { mkdir, writeFile } from "node:fs/promises";
 import path from "node:path";
-import { requireSession } from "@/lib/admin-auth";
+import { requireAdmin } from "@/lib/admin-auth";
 import { registerMediaAsset } from "@/lib/media-assets";
 
 export type UploadLocalResult =
@@ -12,7 +12,7 @@ export type UploadLocalResult =
 export async function uploadLocalAsset(
   formData: FormData,
 ): Promise<UploadLocalResult> {
-  await requireSession();
+  await requireAdmin();
 
   const file = formData.get("file");
   const folderRaw = String(formData.get("folder") ?? "assets/uploads");

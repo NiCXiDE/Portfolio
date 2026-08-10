@@ -1,6 +1,7 @@
 import { getDataSource } from "@/db/data-source";
 import { BrandEntity, TestimonialEntity } from "@/db/entities";
 import { TestimonialsClient } from "@/components/admin/TestimonialsClient";
+import { getSession, isGuestSession } from "@/lib/admin-auth";
 import { mediaUrl } from "@/lib/media";
 
 export default async function AdminTestimonialsPage({
@@ -9,9 +10,11 @@ export default async function AdminTestimonialsPage({
   searchParams: Promise<{ saved?: string }>;
 }) {
   const { saved } = await searchParams;
+  const guest = isGuestSession(await getSession());
   const ds = await getDataSource();
   const [items, brands] = await Promise.all([
     ds.getRepository(TestimonialEntity).find({
+      ...(guest ? { where: { hidden: false } } : {}),
       order: { sortOrder: "ASC" },
     }),
     ds.getRepository(BrandEntity).find({

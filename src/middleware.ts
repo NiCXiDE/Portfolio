@@ -16,9 +16,11 @@ async function readAdminSession(request: NextRequest) {
   if (!token) return null;
   try {
     const { payload } = await jwtVerify(token, adminSecret());
+    const role = payload.role === "guest" ? "guest" : "admin";
     return {
       username: String(payload.username ?? ""),
       mustChangePassword: Boolean(payload.mustChangePassword),
+      role,
     };
   } catch {
     return null;
@@ -40,6 +42,7 @@ export async function middleware(request: NextRequest) {
     const session = await readAdminSession(request);
     const isLogin = pathname === "/admin/login";
     const isChange = pathname === "/admin/change-password";
+    const isGuest = session?.role === "guest";
 
     if (!session && !isLogin) {
       const url = request.nextUrl.clone();
@@ -49,19 +52,33 @@ export async function middleware(request: NextRequest) {
 
     if (session && isLogin) {
       const url = request.nextUrl.clone();
-      url.pathname = session.mustChangePassword
-        ? "/admin/change-password"
-        : "/admin";
+      url.pathname =
+        !isGuest && session.mustChangePassword
+          ? "/admin/change-password"
+          : "/admin";
       return NextResponse.redirect(url);
     }
 
-    if (session?.mustChangePassword && !isChange && !isLogin) {
+    // Guests never use change-password
+    if (isGuest && isChange) {
+      const url = request.nextUrl.clone();
+      url.pathname = "/admin";
+      return NextResponse.redirect(url);
+    }
+
+    if (
+      session &&
+      !isGuest &&
+      session.mustChangePassword &&
+      !isChange &&
+      !isLogin
+    ) {
       const url = request.nextUrl.clone();
       url.pathname = "/admin/change-password";
       return NextResponse.redirect(url);
     }
 
-    if (session && !session.mustChangePassword && isChange) {
+    if (session && !isGuest && !session.mustChangePassword && isChange) {
       const url = request.nextUrl.clone();
       url.pathname = "/admin";
       return NextResponse.redirect(url);

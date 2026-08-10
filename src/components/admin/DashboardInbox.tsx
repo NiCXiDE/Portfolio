@@ -31,10 +31,12 @@ async function readImageSize(
 export function DashboardInbox({
   pendingCount,
   hiddenExtras = 0,
+  readOnly = false,
 }: {
   pendingCount: number;
   /** Testimonios ocultos + UI sin publicar, etc. */
   hiddenExtras?: number;
+  readOnly?: boolean;
 }) {
   const router = useRouter();
   const [busy, setBusy] = useState(false);
@@ -42,7 +44,7 @@ export function DashboardInbox({
   const [error, setError] = useState<string | null>(null);
 
   async function handleFiles(files: FileList | File[] | null) {
-    if (!files?.length) return;
+    if (readOnly || !files?.length) return;
     setBusy(true);
     setError(null);
     let okCount = 0;
@@ -99,13 +101,19 @@ export function DashboardInbox({
     <section className="mt-8 border border-ink/10 p-4">
       <h2 className="text-lg font-bold">Bandeja gráfica</h2>
       <p className="mt-1 text-sm text-ink/65">
-        Soltá piezas acá para encolarlas en la bandeja (después las clasificás).
-        Ahora hay {pendingCount} en cola
-        {hiddenExtras > 0
-          ? ` y ${hiddenExtras} oculto${hiddenExtras === 1 ? "" : "s"} en el sitio`
-          : ""}
-        .
+        {readOnly
+          ? "En modo visitante la bandeja es solo informativa: no se pueden subir ni clasificar archivos."
+          : `Soltá piezas acá para encolarlas en la bandeja (después las clasificás). Ahora hay ${pendingCount} en cola${
+              hiddenExtras > 0
+                ? ` y ${hiddenExtras} oculto${hiddenExtras === 1 ? "" : "s"} en el sitio`
+                : ""
+            }.`}
       </p>
+      {readOnly ? (
+        <div className="mt-4 flex min-h-[8rem] flex-col items-center justify-center gap-2 border border-dashed border-ink/20 bg-sky-pale/30 px-4 py-6 text-center text-sm text-ink/50">
+          Vista de solo lectura
+        </div>
+      ) : (
       <div
         onDragOver={(e) => {
           e.preventDefault();
@@ -144,6 +152,7 @@ export function DashboardInbox({
           </>
         )}
       </div>
+      )}
       {error ? <p className="mt-2 text-sm text-red-700">{error}</p> : null}
     </section>
   );

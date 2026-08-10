@@ -132,7 +132,7 @@ async function main() {
 
   const settings: SiteSettingsRow = {
     id: "main",
-    email: "nicoayala.desing@gmail.com",
+    email: "nicoayala.design@gmail.com",
     phone: "+54 9 370 434-2174",
     noteEs: "señales de humo o gritame por la calle también sirve",
     noteEn: "smoke signals or yelling at me on the street also works",

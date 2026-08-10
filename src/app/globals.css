@@ -735,3 +735,18 @@ body {
     mask-image: none;
   }
 }
+
+/* Admin guest showcase — disable mutating controls; nav/logout stay usable */
+[data-guest-readonly="true"] form:not([data-guest-allow]) {
+  pointer-events: none;
+  opacity: 0.55;
+}
+
+[data-guest-readonly="true"] form:not([data-guest-allow]) button,
+[data-guest-readonly="true"] form:not([data-guest-allow]) input,
+[data-guest-readonly="true"] form:not([data-guest-allow]) textarea,
+[data-guest-readonly="true"] form:not([data-guest-allow]) select,
+[data-guest-readonly="true"] form:not([data-guest-allow]) label {
+  cursor: not-allowed;
+}
+

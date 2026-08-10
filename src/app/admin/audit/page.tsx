@@ -9,6 +9,7 @@ import {
   ENTITY_LABELS,
   isLatestAudit,
 } from "@/lib/audit";
+import { getSession, isGuestSession } from "@/lib/admin-auth";
 import { Undo2 } from "lucide-react";
 
 function formatWhen(date: Date) {
@@ -23,6 +24,18 @@ export default async function AdminAuditPage({
 }: {
   searchParams: Promise<{ page?: string }>;
 }) {
+  const session = await getSession();
+  if (isGuestSession(session)) {
+    return (
+      <div>
+        <h1 className="font-admin-title text-3xl">Auditoría</h1>
+        <p className="mt-2 text-sm text-ink/70">
+          El historial de cambios no está disponible en modo visitante.
+        </p>
+      </div>
+    );
+  }
+
   const { page: pageRaw } = await searchParams;
   const page = Math.max(1, Number(pageRaw ?? 1) || 1);
   const pageSize = 40;

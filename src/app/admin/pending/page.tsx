@@ -1,3 +1,4 @@
+import { getSession, isGuestSession } from "@/lib/admin-auth";
 import { getDataSource } from "@/db/data-source";
 import { TestimonialEntity, UiProjectEntity } from "@/db/entities";
 import { PendingInboxClient } from "@/components/admin/PendingInboxClient";
@@ -9,6 +10,15 @@ import { mediaUrl } from "@/lib/media";
 import { t } from "@/lib/content";
 
 export default async function AdminPendingPage() {
+  const session = await getSession();
+  const guest = isGuestSession(session);
+
+  if (guest) {
+    return (
+      <PendingInboxClient items={[]} hiddenItems={[]} readOnly />
+    );
+  }
+
   await migrateGraphicPendingToInbox();
   const ds = await getDataSource();
   const [items, hiddenTestimonials, draftProjects] = await Promise.all([

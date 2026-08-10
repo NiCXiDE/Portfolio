@@ -181,74 +181,84 @@ function InboxClassifyCard({ item }: { item: InboxDTO }) {
 export function PendingInboxClient({
   items,
   hiddenItems = [],
+  readOnly = false,
 }: {
   items: InboxDTO[];
   hiddenItems?: HiddenItemDTO[];
+  readOnly?: boolean;
 }) {
   return (
     <div>
       <h1 className="font-admin-title text-3xl">Ocultos</h1>
       <p className="mt-2 max-w-2xl text-sm text-ink/70">
-        Todo lo que no se muestra en el sitio: cola por clasificar, testimonios
-        ocultos y proyectos UI en borrador. Lo pendiente siempre está oculto; lo
-        oculto no siempre está pendiente.
+        {readOnly
+          ? "En modo visitante esta bandeja no muestra pendientes ni contenido oculto."
+          : "Todo lo que no se muestra en el sitio: cola por clasificar, testimonios ocultos y proyectos UI en borrador. Lo pendiente siempre está oculto; lo oculto no siempre está pendiente."}
       </p>
 
-      <h2 className="mt-8 text-lg font-bold">Cola por clasificar</h2>
-      {items.length === 0 ? (
-        <p className="mt-3 text-sm text-ink/55">
-          No hay nada en cola. Usá la bandeja del dashboard para agregar
-          imágenes.
+      {readOnly ? (
+        <p className="mt-8 text-sm text-ink/55">
+          No hay elementos visibles en esta visita.
         </p>
       ) : (
-        <div className="mt-4 space-y-4">
-          {items.map((item) => (
-            <InboxClassifyCard key={item.id} item={item} />
-          ))}
-        </div>
-      )}
+        <>
+          <h2 className="mt-8 text-lg font-bold">Cola por clasificar</h2>
+          {items.length === 0 ? (
+            <p className="mt-3 text-sm text-ink/55">
+              No hay nada en cola. Usá la bandeja del dashboard para agregar
+              imágenes.
+            </p>
+          ) : (
+            <div className="mt-4 space-y-4">
+              {items.map((item) => (
+                <InboxClassifyCard key={item.id} item={item} />
+              ))}
+            </div>
+          )}
 
-      <h2 className="mt-10 flex items-center gap-2 text-lg font-bold">
-        <EyeOff className="size-4 opacity-60" strokeWidth={1.75} />
-        Ocultos en el sitio
-      </h2>
-      {hiddenItems.length === 0 ? (
-        <p className="mt-3 text-sm text-ink/55">
-          No hay testimonios ocultos ni proyectos UI en borrador.
-        </p>
-      ) : (
-        <ul className="mt-4 space-y-2">
-          {hiddenItems.map((item) => (
-            <li key={`${item.kind}-${item.id}`}>
-              <Link
-                href={item.href}
-                className="flex items-center gap-3 border border-ink/10 bg-white p-3 transition-opacity hover:opacity-80"
-              >
-                <span className="relative aspect-square w-14 shrink-0 overflow-hidden bg-sky-pale/50">
-                  {item.image ? (
-                    // eslint-disable-next-line @next/next/no-img-element
-                    <img
-                      src={item.image}
-                      alt=""
-                      className="size-full object-cover"
-                    />
-                  ) : null}
-                </span>
-                <span className="min-w-0 flex-1">
-                  <span className="block text-sm font-medium text-ink">
-                    {item.label}
-                  </span>
-                  <span className="text-xs text-ink/50">
-                    {item.kind === "testimonial"
-                      ? "Testimonio oculto"
-                      : "Proyecto UI sin publicar"}
-                  </span>
-                </span>
-                <ArrowRight className="size-4 shrink-0 text-ink/40" />
-              </Link>
-            </li>
-          ))}
-        </ul>
+          <h2 className="mt-10 flex items-center gap-2 text-lg font-bold">
+            <EyeOff className="size-4 opacity-60" strokeWidth={1.75} />
+            Ocultos en el sitio
+          </h2>
+          {hiddenItems.length === 0 ? (
+            <p className="mt-3 text-sm text-ink/55">
+              No hay testimonios ocultos ni proyectos UI en borrador.
+            </p>
+          ) : (
+            <ul className="mt-4 space-y-2">
+              {hiddenItems.map((item) => (
+                <li key={`${item.kind}-${item.id}`}>
+                  <Link
+                    href={item.href}
+                    className="flex items-center gap-3 border border-ink/10 bg-white p-3 transition-opacity hover:opacity-80"
+                  >
+                    <span className="relative aspect-square w-14 shrink-0 overflow-hidden bg-sky-pale/50">
+                      {item.image ? (
+                        // eslint-disable-next-line @next/next/no-img-element
+                        <img
+                          src={item.image}
+                          alt=""
+                          className="size-full object-cover"
+                        />
+                      ) : null}
+                    </span>
+                    <span className="min-w-0 flex-1">
+                      <span className="block text-sm font-medium text-ink">
+                        {item.label}
+                      </span>
+                      <span className="text-xs text-ink/50">
+                        {item.kind === "testimonial"
+                          ? "Testimonio oculto"
+                          : "Proyecto UI sin publicar"}
+                      </span>
+                    </span>
+                    <ArrowRight className="size-4 shrink-0 text-ink/40" />
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          )}
+        </>
       )}
     </div>
   );

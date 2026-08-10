@@ -1,6 +1,7 @@
 import { redirect } from "next/navigation";
 import {
   findAdminByUsername,
+  setGuestSessionCookie,
   setSessionCookie,
   verifyPassword,
 } from "@/lib/admin-auth";
@@ -20,10 +21,17 @@ async function loginAction(formData: FormData) {
     userId: user.id,
     username: user.username,
     mustChangePassword: user.mustChangePassword,
+    role: "admin",
   });
   redirect(
     user.mustChangePassword ? "/admin/change-password" : "/admin",
   );
+}
+
+async function guestLoginAction() {
+  "use server";
+  await setGuestSessionCookie();
+  redirect("/admin");
 }
 
 export default async function AdminLoginPage({
@@ -38,8 +46,8 @@ export default async function AdminLoginPage({
         Centro de control
       </h1>
       <p className="mt-2 text-sm text-ink/70">
-        Ingresá con tu usuario. La primera vez te pediremos una nueva
-        contraseña.
+        Ingresá con tu usuario, o explorá una versión de solo lectura como
+        visitante.
       </p>
       {error ? (
         <p className="mt-4 rounded bg-red-50 px-3 py-2 text-sm text-red-700">
@@ -74,6 +82,20 @@ export default async function AdminLoginPage({
           Entrar
         </button>
       </form>
+
+      <div className="mt-8 border-t border-ink/10 pt-6">
+        <p className="text-sm text-ink/65">
+          ¿Querés ver cómo está organizado el CMS sin editar nada?
+        </p>
+        <form action={guestLoginAction} className="mt-3">
+          <button
+            type="submit"
+            className="w-full border border-ink/25 bg-white px-4 py-2.5 text-sm font-medium text-ink transition-colors hover:bg-sky-pale/60"
+          >
+            Ingresar como visitante
+          </button>
+        </form>
+      </div>
     </div>
   );
 }

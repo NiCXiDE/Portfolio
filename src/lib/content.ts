@@ -204,7 +204,7 @@ function bySection(
 }
 
 const defaultSettings: SiteSettingsContent = {
-  email: "nicoayala.desing@gmail.com",
+  email: "nicoayala.design@gmail.com",
   phone: "+54 9 370 434-2174",
   note: {
     es: "señales de humo o gritame por la calle también sirve",

@@ -39,6 +39,7 @@ const INTERFACE_SECTIONS = [
 type Props = {
   username: string;
   logoutAction: () => Promise<void>;
+  isGuest?: boolean;
 };
 
 function NavLink({
@@ -151,7 +152,11 @@ function NavGroup({
   );
 }
 
-export function AdminSidebar({ username, logoutAction }: Props) {
+export function AdminSidebar({
+  username,
+  logoutAction,
+  isGuest = false,
+}: Props) {
   const pathname = usePathname();
   const graphicActive = pathname.startsWith("/admin/graphic");
   const interfacesActive = pathname.startsWith("/admin/interfaces");
@@ -172,6 +177,11 @@ export function AdminSidebar({ username, logoutAction }: Props) {
       <div className="shrink-0 px-4 pt-6">
         <p className="font-admin-title text-lg text-ink">Control</p>
         <p className="mt-1 text-xs text-ink/60">{username}</p>
+        {isGuest ? (
+          <p className="mt-2 inline-block bg-violet-600 px-2 py-0.5 text-[10px] font-medium uppercase tracking-wide text-white">
+            Visitante
+          </p>
+        ) : null}
       </div>
 
       <nav className="mt-6 flex min-h-0 flex-1 flex-col gap-0.5 overflow-y-auto px-2 pb-4">
@@ -199,38 +209,44 @@ export function AdminSidebar({ username, logoutAction }: Props) {
           icon={Building2}
           active={pathname.startsWith("/admin/brands")}
         />
-        <NavLink
-          href="/admin/pending"
-          label="Ocultos"
-          icon={Inbox}
-          active={pathname.startsWith("/admin/pending")}
-        />
-        <NavLink
-          href="/admin/testimonials"
-          label="Testimonios"
-          icon={MessageSquareQuote}
-          active={pathname.startsWith("/admin/testimonials")}
-        />
+        <div data-tour="nav-ocultos">
+          <NavLink
+            href="/admin/pending"
+            label="Ocultos"
+            icon={Inbox}
+            active={pathname.startsWith("/admin/pending")}
+          />
+        </div>
+        <div data-tour="nav-testimonials">
+          <NavLink
+            href="/admin/testimonials"
+            label="Testimonios"
+            icon={MessageSquareQuote}
+            active={pathname.startsWith("/admin/testimonials")}
+          />
+        </div>
 
-        <NavGroup
-          href="/admin/graphic"
-          label="Gráfico"
-          icon={ImageIcon}
-          open={graphicOpen}
-          onOpenChange={setGraphicOpen}
-          active={graphicActive}
-          hubActive={graphicHub}
-        >
-          {GRAPHIC_SECTIONS.map((s) => (
-            <NavLink
-              key={s.href}
-              href={s.href}
-              label={s.label}
-              active={pathname === s.href}
-              indented
-            />
-          ))}
-        </NavGroup>
+        <div data-tour="nav-graphic">
+          <NavGroup
+            href="/admin/graphic"
+            label="Gráfico"
+            icon={ImageIcon}
+            open={graphicOpen}
+            onOpenChange={setGraphicOpen}
+            active={graphicActive}
+            hubActive={graphicHub}
+          >
+            {GRAPHIC_SECTIONS.map((s) => (
+              <NavLink
+                key={s.href}
+                href={s.href}
+                label={s.label}
+                active={pathname === s.href}
+                indented
+              />
+            ))}
+          </NavGroup>
+        </div>
 
         <NavLink
           href="/admin/manuals"
@@ -239,25 +255,27 @@ export function AdminSidebar({ username, logoutAction }: Props) {
           active={pathname.startsWith("/admin/manuals")}
         />
 
-        <NavGroup
-          href="/admin/interfaces"
-          label="Interfaces"
-          icon={LayoutGrid}
-          open={interfacesOpen}
-          onOpenChange={setInterfacesOpen}
-          active={interfacesActive}
-          hubActive={interfacesHub}
-        >
-          {INTERFACE_SECTIONS.map((s) => (
-            <NavLink
-              key={s.href}
-              href={s.href}
-              label={s.label}
-              active={pathname === s.href}
-              indented
-            />
-          ))}
-        </NavGroup>
+        <div data-tour="nav-interfaces">
+          <NavGroup
+            href="/admin/interfaces"
+            label="Interfaces"
+            icon={LayoutGrid}
+            open={interfacesOpen}
+            onOpenChange={setInterfacesOpen}
+            active={interfacesActive}
+            hubActive={interfacesHub}
+          >
+            {INTERFACE_SECTIONS.map((s) => (
+              <NavLink
+                key={s.href}
+                href={s.href}
+                label={s.label}
+                active={pathname === s.href}
+                indented
+              />
+            ))}
+          </NavGroup>
+        </div>
 
         <NavLink
           href="/admin/tags"
@@ -271,12 +289,14 @@ export function AdminSidebar({ username, logoutAction }: Props) {
           icon={Settings}
           active={pathname.startsWith("/admin/settings")}
         />
-        <NavLink
-          href="/admin/audit"
-          label="Auditoría"
-          icon={History}
-          active={pathname.startsWith("/admin/audit")}
-        />
+        {!isGuest ? (
+          <NavLink
+            href="/admin/audit"
+            label="Auditoría"
+            icon={History}
+            active={pathname.startsWith("/admin/audit")}
+          />
+        ) : null}
         <NavLink
           href="/admin/media"
           label="Archivos"
@@ -286,7 +306,7 @@ export function AdminSidebar({ username, logoutAction }: Props) {
       </nav>
 
       <div className="shrink-0 space-y-2 border-t border-ink/10 px-4 py-4">
-        <form action={logoutAction}>
+        <form action={logoutAction} data-guest-allow="">
           <button
             type="submit"
             className="inline-flex items-center gap-1.5 text-sm text-ink/70 underline-offset-2 hover:text-ink hover:underline"
@@ -307,7 +327,7 @@ export function AdminSidebar({ username, logoutAction }: Props) {
   );
 }
 
-export function AdminMobileNav() {
+export function AdminMobileNav({ isGuest = false }: { isGuest?: boolean }) {
   const pathname = usePathname();
   const links = [
     { href: "/admin", label: "Inicio" },
@@ -325,7 +345,9 @@ export function AdminMobileNav() {
     { href: "/admin/lists", label: "Listas / marquees" },
     { href: "/admin/tags", label: "Tags" },
     { href: "/admin/settings", label: "Ajustes" },
-    { href: "/admin/audit", label: "Auditoría" },
+    ...(isGuest
+      ? []
+      : [{ href: "/admin/audit", label: "Auditoría" }]),
     { href: "/admin/media", label: "Archivos" },
   ];
 

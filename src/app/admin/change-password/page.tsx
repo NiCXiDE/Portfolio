@@ -8,7 +8,7 @@ import {
 async function changePasswordAction(formData: FormData) {
   "use server";
   const session = await getSession();
-  if (!session) redirect("/admin/login");
+  if (!session || session.role !== "admin") redirect("/admin/login");
 
   const password = String(formData.get("password") ?? "");
   const confirm = String(formData.get("confirm") ?? "");
@@ -23,6 +23,7 @@ async function changePasswordAction(formData: FormData) {
   await updateAdminPassword(session.userId, password);
   await setSessionCookie({
     ...session,
+    role: "admin",
     mustChangePassword: false,
   });
   redirect("/admin");

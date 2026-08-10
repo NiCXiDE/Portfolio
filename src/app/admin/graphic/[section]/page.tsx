@@ -7,6 +7,7 @@ import {
   type GraphicSection,
 } from "@/db/entities";
 import { GraphicSectionClient } from "@/components/admin/GraphicSectionClient";
+import { getSession, isGuestSession } from "@/lib/admin-auth";
 
 const VALID: GraphicSection[] = [
   "covers",
@@ -33,10 +34,11 @@ export default async function AdminGraphicSectionPage({
     redirect("/admin/pending");
   }
 
+  const guest = isGuestSession(await getSession());
   const ds = await getDataSource();
   const [items, tags, assets] = await Promise.all([
     ds.getRepository(GraphicItemEntity).find({
-      where: { section },
+      where: guest ? { section, published: true } : { section },
       order: { sortOrder: "ASC" },
     }),
     ds.getRepository(TagEntity).find({ order: { sortOrder: "ASC" } }),

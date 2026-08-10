@@ -395,8 +395,9 @@ export function InterfacesLayer({ locale, dict, content }: Props) {
                         {href ? (
                           <a
                             href={href}
-                            target="_blank"
-                            rel="noreferrer"
+                            {...(href.startsWith("/")
+                              ? {}
+                              : { target: "_blank", rel: "noreferrer" })}
                             className="underline underline-offset-2 transition-opacity hover:opacity-70"
                           >
                             {dict.interfaces.prototype}
@@ -455,6 +456,16 @@ export function InterfacesLayer({ locale, dict, content }: Props) {
             </div>
           ))}
         </div>
+
+        <p className="mt-10 max-w-xl text-sm text-ink/70 sm:text-base">
+          {dict.interfaces.cmsCta}{" "}
+          <Link
+            href="/admin/login"
+            className="font-medium text-ink underline underline-offset-4 transition-opacity hover:opacity-70"
+          >
+            {dict.interfaces.cmsCtaLink}
+          </Link>
+        </p>
       </div>
     </main>
   );
