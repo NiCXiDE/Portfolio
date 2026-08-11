@@ -22,6 +22,7 @@ import {
 } from "lucide-react";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import { useEffect, useState } from "react";
+import { ThemeToggle } from "@/components/ThemeToggle";
 
 const GRAPHIC_SECTIONS = [
   { href: "/admin/graphic/covers", label: "Portadas" },
@@ -173,14 +174,11 @@ export function AdminSidebar({
   }, [interfacesActive]);
 
   return (
-    <aside className="hidden h-dvh w-56 shrink-0 flex-col border-r border-ink/10 bg-sky-pale md:flex">
+    <aside className="hidden h-full w-56 shrink-0 flex-col border-r border-ink/10 bg-sky-pale md:flex">
       <div className="shrink-0 px-4 pt-6">
         <p className="font-admin-title text-lg text-ink">Control</p>
-        <p className="mt-1 text-xs text-ink/60">{username}</p>
-        {isGuest ? (
-          <p className="mt-2 inline-block bg-violet-600 px-2 py-0.5 text-[10px] font-medium uppercase tracking-wide text-white">
-            Visitante
-          </p>
+        {!isGuest ? (
+          <p className="mt-1 text-xs text-ink/60">{username}</p>
         ) : null}
       </div>
 
@@ -306,21 +304,24 @@ export function AdminSidebar({
       </nav>
 
       <div className="shrink-0 space-y-2 border-t border-ink/10 px-4 py-4">
-        <form action={logoutAction} data-guest-allow="">
-          <button
-            type="submit"
-            className="inline-flex items-center gap-1.5 text-sm text-ink/70 underline-offset-2 hover:text-ink hover:underline"
-          >
-            <LogOut className="size-3.5" strokeWidth={1.75} />
-            Cerrar sesión
-          </button>
-        </form>
+        <div className="flex items-center justify-between gap-2">
+          <form action={logoutAction} data-guest-allow="">
+            <button
+              type="submit"
+              className="inline-flex items-center gap-1.5 text-sm text-ink/70 underline-offset-2 hover:text-ink hover:underline"
+            >
+              <LogOut className="size-3.5" strokeWidth={1.75} />
+              Cerrar sesión
+            </button>
+          </form>
+          <ThemeToggle label="Cambiar tema" />
+        </div>
         <Link
           href="/es"
-          className="inline-flex items-center gap-1.5 text-xs text-ink/50 hover:text-ink"
+          className="inline-flex items-center gap-1.5 text-sm text-ink/70 underline-offset-2 hover:text-ink hover:underline"
         >
-          <ExternalLink className="size-3" strokeWidth={1.75} />
-          Ver sitio
+          <ExternalLink className="size-3.5" strokeWidth={1.75} />
+          Volver al sitio
         </Link>
       </div>
     </aside>

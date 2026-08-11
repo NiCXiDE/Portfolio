@@ -7,7 +7,6 @@ import {
   type ReactNode,
 } from "react";
 import Image from "next/image";
-import Link from "next/link";
 import {
   BookOpen,
   Disc3,
@@ -216,17 +215,13 @@ export function GraphicLayer({ locale, dict, content }: Props) {
     { id: "grafico-personal", label: dict.grafico.personal, icon: Sparkles },
   ];
 
-  const seeMore = (section: string, total: number) =>
-    total > limit ? (
-      <div className="mt-4 flex w-full justify-center">
-        <Link
-          href={`/${locale}/grafico/${section}`}
-          className="text-sm text-ink underline underline-offset-4 transition-opacity hover:opacity-70 md:text-base"
-        >
-          {dict.grafico.seeMore}
-        </Link>
-      </div>
-    ) : null;
+  const seeMoreProps = (section: string, total: number) =>
+    total > limit
+      ? {
+          seeMoreHref: `/${locale}/grafico/${section}`,
+          seeMoreLabel: dict.grafico.seeMore,
+        }
+      : {};
 
   const coverItems = useMemo(() => {
     const mapped = content.covers.slice(0, limit).map((c) => ({
@@ -464,15 +459,10 @@ export function GraphicLayer({ locale, dict, content }: Props) {
             />
           </div>
           <div className="flex flex-col gap-1.5 sm:gap-2">
-            <div className="relative h-5 w-[min(100%,14rem)] sm:h-6 sm:w-[min(100%,16rem)]">
-              <Image
-                src="/assets/grafico/brand/frame-12.svg"
-                alt={dict.grafico.title}
-                fill
-                className="object-contain object-left"
-                priority
-              />
-            </div>
+            <h1 className="text-xl font-normal leading-tight text-ink sm:text-2xl md:text-[1.65rem]">
+              {dict.grafico.titlePrefix}
+              <span className="font-bold">{dict.grafico.titleBold}</span>
+            </h1>
             <p className="text-sm text-ink md:text-base">{dict.grafico.subtitle}</p>
           </div>
         </div>
@@ -523,15 +513,15 @@ export function GraphicLayer({ locale, dict, content }: Props) {
           labels={dict.common.tagLabels}
           clearLabel={dict.common.clearFilter}
         />
-        <div className="w-full drop-shadow-[0_0_5px_rgba(64,65,121,0.25)]">
+        <div className="w-full">
           <ExpandableArtGrid
             items={coverItems}
             locale={locale}
             onTagClick={(tag) => setTag("covers", tag)}
             {...gridExtras}
+            {...seeMoreProps("covers", content.covers.length)}
           />
         </div>
-        {seeMore("covers", content.covers.length)}
 
         <div className="relative h-8 w-full sm:h-12">
           <Image
@@ -564,8 +554,8 @@ export function GraphicLayer({ locale, dict, content }: Props) {
           containPadPercent={6}
           onTagClick={(tag) => setTag("logos", tag)}
           {...gridExtras}
+          {...seeMoreProps("logos", content.logos.length)}
         />
-        {seeMore("logos", content.logos.length)}
 
         <div className="relative h-8 w-full sm:h-12">
           <Image
@@ -594,9 +584,9 @@ export function GraphicLayer({ locale, dict, content }: Props) {
             locale={locale}
             cellClassName="bg-sky-pale"
             {...gridExtras}
+            {...seeMoreProps("manuals", manuals.length)}
           />
         )}
-        {seeMore("manuals", manuals.length)}
 
         <SectionTitle
           id="grafico-ilustracion"
@@ -625,9 +615,9 @@ export function GraphicLayer({ locale, dict, content }: Props) {
             containPadPercent={6}
             onTagClick={(tag) => setTag("illustration", tag)}
             {...gridExtras}
+            {...seeMoreProps("illustration", drawings.length)}
           />
         )}
-        {seeMore("illustration", drawings.length)}
 
         <SectionTitle
           id="grafico-banners"
@@ -656,9 +646,9 @@ export function GraphicLayer({ locale, dict, content }: Props) {
             containPadPercent={0}
             onTagClick={(tag) => setTag("banners", tag)}
             {...gridExtras}
+            {...seeMoreProps("banners", content.banners.length)}
           />
         )}
-        {seeMore("banners", content.banners.length)}
 
         <SectionTitle
           id="grafico-personal"
@@ -675,15 +665,15 @@ export function GraphicLayer({ locale, dict, content }: Props) {
           labels={dict.common.tagLabels}
           clearLabel={dict.common.clearFilter}
         />
-        <div className="w-full drop-shadow-[0_0_5px_rgba(64,65,121,0.25)]">
+        <div className="w-full">
           <ExpandableArtGrid
             items={personalItems}
             locale={locale}
             onTagClick={(tag) => setTag("personal", tag)}
             {...gridExtras}
+            {...seeMoreProps("personal", content.personal.length)}
           />
         </div>
-        {seeMore("personal", content.personal.length)}
       </div>
     </main>
   );

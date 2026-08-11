@@ -1,8 +1,10 @@
+import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { getDictionary } from "@/i18n/dictionaries";
 import { isLocale, type Locale } from "@/i18n/config";
 import { loadPortfolioContent } from "@/lib/content";
 import { GraphicSectionView } from "@/components/layers/GraphicSectionView";
+import { buildPageMetadata, graphicSectionTitle } from "@/lib/seo";
 
 const SECTIONS = [
   "covers",
@@ -13,8 +15,37 @@ const SECTIONS = [
   "manuals",
 ] as const;
 
+const SECTION_META_KEY = {
+  covers: "covers",
+  logos: "logos",
+  personal: "personal",
+  illustration: "illustration",
+  banners: "banners",
+  manuals: "brandManuals",
+} as const;
+
 export function generateStaticParams() {
   return SECTIONS.map((section) => ({ section }));
+}
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string; section: string }>;
+}): Promise<Metadata> {
+  const { locale: raw, section } = await params;
+  if (!isLocale(raw)) return {};
+  if (!SECTIONS.includes(section as (typeof SECTIONS)[number])) return {};
+  const locale = raw as Locale;
+  const dict = getDictionary(locale);
+  const labelKey = SECTION_META_KEY[section as keyof typeof SECTION_META_KEY];
+  const label = dict.grafico[labelKey] as string;
+  return buildPageMetadata({
+    locale,
+    title: graphicSectionTitle(locale, label),
+    description: dict.meta.graphicDescription,
+    pathAfterLocale: `/grafico/${section}`,
+  });
 }
 
 export default async function GraphicSectionPage({

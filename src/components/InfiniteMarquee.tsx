@@ -44,7 +44,11 @@ function MarqueeItem({
     <span className="marquee-item">
       {showLogo ? (
         // eslint-disable-next-line @next/next/no-img-element
-        <img src={item.logo!} alt="" className="marquee-logo" />
+        <img
+          src={item.logo!}
+          alt={showName ? "" : item.label}
+          className="marquee-logo"
+        />
       ) : null}
       {showName ? <span className="marquee-label">{item.label}</span> : null}
     </span>

@@ -15,7 +15,12 @@
       "/assets/interfaces/projects/sistemas-a-medida/apsmm/apsmm-02.png",
       "/assets/interfaces/projects/sistemas-a-medida/apsmm/apsmm-03.png"
     ],
-    "prototypeUrl": null
+    "prototypeUrl": null,
+    "client": "APSMM",
+    "period": { "es": "2024", "en": "2024" },
+    "duration": null,
+    "summary": null,
+    "ctaKind": null
   },
   {
     "id": "aml-casinos",
@@ -25,13 +30,18 @@
       "en": "Anti-Money Laundering Analysis for Digital Casinos"
     },
     "meta": {
-      "es": "Colaboración con AICORE - septiembre 2024",
-      "en": "Collaboration with AICORE - September 2024"
+      "es": "Colaboración con @aicore - septiembre 2024",
+      "en": "Collaboration with @aicore - September 2024"
     },
     "images": [
       "/assets/interfaces/projects/sistemas-a-medida/aml-casinos/aml-casinos-01.png"
     ],
-    "prototypeUrl": null
+    "prototypeUrl": null,
+    "client": "AICORE",
+    "period": { "es": "septiembre 2024", "en": "September 2024" },
+    "duration": null,
+    "summary": null,
+    "ctaKind": null
   },
   {
     "id": "aml-general",
@@ -41,13 +51,18 @@
       "en": "Anti-Money Laundering Analysis"
     },
     "meta": {
-      "es": "Colaboración con AICORE - octubre 2024",
-      "en": "Collaboration with AICORE - October 2024"
+      "es": "Colaboración con @aicore - octubre 2024",
+      "en": "Collaboration with @aicore - October 2024"
     },
     "images": [
       "/assets/interfaces/projects/sistemas-a-medida/aml-general/aml-general-01.png"
     ],
-    "prototypeUrl": null
+    "prototypeUrl": null,
+    "client": "AICORE",
+    "period": { "es": "octubre 2024", "en": "October 2024" },
+    "duration": null,
+    "summary": null,
+    "ctaKind": null
   },
   {
     "id": "adapto-pay",
@@ -57,13 +72,18 @@
       "en": "Digital Wallet - ADAPTO PAY"
     },
     "meta": {
-      "es": "Colaboración con AICORE - noviembre 2024",
-      "en": "Collaboration with AICORE - November 2024"
+      "es": "Colaboración con @aicore - noviembre 2024",
+      "en": "Collaboration with @aicore - November 2024"
     },
     "images": [
       "/assets/interfaces/projects/preventas/adapto-pay/adapto-pay-01.png"
     ],
-    "prototypeUrl": null
+    "prototypeUrl": null,
+    "client": "ADAPTO PAY",
+    "period": { "es": "noviembre 2024", "en": "November 2024" },
+    "duration": null,
+    "summary": null,
+    "ctaKind": null
   },
   {
     "id": "clearwater",
@@ -73,13 +93,18 @@
       "en": "Purchase & Investment Report Generation - CLEARWATER"
     },
     "meta": {
-      "es": "Colaboración con AICORE - enero 2024",
-      "en": "Collaboration with AICORE - January 2024"
+      "es": "Colaboración con @aicore - enero 2024",
+      "en": "Collaboration with @aicore - January 2024"
     },
     "images": [
       "/assets/interfaces/projects/sistemas-a-medida/clearwater/clearwater-01.png"
     ],
-    "prototypeUrl": null
+    "prototypeUrl": null,
+    "client": "CLEARWATER",
+    "period": { "es": "enero 2024", "en": "January 2024" },
+    "duration": null,
+    "summary": null,
+    "ctaKind": null
   },
   {
     "id": "mikrobiol",
@@ -89,13 +114,18 @@
       "en": "Medical Supplies Store - MIKROBIOL"
     },
     "meta": {
-      "es": "Colaboración con AICORE - octubre 2024",
-      "en": "Collaboration with AICORE - October 2024"
+      "es": "Colaboración con @aicore - octubre 2024",
+      "en": "Collaboration with @aicore - October 2024"
     },
     "images": [
       "/assets/interfaces/projects/sistemas-a-medida/mikrobiol/mikrobiol-01.png"
     ],
-    "prototypeUrl": null
+    "prototypeUrl": null,
+    "client": "MIKROBIOL",
+    "period": { "es": "octubre 2024", "en": "October 2024" },
+    "duration": null,
+    "summary": null,
+    "ctaKind": null
   },
   {
     "id": "casiba",
@@ -105,13 +135,18 @@
       "en": "Air Treatment Units Management System - CASIBA"
     },
     "meta": {
-      "es": "Colaboración con AICORE - septiembre 2024",
-      "en": "Collaboration with AICORE - September 2024"
+      "es": "Colaboración con @aicore - septiembre 2024",
+      "en": "Collaboration with @aicore - September 2024"
     },
     "images": [
       "/assets/interfaces/projects/sistemas-a-medida/casiba/casiba-01.png"
     ],
-    "prototypeUrl": null
+    "prototypeUrl": null,
+    "client": "CASIBA",
+    "period": { "es": "septiembre 2024", "en": "September 2024" },
+    "duration": null,
+    "summary": null,
+    "ctaKind": null
   },
   {
     "id": "proxi",
@@ -121,11 +156,16 @@
       "en": "Integrated B2B sales & orders platform - PROXI"
     },
     "meta": {
-      "es": "Colaboración con AICORE - enero 2024",
-      "en": "Collaboration with AICORE - January 2024"
+      "es": "Colaboración con @aicore - enero 2024",
+      "en": "Collaboration with @aicore - January 2024"
     },
     "images": [],
-    "prototypeUrl": null
+    "prototypeUrl": null,
+    "client": "PROXI",
+    "period": { "es": "enero 2024", "en": "January 2024" },
+    "duration": null,
+    "summary": null,
+    "ctaKind": null
   },
   {
     "id": "cms-portfolio",
@@ -141,6 +181,20 @@
     "images": [
       "/assets/interfaces/projects/proyectos-personales/cms-portfolio/cms-portfolio-01.png"
     ],
-    "prototypeUrl": "/admin/login"
+    "prototypeUrl": "/admin/login",
+    "client": "Personal",
+    "period": {
+      "es": "2025–2026",
+      "en": "2025–2026"
+    },
+    "duration": {
+      "es": "en evolución continua",
+      "en": "ongoing"
+    },
+    "summary": {
+      "es": "Panel de administración hecho a medida para este portfolio: tipografías, capas gráfico/interfaces, bandeja de pendientes, marcas, testimonios y media. Pensado para publicar sin tocar código. Podés recorrerlo en modo visitante (solo lectura).",
+      "en": "Custom admin panel for this portfolio: type, graphic/interfaces layers, inbox, brands, testimonials and media. Built so content can ship without code changes. Explore it in read-only visitor mode."
+    },
+    "ctaKind": "visitor"
   }
 ]

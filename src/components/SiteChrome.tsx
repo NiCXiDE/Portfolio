@@ -8,6 +8,12 @@ import type { Dictionary } from "@/i18n/dictionaries";
 import type { Locale } from "@/i18n/config";
 import { pathForLayer, type LayerId } from "@/lib/layers";
 import type { PortfolioContent } from "@/lib/content";
+import { ThemeToggle } from "@/components/ThemeToggle";
+import {
+  BrandVectorMask,
+  ThemeSwapImage,
+} from "@/components/BrandVector";
+import { FaqSection } from "@/components/FaqSection";
 
 type HeaderProps = {
   locale: Locale;
@@ -86,14 +92,16 @@ export function Header({
         ) : (
           <span className="ml-3" aria-hidden />
         )}
-        <button
-          type="button"
-          className="mr-2 inline-flex size-9 shrink-0 flex-col items-center justify-center gap-1.5"
-          aria-expanded={menuOpen}
-          aria-controls="mobile-nav-menu"
-          aria-label={menuOpen ? "Cerrar menú" : "Abrir menú"}
-          onClick={() => setMenuOpen((o) => !o)}
-        >
+        <div className="mr-1 flex items-center gap-0.5">
+          <ThemeToggle label={dict.nav.themeToggle} />
+          <button
+            type="button"
+            className="inline-flex size-9 shrink-0 flex-col items-center justify-center gap-1.5"
+            aria-expanded={menuOpen}
+            aria-controls="mobile-nav-menu"
+            aria-label={menuOpen ? "Cerrar menú" : "Abrir menú"}
+            onClick={() => setMenuOpen((o) => !o)}
+          >
           <span
             className={`block h-0.5 w-5 bg-ink transition ${
               menuOpen ? "translate-y-[7px] rotate-45" : ""
@@ -110,6 +118,7 @@ export function Header({
             }`}
           />
         </button>
+        </div>
       </div>
 
       {/* Desktop */}
@@ -125,21 +134,19 @@ export function Header({
             aria-hidden={!showLeft}
           >
             <span className="relative size-8 shrink-0 md:size-9">
-              <Image
-                src="/assets/inicio/brand/scribble-mouse.svg"
+              <ThemeSwapImage
+                lightSrc="/assets/inicio/brand/scribble-mouse.svg"
+                darkSrc="/assets/inicio/brand/scribble-mouse-dark.svg"
                 alt=""
                 fill
                 className="object-contain object-left"
+                sizes="36px"
               />
             </span>
-            <span className="relative size-5 shrink-0 -scale-x-100">
-              <Image
-                src="/assets/inicio/brand/arrow-right.svg"
-                alt=""
-                fill
-                className="object-contain"
-              />
-            </span>
+            <BrandVectorMask
+              src="/assets/inicio/brand/arrow-right.svg"
+              className="size-5 shrink-0 -scale-x-100"
+            />
             <span className="truncate font-normal text-ink">
               {dict.home.graphic}
             </span>
@@ -170,6 +177,7 @@ export function Header({
           >
             {dict.nav.about}
           </button>
+          <ThemeToggle label={dict.nav.themeToggle} />
         </nav>
 
         <div className="flex min-h-10 min-w-0 items-center justify-self-end">
@@ -185,14 +193,10 @@ export function Header({
             <span className="truncate font-normal text-ink">
               {dict.home.interfaces}
             </span>
-            <span className="relative size-5 shrink-0">
-              <Image
-                src="/assets/inicio/brand/arrow-right.svg"
-                alt=""
-                fill
-                className="object-contain"
-              />
-            </span>
+            <BrandVectorMask
+              src="/assets/inicio/brand/arrow-right.svg"
+              className="size-5 shrink-0"
+            />
             <span className="relative size-8 shrink-0 md:size-9">
               <Image
                 src="/assets/inicio/brand/ruler.svg"
@@ -277,6 +281,7 @@ export function Footer({ locale, dict, socialLinks, settings }: FooterProps) {
   const note = settings.note[locale] ?? settings.note.es;
   return (
     <footer className="w-full">
+      <FaqSection dict={dict} />
       <div className="flex flex-col gap-8 bg-sky-soft px-6 py-8 sm:flex-row sm:flex-wrap sm:justify-center sm:gap-10 sm:px-10 md:gap-14 lg:px-20">
         <div className="flex flex-col gap-4">
           <h3 className="text-base font-bold text-ink md:text-lg">
@@ -298,6 +303,7 @@ export function Footer({ locale, dict, socialLinks, settings }: FooterProps) {
                         alt=""
                         fill
                         className="object-contain"
+                        aria-hidden
                       />
                     </span>
                   ) : null}
@@ -337,6 +343,14 @@ export function Footer({ locale, dict, socialLinks, settings }: FooterProps) {
                 {dict.footer.interfaces}
               </Link>
             </li>
+            <li>
+              <Link
+                href={`/${locale}/privacidad`}
+                className="transition-opacity hover:opacity-70"
+              >
+                {dict.footer.privacy}
+              </Link>
+            </li>
           </ul>
         </div>
 
@@ -360,6 +374,9 @@ export function Footer({ locale, dict, socialLinks, settings }: FooterProps) {
               >
                 {settings.phone}
               </a>
+            </li>
+            <li className="font-medium text-ink/90">
+              {dict.footer.responsePromise}
             </li>
             <li>{note}</li>
           </ul>

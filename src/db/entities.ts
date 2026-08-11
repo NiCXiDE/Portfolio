@@ -120,6 +120,8 @@ export type UiCategory =
   | "proyectos-personales"
   | "system-design";
 
+export type UiCtaKind = "prototype" | "visitor" | "live";
+
 export type UiProjectRow = {
   id: string;
   category: UiCategory;
@@ -127,6 +129,13 @@ export type UiProjectRow = {
   meta: LocalizedJson;
   images: string[];
   prototypeUrl: string | null;
+  /** Narrativa corta del proyecto (ficha). */
+  summary: LocalizedJson | null;
+  client: string | null;
+  period: LocalizedJson | null;
+  duration: LocalizedJson | null;
+  /** Cómo rotular el CTA externo / live. */
+  ctaKind: UiCtaKind | null;
   sortOrder: number;
   published: boolean;
 };
@@ -442,6 +451,16 @@ export const UiProjectEntity = new EntitySchema<UiProjectRow>({
       name: "prototype_url",
       type: String,
       length: 1024,
+      nullable: true,
+    },
+    summary: { type: "json", nullable: true },
+    client: { type: String, length: 255, nullable: true },
+    period: { type: "json", nullable: true },
+    duration: { type: "json", nullable: true },
+    ctaKind: {
+      name: "cta_kind",
+      type: String,
+      length: 32,
       nullable: true,
     },
     sortOrder: { name: "sort_order", type: Number },

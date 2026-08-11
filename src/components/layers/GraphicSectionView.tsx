@@ -15,6 +15,7 @@ import {
 } from "@/components/ExpandableArtGrid";
 import { SortButtons, type SortMode } from "@/components/SortButtons";
 import { TagFilter } from "@/components/TagFilter";
+import { Breadcrumbs } from "@/components/Breadcrumbs";
 import { pathForLayer } from "@/lib/layers";
 
 const SECTION_LABEL: Record<
@@ -145,15 +146,29 @@ export function GraphicSectionView({
     <main className="mx-auto flex w-full max-w-6xl flex-col gap-6 px-4 py-8 sm:px-6 md:px-8">
       <div className="flex flex-wrap items-end justify-between gap-3">
         <div>
+          <Breadcrumbs
+            ariaLabel={dict.breadcrumbs.aria}
+            items={[
+              {
+                href: pathForLayer(locale, "inicio"),
+                label: dict.breadcrumbs.home,
+              },
+              {
+                href: pathForLayer(locale, "grafico"),
+                label: dict.grafico.title,
+              },
+              { label: title },
+            ]}
+          />
+          <h1 className="mt-3 font-bigger text-3xl uppercase tracking-wide md:text-4xl">
+            {title}
+          </h1>
           <Link
             href={pathForLayer(locale, "grafico")}
-            className="text-sm underline underline-offset-4 opacity-70 hover:opacity-100"
+            className="mt-2 inline-block text-sm underline underline-offset-4 opacity-70 hover:opacity-100"
           >
             ← {dict.grafico.title}
           </Link>
-          <h1 className="mt-2 font-bigger text-3xl uppercase tracking-wide md:text-4xl">
-            {title}
-          </h1>
         </div>
         <SortButtons
           mode={sort}

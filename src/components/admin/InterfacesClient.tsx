@@ -23,6 +23,11 @@ export type UiProjectDTO = {
   meta: { es: string; en: string };
   images: string[];
   prototypeUrl: string | null;
+  summary: { es: string; en: string } | null;
+  client: string | null;
+  period: { es: string; en: string } | null;
+  duration: { es: string; en: string } | null;
+  ctaKind: "prototype" | "visitor" | "live" | null;
   sortOrder: number;
   published: boolean;
 };
@@ -46,6 +51,14 @@ function projectDraft(p: UiProjectDTO): Draft {
     metaEn: p.meta.en,
     images: p.images.join("\n"),
     prototypeUrl: p.prototypeUrl ?? "",
+    summaryEs: p.summary?.es ?? "",
+    summaryEn: p.summary?.en ?? "",
+    client: p.client ?? "",
+    periodEs: p.period?.es ?? "",
+    periodEn: p.period?.en ?? "",
+    durationEs: p.duration?.es ?? "",
+    durationEn: p.duration?.en ?? "",
+    ctaKind: p.ctaKind ?? "",
     published: p.published,
     sortOrder: String(p.sortOrder),
   };
@@ -93,7 +106,7 @@ function ProjectFields({
         >
           <option value="preventas">Preventas</option>
           <option value="sistemas-a-medida">Sistemas a medida</option>
-          <option value="proyectos-personales">Proyectos personales</option>
+          <option value="proyectos-personales">Personales</option>
           <option value="system-design">System design</option>
         </select>
       </label>
@@ -134,16 +147,93 @@ function ProjectFields({
         value={images}
         onChange={setImages}
       />
+      <div className="grid gap-3 sm:grid-cols-2">
+        <label className="block sm:col-span-2">
+          <FieldLabel hint="Texto de la ficha al clickear la interfaz.">
+            Resumen / ficha (español)
+          </FieldLabel>
+          <textarea
+            name="summaryEs"
+            defaultValue={item?.summary?.es ?? ""}
+            rows={3}
+            className={fieldClass}
+          />
+        </label>
+        <label className="block sm:col-span-2">
+          <FieldLabel>Resumen / ficha (inglés)</FieldLabel>
+          <textarea
+            name="summaryEn"
+            defaultValue={item?.summary?.en ?? ""}
+            rows={3}
+            className={fieldClass}
+          />
+        </label>
+        <label className="block">
+          <FieldLabel>Cliente</FieldLabel>
+          <input
+            name="client"
+            defaultValue={item?.client ?? ""}
+            className={fieldClass}
+          />
+        </label>
+        <label className="block">
+          <FieldLabel>Periodo (español)</FieldLabel>
+          <input
+            name="periodEs"
+            defaultValue={item?.period?.es ?? ""}
+            placeholder="ene–mar 2024"
+            className={fieldClass}
+          />
+        </label>
+        <label className="block">
+          <FieldLabel>Periodo (inglés)</FieldLabel>
+          <input
+            name="periodEn"
+            defaultValue={item?.period?.en ?? ""}
+            className={fieldClass}
+          />
+        </label>
+        <label className="block">
+          <FieldLabel>Duración (español)</FieldLabel>
+          <input
+            name="durationEs"
+            defaultValue={item?.duration?.es ?? ""}
+            placeholder="6 semanas"
+            className={fieldClass}
+          />
+        </label>
+        <label className="block">
+          <FieldLabel>Duración (inglés)</FieldLabel>
+          <input
+            name="durationEn"
+            defaultValue={item?.duration?.en ?? ""}
+            className={fieldClass}
+          />
+        </label>
+      </div>
       <label className="block">
-        <FieldLabel icon={Link2} hint="Link al Figma, Framer u otro prototipo.">
-          Enlace al prototipo
+        <FieldLabel icon={Link2} hint="Link al Figma, Framer, o login visitante.">
+          Enlace (prototipo / live / visitante)
         </FieldLabel>
         <input
           name="prototypeUrl"
           defaultValue={item?.prototypeUrl ?? ""}
-          placeholder="https://…"
+          placeholder="https://… o /admin/login"
           className={fieldClass}
         />
+      </label>
+      <label className="block">
+        <FieldLabel>Texto del enlace</FieldLabel>
+        <select
+          name="ctaKind"
+          defaultValue={item?.ctaKind ?? ""}
+          className={selectClass}
+        >
+          <option value="">Automático</option>
+          <option value="prototype">Ver prototipo</option>
+          <option value="visitor">Ver como visitante</option>
+          <option value="live">Ver en vivo</option>
+        </select>
       </label>
       <div className="flex flex-wrap gap-4 text-sm">
         <label className="inline-flex items-center gap-2">

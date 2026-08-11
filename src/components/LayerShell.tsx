@@ -16,6 +16,8 @@ import {
 } from "@/lib/layers";
 import { Footer, Header } from "@/components/SiteChrome";
 import { BackToTop } from "@/components/BackToTop";
+import { StickyMobileCta } from "@/components/StickyMobileCta";
+import { JsonLdPerson } from "@/components/JsonLd";
 import { HomeLayer } from "@/components/layers/HomeLayer";
 import { GraphicLayer } from "@/components/layers/GraphicLayer";
 import { InterfacesLayer } from "@/components/layers/InterfacesLayer";
@@ -35,16 +37,21 @@ const GRAPHIC_SECTIONS =
   /\/grafico\/(covers|logos|personal|illustration|banners|manuals)\/?$/;
 const INTERFACE_SECTIONS =
   /\/interfaces\/(preventas|sistemas-a-medida|proyectos-personales|system-design)\/?$/;
+const STANDALONE_PAGES = /\/privacidad\/?$/;
 
 function isCatalogDetailPath(pathname: string) {
   return GRAPHIC_SECTIONS.test(pathname) || INTERFACE_SECTIONS.test(pathname);
+}
+
+function isStandalonePath(pathname: string) {
+  return isCatalogDetailPath(pathname) || STANDALONE_PAGES.test(pathname);
 }
 
 export function LayerShell({ locale, dict, content, children }: Props) {
   const pathname = usePathname();
   const router = useRouter();
   const reduceMotion = useReducedMotion();
-  const catalogDetail = isCatalogDetailPath(pathname);
+  const catalogDetail = isStandalonePath(pathname);
   const active = layerFromPathname(pathname);
   const index = layerIndex(active);
   const lock = useRef(false);
@@ -184,11 +191,15 @@ export function LayerShell({ locale, dict, content, children }: Props) {
   if (catalogDetail) {
     return (
       <div className="relative h-dvh w-full overflow-hidden bg-white">
+        <JsonLdPerson
+          email={content.settings.email}
+          socialLinks={content.socialLinks}
+        />
         <div
           ref={(node) => {
             detailScrollRef.current = node;
           }}
-          className="site-scroll site-scroll-detail h-full"
+          className="site-scroll site-scroll-detail h-full pb-16 md:pb-0"
         >
           <Header
             locale={locale}
@@ -206,6 +217,10 @@ export function LayerShell({ locale, dict, content, children }: Props) {
             settings={content.settings}
           />
         </div>
+        <StickyMobileCta
+          label={dict.home.contactCta}
+          onContact={onContact}
+        />
         <BackToTop
           label={dict.common.backToTop}
           layer={active}
@@ -224,6 +239,10 @@ export function LayerShell({ locale, dict, content, children }: Props) {
         touchStart.current = null;
       }}
     >
+      <JsonLdPerson
+        email={content.settings.email}
+        socialLinks={content.socialLinks}
+      />
       <motion.div
         className="flex h-full will-change-transform"
         style={{ width: `${LAYER_COUNT * 100}%` }}
@@ -254,7 +273,7 @@ export function LayerShell({ locale, dict, content, children }: Props) {
               ref={(node) => {
                 scrollRefs.current[id] = node;
               }}
-              className="site-scroll"
+              className="site-scroll pb-16 md:pb-0"
             >
               <Header
                 locale={locale}
@@ -287,6 +306,7 @@ export function LayerShell({ locale, dict, content, children }: Props) {
           </section>
         ))}
       </motion.div>
+      <StickyMobileCta label={dict.home.contactCta} onContact={onContact} />
       <BackToTop
         label={dict.common.backToTop}
         layer={active}

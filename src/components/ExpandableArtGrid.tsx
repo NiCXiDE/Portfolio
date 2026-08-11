@@ -9,11 +9,16 @@ import {
   useState,
 } from "react";
 import Image from "next/image";
-import { BookOpen, Download, ExternalLink, Maximize2 } from "lucide-react";
+import Link from "next/link";
+import { ArrowRight, BookOpen, Download, ExternalLink, Maximize2 } from "lucide-react";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import type { Locale } from "@/i18n/config";
 import { t, type LocalizedString } from "@/lib/content";
 import { ImageLightbox } from "@/components/ImageLightbox";
+import {
+  BrandVectorMask,
+  isSvgAsset,
+} from "@/components/BrandVector";
 
 export type ArtItem = {
   id: string;
@@ -54,6 +59,9 @@ type Props = {
   /** Tag slugs that trigger NSFW blur (defaults include "nsfw") */
   nsfwSlugs?: string[];
   onTagClick?: (tag: string) => void;
+  /** If set, appends a “ver más” tile after the preview items */
+  seeMoreHref?: string;
+  seeMoreLabel?: string;
 };
 
 function loc(
@@ -87,6 +95,8 @@ export function ExpandableArtGrid({
   nsfwHideLabel = "Ocultar",
   nsfwSlugs = ["nsfw"],
   onTagClick,
+  seeMoreHref,
+  seeMoreLabel = "Ver más",
 }: Props) {
   const reduceMotion = useReducedMotion();
   const nsfwSet = useMemo(
@@ -224,6 +234,8 @@ export function ExpandableArtGrid({
             const tags = item.tags ?? [];
             const isNsfw = tags.some((tag) => nsfwSet.has(tag));
             const nsfwLocked = isNsfw && !revealedNsfw.has(item.id);
+            // Only real SVGs: tag "vector" is a content filter (PNG/JPG ok).
+            const useVectorMask = isSvgAsset(item.src);
 
             if (isCollapsed) {
               return (
@@ -326,34 +338,48 @@ export function ExpandableArtGrid({
                           : { inset: 0 }
                       }
                     >
-                      <Image
-                        src={item.src}
-                        alt={item.alt}
-                        fill
-                        unoptimized={
-                          item.src.startsWith("/assets") ||
-                          /\.svg($|\?)/i.test(item.src)
-                        }
-                        loading="eager"
-                        className={`${
-                          fit === "contain" ||
-                          (isOpen &&
-                            (frame === "portrait" || frame === "banner"))
-                            ? "object-contain object-center"
-                            : "object-cover object-top"
-                        } ${
-                          nsfwLocked
-                            ? "scale-110 blur-2xl"
-                            : !isOpen && fit === "cover"
-                              ? "transition-transform duration-500 group-hover:scale-[1.04]"
-                              : ""
-                        }`}
-                        sizes={
-                          isOpen
-                            ? "280px"
-                            : "(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
-                        }
-                      />
+                      {useVectorMask ? (
+                        <BrandVectorMask
+                          src={item.src}
+                          label={item.alt}
+                          className={`absolute inset-0 size-full ${
+                            nsfwLocked
+                              ? "scale-110 blur-2xl"
+                              : !isOpen && fit === "cover"
+                                ? "transition-transform duration-500 group-hover:scale-[1.04]"
+                                : ""
+                          }`}
+                        />
+                      ) : (
+                        <Image
+                          src={item.src}
+                          alt={item.alt}
+                          fill
+                          unoptimized={
+                            item.src.startsWith("/assets") ||
+                            isSvgAsset(item.src)
+                          }
+                          loading="eager"
+                          className={`${
+                            fit === "contain" ||
+                            (isOpen &&
+                              (frame === "portrait" || frame === "banner"))
+                              ? "object-contain object-center"
+                              : "object-cover object-top"
+                          } ${
+                            nsfwLocked
+                              ? "scale-110 blur-2xl"
+                              : !isOpen && fit === "cover"
+                                ? "transition-transform duration-500 group-hover:scale-[1.04]"
+                                : ""
+                          }`}
+                          sizes={
+                            isOpen
+                              ? "280px"
+                              : "(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
+                          }
+                        />
+                      )}
                     </div>
                     {item.overlaySrc && !nsfwLocked && (
                       <div
@@ -564,6 +590,21 @@ export function ExpandableArtGrid({
             );
           })}
         </AnimatePresence>
+        {seeMoreHref && !openId ? (
+          <Link
+            href={seeMoreHref}
+            className="group relative flex aspect-square w-full flex-col items-center justify-center gap-2 overflow-hidden bg-sky-pale shadow-none drop-shadow-none transition-opacity hover:opacity-80 focus-visible:ring-2 focus-visible:ring-ink/40"
+          >
+            <ArrowRight
+              className="size-12 text-ink sm:size-14 md:size-16"
+              strokeWidth={1.5}
+              aria-hidden
+            />
+            <span className="text-sm font-medium lowercase text-ink underline underline-offset-4 md:text-base">
+              {seeMoreLabel}
+            </span>
+          </Link>
+        ) : null}
       </div>
 
       <ImageLightbox

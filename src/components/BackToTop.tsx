@@ -33,7 +33,7 @@ export function BackToTop({ label, layer, getScroller }: Props) {
       onClick={() => {
         getScroller()?.scrollTo({ top: 0, behavior: "smooth" });
       }}
-      className={`fixed bottom-5 right-4 z-40 flex size-11 items-center justify-center rounded-full bg-ink text-sky-pale shadow-[0_4px_16px_rgba(64,65,121,0.35)] transition-[opacity,transform] duration-200 md:bottom-7 md:right-6 ${
+      className={`fixed bottom-20 right-4 z-40 flex size-11 items-center justify-center rounded-full bg-ink text-sky-pale shadow-[0_4px_16px_rgba(64,65,121,0.35)] transition-[opacity,transform] duration-200 md:bottom-7 md:right-6 ${
         visible
           ? "pointer-events-auto translate-y-0 opacity-100"
           : "pointer-events-none translate-y-2 opacity-0"

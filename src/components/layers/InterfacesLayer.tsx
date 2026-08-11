@@ -24,6 +24,11 @@ import {
 import { SortButtons, type SortMode } from "@/components/SortButtons";
 import { renderMentionedText } from "@/components/MentionText";
 import type { UiCategory } from "@/db/entities";
+import {
+  UiProjectDetailModal,
+  uiCtaLabel,
+  type UiProjectDetail,
+} from "@/components/UiProjectDetailModal";
 
 type Props = {
   locale: Locale;
@@ -31,14 +36,7 @@ type Props = {
   content: PortfolioContent;
 };
 
-type UiProject = {
-  id: string;
-  category: UiCategory;
-  title: LocalizedString;
-  meta: LocalizedString;
-  images: readonly string[];
-  prototypeUrl: string | null;
-};
+type UiProject = UiProjectDetail & { category: UiCategory };
 
 type IconType = ComponentType<LucideProps>;
 
@@ -100,11 +98,13 @@ function ProjectCarousel({
   alt,
   dict,
   autoMs,
+  onOpenDetail,
 }: {
   images: readonly string[];
   alt: string;
   dict: Dictionary;
   autoMs: number;
+  onOpenDetail?: () => void;
 }) {
   const reduceMotion = useReducedMotion();
   const [index, setIndex] = useState(0);
@@ -133,9 +133,15 @@ function ProjectCarousel({
 
   if (total === 0) {
     return (
-      <div className="relative flex aspect-[644/362] w-full items-center justify-center overflow-hidden bg-sky-pale">
+      <button
+        type="button"
+        aria-label={dict.interfaces.openDetail}
+        onClick={onOpenDetail}
+        className="relative flex aspect-[644/362] w-full cursor-zoom-in items-center justify-center overflow-hidden bg-sky-pale disabled:cursor-default"
+        disabled={!onOpenDetail}
+      >
         <span className="text-sm text-ink/50 md:text-base">—</span>
-      </div>
+      </button>
     );
   }
 
@@ -178,6 +184,15 @@ function ProjectCarousel({
           />
         </motion.div>
       </AnimatePresence>
+
+      {onOpenDetail ? (
+        <button
+          type="button"
+          aria-label={dict.interfaces.openDetail}
+          onClick={onOpenDetail}
+          className="absolute inset-0 z-[1] cursor-zoom-in"
+        />
+      ) : null}
 
       {total > 1 && (
         <>
@@ -248,6 +263,7 @@ export function InterfacesLayer({ locale, dict, content }: Props) {
     () => Object.fromEntries(content.brands.map((b) => [b.id, b])),
     [content.brands],
   );
+  const [detailId, setDetailId] = useState<string | null>(null);
   const [sorts, setSorts] = useState<Record<UiCategory, SortMode>>({
     "sistemas-a-medida": "year",
     preventas: "year",
@@ -255,6 +271,8 @@ export function InterfacesLayer({ locale, dict, content }: Props) {
     "system-design": "year",
   });
 
+  const detailProject =
+    projects.find((p) => p.id === detailId) ?? null;
   const categoryLabel = (cat: UiCategory) => {
     if (cat === "preventas") return dict.interfaces.catPreventas;
     if (cat === "sistemas-a-medida") return dict.interfaces.catSistemas;
@@ -384,6 +402,7 @@ export function InterfacesLayer({ locale, dict, content }: Props) {
                         alt={t(project.title, locale)}
                         dict={dict}
                         autoMs={autoMs}
+                        onOpenDetail={() => setDetailId(project.id)}
                       />
                       <div className="flex flex-wrap items-center justify-between gap-2 text-sm text-ink">
                         <span>
@@ -400,7 +419,7 @@ export function InterfacesLayer({ locale, dict, content }: Props) {
                               : { target: "_blank", rel: "noreferrer" })}
                             className="underline underline-offset-2 transition-opacity hover:opacity-70"
                           >
-                            {dict.interfaces.prototype}
+                            {uiCtaLabel(project, dict)}
                           </a>
                         ) : (
                           <span
@@ -467,6 +486,14 @@ export function InterfacesLayer({ locale, dict, content }: Props) {
           </Link>
         </p>
       </div>
+
+      <UiProjectDetailModal
+        project={detailProject}
+        locale={locale}
+        dict={dict}
+        brands={content.brands}
+        onClose={() => setDetailId(null)}
+      />
     </main>
   );
 }

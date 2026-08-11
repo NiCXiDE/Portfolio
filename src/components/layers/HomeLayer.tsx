@@ -12,6 +12,11 @@ import { EditableSurname } from "@/components/EditableSurname";
 import { CvDownloadButton } from "@/components/CvDownloadButton";
 import { InfiniteMarquee } from "@/components/InfiniteMarquee";
 import { MentionedText } from "@/components/MentionText";
+import {
+  BrandVectorMask,
+  ThemeSwapImage,
+  isSvgAsset,
+} from "@/components/BrandVector";
 import type { CSSProperties } from "react";
 
 type Props = {
@@ -61,15 +66,17 @@ export function HomeLayer({ locale, dict, content }: Props) {
           >
             <Link
               href={pathForLayer(locale, "grafico")}
-              className="hero-drift relative h-11 w-full max-w-[8.5rem] justify-self-end transition-opacity hover:opacity-80 sm:h-16 sm:max-w-[14rem] md:h-[5.5rem] md:max-w-none md:w-[min(100%,26rem)]"
+              className="hero-nudge-left relative h-11 w-full max-w-[8.5rem] justify-self-end transition-opacity hover:opacity-80 sm:h-16 sm:max-w-[14rem] md:h-[5.5rem] md:max-w-none md:w-[min(100%,26rem)]"
               aria-label={dict.footer.graphic}
             >
-              <Image
-                src="/assets/inicio/brand/hero-grafico.svg"
+              <ThemeSwapImage
+                lightSrc="/assets/inicio/brand/hero-grafico.svg"
+                darkSrc="/assets/inicio/brand/hero-grafico-dark.svg"
                 alt=""
                 fill
                 className="object-contain object-right"
                 priority
+                sizes="(max-width: 768px) 40vw, 26rem"
               />
             </Link>
 
@@ -81,20 +88,16 @@ export function HomeLayer({ locale, dict, content }: Props) {
 
             <Link
               href={pathForLayer(locale, "interfaces")}
-              className="hero-drift flex flex-row items-center gap-1 justify-self-start transition-opacity hover:opacity-80 sm:gap-1.5 md:gap-2"
+              className="hero-nudge-right flex flex-row items-center gap-1 justify-self-start transition-opacity hover:opacity-80 sm:gap-1.5 md:gap-2"
               aria-label={dict.footer.interfaces}
             >
               <span className="text-[clamp(0.8rem,2.7vw,2.15rem)] font-normal leading-none whitespace-nowrap text-ink">
                 {dict.home.interfaces}
               </span>
-              <span className="relative size-4 shrink-0 sm:size-6 md:size-8">
-                <Image
-                  src="/assets/inicio/brand/arrow-right.svg"
-                  alt=""
-                  fill
-                  className="object-contain"
-                />
-              </span>
+              <BrandVectorMask
+                src="/assets/inicio/brand/arrow-right.svg"
+                className="size-4 shrink-0 sm:size-6 md:size-8"
+              />
               <span className="relative size-7 shrink-0 sm:size-10 md:size-16 lg:size-[4.5rem]">
                 <Image
                   src="/assets/inicio/brand/ruler.svg"
@@ -200,12 +203,21 @@ export function HomeLayer({ locale, dict, content }: Props) {
                             className="mt-1 inline-flex w-fit max-w-full items-center transition-opacity hover:opacity-70"
                             aria-label={item.company.name}
                           >
-                            {/* eslint-disable-next-line @next/next/no-img-element */}
-                            <img
-                              src={item.company.logo}
-                              alt={item.company.name}
-                              className="testimonial-logo"
-                            />
+                            {isSvgAsset(item.company.logo) ? (
+                              <BrandVectorMask
+                                src={item.company.logo}
+                                label={item.company.name}
+                                position="left center"
+                                className="testimonial-logo"
+                              />
+                            ) : (
+                              // eslint-disable-next-line @next/next/no-img-element
+                              <img
+                                src={item.company.logo}
+                                alt={item.company.name}
+                                className="testimonial-logo"
+                              />
+                            )}
                           </a>
                         ) : (
                           <a

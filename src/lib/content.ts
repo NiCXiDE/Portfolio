@@ -102,6 +102,11 @@ export type UiProjectContent = {
   meta: LocalizedString;
   images: string[];
   prototypeUrl: string | null;
+  summary: LocalizedString | null;
+  client: string | null;
+  period: LocalizedString | null;
+  duration: LocalizedString | null;
+  ctaKind: "prototype" | "visitor" | "live" | null;
 };
 
 export type UiListItemContent = {
@@ -387,6 +392,11 @@ export async function loadPortfolioContent(): Promise<PortfolioContent> {
         meta: p.meta,
         images: mediaUrls(p.images),
         prototypeUrl: p.prototypeUrl,
+        summary: p.summary ?? null,
+        client: p.client ?? null,
+        period: p.period ?? null,
+        duration: p.duration ?? null,
+        ctaKind: p.ctaKind ?? null,
       })),
     uiList: uiList
       .filter((item) => item.published)

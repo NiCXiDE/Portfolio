@@ -366,6 +366,11 @@ async function main() {
       meta: Localized;
       images: string[];
       prototypeUrl: string | null;
+      summary?: Localized | null;
+      client?: string | null;
+      period?: Localized | null;
+      duration?: Localized | null;
+      ctaKind?: UiProjectRow["ctaKind"];
     }>
   >("content/interfaces/projects.json");
 
@@ -376,6 +381,11 @@ async function main() {
     meta: item.meta,
     images: item.images,
     prototypeUrl: item.prototypeUrl,
+    summary: item.summary ?? null,
+    client: item.client ?? null,
+    period: item.period ?? null,
+    duration: item.duration ?? null,
+    ctaKind: item.ctaKind ?? null,
     sortOrder,
     published: true,
   }));

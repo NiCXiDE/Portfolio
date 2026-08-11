@@ -20,6 +20,7 @@ import {
   type LocalizedJson,
   type NamedListKind,
   type UiCategory,
+  type UiCtaKind,
 } from "@/db/entities";
 import { requireAdmin } from "@/lib/admin-auth";
 import { isR2Configured, uploadToR2 } from "@/lib/r2";
@@ -771,6 +772,14 @@ export async function saveUiProject(formData: FormData) {
     .split("\n")
     .map((l) => l.trim())
     .filter(Boolean);
+  const summary = loc(formData.get("summaryEs"), formData.get("summaryEn"));
+  const period = loc(formData.get("periodEs"), formData.get("periodEn"));
+  const duration = loc(formData.get("durationEs"), formData.get("durationEn"));
+  const ctaRaw = String(formData.get("ctaKind") ?? "").trim();
+  const ctaKind: UiCtaKind | null =
+    ctaRaw === "prototype" || ctaRaw === "visitor" || ctaRaw === "live"
+      ? ctaRaw
+      : null;
   const ds = await getDataSource();
   const repo = ds.getRepository(UiProjectEntity);
   const existing = await repo.findOneBy({ id });
@@ -782,6 +791,11 @@ export async function saveUiProject(formData: FormData) {
     meta: loc(formData.get("metaEs"), formData.get("metaEn")),
     images,
     prototypeUrl: String(formData.get("prototypeUrl") ?? "") || null,
+    summary: summary.es || summary.en ? summary : null,
+    client: String(formData.get("client") ?? "").trim() || null,
+    period: period.es || period.en ? period : null,
+    duration: duration.es || duration.en ? duration : null,
+    ctaKind,
     sortOrder: Number(formData.get("sortOrder") ?? 0),
     published: bool(formData.get("published")),
   };

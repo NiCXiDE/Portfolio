@@ -17,6 +17,31 @@
   --alert-success: #48f267;
   --background: #ffffff;
   --foreground: #404179;
+  --surface: #ffffff;
+  /* Vectores brand (tinta de flechas / tipografía SVG) */
+  --brand-vector: #404179;
+  color-scheme: light;
+}
+
+[data-theme="dark"] {
+  --ink: #c8cbe0;
+  --ink-deep: #e6e8f5;
+  --sky: #5aa6d8;
+  --sky-soft: #16192a;
+  --sky-mid: #1c2035;
+  --sky-pale: #1e2338;
+  --pink: #f977cd;
+  --blue-select: #3fa5ee;
+  --figma-orange: #ff7262;
+  --alert-danger: #f24848;
+  --alert-warning: #f2d048;
+  --alert-success: #48f267;
+  --background: #0f111a;
+  --foreground: #c8cbe0;
+  --surface: #1a1e30;
+  /* Celeste de contenedores del tema claro */
+  --brand-vector: #def0fd;
+  color-scheme: dark;
 }
 
 @theme inline {
@@ -34,6 +59,8 @@
   --color-alert-success: var(--alert-success);
   --color-background: var(--background);
   --color-foreground: var(--foreground);
+  --color-surface: var(--surface);
+  --color-brand-vector: var(--brand-vector);
   --font-satoshi: "Satoshi", ui-sans-serif, system-ui, sans-serif;
   --font-bigger: "BiggerDisplay", ui-sans-serif, system-ui, sans-serif;
 }
@@ -67,6 +94,11 @@ body {
   }
 
   .hero-drift {
+    animation: none !important;
+  }
+
+  .hero-nudge-left,
+  .hero-nudge-right {
     animation: none !important;
   }
 }
@@ -336,7 +368,7 @@ body {
   min-height: calc(clamp(1.75rem, 6vw, 4rem) * 1.2 + 1.25rem);
 }
 
-/* Subtle 2px swing matching gap easing (uses translate so rotate still works) */
+/* Subtle vertical float (title / center) */
 .hero-drift {
   animation: hero-drift 2.8s ease-in-out infinite;
   will-change: translate;
@@ -349,6 +381,37 @@ body {
   }
   50% {
     translate: 0 -2px;
+  }
+}
+
+/* Opposite lateral nudges — invite clicking side layers */
+.hero-nudge-left {
+  animation: hero-nudge-left 2.6s ease-in-out infinite;
+  will-change: translate;
+}
+
+.hero-nudge-right {
+  animation: hero-nudge-right 2.6s ease-in-out infinite;
+  will-change: translate;
+}
+
+@keyframes hero-nudge-left {
+  0%,
+  100% {
+    translate: 0 0;
+  }
+  50% {
+    translate: -8px 0;
+  }
+}
+
+@keyframes hero-nudge-right {
+  0%,
+  100% {
+    translate: 0 0;
+  }
+  50% {
+    translate: 8px 0;
   }
 }
 
@@ -552,8 +615,8 @@ body {
 .testimonial-logo {
   display: block;
   height: 2.625rem;
-  width: auto;
-  max-width: 13.5rem;
+  width: 13.5rem;
+  max-width: 100%;
   object-fit: contain;
   object-position: left center;
 }
@@ -614,7 +677,8 @@ body {
 
   .testimonial-logo {
     height: 3rem;
-    max-width: 15.75rem;
+    width: 15.75rem;
+    max-width: 100%;
   }
 }
 
@@ -734,6 +798,52 @@ body {
   .marquee-viewport {
     mask-image: none;
   }
+}
+
+/* Surfaces that used hardcoded white follow theme */
+[data-theme="dark"] .bg-white {
+  background-color: var(--surface);
+}
+
+.visitor-tour-next {
+  color: #6d28d9; /* violet-700 — readable on white in light */
+}
+
+[data-theme="dark"] .visitor-tour-next {
+  color: #fff;
+}
+
+@keyframes tour-anchor-pulse {
+  0%,
+  100% {
+    box-shadow: inset 0 0 0 999px rgb(124 58 237 / 0);
+    outline-color: rgb(167 139 250 / 0);
+  }
+  45%,
+  55% {
+    box-shadow: inset 0 0 0 999px rgb(124 58 237 / 0.16);
+    outline-color: rgb(167 139 250 / 0.55);
+  }
+}
+
+.tour-anchor-flash {
+  position: relative;
+  z-index: 1;
+  outline: 2px solid rgb(167 139 250 / 0);
+  outline-offset: 2px;
+  animation: tour-anchor-pulse 0.55s ease-in-out 3;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tour-anchor-flash {
+    animation: none;
+    box-shadow: inset 0 0 0 999px rgb(124 58 237 / 0.14);
+    outline-color: rgb(167 139 250 / 0.45);
+  }
+}
+
+[data-theme="dark"] .admin-panel {
+  background-color: var(--background);
 }
 
 /* Admin guest showcase — disable mutating controls; nav/logout stay usable */

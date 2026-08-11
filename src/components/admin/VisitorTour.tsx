@@ -148,6 +148,19 @@ export function VisitorTour({ enabled }: { enabled: boolean }) {
       const el = document.querySelector(step.anchor);
       setPos(computePos(el));
       el?.scrollIntoView({ block: "nearest", behavior: "smooth" });
+
+      document.querySelectorAll(".tour-anchor-flash").forEach((node) => {
+        node.classList.remove("tour-anchor-flash");
+      });
+      if (el instanceof HTMLElement) {
+        // Restart CSS animation if the same node is targeted again
+        void el.offsetWidth;
+        el.classList.add("tour-anchor-flash");
+        const clearFlash = () => el.classList.remove("tour-anchor-flash");
+        el.addEventListener("animationend", clearFlash, { once: true });
+        // reduced-motion: no animationend — clear after a beat
+        window.setTimeout(clearFlash, 2000);
+      }
     }
 
     void align();
@@ -160,6 +173,9 @@ export function VisitorTour({ enabled }: { enabled: boolean }) {
     return () => {
       cancelled = true;
       window.removeEventListener("resize", onResize);
+      document.querySelectorAll(".tour-anchor-flash").forEach((node) => {
+        node.classList.remove("tour-anchor-flash");
+      });
     };
   }, [open, step, pathname, router]);
 
@@ -229,7 +245,7 @@ export function VisitorTour({ enabled }: { enabled: boolean }) {
           </button>
           <button
             type="button"
-            className="bg-white px-3 py-1.5 text-xs font-medium text-violet-700"
+            className="visitor-tour-next bg-white px-3 py-1.5 text-xs font-medium"
             onClick={next}
           >
             {stepIndex >= STEPS.length - 1 ? "Listo" : "Siguiente"}

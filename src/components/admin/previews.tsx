@@ -10,6 +10,7 @@ import {
   type Draft,
 } from "@/components/admin/draft";
 import { PreviewImageCarousel } from "@/components/admin/ImageGalleryField";
+import { BrandVectorMask, isSvgAsset } from "@/components/BrandVector";
 import { renderMentionedText } from "@/components/MentionText";
 import type { BrandRef } from "@/lib/brands";
 
@@ -164,12 +165,21 @@ export function TestimonialPreview({
           ) : null}
           {href ? (
             logo ? (
-              // eslint-disable-next-line @next/next/no-img-element
-              <img
-                src={logo}
-                alt={company}
-                className="mt-1 h-6 w-auto max-w-[120px] object-contain object-left"
-              />
+              isSvgAsset(logo) ? (
+                <BrandVectorMask
+                  src={logo}
+                  label={company}
+                  position="left center"
+                  className="mt-1 h-6 w-[7.5rem] max-w-full"
+                />
+              ) : (
+                // eslint-disable-next-line @next/next/no-img-element
+                <img
+                  src={logo}
+                  alt={company}
+                  className="mt-1 h-6 w-auto max-w-[120px] object-contain object-left"
+                />
+              )
             ) : (
               <span className="mt-1 inline-flex items-center gap-1 text-xs underline underline-offset-2">
                 <ExternalLink className="size-3" strokeWidth={1.75} />

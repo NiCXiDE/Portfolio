@@ -40,6 +40,11 @@ export default async function AdminInterfacesProjectsPage({
         meta: p.meta,
         images: p.images,
         prototypeUrl: p.prototypeUrl,
+        summary: p.summary,
+        client: p.client,
+        period: p.period,
+        duration: p.duration,
+        ctaKind: p.ctaKind,
         sortOrder: p.sortOrder,
         published: p.published,
       }))}

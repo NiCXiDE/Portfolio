@@ -120,7 +120,7 @@ function GraphicFields({
       <label className="block">
         <FieldLabel
           icon={Type}
-          hint="Se usa si la imagen no carga o para lectores de pantalla."
+          hint="Texto alternativo obligatorio para SEO y accesibilidad (describe la imagen)."
         >
           Nombre descriptivo
         </FieldLabel>
