@@ -1,0 +1,50 @@
+[
+  {
+    "id": "juegos-provinciales",
+    "src": "/assets/grafico/eventos/juegos-provinciales/cover-1x1.png",
+    "alt": "Juegos Provinciales Tecnológicos",
+    "title": {
+      "es": "Juegos Provinciales Tecnológicos",
+      "en": "Provincial Technology Games"
+    },
+    "year": "",
+    "tags": ["evento"],
+    "detail": {
+      "es": "Campaña de difusión para el Gobierno de Formosa: gaming, robótica y música en vivo. Polo Científico, Tecnológico y de Innovación · 21 de junio.",
+      "en": "Promo campaign for the Government of Formosa: gaming, robotics, and live music. Science, Technology and Innovation Hub · 21 June."
+    },
+    "relatedSrc": "/assets/grafico/eventos/juegos-provinciales/portada.png",
+    "gallery": [
+      "/assets/grafico/eventos/juegos-provinciales/flyer-musica.png",
+      "/assets/grafico/eventos/juegos-provinciales/flyer-robotica.png",
+      "/assets/grafico/eventos/juegos-provinciales/flyer-gaming.png",
+      "/assets/grafico/eventos/juegos-provinciales/flyer-espacios.png",
+      "/assets/grafico/eventos/juegos-provinciales/mapa.png",
+      "/assets/grafico/eventos/juegos-provinciales/mapa-story.png",
+      "/assets/grafico/eventos/juegos-provinciales/afiche.png",
+      "/assets/grafico/eventos/juegos-provinciales/flyer-identidad.png",
+      "/assets/grafico/eventos/juegos-provinciales/flyer-gonzalito.png",
+      "/assets/grafico/eventos/juegos-provinciales/flyer-axel.png",
+      "/assets/grafico/eventos/juegos-provinciales/flyer-lucas-sub21.png"
+    ],
+    "href": null
+  },
+  {
+    "id": "expedicion-polo",
+    "src": "/assets/grafico/eventos/expedicion-polo/cover-1x1.png",
+    "alt": "EXPEDICIÓN POLO",
+    "title": {
+      "es": "EXPEDICIÓN POLO",
+      "en": "EXPEDICIÓN POLO"
+    },
+    "year": "",
+    "tags": ["evento"],
+    "detail": {
+      "es": "Evento en el Polo Científico, Tecnológico y de Innovación (PCT&I) para exhibir el trabajo y las actividades que se desarrollan en el polo.",
+      "en": "Event at the Science, Technology and Innovation Hub (PCT&I) showcasing the work and activities carried out at the hub."
+    },
+    "relatedSrc": "/assets/grafico/eventos/expedicion-polo/portada.png",
+    "gallery": [],
+    "href": null
+  }
+]

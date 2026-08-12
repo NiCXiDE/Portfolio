@@ -8,6 +8,7 @@ import {
 } from "@/lib/inbox";
 import { mediaUrl } from "@/lib/media";
 import { t } from "@/lib/content";
+import { normalizeUiSlides } from "@/lib/ui-slides";
 
 export default async function AdminPendingPage() {
   const session = await getSession();
@@ -41,13 +42,16 @@ export default async function AdminPendingPage() {
       image: mediaUrl(row.imagePath),
       href: "/admin/testimonials",
     })),
-    ...draftProjects.map((row) => ({
-      id: row.id,
-      kind: "ui_project" as const,
-      label: t(row.title, "es") || row.id,
-      image: row.images[0] ? mediaUrl(row.images[0]) : null,
-      href: "/admin/interfaces/projects",
-    })),
+    ...draftProjects.map((row) => {
+      const first = normalizeUiSlides(row.images)[0];
+      return {
+        id: row.id,
+        kind: "ui_project" as const,
+        label: t(row.title, "es") || row.id,
+        image: first ? mediaUrl(first.src) : null,
+        href: "/admin/interfaces/projects",
+      };
+    }),
   ];
 
   return (

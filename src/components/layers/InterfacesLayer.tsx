@@ -4,12 +4,17 @@ import { useEffect, useMemo, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import {
+  BrandVectorMask,
+  isSvgAsset,
+} from "@/components/BrandVector";
+import {
   ChevronLeft,
   ChevronRight,
   LayoutDashboard,
   Lightbulb,
   Network,
   Presentation,
+  Smartphone,
   type LucideProps,
 } from "lucide-react";
 import type { ComponentType } from "react";
@@ -22,6 +27,7 @@ import {
   type PortfolioContent,
 } from "@/lib/content";
 import { SortButtons, type SortMode } from "@/components/SortButtons";
+import { pathForLayer } from "@/lib/layers";
 import { renderMentionedText } from "@/components/MentionText";
 import type { UiCategory } from "@/db/entities";
 import {
@@ -29,6 +35,15 @@ import {
   uiCtaLabel,
   type UiProjectDetail,
 } from "@/components/UiProjectDetailModal";
+import {
+  mixedPlatformLabel,
+  normalizeUiSlides,
+  type UiSlide,
+} from "@/lib/ui-slides";
+import {
+  UiPortraitStrip,
+  isAllPortraitSlides,
+} from "@/components/UiPortraitStrip";
 
 type Props = {
   locale: Locale;
@@ -46,6 +61,7 @@ const CATEGORY_META: {
 }[] = [
   { id: "sistemas-a-medida", icon: LayoutDashboard },
   { id: "preventas", icon: Presentation },
+  { id: "apps-mobile", icon: Smartphone },
   { id: "proyectos-personales", icon: Lightbulb },
   { id: "system-design", icon: Network },
 ];
@@ -94,24 +110,28 @@ function sortProjects(
 }
 
 function ProjectCarousel({
-  images,
+  slides,
   alt,
   dict,
   autoMs,
   onOpenDetail,
+  mixedLabel,
 }: {
-  images: readonly string[];
+  slides: readonly UiSlide[];
   alt: string;
   dict: Dictionary;
   autoMs: number;
   onOpenDetail?: () => void;
+  mixedLabel?: string;
 }) {
   const reduceMotion = useReducedMotion();
   const [index, setIndex] = useState(0);
   const [direction, setDirection] = useState(1);
   const [hovering, setHovering] = useState(false);
   const [progressKey, setProgressKey] = useState(0);
-  const total = images.length;
+  const total = slides.length;
+  const current = slides[index];
+  const frameClass = "relative aspect-[644/362] w-full overflow-hidden bg-sky-pale";
 
   const goTo = (next: number, dir: 1 | -1) => {
     setDirection(dir);
@@ -140,14 +160,26 @@ function ProjectCarousel({
         className="relative flex aspect-[644/362] w-full cursor-zoom-in items-center justify-center overflow-hidden bg-sky-pale disabled:cursor-default"
         disabled={!onOpenDetail}
       >
-        <span className="text-sm text-ink/50 md:text-base">—</span>
+        <span className="text-sm text-ink/50 md:text-base">-</span>
       </button>
+    );
+  }
+
+  if (isAllPortraitSlides(slides)) {
+    return (
+      <UiPortraitStrip
+        slides={slides}
+        alt={alt}
+        mixedLabel={mixedLabel}
+        onOpenDetail={onOpenDetail}
+        openDetailLabel={dict.interfaces.openDetail}
+      />
     );
   }
 
   return (
     <div
-      className="relative aspect-[644/362] w-full overflow-hidden bg-sky-pale"
+      className={frameClass}
       onMouseEnter={() => {
         setHovering(true);
         setProgressKey((k) => k + 1);
@@ -156,7 +188,7 @@ function ProjectCarousel({
     >
       <AnimatePresence initial={false} custom={direction} mode="popLayout">
         <motion.div
-          key={images[index]}
+          key={current.src}
           custom={direction}
           variants={{
             enter: (d: number) =>
@@ -176,14 +208,24 @@ function ProjectCarousel({
           className="absolute inset-0"
         >
           <Image
-            src={images[index]}
+            src={current.src}
             alt={`${alt} (${index + 1}/${total})`}
             fill
-            className="object-cover object-top"
+            className={
+              current.aspect === "portrait"
+                ? "object-contain object-center"
+                : "object-cover object-top"
+            }
             sizes="(max-width: 768px) 100vw, 50vw"
           />
         </motion.div>
       </AnimatePresence>
+
+      {mixedLabel ? (
+        <span className="pointer-events-none absolute left-2 top-2 z-10 bg-ink/80 px-2 py-0.5 text-[10px] font-medium uppercase tracking-wide text-sky-pale">
+          {mixedLabel}
+        </span>
+      ) : null}
 
       {onOpenDetail ? (
         <button
@@ -213,7 +255,7 @@ function ProjectCarousel({
             <ChevronRight className="size-4" strokeWidth={2.25} aria-hidden />
           </button>
           <div className="absolute bottom-2 left-0 right-0 z-10 flex items-center justify-center gap-1.5">
-            {images.map((_, i) => {
+            {slides.map((_, i) => {
               const active = i === index;
               if (!active) {
                 return (
@@ -267,6 +309,7 @@ export function InterfacesLayer({ locale, dict, content }: Props) {
   const [sorts, setSorts] = useState<Record<UiCategory, SortMode>>({
     "sistemas-a-medida": "year",
     preventas: "year",
+    "apps-mobile": "year",
     "proyectos-personales": "year",
     "system-design": "year",
   });
@@ -277,6 +320,7 @@ export function InterfacesLayer({ locale, dict, content }: Props) {
     if (cat === "preventas") return dict.interfaces.catPreventas;
     if (cat === "sistemas-a-medida") return dict.interfaces.catSistemas;
     if (cat === "system-design") return dict.interfaces.catSystemDesign;
+    if (cat === "apps-mobile") return dict.interfaces.catAppsMobile;
     return dict.interfaces.catPersonales;
   };
 
@@ -308,6 +352,21 @@ export function InterfacesLayer({ locale, dict, content }: Props) {
     }
     return map;
   }, [projects]);
+
+  const orphanedListItems = useMemo(() => {
+    const projectIds = new Set(projects.map((p) => p.id));
+    return content.uiList.filter((item) => {
+      if (projectIds.has(item.id)) return false;
+      if (
+        "caption" in item &&
+        typeof item.caption === "string" &&
+        projectIds.has(item.caption)
+      ) {
+        return false;
+      }
+      return true;
+    });
+  }, [content.uiList, projects]);
 
   return (
     <main className="flex w-full flex-col items-center overflow-x-clip">
@@ -398,11 +457,21 @@ export function InterfacesLayer({ locale, dict, content }: Props) {
                         {t(project.title, locale)}
                       </h3>
                       <ProjectCarousel
-                        images={project.images}
+                        slides={normalizeUiSlides(project.images)}
                         alt={t(project.title, locale)}
                         dict={dict}
                         autoMs={autoMs}
                         onOpenDetail={() => setDetailId(project.id)}
+                        mixedLabel={
+                          mixedPlatformLabel(
+                            normalizeUiSlides(project.images),
+                            t(project.meta, locale),
+                            {
+                              mixed: dict.interfaces.mixedPlatformBadge,
+                              totem: dict.interfaces.mixedTotemBadge,
+                            },
+                          ) ?? undefined
+                        }
                       />
                       <div className="flex flex-wrap items-center justify-between gap-2 text-sm text-ink">
                         <span>
@@ -448,33 +517,70 @@ export function InterfacesLayer({ locale, dict, content }: Props) {
           );
         })}
 
-        <div className="grid w-full grid-cols-1 gap-6 md:grid-cols-2 md:gap-8">
-          {content.uiList.map((item) => (
-            <div key={item.id} className="flex flex-col gap-2 p-2.5">
-              {"logo" in item && item.logo && (
-                <div className="relative mb-2 h-14 w-40 sm:h-16 sm:w-52">
-                  <Image
-                    src={item.logo}
-                    alt=""
-                    fill
-                    className="object-contain object-left"
-                  />
-                </div>
-              )}
-              {"wordmark" in item && item.wordmark && (
-                <p className="mb-1 text-[clamp(1.5rem,3vw,2.75rem)] font-bold leading-tight text-ink">
-                  {item.wordmark}
-                </p>
-              )}
-              {"caption" in item && item.caption && (
-                <p className="text-sm text-ink">{item.caption}</p>
-              )}
-              <p className="text-[clamp(1rem,1.8vw,1.625rem)] text-ink">
-                {t(item.title, locale)}
-              </p>
+        {orphanedListItems.length > 0 ? (
+          <section className="flex w-full flex-col gap-6">
+            <h2 className="text-xl font-bold text-ink md:text-2xl">
+              {dict.interfaces.orphanListHeading}
+            </h2>
+            <div className="grid w-full grid-cols-1 gap-6 md:grid-cols-2 md:gap-8">
+              {orphanedListItems.map((item) => {
+                const logo =
+                  "logo" in item && typeof item.logo === "string"
+                    ? item.logo
+                    : null;
+                const wordmark =
+                  "wordmark" in item && typeof item.wordmark === "string"
+                    ? item.wordmark
+                    : null;
+                const caption =
+                  "caption" in item && typeof item.caption === "string"
+                    ? item.caption
+                    : null;
+                return (
+                  <article
+                    key={item.id}
+                    className="flex flex-col gap-2.5 border border-ink/10 bg-white p-3 sm:p-4"
+                  >
+                    <div className="relative flex aspect-[644/362] w-full items-center justify-center overflow-hidden bg-sky-pale">
+                      {logo ? (
+                        isSvgAsset(logo) ? (
+                          <BrandVectorMask
+                            src={logo}
+                            className="h-16 w-40 sm:h-20 sm:w-52"
+                            position="left center"
+                          />
+                        ) : (
+                          <div className="relative h-16 w-40 sm:h-20 sm:w-52">
+                            <Image
+                              src={logo}
+                              alt=""
+                              fill
+                              className="object-contain object-left"
+                            />
+                          </div>
+                        )
+                      ) : wordmark ? (
+                        <p className="px-4 text-center text-[clamp(1.25rem,3vw,2rem)] font-bold leading-tight text-ink">
+                          {wordmark}
+                        </p>
+                      ) : (
+                        <span className="text-sm text-ink/35">
+                          {dict.interfaces.placeholderVisual}
+                        </span>
+                      )}
+                    </div>
+                    {caption ? (
+                      <p className="text-sm text-ink/70">{caption}</p>
+                    ) : null}
+                    <p className="text-sm font-bold text-ink sm:text-base">
+                      {t(item.title, locale)}
+                    </p>
+                  </article>
+                );
+              })}
             </div>
-          ))}
-        </div>
+          </section>
+        ) : null}
 
         <p className="mt-10 max-w-xl text-sm text-ink/70 sm:text-base">
           {dict.interfaces.cmsCta}{" "}

@@ -82,7 +82,8 @@ export type GraphicSection =
   | "personal"
   | "pending"
   | "illustration"
-  | "banners";
+  | "banners"
+  | "eventos";
 
 export type GraphicItemRow = {
   id: string;
@@ -99,6 +100,8 @@ export type GraphicItemRow = {
   fit: "cover" | "contain" | null;
   relatedSrcPath: string | null;
   relatedAssetId: string | null;
+  /** Extra images shown when the piece is expanded (cover stays `srcPath`). */
+  galleryPaths: unknown[] | null;
   sortOrder: number;
   published: boolean;
 };
@@ -118,16 +121,25 @@ export type UiCategory =
   | "preventas"
   | "sistemas-a-medida"
   | "proyectos-personales"
-  | "system-design";
+  | "system-design"
+  | "apps-mobile";
 
 export type UiCtaKind = "prototype" | "visitor" | "live";
+
+export type UiSlideAspect = "landscape" | "portrait";
+
+export type UiSlide = {
+  src: string;
+  aspect: UiSlideAspect;
+};
 
 export type UiProjectRow = {
   id: string;
   category: UiCategory;
   title: LocalizedJson;
   meta: LocalizedJson;
-  images: string[];
+  /** Prefer UiSlide[]; plain strings still accepted on read (legacy). */
+  images: Array<string | UiSlide>;
   prototypeUrl: string | null;
   /** Narrativa corta del proyecto (ficha). */
   summary: LocalizedJson | null;
@@ -415,6 +427,11 @@ export const GraphicItemEntity = new EntitySchema<GraphicItemRow>({
       name: "related_asset_id",
       type: String,
       length: 36,
+      nullable: true,
+    },
+    galleryPaths: {
+      name: "gallery_paths",
+      type: "json",
       nullable: true,
     },
     sortOrder: { name: "sort_order", type: Number },

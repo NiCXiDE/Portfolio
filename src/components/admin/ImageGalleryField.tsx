@@ -17,6 +17,8 @@ type Props = {
   folder: string;
   value: string[];
   onChange: (paths: string[]) => void;
+  label?: string;
+  hint?: string;
 };
 
 export function ImageGalleryField({
@@ -24,6 +26,8 @@ export function ImageGalleryField({
   folder,
   value,
   onChange,
+  label = "Imágenes del proyecto",
+  hint = "La primera es la de la card. Arrastrá miniaturas para reordenar.",
 }: Props) {
   const fileRef = useRef<HTMLInputElement>(null);
   const hiddenRef = useRef<HTMLTextAreaElement>(null);
@@ -64,9 +68,7 @@ export function ImageGalleryField({
 
   return (
     <div className="space-y-2">
-      <FieldLabel hint="La primera es la de la card. Arrastrá miniaturas para reordenar.">
-        Imágenes del proyecto
-      </FieldLabel>
+      <FieldLabel hint={hint}>{label}</FieldLabel>
       <textarea
         ref={hiddenRef}
         name={name}

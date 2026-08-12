@@ -77,6 +77,18 @@ export function graphicSectionTitle(locale: Locale, sectionLabel: string) {
     : `${sectionLabel} — Gráfico · Nico Ayala`;
 }
 
+export function graphicEventTitle(locale: Locale, eventTitle: string) {
+  return locale === "en"
+    ? `${eventTitle} — Events · Nico Ayala`
+    : `${eventTitle} — Eventos · Nico Ayala`;
+}
+
+export function graphicLogoTitle(locale: Locale, logoTitle: string) {
+  return locale === "en"
+    ? `${logoTitle} - Logos - Nico Ayala`
+    : `${logoTitle} - Logotipos - Nico Ayala`;
+}
+
 export function interfacesCategoryTitle(locale: Locale, categoryLabel: string) {
   return `${categoryLabel} — Interfaces · Nico Ayala`;
 }

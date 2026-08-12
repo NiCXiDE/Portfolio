@@ -34,9 +34,9 @@ const LAYER_COUNT = LAYER_ORDER.length;
 const PANE_PCT = 100 / LAYER_COUNT;
 
 const GRAPHIC_SECTIONS =
-  /\/grafico\/(covers|logos|personal|illustration|banners|manuals)\/?$/;
+  /\/grafico\/(covers|logos|personal|illustration|banners|eventos|manuals)(\/[^/]+)?\/?$/;
 const INTERFACE_SECTIONS =
-  /\/interfaces\/(preventas|sistemas-a-medida|proyectos-personales|system-design)\/?$/;
+  /\/interfaces\/(preventas|sistemas-a-medida|apps-mobile|proyectos-personales|system-design)\/?$/;
 const STANDALONE_PAGES = /\/privacidad\/?$/;
 
 function isCatalogDetailPath(pathname: string) {

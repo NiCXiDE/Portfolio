@@ -21,6 +21,7 @@ const SECTION_LABELS: Record<Exclude<GraphicSection, "pending">, string> = {
   personal: "Personales",
   illustration: "Ilustración",
   banners: "Banners",
+  eventos: "Eventos",
 };
 
 export type InboxDTO = {

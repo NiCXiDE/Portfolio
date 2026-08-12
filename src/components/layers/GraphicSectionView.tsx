@@ -16,6 +16,7 @@ import {
 import { SortButtons, type SortMode } from "@/components/SortButtons";
 import { TagFilter } from "@/components/TagFilter";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
+import { LOGO_SAFE_INSET_PERCENT, logoDetailHref } from "@/lib/graphic-constants";
 import { pathForLayer } from "@/lib/layers";
 
 const SECTION_LABEL: Record<
@@ -27,6 +28,7 @@ const SECTION_LABEL: Record<
   personal: "personal",
   illustration: "illustration",
   banners: "banners",
+  eventos: "eventos",
   manuals: "brandManuals",
 };
 
@@ -97,6 +99,7 @@ export function GraphicSectionView({
       tags: readTags(c.tags),
       fit: c.fit ?? "cover",
       relatedSrc: c.relatedSrc,
+      gallery: c.gallery?.length ? c.gallery.map((g) => g.src) : undefined,
     }));
 
     let list = mapped.map((item, index) => ({ item, index }));
@@ -160,14 +163,14 @@ export function GraphicSectionView({
               { label: title },
             ]}
           />
-          <h1 className="mt-3 font-bigger text-3xl uppercase tracking-wide md:text-4xl">
+          <h1 className="mt-3 text-3xl font-bold tracking-tight md:text-4xl">
             {title}
           </h1>
           <Link
             href={pathForLayer(locale, "grafico")}
             className="mt-2 inline-block text-sm underline underline-offset-4 opacity-70 hover:opacity-100"
           >
-            ← {dict.grafico.title}
+            ← {dict.nav.backToGraphic}
           </Link>
         </div>
         <SortButtons
@@ -187,7 +190,20 @@ export function GraphicSectionView({
         />
       ) : null}
       <ExpandableArtGrid
-        items={items}
+        items={
+          section === "eventos"
+            ? items.map((item) => ({
+                ...item,
+                fit: "cover" as const,
+                frame: "square" as const,
+              }))
+            : section === "logos"
+              ? items.map((item) => ({
+                  ...item,
+                  fit: "contain" as const,
+                }))
+              : items
+        }
         locale={locale}
         cellClassName="bg-sky-pale"
         visitLabel={dict.grafico.visitLink}
@@ -199,6 +215,16 @@ export function GraphicSectionView({
         nsfwHideLabel={dict.common.nsfwHide}
         nsfwSlugs={nsfwSlugs}
         onTagClick={setTag}
+        containPadPercent={
+          section === "logos" ? LOGO_SAFE_INSET_PERCENT : undefined
+        }
+        itemHref={
+          section === "eventos"
+            ? (item) => `/${locale}/grafico/eventos/${item.id}`
+            : section === "logos"
+              ? (item) => logoDetailHref(locale, item)
+              : undefined
+        }
       />
     </main>
   );

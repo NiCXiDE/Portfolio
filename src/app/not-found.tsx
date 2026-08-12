@@ -12,7 +12,7 @@ export default function NotFound() {
   return (
     <main className="flex min-h-dvh flex-col items-center justify-center gap-8 bg-background px-6 py-16 text-ink">
       <div className="flex max-w-md flex-col items-center gap-3 text-center">
-        <p className="font-bigger text-5xl uppercase tracking-wide text-ink/30 md:text-7xl">
+        <p className="text-5xl font-bold tracking-tight text-ink/30 md:text-7xl">
           404
         </p>
         <h1 className="text-xl font-bold md:text-2xl">Página no encontrada</h1>

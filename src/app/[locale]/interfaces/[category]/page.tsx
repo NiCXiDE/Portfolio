@@ -15,6 +15,7 @@ import {
 const CATS = [
   "preventas",
   "sistemas-a-medida",
+  "apps-mobile",
   "proyectos-personales",
   "system-design",
 ] as const;
@@ -26,6 +27,7 @@ function categoryTitle(
   if (category === "preventas") return dict.interfaces.catPreventas;
   if (category === "sistemas-a-medida") return dict.interfaces.catSistemas;
   if (category === "system-design") return dict.interfaces.catSystemDesign;
+  if (category === "apps-mobile") return dict.interfaces.catAppsMobile;
   return dict.interfaces.catPersonales;
 }
 
@@ -83,14 +85,14 @@ export default async function InterfacesCategoryPage({
             { label: title },
           ]}
         />
-        <h1 className="mt-3 font-bigger text-3xl uppercase tracking-wide md:text-4xl">
+        <h1 className="mt-3 text-3xl font-bold tracking-tight md:text-4xl">
           {title}
         </h1>
         <Link
           href={pathForLayer(locale, "interfaces")}
           className="mt-2 inline-block text-sm underline underline-offset-4 opacity-70 hover:opacity-100"
         >
-          ← {dict.interfaces.titleBold}
+          ← {dict.nav.backToInterfaces}
         </Link>
       </div>
       <InterfacesCategoryGrid

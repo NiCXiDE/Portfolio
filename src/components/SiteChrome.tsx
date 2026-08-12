@@ -375,9 +375,7 @@ export function Footer({ locale, dict, socialLinks, settings }: FooterProps) {
                 {settings.phone}
               </a>
             </li>
-            <li className="font-medium text-ink/90">
-              {dict.footer.responsePromise}
-            </li>
+            <li>{dict.footer.responsePromise}</li>
             <li>{note}</li>
           </ul>
         </div>

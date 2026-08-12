@@ -6,10 +6,12 @@ import {
   type ComponentType,
   type ReactNode,
 } from "react";
+import Link from "next/link";
 import Image from "next/image";
 import {
   BookOpen,
   Disc3,
+  Megaphone,
   Palette,
   PenTool,
   Printer,
@@ -29,6 +31,8 @@ import {
 } from "@/components/ExpandableArtGrid";
 import { SortButtons, type SortMode } from "@/components/SortButtons";
 import { TagFilter } from "@/components/TagFilter";
+import { pathForLayer } from "@/lib/layers";
+import { LOGO_SAFE_INSET_PERCENT, logoDetailHref } from "@/lib/graphic-constants";
 
 type Props = {
   locale: Locale;
@@ -58,6 +62,7 @@ type IllustrationItem = {
   relatedSrc?: string | null;
   /** contain = recorte sin fondo (celeste + margen); cover = llena el canvas */
   fit?: "cover" | "contain";
+  gallery?: { src: string }[];
 };
 
 type SectionKey =
@@ -65,6 +70,7 @@ type SectionKey =
   | "logos"
   | "manuals"
   | "illustration"
+  | "eventos"
   | "banners"
   | "personal";
 
@@ -186,6 +192,7 @@ export function GraphicLayer({ locale, dict, content }: Props) {
     logos: "year",
     manuals: "year",
     illustration: "year",
+    eventos: "year",
     banners: "year",
     personal: "year",
   });
@@ -211,6 +218,7 @@ export function GraphicLayer({ locale, dict, content }: Props) {
       label: dict.grafico.illustration,
       icon: Palette,
     },
+    { id: "grafico-eventos", label: dict.grafico.eventos, icon: Megaphone },
     { id: "grafico-banners", label: dict.grafico.banners, icon: Printer },
     { id: "grafico-personal", label: dict.grafico.personal, icon: Sparkles },
   ];
@@ -263,6 +271,9 @@ export function GraphicLayer({ locale, dict, content }: Props) {
           ? logo.overlay
           : undefined,
       tags: readTags("tags" in logo ? logo.tags : []),
+      gallery: logo.gallery?.length
+        ? logo.gallery.map((g) => g.src)
+        : undefined,
       fit: "contain" as const,
     }));
     return sortItems(
@@ -317,6 +328,9 @@ export function GraphicLayer({ locale, dict, content }: Props) {
       relatedLabel: item.relatedSrc
         ? dict.grafico.relatedTattoo
         : undefined,
+      gallery: item.gallery?.length
+        ? item.gallery.map((g) => g.src)
+        : undefined,
       fit:
         "fit" in item && (item.fit === "contain" || item.fit === "cover")
           ? item.fit
@@ -347,6 +361,7 @@ export function GraphicLayer({ locale, dict, content }: Props) {
       tags: readTags(b.tags),
       relatedSrc: b.relatedSrc ?? undefined,
       relatedLabel: b.relatedSrc ? dict.grafico.relatedPrint : undefined,
+      gallery: b.gallery?.length ? b.gallery.map((g) => g.src) : undefined,
       fit: "contain" as const,
       frame: "banner" as const,
     }));
@@ -362,6 +377,27 @@ export function GraphicLayer({ locale, dict, content }: Props) {
     dict.grafico.relatedPrint,
   ]);
 
+  const eventoItems = useMemo(() => {
+    const mapped = content.eventos.slice(0, limit).map((e) => ({
+      id: e.id,
+      src: e.src,
+      alt: e.alt,
+      title: e.title,
+      year: e.year?.trim() ? e.year : undefined,
+      detail: e.detail,
+      href: e.href,
+      tags: readTags(e.tags),
+      gallery: e.gallery?.length ? e.gallery.map((g) => g.src) : undefined,
+      fit: "cover" as const,
+      frame: "square" as const,
+    }));
+    return sortItems(
+      applyTagFilter(mapped, tagFilter.eventos ?? null),
+      sorts.eventos,
+      locale,
+    );
+  }, [sorts.eventos, locale, tagFilter.eventos, content.eventos, limit]);
+
   const personalItems = useMemo(() => {
     const mapped = content.personal.slice(0, limit).map((item) => ({
       id: item.id,
@@ -373,6 +409,9 @@ export function GraphicLayer({ locale, dict, content }: Props) {
       href: item.href,
       hrefLabel: item.hrefLabel,
       tags: readTags("tags" in item ? item.tags : []),
+      gallery: item.gallery?.length
+        ? item.gallery.map((g) => g.src)
+        : undefined,
       fit: (("fit" in item && item.fit === "contain"
         ? "contain"
         : "cover") as ArtItem["fit"]),
@@ -413,6 +452,14 @@ export function GraphicLayer({ locale, dict, content }: Props) {
         locale,
       ),
     [locale, content.banners],
+  );
+  const eventoTagList = useMemo(
+    () =>
+      uniqueTags(
+        content.eventos.map((e) => ({ tags: readTags(e.tags) })),
+        locale,
+      ),
+    [locale, content.eventos],
   );
   const personalTagList = useMemo(
     () =>
@@ -464,6 +511,12 @@ export function GraphicLayer({ locale, dict, content }: Props) {
               <span className="font-bold">{dict.grafico.titleBold}</span>
             </h1>
             <p className="text-sm text-ink md:text-base">{dict.grafico.subtitle}</p>
+            <Link
+              href={pathForLayer(locale, "inicio")}
+              className="text-sm underline underline-offset-4 opacity-70 transition-opacity hover:opacity-100"
+            >
+              {dict.nav.backHome} →
+            </Link>
           </div>
         </div>
 
@@ -551,8 +604,9 @@ export function GraphicLayer({ locale, dict, content }: Props) {
           items={logoItems}
           locale={locale}
           cellClassName="bg-sky-pale"
-          containPadPercent={6}
+          containPadPercent={LOGO_SAFE_INSET_PERCENT}
           onTagClick={(tag) => setTag("logos", tag)}
+          itemHref={(item) => logoDetailHref(locale, item)}
           {...gridExtras}
           {...seeMoreProps("logos", content.logos.length)}
         />
@@ -612,10 +666,41 @@ export function GraphicLayer({ locale, dict, content }: Props) {
             items={illustrationItems}
             locale={locale}
             cellClassName="bg-sky-pale"
-            containPadPercent={6}
             onTagClick={(tag) => setTag("illustration", tag)}
             {...gridExtras}
             {...seeMoreProps("illustration", drawings.length)}
+          />
+        )}
+
+        <SectionTitle
+          id="grafico-eventos"
+          icon={Megaphone}
+          hint={dict.grafico.hintEventos}
+          actions={sortActions("eventos")}
+        >
+          {dict.grafico.eventos}
+        </SectionTitle>
+        <TagFilter
+          tags={eventoTagList}
+          active={tagFilter.eventos ?? null}
+          onChange={(tag) => setTag("eventos", tag)}
+          labels={dict.common.tagLabels}
+          clearLabel={dict.common.clearFilter}
+        />
+        {eventoItems.length === 0 ? (
+          <p className="text-sm text-ink/70 md:text-base">
+            {dict.grafico.emptyEventos}
+          </p>
+        ) : (
+          <ExpandableArtGrid
+            items={eventoItems}
+            locale={locale}
+            cellClassName="bg-sky-pale"
+            containPadPercent={0}
+            onTagClick={(tag) => setTag("eventos", tag)}
+            itemHref={(item) => `/${locale}/grafico/eventos/${item.id}`}
+            {...gridExtras}
+            {...seeMoreProps("eventos", content.eventos.length)}
           />
         )}
 

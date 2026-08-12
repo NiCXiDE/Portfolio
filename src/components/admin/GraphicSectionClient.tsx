@@ -1,5 +1,6 @@
 "use client";
 
+import { useRef, useState } from "react";
 import {
   Calendar,
   Eye,
@@ -15,10 +16,16 @@ import { ClassifyGraphicForm } from "@/components/admin/ClassifyGraphicForm";
 import { CollapsibleEditor } from "@/components/admin/CollapsibleEditor";
 import { FieldLabel, fieldClass, selectClass } from "@/components/admin/FieldLabel";
 import { ImageDropField } from "@/components/admin/ImageDropField";
+import { ImageGalleryField } from "@/components/admin/ImageGalleryField";
+import { LogoGalleryField } from "@/components/admin/LogoGalleryField";
 import { WithGraphicPreview } from "@/components/admin/WithPreview";
 import { GraphicItemPreview } from "@/components/admin/previews";
 import type { Draft } from "@/components/admin/draft";
 import type { GraphicSection } from "@/db/entities";
+import {
+  ensureVectorTag,
+  isVectorRecolorPath,
+} from "@/lib/graphic-constants";
 
 export type GraphicItemDTO = {
   id: string;
@@ -34,6 +41,7 @@ export type GraphicItemDTO = {
   fit: "cover" | "contain" | null;
   relatedSrcPath: string | null;
   relatedAssetId: string | null;
+  galleryPaths: unknown[] | null;
   sortOrder: number;
   published: boolean;
   /** Metadatos del asset para heurística de clasificación */
@@ -45,6 +53,28 @@ export type GraphicItemDTO = {
   } | null;
 };
 
+function gallerySrcList(galleryPaths: unknown[] | null | undefined): string[] {
+  if (!galleryPaths) return [];
+  const out: string[] = [];
+  for (const entry of galleryPaths) {
+    if (!entry) continue;
+    if (typeof entry === "string") {
+      const src = entry.trim();
+      if (src) out.push(src);
+      continue;
+    }
+    if (typeof entry === "object") {
+      const obj = entry as Record<string, unknown>;
+      const srcVal = obj.src;
+      if (typeof srcVal === "string") {
+        const src = srcVal.trim();
+        if (src) out.push(src);
+      }
+    }
+  }
+  return out;
+}
+
 const SECTION_LABELS: Record<GraphicSection, string> = {
   covers: "Portadas",
   logos: "Logos",
@@ -52,6 +82,7 @@ const SECTION_LABELS: Record<GraphicSection, string> = {
   pending: "Pendientes",
   illustration: "Ilustración",
   banners: "Banners",
+  eventos: "Eventos",
 };
 
 function itemToDraft(item: GraphicItemDTO): Draft {
@@ -68,10 +99,38 @@ function itemToDraft(item: GraphicItemDTO): Draft {
     hrefLabelEn: item.hrefLabel?.en ?? "",
     tags: item.tags?.join(", ") ?? "",
     relatedSrcPath: item.relatedSrcPath ?? "",
+    galleryPaths: gallerySrcList(item.galleryPaths).join("\n"),
     fit: item.fit ?? "",
     published: item.published,
     sortOrder: String(item.sortOrder),
   };
+}
+
+function GraphicGalleryField({
+  folder,
+  defaultPaths,
+  label,
+  hint,
+}: {
+  folder: string;
+  defaultPaths: string[];
+  label?: string;
+  hint?: string;
+}) {
+  const [paths, setPaths] = useState(defaultPaths);
+  return (
+    <ImageGalleryField
+      name="galleryPaths"
+      folder={folder}
+      value={paths}
+      onChange={setPaths}
+      label={label ?? "Galería (detalle)"}
+      hint={
+        hint ??
+        "La grilla muestra solo la imagen principal. Estas aparecen al expandir."
+      }
+    />
+  );
 }
 
 function GraphicFields({
@@ -86,6 +145,15 @@ function GraphicFields({
   library?: { id: string; path: string; originalName: string | null }[];
 }) {
   const folder = `assets/grafico/${section}`;
+  const tagsRef = useRef<HTMLInputElement>(null);
+
+  function applyVectorTag(path: string) {
+    if (section !== "logos" || !isVectorRecolorPath(path)) return;
+    const el = tagsRef.current;
+    if (!el) return;
+    el.value = ensureVectorTag(el.value);
+    el.dispatchEvent(new Event("input", { bubbles: true }));
+  }
 
   return (
     <>
@@ -110,11 +178,16 @@ function GraphicFields({
         name="srcPath"
         assetName="srcAssetId"
         label="Imagen principal"
-        hint="Arrastrá la imagen. No hace falta escribir la ruta."
+        hint={
+          section === "logos"
+            ? "SVG o PNG monocromo (blanco sobre negro). Al subir se etiqueta como vector para recolor del tema."
+            : "Arrastrá la imagen. No hace falta escribir la ruta."
+        }
         defaultValue={item?.srcPath}
         defaultAssetId={item?.srcAssetId ?? ""}
         folder={folder}
         library={library}
+        onUploaded={applyVectorTag}
       />
 
       <label className="block">
@@ -227,14 +300,19 @@ function GraphicFields({
       <label className="block">
         <FieldLabel
           icon={Tags}
-          hint="Separá con comas. Ej: nsfw, vector"
+          hint={
+            section === "logos"
+              ? "Separá con comas. Usá vector en SVG/PNG monocromo para el recolor del tema (--brand-vector)."
+              : "Separá con comas. Ej: nsfw, vector"
+          }
         >
           Etiquetas
         </FieldLabel>
         <input
+          ref={tagsRef}
           name="tags"
           defaultValue={item?.tags?.join(", ") ?? ""}
-          placeholder="nsfw, vector"
+          placeholder={section === "logos" ? "vector" : "nsfw, vector"}
           className={fieldClass}
         />
       </label>
@@ -242,13 +320,44 @@ function GraphicFields({
       <ImageDropField
         name="relatedSrcPath"
         assetName="relatedAssetId"
-        label="Imagen relacionada (opcional)"
-        hint="Segunda imagen que aparece al abrir la card."
+        label={
+          section === "eventos"
+            ? "Portada de la ficha (16:9)"
+            : "Imagen relacionada (opcional)"
+        }
+        hint={
+          section === "eventos"
+            ? "Se muestra arriba en la página del evento."
+            : "Segunda imagen que aparece al abrir la card."
+        }
         defaultValue={item?.relatedSrcPath ?? ""}
         defaultAssetId={item?.relatedAssetId ?? ""}
         folder={folder}
         library={library}
       />
+
+      {section === "logos" ? (
+        <LogoGalleryField
+          folder={item ? `${folder}/${item.id}` : folder}
+          defaultGalleryPaths={item?.galleryPaths ?? null}
+          itemId={item?.id}
+        />
+      ) : (
+        <GraphicGalleryField
+          folder={folder}
+          defaultPaths={gallerySrcList(item?.galleryPaths)}
+          label={
+            section === "eventos"
+              ? "Recursos de la ficha (1×1)"
+              : undefined
+          }
+          hint={
+            section === "eventos"
+              ? "Aparecen en la grilla de la página del evento."
+              : undefined
+          }
+        />
+      )}
 
       <div className="flex flex-wrap gap-4 text-sm">
         <label className="block">
@@ -257,7 +366,7 @@ function GraphicFields({
           </FieldLabel>
           <select
             name="fit"
-            defaultValue={item?.fit ?? ""}
+            defaultValue={item?.fit ?? (section === "logos" ? "contain" : "")}
             className={selectClass}
           >
             <option value="">Automático</option>

@@ -7,10 +7,11 @@ import {
   useMemo,
   useRef,
   useState,
+  type ReactNode,
 } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowRight, BookOpen, Download, ExternalLink, Maximize2 } from "lucide-react";
+import { ArrowRight, BookOpen, Download, ExternalLink, Maximize2, X } from "lucide-react";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import type { Locale } from "@/i18n/config";
 import { t, type LocalizedString } from "@/lib/content";
@@ -18,6 +19,7 @@ import { ImageLightbox } from "@/components/ImageLightbox";
 import {
   BrandVectorMask,
   isSvgAsset,
+  isVectorMaskPng,
 } from "@/components/BrandVector";
 
 export type ArtItem = {
@@ -40,6 +42,8 @@ export type ArtItem = {
   /** Imagen relacionada (tattoo IRL, banner impreso, etc.) */
   relatedSrc?: string | null;
   relatedLabel?: string;
+  /** Extra pieces shown when expanded (grid still uses `src`). */
+  gallery?: string[];
   /** Tags libres: nsfw, pixel-art, vector, fan-art, grime, … */
   tags?: string[];
 };
@@ -62,6 +66,8 @@ type Props = {
   /** If set, appends a “ver más” tile after the preview items */
   seeMoreHref?: string;
   seeMoreLabel?: string;
+  /** If it returns a href, the tile navigates instead of expanding. */
+  itemHref?: (item: ArtItem) => string | null | undefined;
 };
 
 function loc(
@@ -71,6 +77,68 @@ function loc(
   if (!value) return "";
   if (typeof value === "string") return value;
   return t(value, locale);
+}
+
+function ArtTileFrame({
+  href,
+  label,
+  className,
+  children,
+  onClick,
+  ariaExpanded,
+  canLayout,
+  reduceMotion,
+  isOpen,
+  nsfwLocked,
+}: {
+  href?: string | null;
+  label: string;
+  className: string;
+  children: ReactNode;
+  onClick: () => void;
+  ariaExpanded: boolean;
+  canLayout: boolean;
+  reduceMotion: boolean | null;
+  isOpen: boolean;
+  nsfwLocked: boolean;
+}) {
+  if (href) {
+    return (
+      <Link href={href} aria-label={label} className={className}>
+        {children}
+      </Link>
+    );
+  }
+  return (
+    <motion.button
+      type="button"
+      layout={canLayout}
+      onClick={onClick}
+      aria-expanded={ariaExpanded}
+      aria-label={label}
+      whileHover={
+        reduceMotion || isOpen || nsfwLocked ? undefined : { scale: 1.03 }
+      }
+      whileTap={reduceMotion || nsfwLocked ? undefined : { scale: 0.98 }}
+      transition={{ layout: layoutSpring }}
+      className={className}
+    >
+      {children}
+    </motion.button>
+  );
+}
+
+function resolveGallery(item: ArtItem): string[] {
+  const extra = item.gallery?.filter(Boolean) ?? [];
+  if (!extra.length) return [];
+  const seen = new Set<string>();
+  const out: string[] = [];
+  for (const src of [item.src, ...extra]) {
+    if (!src || seen.has(src)) continue;
+    seen.add(src);
+    out.push(src);
+  }
+  return out;
 }
 
 const ease = [0.32, 0.72, 0, 1] as const;
@@ -97,6 +165,7 @@ export function ExpandableArtGrid({
   onTagClick,
   seeMoreHref,
   seeMoreLabel = "Ver más",
+  itemHref,
 }: Props) {
   const reduceMotion = useReducedMotion();
   const nsfwSet = useMemo(
@@ -117,6 +186,11 @@ export function ExpandableArtGrid({
     alt: string;
     kind: "image" | "pdf";
   } | null>(null);
+  const [galleryIndex, setGalleryIndex] = useState(0);
+
+  useEffect(() => {
+    setGalleryIndex(0);
+  }, [openId]);
 
   const close = useCallback(() => {
     pendingOpenId.current = null;
@@ -227,15 +301,41 @@ export function ExpandableArtGrid({
             const fit = item.fit ?? "cover";
             const frame = item.frame ?? "square";
             const previewKind = item.previewKind ?? "image";
+            const galleryImgs = resolveGallery(item);
+            const displaySrc =
+              isOpen && galleryImgs.length
+                ? galleryImgs[
+                    Math.min(galleryIndex, galleryImgs.length - 1)
+                  ]
+                : item.src;
             const previewSrc =
               item.previewSrc ??
-              (previewKind === "pdf" ? item.downloadHref : item.src);
+              (previewKind === "pdf" ? item.downloadHref : displaySrc);
             const itemEnlarge = item.enlargeLabel ?? enlargeLabel;
             const tags = item.tags ?? [];
             const isNsfw = tags.some((tag) => nsfwSet.has(tag));
             const nsfwLocked = isNsfw && !revealedNsfw.has(item.id);
-            // Only real SVGs: tag "vector" is a content filter (PNG/JPG ok).
-            const useVectorMask = isSvgAsset(item.src);
+            const useVectorMask =
+              isSvgAsset(displaySrc) ||
+              (tags.includes("vector") && isVectorMaskPng(displaySrc));
+            const vectorLuminance =
+              useVectorMask &&
+              !isSvgAsset(displaySrc) &&
+              isVectorMaskPng(displaySrc);
+            const navHref = !nsfwLocked ? itemHref?.(item) ?? null : null;
+            const tileClassName = `group relative shrink-0 overflow-hidden focus-visible:ring-2 focus-visible:ring-ink/40 ${cellClassName} ${
+              isOpen
+                ? frame === "banner"
+                  ? "aspect-[1/2] w-full max-w-[11rem] sm:w-[10rem] md:w-[11rem]"
+                  : frame === "portrait"
+                    ? "aspect-[3/4] w-full max-w-[14rem] sm:w-[13rem] md:w-[14rem]"
+                    : "aspect-square w-full max-w-[16rem] sm:w-[14rem] md:w-[15rem]"
+                : frame === "banner"
+                  ? "aspect-[1/2] w-full"
+                  : frame === "portrait"
+                    ? "aspect-[3/4] w-full"
+                    : "aspect-square w-full"
+            }`;
 
             if (isCollapsed) {
               return (
@@ -284,15 +384,34 @@ export function ExpandableArtGrid({
                     layout: layoutSpring,
                     backgroundColor: { duration: 0.35, ease },
                   }}
-                  className={`flex w-full overflow-hidden text-left outline-none ${
+                  className={`relative flex w-full overflow-hidden text-left outline-none ${
                     isOpen
                       ? "flex-col gap-3 p-3 sm:flex-row sm:items-center sm:gap-5 sm:p-4"
                       : ""
                   }`}
                 >
-                  <motion.button
-                    type="button"
-                    layout={canLayout}
+                  {isOpen ? (
+                    <button
+                      type="button"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        close();
+                      }}
+                      className="absolute right-2 top-2 z-20 flex size-8 items-center justify-center rounded-full bg-ink/85 text-sky-pale transition-opacity hover:opacity-80"
+                      aria-label={closeLabel}
+                    >
+                      <X className="size-4" strokeWidth={2.25} aria-hidden />
+                    </button>
+                  ) : null}
+                  <ArtTileFrame
+                    href={navHref}
+                    label={title}
+                    className={tileClassName}
+                    canLayout={canLayout}
+                    reduceMotion={reduceMotion}
+                    isOpen={isOpen}
+                    nsfwLocked={nsfwLocked}
+                    ariaExpanded={isOpen}
                     onClick={() => {
                       if (nsfwLocked) {
                         setRevealedNsfw((prev) => new Set(prev).add(item.id));
@@ -301,29 +420,6 @@ export function ExpandableArtGrid({
                       if (isOpen) close();
                       else openItem(item.id);
                     }}
-                    aria-expanded={isOpen}
-                    whileHover={
-                      reduceMotion || isOpen || nsfwLocked
-                        ? undefined
-                        : { scale: 1.03 }
-                    }
-                    whileTap={
-                      reduceMotion || nsfwLocked ? undefined : { scale: 0.98 }
-                    }
-                    transition={{ layout: layoutSpring }}
-                    className={`group relative shrink-0 overflow-hidden focus-visible:ring-2 focus-visible:ring-ink/40 ${cellClassName} ${
-                      isOpen
-                        ? frame === "banner"
-                          ? "aspect-[1/2] w-full max-w-[11rem] sm:w-[10rem] md:w-[11rem]"
-                          : frame === "portrait"
-                            ? "aspect-[3/4] w-full max-w-[14rem] sm:w-[13rem] md:w-[14rem]"
-                            : "aspect-square w-full max-w-[16rem] sm:w-[14rem] md:w-[15rem]"
-                        : frame === "banner"
-                          ? "aspect-[1/2] w-full"
-                          : frame === "portrait"
-                            ? "aspect-[3/4] w-full"
-                            : "aspect-square w-full"
-                    }`}
                   >
                     <div
                       className="absolute"
@@ -340,8 +436,9 @@ export function ExpandableArtGrid({
                     >
                       {useVectorMask ? (
                         <BrandVectorMask
-                          src={item.src}
+                          src={displaySrc}
                           label={item.alt}
+                          luminance={vectorLuminance}
                           className={`absolute inset-0 size-full ${
                             nsfwLocked
                               ? "scale-110 blur-2xl"
@@ -352,12 +449,12 @@ export function ExpandableArtGrid({
                         />
                       ) : (
                         <Image
-                          src={item.src}
+                          src={displaySrc}
                           alt={item.alt}
                           fill
                           unoptimized={
-                            item.src.startsWith("/assets") ||
-                            isSvgAsset(item.src)
+                            displaySrc.startsWith("/assets") ||
+                            isSvgAsset(displaySrc)
                           }
                           loading="eager"
                           className={`${
@@ -427,7 +524,7 @@ export function ExpandableArtGrid({
                         {nsfwLabel} · {nsfwHideLabel}
                       </button>
                     )}
-                  </motion.button>
+                  </ArtTileFrame>
 
                   <AnimatePresence initial={false}>
                     {isOpen && (
@@ -488,6 +585,44 @@ export function ExpandableArtGrid({
                           <p className="text-sm leading-relaxed text-ink/85 md:text-base">
                             {detail}
                           </p>
+                        )}
+                        {galleryImgs.length > 1 && !nsfwLocked && (
+                          <div className="mt-1 flex flex-col gap-1.5">
+                            <p className="text-xs font-medium uppercase tracking-wide text-ink/60">
+                              {locale === "en" ? "Resources" : "Recursos"}
+                            </p>
+                            <div className="flex flex-wrap gap-1.5">
+                            {galleryImgs.map((src, i) => (
+                              <button
+                                key={src}
+                                type="button"
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  setGalleryIndex(i);
+                                }}
+                                aria-label={`${title} ${i + 1}`}
+                                className={`relative size-14 shrink-0 overflow-hidden bg-sky-pale ${
+                                  i ===
+                                  Math.min(
+                                    galleryIndex,
+                                    galleryImgs.length - 1,
+                                  )
+                                    ? "outline outline-2 outline-ink"
+                                    : "opacity-70 hover:opacity-100"
+                                }`}
+                              >
+                                <Image
+                                  src={src}
+                                  alt=""
+                                  fill
+                                  unoptimized={src.startsWith("/assets")}
+                                  className="object-cover"
+                                  sizes="56px"
+                                />
+                              </button>
+                            ))}
+                            </div>
+                          </div>
                         )}
                         {item.relatedSrc && !nsfwLocked && (
                           <button

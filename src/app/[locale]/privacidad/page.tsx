@@ -44,7 +44,7 @@ export default async function PrivacyPage({
         ]}
       />
       <header className="flex flex-col gap-2">
-        <h1 className="font-bigger text-3xl uppercase tracking-wide md:text-4xl">
+        <h1 className="text-3xl font-bold tracking-tight md:text-4xl">
           {dict.privacy.title}
         </h1>
         <p className="text-sm text-ink/60">{dict.privacy.updated}</p>

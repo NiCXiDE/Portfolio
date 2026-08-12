@@ -38,7 +38,12 @@ import {
 import { withToastQuery } from "@/lib/admin-toast";
 import { slugifyBrand } from "@/lib/brands";
 import { findMediaAssetByPath } from "@/lib/media-assets";
+import {
+  inferFrameFromDimensions,
+  type GraphicFrame,
+} from "@/lib/graphic-gallery";
 import { isClassifiableSection } from "@/lib/suggest-graphic-section";
+import { parseUiSlidesForm } from "@/lib/ui-slides";
 import { revalidatePath } from "next/cache";
 
 function loc(es: FormDataEntryValue | null, en: FormDataEntryValue | null): LocalizedJson {
@@ -475,6 +480,82 @@ export async function saveGraphicItem(formData: FormData) {
   const srcPath = String(formData.get("srcPath") ?? "");
   const relatedSrcPath =
     String(formData.get("relatedSrcPath") ?? "") || null;
+  const galleryItemsJsonRaw = String(
+    formData.get("galleryItemsJson") ?? "",
+  ).trim();
+
+  const galleryPathsFromJson =
+    galleryItemsJsonRaw.length > 0
+      ? (() => {
+          try {
+            const parsed = JSON.parse(galleryItemsJsonRaw);
+            if (!Array.isArray(parsed)) return null;
+            return parsed
+              .map((it) => {
+                if (!it || typeof it !== "object") return null;
+                const obj = it as Record<string, unknown>;
+                const srcVal = obj.src ?? obj.path;
+                if (typeof srcVal !== "string") return null;
+                const src = srcVal.trim();
+                if (!src) return null;
+                return {
+                  src,
+                  frame:
+                    typeof obj.frame === "string" ? obj.frame : undefined,
+                  label:
+                    typeof obj.label === "object" && obj.label !== null
+                      ? (obj.label as unknown)
+                      : undefined,
+                };
+              })
+              .filter(Boolean);
+          } catch {
+            return null;
+          }
+        })()
+      : null;
+
+  const galleryPathsRaw = String(formData.get("galleryPaths") ?? "")
+    .split("\n")
+    .map((p) => p.trim())
+    .filter(Boolean);
+
+  let galleryPaths: Array<{
+    src: string;
+    frame?: GraphicFrame;
+    label?: unknown;
+  }> = (galleryPathsFromJson ??
+    galleryPathsRaw.map((src) => ({ src }))) as Array<{
+    src: string;
+    frame?: GraphicFrame;
+    label?: unknown;
+  }>;
+
+  if (section === "logos" && galleryPaths.length) {
+    galleryPaths = await Promise.all(
+      galleryPaths.map(async (it) => {
+        if (!it || typeof it !== "object") return it as any;
+        const obj = it as Record<string, unknown>;
+        const srcVal = obj.src;
+        if (typeof srcVal !== "string") return it as any;
+        const existingFrame = typeof obj.frame === "string" ? obj.frame : undefined;
+        if (existingFrame) {
+          return {
+            src: srcVal,
+            frame: existingFrame as GraphicFrame,
+            label: obj.label,
+          };
+        }
+
+        const asset = await findMediaAssetByPath(srcVal);
+        return {
+          src: srcVal,
+          frame: inferFrameFromDimensions(asset?.width, asset?.height),
+          label: obj.label,
+        };
+      }),
+    );
+  }
   const srcAssetId =
     String(formData.get("srcAssetId") ?? "").trim() ||
     (srcPath ? (await findMediaAssetByPath(srcPath))?.id ?? null : null);
@@ -501,6 +582,7 @@ export async function saveGraphicItem(formData: FormData) {
         : null,
     relatedSrcPath,
     relatedAssetId,
+    galleryPaths: galleryPaths.length ? galleryPaths : null,
     sortOrder: Number(formData.get("sortOrder") ?? 0),
     published: bool(formData.get("published")),
   };
@@ -637,6 +719,7 @@ export async function classifyInboxItem(formData: FormData) {
     fit: null,
     relatedSrcPath: null,
     relatedAssetId: null,
+    galleryPaths: null,
     sortOrder,
     published,
   };
@@ -768,10 +851,7 @@ export async function saveUiProject(formData: FormData) {
   const session = await requireAdmin();
   const id = String(formData.get("id") ?? "").trim();
   if (!id) redirect("/admin/interfaces/projects?error=id");
-  const images = String(formData.get("images") ?? "")
-    .split("\n")
-    .map((l) => l.trim())
-    .filter(Boolean);
+  const images = parseUiSlidesForm(String(formData.get("images") ?? ""));
   const summary = loc(formData.get("summaryEs"), formData.get("summaryEn"));
   const period = loc(formData.get("periodEs"), formData.get("periodEn"));
   const duration = loc(formData.get("durationEs"), formData.get("durationEn"));

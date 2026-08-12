@@ -6,7 +6,7 @@ import { saveUiListItem, saveUiProject } from "@/app/admin/actions";
 import { CollapsibleEditor } from "@/components/admin/CollapsibleEditor";
 import { FieldLabel, fieldClass, selectClass } from "@/components/admin/FieldLabel";
 import { ImageDropField } from "@/components/admin/ImageDropField";
-import { ImageGalleryField } from "@/components/admin/ImageGalleryField";
+import { UiSlideGalleryField } from "@/components/admin/UiSlideGalleryField";
 import {
   WithUiListPreview,
   WithUiProjectPreview,
@@ -15,13 +15,17 @@ import { UiListPreview, UiProjectPreview } from "@/components/admin/previews";
 import type { Draft } from "@/components/admin/draft";
 import type { BrandRef } from "@/lib/brands";
 import { MentionTextarea } from "@/components/admin/MentionTextarea";
+import {
+  normalizeUiSlides,
+  type UiSlide,
+} from "@/lib/ui-slides";
 
 export type UiProjectDTO = {
   id: string;
   category: string;
   title: { es: string; en: string };
   meta: { es: string; en: string };
-  images: string[];
+  images: Array<string | UiSlide>;
   prototypeUrl: string | null;
   summary: { es: string; en: string } | null;
   client: string | null;
@@ -43,13 +47,14 @@ export type UiListDTO = {
 };
 
 function projectDraft(p: UiProjectDTO): Draft {
+  const slides = normalizeUiSlides(p.images);
   return {
     category: p.category,
     titleEs: p.title.es,
     titleEn: p.title.en,
     metaEs: p.meta.es,
     metaEn: p.meta.en,
-    images: p.images.join("\n"),
+    images: JSON.stringify(slides),
     prototypeUrl: p.prototypeUrl ?? "",
     summaryEs: p.summary?.es ?? "",
     summaryEn: p.summary?.en ?? "",
@@ -85,7 +90,7 @@ function ProjectFields({
   showId?: boolean;
   brands: BrandRef[];
 }) {
-  const [images, setImages] = useState(item?.images ?? []);
+  const [images, setImages] = useState(() => normalizeUiSlides(item?.images ?? []));
   const [metaEs, setMetaEs] = useState(item?.meta.es ?? "");
   const [metaEn, setMetaEn] = useState(item?.meta.en ?? "");
 
@@ -106,6 +111,7 @@ function ProjectFields({
         >
           <option value="preventas">Preventas</option>
           <option value="sistemas-a-medida">Sistemas a medida</option>
+          <option value="apps-mobile">Apps / Mobile</option>
           <option value="proyectos-personales">Personales</option>
           <option value="system-design">System design</option>
         </select>
@@ -142,7 +148,7 @@ function ProjectFields({
           />
         </div>
       </div>
-      <ImageGalleryField
+      <UiSlideGalleryField
         folder="assets/interfaces"
         value={images}
         onChange={setImages}

@@ -10,12 +10,6 @@
   },
   { "id": "b2b", "title": { "es": "Plataforma integral de ventas y pedidos B2B", "en": "Integrated B2B sales & orders platform" } },
   {
-    "id": "omnigroup",
-    "title": { "es": "Gestión de Totems Multimedia (OMNI GROUP)", "en": "Multimedia Totem Management (OMNI GROUP)" },
-    "logo": "/assets/interfaces/brand/frame-1.svg",
-    "caption": "omnigroup"
-  },
-  {
     "id": "templeton",
     "title": { "es": "Sistema de Autodiagnóstico Transformación Digital", "en": "Digital Transformation Self-Assessment System" },
     "wordmark": "Templeton & Mathews"
@@ -23,11 +17,6 @@
   {
     "id": "cloronor-trading",
     "title": { "es": "Sistema de trading criptomonedas para CLORONOR", "en": "Cryptocurrency trading system for CLORONOR" },
-    "logo": "/assets/interfaces/projects/logclor-2019-logo.png"
-  },
-  {
-    "id": "cloronor-store",
-    "title": { "es": "Landing & Tienda para CLORONOR", "en": "Landing & Store for CLORONOR" },
     "logo": "/assets/interfaces/projects/logclor-2019-logo.png"
   }
 ]

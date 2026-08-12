@@ -37,6 +37,7 @@ import {
   type UiProjectRow,
 } from "../src/db/entities";
 import { slugifyBrand } from "../src/lib/brands";
+import { normalizeUiSlides } from "../src/lib/ui-slides";
 
 loadEnv({ path: resolve(process.cwd(), ".env") });
 
@@ -108,6 +109,38 @@ function seedGraphics(
         ? null
         : String(raw.relatedSrc),
     relatedAssetId: null,
+    galleryPaths: (() => {
+      const rawGallery = Array.isArray(raw.gallery)
+        ? raw.gallery
+        : Array.isArray(raw.galleryPaths)
+          ? raw.galleryPaths
+          : null;
+      if (!rawGallery) return null;
+      const items = rawGallery
+        .map((g) => {
+          if (typeof g === "string") {
+            const src = String(g).trim();
+            return src ? { src } : null;
+          }
+          if (g && typeof g === "object") {
+            const obj = g as Record<string, unknown>;
+            const srcVal = obj.src ?? obj.path;
+            if (typeof srcVal !== "string") return null;
+            const src = srcVal.trim();
+            if (!src) return null;
+            const frame =
+              typeof obj.frame === "string" ? obj.frame : undefined;
+            const label =
+              typeof obj.label === "object" && obj.label !== null
+                ? (obj.label as unknown)
+                : undefined;
+            return { src, frame, label };
+          }
+          return null;
+        })
+        .filter(Boolean);
+      return items.length ? items : null;
+    })(),
     sortOrder,
     // pending stays in DB but unpublished from public grids via section filter
     published: section !== "pending" ? true : false,
@@ -226,6 +259,13 @@ async function main() {
       isNsfw: false,
       sortOrder: 7,
     },
+    {
+      slug: "evento",
+      labelEs: "Evento",
+      labelEn: "Event",
+      isNsfw: false,
+      sortOrder: 8,
+    },
   ];
   await ds.getRepository(TagEntity).save(defaultTags);
 
@@ -328,6 +368,7 @@ async function main() {
     ["pending", "content/grafico/pending.json"],
     ["illustration", "content/grafico/illustration.json"],
     ["banners", "content/grafico/banners.json"],
+    ["eventos", "content/grafico/eventos.json"],
   ];
 
   const graphicRows = graphicSources.flatMap(([section, path]) =>
@@ -364,7 +405,7 @@ async function main() {
       category: UiProjectRow["category"];
       title: Localized;
       meta: Localized;
-      images: string[];
+      images: unknown;
       prototypeUrl: string | null;
       summary?: Localized | null;
       client?: string | null;
@@ -379,7 +420,7 @@ async function main() {
     category: item.category,
     title: item.title,
     meta: item.meta,
-    images: item.images,
+    images: normalizeUiSlides(item.images),
     prototypeUrl: item.prototypeUrl,
     summary: item.summary ?? null,
     client: item.client ?? null,

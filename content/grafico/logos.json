@@ -15,17 +15,42 @@
     "alt": "Seyier",
     "title": { "es": "Seyier", "en": "Seyier" },
     "year": "",
-    "detail": { "es": "", "en": "" },
+    "tags": ["vector"],
+    "detail": {
+      "es": "Marca e interfaces para stream: logotipo, pantallas de inicio y overlay. Proyecto voluntario para impulsar la presencia de un amigo streamer.",
+      "en": "Streamer brand and screen kit: wordmark, starting screens, and overlay. Voluntary project to help a friend grow their channel."
+    },
+    "gallery": [
+      {
+        "src": "/assets/grafico/logos/seyier/inicio.png",
+        "label": { "es": "Pantalla de inicio", "en": "Starting screen" },
+        "frame": "landscape"
+      },
+      {
+        "src": "/assets/grafico/logos/seyier/portada-fondo.png",
+        "label": { "es": "Portada", "en": "Stream cover" },
+        "frame": "landscape"
+      },
+      {
+        "src": "/assets/grafico/logos/seyier/overlay-ejemplo.png",
+        "label": { "es": "Overlay", "en": "Overlay example" },
+        "frame": "landscape"
+      }
+    ],
     "href": null,
     "hrefLabel": { "es": "Visitar web", "en": "Visit website" }
   },
   {
-    "id": "s-mark",
-    "src": "/assets/grafico/logos/vector.svg",
-    "alt": "S mark",
-    "title": { "es": "S mark", "en": "S mark" },
+    "id": "summit-holding",
+    "src": "/assets/grafico/logos/summit-holding.png",
+    "alt": "Summit Holding",
+    "title": { "es": "Summit Holding", "en": "Summit Holding" },
     "year": "",
-    "detail": { "es": "", "en": "" },
+    "tags": ["vector"],
+    "detail": {
+      "es": "Identidad vectorial para encargo · entidad tipo holding / financiera (inversiones, carteras).",
+      "en": "Vector identity for a commission · holding / financial entity (investments, portfolios)."
+    },
     "href": null,
     "hrefLabel": { "es": "Visitar web", "en": "Visit website" }
   },
@@ -44,20 +69,22 @@
   },
   {
     "id": "microtime",
-    "src": "/assets/grafico/logos/vector-1.svg",
+    "src": "/assets/grafico/logos/microtime.png",
     "alt": "Microtime",
     "title": { "es": "Microtime", "en": "Microtime" },
     "year": "",
+    "tags": ["vector"],
     "detail": { "es": "", "en": "" },
     "href": null,
     "hrefLabel": { "es": "Visitar web", "en": "Visit website" }
   },
   {
     "id": "futulab",
-    "src": "/assets/grafico/logos/futulb.svg",
+    "src": "/assets/grafico/logos/futulab.png",
     "alt": "futulΔb",
     "title": { "es": "futulΔb", "en": "futulΔb" },
     "year": "",
+    "tags": ["vector"],
     "detail": { "es": "", "en": "" },
     "href": null,
     "hrefLabel": { "es": "Visitar web", "en": "Visit website" }

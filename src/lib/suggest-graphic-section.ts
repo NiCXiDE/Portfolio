@@ -12,6 +12,7 @@ const CLASSIFIABLE: Exclude<GraphicSection, "pending">[] = [
   "personal",
   "illustration",
   "banners",
+  "eventos",
 ];
 
 /**
@@ -63,10 +64,17 @@ export function suggestGraphicSection(input: {
       confidence: "high",
     };
   }
-  if (/banner|header|hero.?strip/.test(name)) {
+  if (/banner|header|hero.?strip|brigado|jbc/.test(name)) {
     return {
       section: "banners",
       reason: "El nombre sugiere banner",
+      confidence: "high",
+    };
+  }
+  if (/evento|event|flyer|afiche|insta|publicidad/.test(name)) {
+    return {
+      section: "eventos",
+      reason: "El nombre sugiere evento / publicidad",
       confidence: "high",
     };
   }

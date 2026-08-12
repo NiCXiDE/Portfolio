@@ -90,6 +90,7 @@ CREATE TABLE IF NOT EXISTS graphic_items (
   fit VARCHAR(16) NULL,
   related_src_path VARCHAR(512) NULL,
   related_asset_id VARCHAR(36) NULL,
+  gallery_paths JSON NULL,
   sort_order INT NOT NULL DEFAULT 0,
   published TINYINT(1) NOT NULL DEFAULT 1,
   INDEX idx_graphic_section_order (section, sort_order)

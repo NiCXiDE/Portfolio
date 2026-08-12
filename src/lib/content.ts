@@ -20,6 +20,12 @@ import {
   type TagRow,
 } from "@/db/entities";
 import { mediaUrl, mediaUrls } from "@/lib/media";
+import type { GraphicGalleryItem } from "@/lib/graphic-gallery";
+import { normalizeGraphicGallery } from "@/lib/graphic-gallery";
+import {
+  normalizeUiSlides,
+  type UiSlide,
+} from "@/lib/ui-slides";
 import type { Locale } from "@/i18n/config";
 import {
   DEFAULT_HOME_LAYOUT,
@@ -84,6 +90,7 @@ export type GraphicItemContent = {
   tags?: string[];
   fit?: "cover" | "contain";
   relatedSrc?: string | null;
+  gallery?: GraphicGalleryItem[];
 };
 
 export type BrandManualContent = {
@@ -97,10 +104,15 @@ export type BrandManualContent = {
 
 export type UiProjectContent = {
   id: string;
-  category: "preventas" | "sistemas-a-medida" | "proyectos-personales" | "system-design";
+  category:
+    | "preventas"
+    | "sistemas-a-medida"
+    | "proyectos-personales"
+    | "system-design"
+    | "apps-mobile";
   title: LocalizedString;
   meta: LocalizedString;
-  images: string[];
+  images: import("@/lib/ui-slides").UiSlide[];
   prototypeUrl: string | null;
   summary: LocalizedString | null;
   client: string | null;
@@ -157,6 +169,7 @@ export type PortfolioContent = {
   brandManuals: BrandManualContent[];
   illustration: GraphicItemContent[];
   banners: GraphicItemContent[];
+  eventos: GraphicItemContent[];
   uiProjects: UiProjectContent[];
   uiList: UiListItemContent[];
   settings: SiteSettingsContent;
@@ -185,8 +198,16 @@ function mapGraphic(
   if (row.fit) item.fit = row.fit;
   if (row.relatedSrcPath !== undefined && row.relatedSrcPath !== null) {
     item.relatedSrc = mediaUrl(row.relatedSrcPath);
-  } else if (section === "banners") {
+  } else if (section === "banners" || section === "eventos") {
     item.relatedSrc = null;
+  }
+
+  if (row.galleryPaths?.length) {
+    const galleryItems = normalizeGraphicGallery(row.galleryPaths);
+    item.gallery = galleryItems.map((g) => ({
+      ...g,
+      src: mediaUrl(g.src),
+    }));
   }
 
   if (section === "covers" || section === "pending") {
@@ -373,6 +394,7 @@ export async function loadPortfolioContent(): Promise<PortfolioContent> {
     pending: [],
     illustration: bySection(graphics, "illustration"),
     banners: bySection(graphics, "banners"),
+    eventos: bySection(graphics, "eventos"),
     brandManuals: manuals
       .filter((m) => m.published)
       .map((m) => ({
@@ -390,7 +412,10 @@ export async function loadPortfolioContent(): Promise<PortfolioContent> {
         category: p.category,
         title: p.title,
         meta: p.meta,
-        images: mediaUrls(p.images),
+        images: normalizeUiSlides(p.images).map((slide) => ({
+          src: mediaUrl(slide.src),
+          aspect: slide.aspect,
+        })),
         prototypeUrl: p.prototypeUrl,
         summary: p.summary ?? null,
         client: p.client ?? null,
@@ -432,4 +457,5 @@ export const GRAPHIC_PUBLIC_SECTIONS: Exclude<GraphicSection, "pending">[] = [
   "personal",
   "illustration",
   "banners",
+  "eventos",
 ];

@@ -2,6 +2,7 @@ import Link from "next/link";
 import {
   Image as ImageIcon,
   Layers,
+  Megaphone,
   Palette,
   RectangleHorizontal,
   Sparkles,
@@ -51,6 +52,13 @@ const SECTIONS: {
     hint: "Banners y piezas largas",
     href: "/admin/graphic/banners",
     icon: RectangleHorizontal,
+  },
+  {
+    id: "eventos",
+    label: "Eventos",
+    hint: "Afiches, posts y campañas",
+    href: "/admin/graphic/eventos",
+    icon: Megaphone,
   },
   {
     id: "pending-hub",

@@ -11,6 +11,7 @@ import { DashboardInbox } from "@/components/admin/DashboardInbox";
 import { DashboardKpiGrid } from "@/components/admin/DashboardKpiGrid";
 import { migrateGraphicPendingToInbox } from "@/lib/inbox";
 import { mediaUrl } from "@/lib/media";
+import { normalizeUiSlides } from "@/lib/ui-slides";
 import Link from "next/link";
 
 const THUMB_LIMIT = 32;
@@ -66,7 +67,10 @@ export default async function AdminDashboard() {
     .filter(Boolean);
   const projectThumbs = visibleProjects
     .slice(0, THUMB_LIMIT)
-    .map((p) => (p.images[0] ? mediaUrl(p.images[0]) : ""))
+    .map((p) => {
+      const first = normalizeUiSlides(p.images)[0];
+      return first ? mediaUrl(first.src) : "";
+    })
     .filter(Boolean);
 
   const hiddenThumbs = guest
@@ -75,7 +79,10 @@ export default async function AdminDashboard() {
         ...inboxRows.map((r) => mediaUrl(r.path)),
         ...hiddenTestimonials.map((t) => mediaUrl(t.imagePath)),
         ...unpublishedUi
-          .map((p) => (p.images[0] ? mediaUrl(p.images[0]) : ""))
+          .map((p) => {
+            const first = normalizeUiSlides(p.images)[0];
+            return first ? mediaUrl(first.src) : "";
+          })
           .filter(Boolean),
       ]
         .filter(Boolean)

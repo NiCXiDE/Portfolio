@@ -1,6 +1,22 @@
 import type { MetadataRoute } from "next";
+import { readFileSync } from "node:fs";
+import { join } from "node:path";
 import { locales } from "@/i18n/config";
 import { SITE_URL } from "@/lib/site";
+
+const EVENT_IDS = (
+  JSON.parse(
+    readFileSync(join(process.cwd(), "content/grafico/eventos.json"), "utf8"),
+  ) as Array<{ id: string }>
+).map((e) => e.id);
+
+const LOGO_DETAIL_IDS = (
+  JSON.parse(
+    readFileSync(join(process.cwd(), "content/grafico/logos.json"), "utf8"),
+  ) as Array<{ id: string; gallery?: string[] }>
+)
+  .filter((e) => (e.gallery?.length ?? 0) > 0)
+  .map((e) => e.id);
 
 const GRAPHIC_SECTIONS = [
   "covers",
@@ -8,12 +24,14 @@ const GRAPHIC_SECTIONS = [
   "personal",
   "illustration",
   "banners",
+  "eventos",
   "manuals",
 ] as const;
 
 const INTERFACE_CATS = [
   "preventas",
   "sistemas-a-medida",
+  "apps-mobile",
   "proyectos-personales",
   "system-design",
 ] as const;
@@ -52,6 +70,22 @@ export default function sitemap(): MetadataRoute.Sitemap {
         lastModified,
         changeFrequency: "weekly",
         priority: 0.7,
+      });
+    }
+    for (const id of EVENT_IDS) {
+      entries.push({
+        url: `${base}/grafico/eventos/${id}`,
+        lastModified,
+        changeFrequency: "weekly",
+        priority: 0.6,
+      });
+    }
+    for (const id of LOGO_DETAIL_IDS) {
+      entries.push({
+        url: `${base}/grafico/logos/${id}`,
+        lastModified,
+        changeFrequency: "weekly",
+        priority: 0.6,
       });
     }
     for (const category of INTERFACE_CATS) {

@@ -2,13 +2,8 @@
 
 import { ExternalLink } from "lucide-react";
 import type { Locale } from "@/i18n/config";
-import {
-  draftBool,
-  draftLoc,
-  draftStr,
-  mediaSrc,
-  type Draft,
-} from "@/components/admin/draft";
+import { draftBool, draftLoc, draftStr, mediaSrc, type Draft } from "@/components/admin/draft";
+import { parseUiSlidesForm, slideSrcs } from "@/lib/ui-slides";
 import { PreviewImageCarousel } from "@/components/admin/ImageGalleryField";
 import { BrandVectorMask, isSvgAsset } from "@/components/BrandVector";
 import { renderMentionedText } from "@/components/MentionText";
@@ -280,11 +275,9 @@ export function UiProjectPreview({
   locale: Locale;
   brands?: BrandRef[];
 }) {
-  const images = draftStr(draft, "images")
-    .split("\n")
-    .map((l) => l.trim())
-    .filter(Boolean)
-    .map((src) => mediaSrc(src) || src);
+  const images = slideSrcs(parseUiSlidesForm(draftStr(draft, "images"))).map(
+    (src) => mediaSrc(src) || src,
+  );
   const title =
     draftLoc(draft, "titleEs", "titleEn", locale) || "Proyecto";
   const meta = draftLoc(draft, "metaEs", "metaEn", locale);

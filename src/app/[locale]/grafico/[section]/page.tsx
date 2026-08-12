@@ -12,6 +12,7 @@ const SECTIONS = [
   "personal",
   "illustration",
   "banners",
+  "eventos",
   "manuals",
 ] as const;
 
@@ -21,6 +22,7 @@ const SECTION_META_KEY = {
   personal: "personal",
   illustration: "illustration",
   banners: "banners",
+  eventos: "eventos",
   manuals: "brandManuals",
 } as const;
 

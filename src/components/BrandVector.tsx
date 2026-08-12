@@ -2,19 +2,23 @@
 
 import Image from "next/image";
 import { useTheme } from "@/components/ThemeProvider";
+export { isSvgAsset, isVectorMaskPng } from "@/lib/brand-assets";
 
-/** Monochrome SVG tinted with --brand-vector (ink → celeste in dark). */
+/** Monochrome SVG or white-on-dark PNG tinted with --brand-vector (ink → celeste in dark). */
 export function BrandVectorMask({
   src,
   className = "",
   label,
   position = "center",
+  luminance = false,
 }: {
   src: string;
   className?: string;
   label?: string;
   /** CSS mask-position keyword or pair (e.g. "left center"). */
   position?: string;
+  /** Use luminance mask for white-on-black PNG exports. */
+  luminance?: boolean;
 }) {
   return (
     <span
@@ -31,13 +35,15 @@ export function BrandVectorMask({
         WebkitMaskRepeat: "no-repeat",
         maskPosition: position,
         WebkitMaskPosition: position,
+        ...(luminance
+          ? {
+              maskMode: "luminance",
+              WebkitMaskMode: "luminance",
+            }
+          : {}),
       }}
     />
   );
-}
-
-export function isSvgAsset(src: string) {
-  return /\.svg($|\?)/i.test(src);
 }
 
 /** Swap asset in dark when the SVG has multiple colors (e.g. hero-grafico). */

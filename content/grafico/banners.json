@@ -66,5 +66,22 @@
     },
     "relatedSrc": null,
     "href": null
+  },
+  {
+    "id": "brigado-crew",
+    "src": "/assets/grafico/banners/brigado-crew/post-instagram.png",
+    "alt": "Brigado Crew / JBC",
+    "title": {
+      "es": "Brigado Crew / JBC",
+      "en": "Brigado Crew / JBC"
+    },
+    "year": "",
+    "tags": ["impreso"],
+    "detail": {
+      "es": "Pieza de difusión para Brigado Crew / JBC.",
+      "en": "Promotional piece for Brigado Crew / JBC."
+    },
+    "relatedSrc": null,
+    "href": null
   }
 ]

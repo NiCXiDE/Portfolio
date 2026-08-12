@@ -76,7 +76,18 @@
       "en": "Collaboration with @aicore - November 2024"
     },
     "images": [
-      "/assets/interfaces/projects/preventas/adapto-pay/adapto-pay-01.png"
+      {
+        "src": "/assets/interfaces/projects/preventas/adapto-pay/adapto-pay-01.png",
+        "aspect": "landscape"
+      },
+      {
+        "src": "/assets/interfaces/projects/preventas/adapto-pay/web-link-pago.png",
+        "aspect": "landscape"
+      },
+      {
+        "src": "/assets/interfaces/projects/preventas/adapto-pay/web-actividad.png",
+        "aspect": "landscape"
+      }
     ],
     "prototypeUrl": null,
     "client": "ADAPTO PAY",
@@ -184,8 +195,8 @@
     "prototypeUrl": "/admin/login",
     "client": "Personal",
     "period": {
-      "es": "2025–2026",
-      "en": "2025–2026"
+      "es": "2025-2026",
+      "en": "2025-2026"
     },
     "duration": {
       "es": "en evolución continua",
@@ -196,5 +207,149 @@
       "en": "Custom admin panel for this portfolio: type, graphic/interfaces layers, inbox, brands, testimonials and media. Built so content can ship without code changes. Explore it in read-only visitor mode."
     },
     "ctaKind": "visitor"
+  },
+  {
+    "id": "omnigroup",
+    "category": "preventas",
+    "title": {
+      "es": "Omnigroup — backoffice y tótem",
+      "en": "Omnigroup — backoffice and totem"
+    },
+    "meta": {
+      "es": "Preventa · web + tótem de autoservicio",
+      "en": "Pre-sales · web + self-service totem"
+    },
+    "images": [
+      {
+        "src": "/assets/interfaces/projects/preventas/omnigroup/web-admin.png",
+        "aspect": "landscape"
+      },
+      {
+        "src": "/assets/interfaces/projects/preventas/omnigroup/web-totems.png",
+        "aspect": "landscape"
+      },
+      {
+        "src": "/assets/interfaces/projects/preventas/omnigroup/web-puntos.png",
+        "aspect": "landscape"
+      },
+      {
+        "src": "/assets/interfaces/projects/preventas/omnigroup/totem-1.png",
+        "aspect": "portrait"
+      },
+      {
+        "src": "/assets/interfaces/projects/preventas/omnigroup/totem-2.png",
+        "aspect": "portrait"
+      },
+      {
+        "src": "/assets/interfaces/projects/preventas/omnigroup/totem-inactivo.png",
+        "aspect": "portrait"
+      }
+    ],
+    "prototypeUrl": null,
+    "client": "Omnigroup",
+    "period": null,
+    "duration": null,
+    "summary": {
+      "es": "Backoffice web para comercios y tótem de autoservicio: puntos de interés, gestión de tótems y flujo en dispositivo vertical.",
+      "en": "Web backoffice for merchants and a self-service totem: points of interest, totem management, and a vertical device flow."
+    },
+    "ctaKind": null
+  },
+  {
+    "id": "savil",
+    "category": "apps-mobile",
+    "title": {
+      "es": "Savil",
+      "en": "Savil"
+    },
+    "meta": {
+      "es": "App mobile",
+      "en": "Mobile app"
+    },
+    "images": [
+      {
+        "src": "/assets/interfaces/projects/apps-mobile/savil/app-login.png",
+        "aspect": "portrait"
+      },
+      {
+        "src": "/assets/interfaces/projects/apps-mobile/savil/app-home.png",
+        "aspect": "portrait"
+      },
+      {
+        "src": "/assets/interfaces/projects/apps-mobile/savil/app-detalle.png",
+        "aspect": "portrait"
+      }
+    ],
+    "prototypeUrl": null,
+    "client": "Savil",
+    "period": null,
+    "duration": null,
+    "summary": {
+      "es": "App nativa: login, home y detalle.",
+      "en": "Native app: login, home, and detail."
+    },
+    "ctaKind": null
+  },
+  {
+    "id": "asesor-financiero",
+    "category": "apps-mobile",
+    "title": {
+      "es": "Asesor Financiero",
+      "en": "Financial Advisor"
+    },
+    "meta": {
+      "es": "App mobile · demo",
+      "en": "Mobile app · demo"
+    },
+    "images": [
+      {
+        "src": "/assets/interfaces/projects/apps-mobile/asesor-financiero/perfil.png",
+        "aspect": "portrait"
+      },
+      {
+        "src": "/assets/interfaces/projects/apps-mobile/asesor-financiero/categorias.png",
+        "aspect": "portrait"
+      },
+      {
+        "src": "/assets/interfaces/projects/apps-mobile/asesor-financiero/home.png",
+        "aspect": "portrait"
+      }
+    ],
+    "prototypeUrl": null,
+    "client": "Demo",
+    "period": null,
+    "duration": null,
+    "summary": {
+      "es": "Demo de app para recomendación de carteras de inversión según perfil y preferencias.",
+      "en": "Demo app for investment portfolio recommendations based on risk profile and preferences."
+    },
+    "ctaKind": null
+  },
+  {
+    "id": "aicore-inventariado",
+    "category": "preventas",
+    "title": {
+      "es": "AICORE IT Specialists — inventariado",
+      "en": "AICORE IT Specialists — inventory"
+    },
+    "meta": {
+      "es": "Preventa · backoffice de gestión comercial",
+      "en": "Pre-sales · commercial management backoffice"
+    },
+    "images": [
+      {
+        "src": "/assets/interfaces/projects/preventas/aicore-inventariado/dashboard.png",
+        "aspect": "landscape"
+      }
+    ],
+    "prototypeUrl": null,
+    "client": "AICORE IT Specialists",
+    "period": null,
+    "duration": null,
+    "summary": {
+      "es": "Dashboard de preventa: ventas, compras, stock, productos, proveedores y clientes.",
+      "en": "Pre-sales dashboard: sales, purchases, stock, products, suppliers, and clients."
+    },
+    "ctaKind": null
   }
 ]

@@ -16,6 +16,7 @@ const VALID: GraphicSection[] = [
   "pending",
   "illustration",
   "banners",
+  "eventos",
 ];
 
 export default async function AdminGraphicSectionPage({
@@ -77,6 +78,7 @@ export default async function AdminGraphicSectionPage({
           fit: item.fit,
           relatedSrcPath: item.relatedSrcPath,
           relatedAssetId: item.relatedAssetId,
+          galleryPaths: item.galleryPaths,
           sortOrder: item.sortOrder,
           published: item.published,
           assetMeta: asset
