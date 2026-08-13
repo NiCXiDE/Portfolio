@@ -17,6 +17,7 @@ import {
   UiListItemEntity,
   UiProjectEntity,
 } from "./entities";
+import { portfolioV2Entities } from "./entities-v2";
 
 export const portfolioEntities = [
   BioEntity,
@@ -35,6 +36,7 @@ export const portfolioEntities = [
   SiteSettingsEntity,
   SocialLinkEntity,
   AdminAuditLogEntity,
+  ...portfolioV2Entities,
 ];
 
 function parseDatabaseUrl(url: string) {

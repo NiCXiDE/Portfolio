@@ -71,6 +71,8 @@ export type TestimonialRow = {
   companyLogoPath: string | null;
   companyHref: string | null;
   companyBrandId: string | null;
+  /** V2: optional link to entities.id */
+  entityId: string | null;
   linkLabel: LocalizedJson | null;
   hidden: boolean;
   sortOrder: number;
@@ -391,6 +393,12 @@ export const TestimonialEntity = new EntitySchema<TestimonialRow>({
     },
     companyBrandId: {
       name: "company_brand_id",
+      type: String,
+      length: 64,
+      nullable: true,
+    },
+    entityId: {
+      name: "entity_id",
       type: String,
       length: 64,
       nullable: true,

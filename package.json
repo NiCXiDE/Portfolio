@@ -11,7 +11,9 @@
     "db:down": "docker compose down",
     "db:seed": "tsx scripts/seed.ts",
     "db:sync": "tsx scripts/sync-schema.ts",
+    "db:apply-v2": "tsx scripts/apply-schema-v2.ts",
     "db:sync-content": "tsx scripts/sync-content.ts",
+    "test:v2-helpers": "tsx scripts/test-v2-helpers.ts",
     "db:reset": "docker compose down -v && docker compose up -d && tsx scripts/seed.ts"
   },
   "dependencies": {

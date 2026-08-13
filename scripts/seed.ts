@@ -400,6 +400,7 @@ async function main() {
       companyHref: item.company.href,
       companyBrandId:
         brandByName.get(item.company.name.toLowerCase()) ?? null,
+      entityId: null,
       linkLabel: null,
       hidden: Boolean(item.hidden),
       sortOrder,

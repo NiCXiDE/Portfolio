@@ -43,3 +43,6 @@ next-env.d.ts
 # local MySQL dumps (never commit)
 /backups/
 
+# Cursor plan artifacts (local only)
+*.plan.md
+
