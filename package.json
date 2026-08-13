@@ -14,6 +14,8 @@
     "db:apply-v2": "tsx scripts/apply-schema-v2.ts",
     "db:sync-content": "tsx scripts/sync-content.ts",
     "test:v2-helpers": "tsx scripts/test-v2-helpers.ts",
+    "test:migrate-v2": "tsx scripts/test-migrate-v2-classifiers.ts",
+    "db:migrate-v2-dry-run": "tsx scripts/migrate-content-v2.ts --dry-run",
     "db:reset": "docker compose down -v && docker compose up -d && tsx scripts/seed.ts"
   },
   "dependencies": {
