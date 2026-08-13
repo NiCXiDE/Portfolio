@@ -38,6 +38,7 @@ import {
 } from "../src/db/entities";
 import { slugifyBrand } from "../src/lib/brands";
 import { normalizeUiSlides } from "../src/lib/ui-slides";
+import { requireDestructiveDbApproval, isDirectScriptRun } from "./sync-schema";
 
 loadEnv({ path: resolve(process.cwd(), ".env") });
 
@@ -148,7 +149,9 @@ function seedGraphics(
   }));
 }
 
-async function main() {
+export async function main() {
+  requireDestructiveDbApproval("seed");
+
   const ds = createDataSource(true, portfolioLegacyEntities);
   await ds.initialize();
 
@@ -530,7 +533,9 @@ async function main() {
   await ds.destroy();
 }
 
-main().catch((err) => {
-  console.error(err);
-  process.exit(1);
-});
+if (isDirectScriptRun(["seed.ts"])) {
+  main().catch((err) => {
+    console.error(err);
+    process.exit(1);
+  });
+}

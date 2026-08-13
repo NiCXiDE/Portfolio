@@ -8,7 +8,6 @@ import {
   TestimonialEntity,
   UiProjectEntity,
 } from "../../src/db/entities";
-import { fixtureLegacyCounts, loadLegacyFromFixtures } from "./load-fixtures";
 import type { LegacySnapshot } from "./types";
 
 async function loadLegacyFromDb(ds: DataSource): Promise<LegacySnapshot> {
@@ -41,23 +40,14 @@ async function loadLegacyFromDb(ds: DataSource): Promise<LegacySnapshot> {
   };
 }
 
-/** Read-only load of legacy tables; falls back to content/ fixtures if DB legacy is empty. */
+/** Read-only load of legacy tables from MySQL (no fixture fallback). */
 export async function loadLegacySnapshot(ds: DataSource): Promise<LegacySnapshot> {
   const fromDb = await loadLegacyFromDb(ds);
-  if (fromDb.graphicItems.length === 0 && fromDb.brands.length === 0) {
-    console.warn(
-      "[migrate-v2] Legacy tables empty in MySQL; using content/ JSON fixtures (read-only).",
-    );
-    return loadLegacyFromFixtures();
-  }
-
   return {
     ...fromDb,
     graphicItems: fromDb.graphicItems.filter((g) => g.section !== "pending"),
   };
 }
-
-export { fixtureLegacyCounts };
 
 export function localizedEs(
   value: { es: string; en: string } | null | undefined,

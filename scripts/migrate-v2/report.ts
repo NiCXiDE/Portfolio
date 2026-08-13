@@ -19,8 +19,10 @@ import {
   countResources,
   enrichEntityWorkCounts,
 } from "./consolidate";
-import { loadLegacySnapshot, fixtureLegacyCounts } from "./load-legacy";
+import { loadLegacySnapshot } from "./load-legacy";
+import { fixtureLegacyCounts, loadLegacyFromFixtures } from "./load-fixtures";
 import {
+  assertLegacyBaseline,
   assertV2Empty,
   countTables,
   countsEqual,
@@ -263,7 +265,11 @@ function renderMarkdown(r: DryRunReport): string {
   return lines.join("\n");
 }
 
-export async function runContentV2DryRun(): Promise<DryRunReport> {
+export type DryRunOptions = {
+  compareFixtures?: boolean;
+};
+
+export async function runContentV2DryRun(options: DryRunOptions = {}): Promise<DryRunReport> {
   const ds = createDataSource(false, portfolioLegacyEntities);
   await ds.initialize();
 
@@ -280,8 +286,21 @@ export async function runContentV2DryRun(): Promise<DryRunReport> {
     console.log(formatCounts(v2CountsBefore));
 
     assertV2Empty(v2CountsBefore);
+    assertLegacyBaseline(legacyCountsBefore);
 
     const snapshot = await loadLegacySnapshot(ds);
+
+    if (options.compareFixtures) {
+      const fixtureSnapshot = loadLegacyFromFixtures();
+      const fixtureCounts = fixtureLegacyCounts(fixtureSnapshot);
+      console.log("\nFixture vs DB legacy counts:");
+      for (const table of LEGACY_TABLES) {
+        const db = legacyCountsBefore[table] ?? 0;
+        const fixture = fixtureCounts[table] ?? 0;
+        const status = db === fixture ? "OK" : "DIFF";
+        console.log(`  ${table}: DB=${db} fixture=${fixture} ${status}`);
+      }
+    }
 
     const brandResult = classifyBrands(snapshot);
     const uiResult = classifyUiProjects(snapshot);
@@ -346,11 +365,6 @@ export async function runContentV2DryRun(): Promise<DryRunReport> {
     const v2CountsAfter = await countTables(ds, V2_TABLES);
     const migrationMapAfter = v2CountsAfter.migration_map ?? 0;
 
-    const analyzedLegacyCounts =
-      legacyCountsBefore.graphic_items === 0 && snapshot.graphicItems.length > 0
-        ? { ...legacyCountsBefore, ...fixtureLegacyCounts(snapshot) }
-        : legacyCountsAfter;
-
     const legacyCountsUnchanged = countsEqual(
       legacyCountsBefore,
       legacyCountsAfter,
@@ -367,7 +381,7 @@ export async function runContentV2DryRun(): Promise<DryRunReport> {
     const report: DryRunReport = {
       generatedAt: new Date().toISOString(),
       mode: "dry-run",
-      legacyCounts: analyzedLegacyCounts,
+      legacyCounts: legacyCountsBefore,
       v2CountsBefore,
       v2CountsAfter,
       migrationMapBefore,

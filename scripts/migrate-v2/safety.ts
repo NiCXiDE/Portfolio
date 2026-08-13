@@ -57,6 +57,65 @@ export function assertV2Empty(counts: TableCounts): void {
   }
 }
 
+/** Expected legacy row counts after backup baseline (pre-migration). */
+export const LEGACY_BASELINE: TableCounts = {
+  graphic_items: 47,
+  ui_projects: 13,
+  brands: 7,
+  brand_manuals: 1,
+  testimonials: 4,
+  named_list_items: 40,
+  tags: 9,
+  ui_list_items: 8,
+};
+
+export function assertLegacyBaseline(counts: TableCounts): void {
+  const mismatches: string[] = [];
+  for (const [table, expected] of Object.entries(LEGACY_BASELINE)) {
+    const actual = counts[table] ?? 0;
+    if (actual !== expected) {
+      mismatches.push(`${table}: expected ${expected}, found ${actual}`);
+    }
+  }
+  if (mismatches.length) {
+    throw new Error(
+      "[safety] Legacy baseline mismatch in MySQL — dry-run aborted.\n" +
+        mismatches.map((m) => `  - ${m}`).join("\n") +
+        "\nRestore legacy data before running dry-run. " +
+        "Use --compare-fixtures to compare against content/ JSON without using fixtures as input.",
+    );
+  }
+}
+
+export const RESTORATION_EMPTY_TABLES = [
+  "admin_audit_logs",
+  "graphic_items",
+  "brand_manuals",
+  "ui_projects",
+  "ui_list_items",
+  "testimonials",
+  "named_list_items",
+  "brands",
+] as const;
+
+export function assertTablesEmpty(
+  counts: TableCounts,
+  tables: readonly string[],
+  context: string,
+): void {
+  const nonEmpty: string[] = [];
+  for (const table of tables) {
+    const n = counts[table] ?? 0;
+    if (n !== 0) nonEmpty.push(`${table}: ${n}`);
+  }
+  if (nonEmpty.length) {
+    throw new Error(
+      `[safety] ${context} — expected empty tables, found rows:\n` +
+        nonEmpty.map((m) => `  - ${m}`).join("\n"),
+    );
+  }
+}
+
 export function formatCounts(counts: TableCounts): string {
   return Object.entries(counts)
     .map(([k, v]) => `  ${k}: ${v}`)
