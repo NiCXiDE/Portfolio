@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Script from "next/script";
 import "./globals.css";
 import { ThemeProvider } from "@/components/ThemeProvider";
 import { GoogleAnalytics } from "@/components/GoogleAnalytics";
@@ -39,10 +40,12 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="es" className="h-full antialiased" suppressHydrationWarning>
-      <head>
-        <script dangerouslySetInnerHTML={{ __html: themeInitScript() }} />
-      </head>
       <body className="h-full overflow-hidden bg-background font-satoshi text-ink">
+        <Script
+          id="theme-init"
+          strategy="beforeInteractive"
+          dangerouslySetInnerHTML={{ __html: themeInitScript() }}
+        />
         <ThemeProvider>{children}</ThemeProvider>
         <GoogleAnalytics />
       </body>

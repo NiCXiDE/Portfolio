@@ -32,6 +32,7 @@ export type UiProjectDTO = {
   period: { es: string; en: string } | null;
   duration: { es: string; en: string } | null;
   ctaKind: "prototype" | "visitor" | "live" | null;
+  brandId: string | null;
   sortOrder: number;
   published: boolean;
 };
@@ -181,6 +182,23 @@ function ProjectFields({
             defaultValue={item?.client ?? ""}
             className={fieldClass}
           />
+        </label>
+        <label className="block sm:col-span-2">
+          <FieldLabel hint="Vincula este proyecto a una marca para citar logos/banners relacionados.">
+            Marca / proyecto
+          </FieldLabel>
+          <select
+            name="brandId"
+            defaultValue={item?.brandId ?? ""}
+            className={selectClass}
+          >
+            <option value="">Sin marca</option>
+            {brands.map((b) => (
+              <option key={b.id} value={b.id}>
+                {b.name} ({b.id})
+              </option>
+            ))}
+          </select>
         </label>
         <label className="block">
           <FieldLabel>Periodo (español)</FieldLabel>

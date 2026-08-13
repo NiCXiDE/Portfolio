@@ -132,8 +132,6 @@ function BrandForm({ item }: { item?: BrandDTO }) {
           <button
             formAction={deleteBrand}
             type="submit"
-            name="id"
-            value={item.id}
             className="inline-flex items-center gap-2 border border-alert-danger/40 px-3 py-2 text-sm text-ink hover:bg-[#fff5f5]"
             onClick={(e) => {
               if (!confirm(`¿Eliminar marca “${item.name}”?`)) {

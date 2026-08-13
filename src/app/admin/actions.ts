@@ -192,9 +192,9 @@ export async function saveSettings(formData: FormData) {
     noteEn: String(formData.get("noteEn") ?? ""),
     poweredBy: String(formData.get("poweredBy") ?? ""),
     carouselIntervalMs: Number(formData.get("carouselIntervalMs") ?? 2000),
-    graphicPreviewLimit: Number(formData.get("graphicPreviewLimit") ?? 7),
+    graphicPreviewLimit: Number(formData.get("graphicPreviewLimit") ?? 5),
     interfacesPreviewLimit: Number(
-      formData.get("interfacesPreviewLimit") ?? 7,
+      formData.get("interfacesPreviewLimit") ?? 3,
     ),
     homeLayout: existing?.homeLayout ?? null,
   };
@@ -583,6 +583,7 @@ export async function saveGraphicItem(formData: FormData) {
     relatedSrcPath,
     relatedAssetId,
     galleryPaths: galleryPaths.length ? galleryPaths : null,
+    brandId: String(formData.get("brandId") ?? "").trim() || null,
     sortOrder: Number(formData.get("sortOrder") ?? 0),
     published: bool(formData.get("published")),
   };
@@ -680,6 +681,12 @@ export async function classifyInboxItem(formData: FormData) {
       meta: { es: "", en: "" },
       images: [existing.path],
       prototypeUrl: null,
+      summary: null,
+      client: null,
+      period: null,
+      duration: null,
+      ctaKind: null,
+      brandId: null,
       sortOrder,
       published: false,
     };
@@ -720,6 +727,7 @@ export async function classifyInboxItem(formData: FormData) {
     relatedSrcPath: null,
     relatedAssetId: null,
     galleryPaths: null,
+    brandId: null,
     sortOrder,
     published,
   };
@@ -876,6 +884,7 @@ export async function saveUiProject(formData: FormData) {
     period: period.es || period.en ? period : null,
     duration: duration.es || duration.en ? duration : null,
     ctaKind,
+    brandId: String(formData.get("brandId") ?? "").trim() || null,
     sortOrder: Number(formData.get("sortOrder") ?? 0),
     published: bool(formData.get("published")),
   };

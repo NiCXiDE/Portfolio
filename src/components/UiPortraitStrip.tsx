@@ -50,7 +50,7 @@ export function UiPortraitStrip({
         </span>
       ) : null}
       {onOpenDetail ? (
-        <span className="absolute inset-0 z-[1] cursor-zoom-in" aria-hidden />
+        <span className="absolute inset-0 z-[1] cursor-zoom" aria-hidden />
       ) : null}
     </>
   );

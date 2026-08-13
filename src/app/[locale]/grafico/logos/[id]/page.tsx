@@ -5,12 +5,13 @@ import { join } from "node:path";
 import Link from "next/link";
 import { getDictionary } from "@/i18n/dictionaries";
 import { isLocale, type Locale } from "@/i18n/config";
-import { loadGraphicSection, t } from "@/lib/content";
+import { loadGraphicSection, relatedByBrand, t } from "@/lib/content";
 import { buildPageMetadata, graphicLogoTitle } from "@/lib/seo";
 import { pathForLayer } from "@/lib/layers";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
 import { LogoResourceGallery } from "@/components/LogoResourceGallery";
 import { LogoDetailHero } from "@/components/LogoDetailHero";
+import { BrandRelatedSection } from "@/components/BrandRelatedSection";
 
 function logoDetailIdsFromJson(): string[] {
   const raw = JSON.parse(
@@ -65,6 +66,9 @@ export default async function GraphicLogoDetailPage({
   const title = logo.title ? t(logo.title, locale) : logo.alt;
   const detail = logo.detail ? t(logo.detail, locale) : "";
   const tags = logo.tags ?? [];
+  const related = logo.brandId
+    ? await relatedByBrand(logo.brandId, { excludeGraphicId: logo.id })
+    : null;
 
   const resourceItems = (logo.gallery ?? []).map((g, index) => {
     const src = g.src;
@@ -149,6 +153,15 @@ export default async function GraphicLogoDetailPage({
               </p>
             )}
           </section>
+
+          {related ? (
+            <BrandRelatedSection
+              locale={locale}
+              heading={dict.grafico.alsoInProject}
+              related={related}
+              viewUiLabel={dict.grafico.viewUiProject}
+            />
+          ) : null}
         </div>
       </div>
     </main>

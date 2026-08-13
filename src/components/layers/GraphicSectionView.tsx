@@ -146,7 +146,7 @@ export function GraphicSectionView({
   }, [sourceItems]);
 
   return (
-    <main className="mx-auto flex w-full max-w-6xl flex-col gap-6 px-4 py-8 sm:px-6 md:px-8">
+    <main className="mx-auto flex w-full max-w-6xl flex-col gap-6 px-4 py-8 sm:px-6 md:px-8 lg:px-10">
       <div className="flex flex-wrap items-end justify-between gap-3">
         <div>
           <Breadcrumbs
@@ -218,12 +218,17 @@ export function GraphicSectionView({
         containPadPercent={
           section === "logos" ? LOGO_SAFE_INSET_PERCENT : undefined
         }
-        itemHref={
+        detailHref={
           section === "eventos"
             ? (item) => `/${locale}/grafico/eventos/${item.id}`
             : section === "logos"
               ? (item) => logoDetailHref(locale, item)
               : undefined
+        }
+        moreAboutLabel={
+          section === "eventos" || section === "logos"
+            ? dict.grafico.moreAbout
+            : undefined
         }
       />
     </main>

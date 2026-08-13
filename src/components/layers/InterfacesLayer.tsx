@@ -22,9 +22,12 @@ import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import type { Dictionary } from "@/i18n/dictionaries";
 import type { Locale } from "@/i18n/config";
 import {
+  hrefForBrandGraphic,
   t,
+  titleForBrandGraphic,
   type LocalizedString,
   type PortfolioContent,
+  type RelatedGraphicPiece,
 } from "@/lib/content";
 import { SortButtons, type SortMode } from "@/components/SortButtons";
 import { pathForLayer } from "@/lib/layers";
@@ -53,6 +56,43 @@ type Props = {
 
 type UiProject = UiProjectDetail & { category: UiCategory };
 
+function relatedGraphicsForProject(
+  project: { brandId?: string | null },
+  content: PortfolioContent,
+  locale: Locale,
+  viewIdentityLabel: string,
+): Array<{ href: string; label: string }> {
+  const brandId = project.brandId;
+  if (!brandId) return [];
+  const buckets: Array<{
+    section: RelatedGraphicPiece["section"];
+    items: PortfolioContent["logos"];
+  }> = [
+    { section: "logos", items: content.logos },
+    { section: "banners", items: content.banners },
+    { section: "eventos", items: content.eventos },
+    { section: "covers", items: content.covers },
+    { section: "illustration", items: content.illustration },
+    { section: "personal", items: content.personal },
+  ];
+  const links: Array<{ href: string; label: string }> = [];
+  for (const { section, items } of buckets) {
+    for (const item of items) {
+      if (item.brandId !== brandId) continue;
+      const piece: RelatedGraphicPiece = { ...item, section };
+      const title = titleForBrandGraphic(piece, locale);
+      links.push({
+        href: hrefForBrandGraphic(locale, piece),
+        label:
+          section === "logos"
+            ? `${viewIdentityLabel}: ${title}`
+            : title,
+      });
+    }
+  }
+  return links;
+}
+
 type IconType = ComponentType<LucideProps>;
 
 const CATEGORY_META: {
@@ -66,7 +106,7 @@ const CATEGORY_META: {
   { id: "system-design", icon: Network },
 ];
 
-const slideEase = [0.32, 0.72, 0, 1] as const;
+const slideEase = [0.22, 1, 0.36, 1] as const;
 
 function scrollWithinPane(targetId: string) {
   const target = document.getElementById(targetId);
@@ -131,7 +171,8 @@ function ProjectCarousel({
   const [progressKey, setProgressKey] = useState(0);
   const total = slides.length;
   const current = slides[index];
-  const frameClass = "relative aspect-[644/362] w-full overflow-hidden bg-sky-pale";
+  const frameClass =
+    "relative aspect-[644/362] w-full max-w-3xl overflow-hidden bg-sky-pale surface-glow";
 
   const goTo = (next: number, dir: 1 | -1) => {
     setDirection(dir);
@@ -157,7 +198,7 @@ function ProjectCarousel({
         type="button"
         aria-label={dict.interfaces.openDetail}
         onClick={onOpenDetail}
-        className="relative flex aspect-[644/362] w-full cursor-zoom-in items-center justify-center overflow-hidden bg-sky-pale disabled:cursor-default"
+        className="relative flex aspect-[644/362] w-full max-w-3xl cursor-zoom items-center justify-center overflow-hidden bg-sky-pale surface-glow disabled:cursor-blocked"
         disabled={!onOpenDetail}
       >
         <span className="text-sm text-ink/50 md:text-base">-</span>
@@ -232,7 +273,7 @@ function ProjectCarousel({
           type="button"
           aria-label={dict.interfaces.openDetail}
           onClick={onOpenDetail}
-          className="absolute inset-0 z-[1] cursor-zoom-in"
+          className="absolute inset-0 z-[1] cursor-zoom"
         />
       ) : null}
 
@@ -299,7 +340,6 @@ function ProjectCarousel({
 
 export function InterfacesLayer({ locale, dict, content }: Props) {
   const projects = content.uiProjects as readonly UiProject[];
-  const limit = content.settings.interfacesPreviewLimit;
   const autoMs = content.settings.carouselIntervalMs;
   const brandsById = useMemo(
     () => Object.fromEntries(content.brands.map((b) => [b.id, b])),
@@ -314,8 +354,19 @@ export function InterfacesLayer({ locale, dict, content }: Props) {
     "system-design": "year",
   });
 
-  const detailProject =
-    projects.find((p) => p.id === detailId) ?? null;
+  const detailProject = (() => {
+    const project = projects.find((p) => p.id === detailId) ?? null;
+    if (!project) return null;
+    return {
+      ...project,
+      relatedGraphics: relatedGraphicsForProject(
+        project,
+        content,
+        locale,
+        dict.grafico.viewIdentity,
+      ),
+    };
+  })();
   const categoryLabel = (cat: UiCategory) => {
     if (cat === "preventas") return dict.interfaces.catPreventas;
     if (cat === "sistemas-a-medida") return dict.interfaces.catSistemas;
@@ -335,23 +386,14 @@ export function InterfacesLayer({ locale, dict, content }: Props) {
   const sortedByCategory = useMemo(() => {
     const map = {} as Record<UiCategory, UiProject[]>;
     for (const cat of CATEGORY_META.map((c) => c.id)) {
-      const full = sortProjects(
+      map[cat] = sortProjects(
         projects.filter((p) => p.category === cat),
         sorts[cat],
         locale,
       );
-      map[cat] = full.slice(0, limit);
     }
     return map;
-  }, [projects, sorts, locale, limit]);
-
-  const totals = useMemo(() => {
-    const map = {} as Record<UiCategory, number>;
-    for (const cat of CATEGORY_META.map((c) => c.id)) {
-      map[cat] = projects.filter((p) => p.category === cat).length;
-    }
-    return map;
-  }, [projects]);
+  }, [projects, sorts, locale]);
 
   const orphanedListItems = useMemo(() => {
     const projectIds = new Set(projects.map((p) => p.id));
@@ -370,7 +412,7 @@ export function InterfacesLayer({ locale, dict, content }: Props) {
 
   return (
     <main className="flex w-full flex-col items-center overflow-x-clip">
-      <div className="flex w-full max-w-6xl flex-col items-start gap-6 px-4 py-8 sm:gap-8 sm:px-6 md:px-8">
+      <div className="flex w-full max-w-6xl flex-col items-start gap-6 px-4 py-8 sm:gap-8 sm:px-6 md:px-8 lg:px-10">
         <div className="flex w-full flex-col items-center gap-3 sm:flex-row sm:items-center sm:gap-4">
           <div className="relative h-12 w-12 shrink-0 sm:h-16 sm:w-16">
             <Image
@@ -409,7 +451,7 @@ export function InterfacesLayer({ locale, dict, content }: Props) {
                   <button
                     type="button"
                     onClick={() => scrollWithinPane(j.id)}
-                    className="inline-flex items-center gap-1.5 underline-offset-4 transition-opacity hover:underline hover:opacity-70"
+                    className="inline-flex items-center gap-1.5 underline-offset-4 interactive-ink hover:underline"
                   >
                     <Icon
                       className="size-3.5 shrink-0 opacity-80"
@@ -427,7 +469,7 @@ export function InterfacesLayer({ locale, dict, content }: Props) {
           const items = sortedByCategory[cat];
           if (items.length === 0) return null;
           return (
-            <section key={cat} className="flex w-full flex-col gap-6">
+            <section key={cat} className="flex w-full flex-col gap-8">
               <div className="flex w-full flex-wrap items-center justify-between gap-3">
                 <h2
                   id={`ui-${cat}`}
@@ -448,11 +490,11 @@ export function InterfacesLayer({ locale, dict, content }: Props) {
                   alphaLabel={dict.common.sortByName}
                 />
               </div>
-              <div className="grid w-full grid-cols-1 gap-8 md:grid-cols-2">
+              <div className="grid w-full grid-cols-1 gap-12 md:gap-14">
                 {items.map((project) => {
                   const href = project.prototypeUrl;
                   return (
-                    <article key={project.id} className="flex flex-col gap-2.5">
+                    <article key={project.id} className="flex max-w-3xl flex-col gap-3.5">
                       <h3 className="text-sm font-bold text-ink sm:text-base">
                         {t(project.title, locale)}
                       </h3>
@@ -486,13 +528,13 @@ export function InterfacesLayer({ locale, dict, content }: Props) {
                             {...(href.startsWith("/")
                               ? {}
                               : { target: "_blank", rel: "noreferrer" })}
-                            className="underline underline-offset-2 transition-opacity hover:opacity-70"
+                            className="underline underline-offset-2 interactive-ink cursor-nav"
                           >
                             {uiCtaLabel(project, dict)}
                           </a>
                         ) : (
                           <span
-                            className="underline underline-offset-2 opacity-50"
+                            className="cursor-blocked underline underline-offset-2 opacity-50"
                             title={dict.interfaces.prototypeUnavailableHint}
                           >
                             {dict.interfaces.prototypeUnavailable}
@@ -503,16 +545,6 @@ export function InterfacesLayer({ locale, dict, content }: Props) {
                   );
                 })}
               </div>
-              {totals[cat] > limit ? (
-                <div className="flex justify-center">
-                  <Link
-                    href={`/${locale}/interfaces/${cat}`}
-                    className="text-sm underline underline-offset-4 transition-opacity hover:opacity-70"
-                  >
-                    {dict.interfaces.seeMore}
-                  </Link>
-                </div>
-              ) : null}
             </section>
           );
         })}
@@ -522,7 +554,7 @@ export function InterfacesLayer({ locale, dict, content }: Props) {
             <h2 className="text-xl font-bold text-ink md:text-2xl">
               {dict.interfaces.orphanListHeading}
             </h2>
-            <div className="grid w-full grid-cols-1 gap-6 md:grid-cols-2 md:gap-8">
+            <div className="grid w-full grid-cols-1 gap-6 md:gap-8">
               {orphanedListItems.map((item) => {
                 const logo =
                   "logo" in item && typeof item.logo === "string"
@@ -541,7 +573,7 @@ export function InterfacesLayer({ locale, dict, content }: Props) {
                     key={item.id}
                     className="flex flex-col gap-2.5 border border-ink/10 bg-white p-3 sm:p-4"
                   >
-                    <div className="relative flex aspect-[644/362] w-full items-center justify-center overflow-hidden bg-sky-pale">
+                    <div className="relative flex aspect-[644/362] w-full max-w-3xl items-center justify-center overflow-hidden bg-sky-pale surface-glow">
                       {logo ? (
                         isSvgAsset(logo) ? (
                           <BrandVectorMask

@@ -6,7 +6,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { getDictionary } from "@/i18n/dictionaries";
 import { isLocale, type Locale } from "@/i18n/config";
-import { loadGraphicSection, t } from "@/lib/content";
+import { loadGraphicSection, relatedByBrand, t } from "@/lib/content";
 import { buildPageMetadata, graphicEventTitle } from "@/lib/seo";
 import { pathForLayer } from "@/lib/layers";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
@@ -14,6 +14,7 @@ import {
   ExpandableArtGrid,
   type ArtItem,
 } from "@/components/ExpandableArtGrid";
+import { BrandRelatedSection } from "@/components/BrandRelatedSection";
 
 function eventIdsFromJson(): string[] {
   const raw = JSON.parse(
@@ -64,6 +65,9 @@ export default async function GraphicEventPage({
 
   const title = event.title ? t(event.title, locale) : event.alt;
   const detail = event.detail ? t(event.detail, locale) : "";
+  const related = event.brandId
+    ? await relatedByBrand(event.brandId, { excludeGraphicId: event.id })
+    : null;
   const resourceItems: ArtItem[] = (event.gallery ?? []).map((g, index) => ({
     id: `${event.id}-res-${index}`,
     src: (g as { src: string }).src ?? (g as unknown as string),
@@ -144,6 +148,15 @@ export default async function GraphicEventPage({
           {dict.grafico.emptyEventResources}
         </p>
       )}
+
+      {related ? (
+        <BrandRelatedSection
+          locale={locale}
+          heading={dict.grafico.alsoInProject}
+          related={related}
+          viewUiLabel={dict.grafico.viewUiProject}
+        />
+      ) : null}
     </main>
   );
 }

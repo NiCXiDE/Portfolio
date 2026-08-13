@@ -85,7 +85,7 @@ export function Header({
           <button
             type="button"
             onClick={() => closeAnd(onPortfolio)}
-            className="ml-3 text-sm font-normal text-ink transition-opacity hover:opacity-70"
+            className="ml-3 text-sm font-normal text-ink interactive-ink"
           >
             {dict.nav.backHome}
           </button>
@@ -126,7 +126,7 @@ export function Header({
         <div className="flex min-h-10 min-w-0 items-center justify-self-start">
           <Link
             href={pathForLayer(locale, "grafico")}
-            className={`header-corner group flex max-w-full items-center gap-2 ${
+            className={`header-corner group flex max-w-full items-center gap-2 cursor-nav interactive-ink ${
               showLeft ? "is-visible" : ""
             }`}
             aria-label={dict.footer.graphic}
@@ -157,7 +157,7 @@ export function Header({
           <button
             type="button"
             onClick={onPortfolio}
-            className={`transition-opacity hover:opacity-70 ${
+            className={`transition-[color,filter] interactive-ink ${
               layer === "inicio" ? "font-bold" : "font-normal"
             }`}
           >
@@ -166,14 +166,14 @@ export function Header({
           <button
             type="button"
             onClick={onContact}
-            className="font-normal transition-opacity hover:opacity-70"
+            className="font-normal interactive-ink"
           >
             {dict.nav.contact}
           </button>
           <button
             type="button"
             onClick={onAbout}
-            className="whitespace-nowrap font-normal transition-opacity hover:opacity-70"
+            className="whitespace-nowrap font-normal interactive-ink"
           >
             {dict.nav.about}
           </button>
@@ -183,7 +183,7 @@ export function Header({
         <div className="flex min-h-10 min-w-0 items-center justify-self-end">
           <Link
             href={pathForLayer(locale, "interfaces")}
-            className={`header-corner group flex max-w-full items-center gap-2 ${
+            className={`header-corner group flex max-w-full items-center gap-2 cursor-nav interactive-ink ${
               showRight ? "is-visible" : ""
             }`}
             aria-label={dict.footer.interfaces}
@@ -224,7 +224,7 @@ export function Header({
               <button
                 type="button"
                 onClick={() => closeAnd(onPortfolio)}
-                className={`rounded px-2 py-2.5 text-left transition-opacity hover:opacity-70 ${
+                className={`rounded px-2 py-2.5 text-left interactive-ink ${
                   layer === "inicio" ? "font-bold" : "font-normal"
                 }`}
               >
@@ -233,21 +233,21 @@ export function Header({
               <button
                 type="button"
                 onClick={() => closeAnd(onContact)}
-                className="rounded px-2 py-2.5 text-left font-normal transition-opacity hover:opacity-70"
+                className="rounded px-2 py-2.5 text-left font-normal interactive-ink"
               >
                 {dict.nav.contact}
               </button>
               <button
                 type="button"
                 onClick={() => closeAnd(onAbout)}
-                className="rounded px-2 py-2.5 text-left font-normal transition-opacity hover:opacity-70"
+                className="rounded px-2 py-2.5 text-left font-normal interactive-ink"
               >
                 {dict.nav.about}
               </button>
               <Link
                 href={pathForLayer(locale, "grafico")}
                 onClick={() => setMenuOpen(false)}
-                className={`rounded px-2 py-2.5 transition-opacity hover:opacity-70 ${
+                className={`rounded px-2 py-2.5 interactive-ink ${
                   layer === "grafico" ? "font-bold" : "font-normal"
                 }`}
               >
@@ -256,7 +256,7 @@ export function Header({
               <Link
                 href={pathForLayer(locale, "interfaces")}
                 onClick={() => setMenuOpen(false)}
-                className={`rounded px-2 py-2.5 transition-opacity hover:opacity-70 ${
+                className={`rounded px-2 py-2.5 interactive-ink ${
                   layer === "interfaces" ? "font-bold" : "font-normal"
                 }`}
               >
@@ -282,7 +282,7 @@ export function Footer({ locale, dict, socialLinks, settings }: FooterProps) {
   return (
     <footer className="w-full">
       <FaqSection dict={dict} />
-      <div className="flex flex-col gap-8 bg-sky-soft px-6 py-8 sm:flex-row sm:flex-wrap sm:justify-center sm:gap-10 sm:px-10 md:gap-14 lg:px-20">
+      <div className="grid grid-cols-1 gap-8 bg-sky-soft px-6 py-8 sm:grid-cols-2 sm:gap-10 sm:px-10 lg:grid-cols-4 lg:gap-8 lg:px-16 xl:px-20">
         <div className="flex flex-col gap-4">
           <h3 className="text-base font-bold text-ink md:text-lg">
             {dict.footer.social}
@@ -294,7 +294,7 @@ export function Footer({ locale, dict, socialLinks, settings }: FooterProps) {
                   href={link.href}
                   target="_blank"
                   rel="noreferrer"
-                  className="inline-flex items-center gap-2.5 transition-opacity hover:opacity-70"
+                  className="interactive-ink cursor-nav inline-flex items-center gap-2.5"
                 >
                   {link.icon ? (
                     <span className="relative inline-block size-4 shrink-0 sm:size-[1.375rem]">
@@ -316,13 +316,26 @@ export function Footer({ locale, dict, socialLinks, settings }: FooterProps) {
 
         <div className="flex flex-col gap-4">
           <h3 className="text-base font-bold text-ink md:text-lg">
+            {dict.footer.explore}
+          </h3>
+          <p className="max-w-xs text-sm text-ink/70 md:text-base">
+            {dict.footer.exploreHint}
+          </p>
+          <ul className="footer-list flex flex-col gap-2.5 text-sm text-ink md:text-base">
+            <li className="opacity-80">{dict.footer.cursorNav}</li>
+            <li className="opacity-80">{dict.footer.cursorExpand}</li>
+          </ul>
+        </div>
+
+        <div className="flex flex-col gap-4">
+          <h3 className="text-base font-bold text-ink md:text-lg">
             {dict.footer.navigation}
           </h3>
           <ul className="footer-list flex flex-col gap-2.5 text-sm text-ink md:text-base">
             <li>
               <Link
                 href={pathForLayer(locale, "inicio")}
-                className="transition-opacity hover:opacity-70"
+                className="interactive-ink cursor-nav"
               >
                 {dict.footer.home}
               </Link>
@@ -330,7 +343,7 @@ export function Footer({ locale, dict, socialLinks, settings }: FooterProps) {
             <li>
               <Link
                 href={pathForLayer(locale, "grafico")}
-                className="transition-opacity hover:opacity-70"
+                className="interactive-ink cursor-nav"
               >
                 {dict.footer.graphic}
               </Link>
@@ -338,7 +351,7 @@ export function Footer({ locale, dict, socialLinks, settings }: FooterProps) {
             <li>
               <Link
                 href={pathForLayer(locale, "interfaces")}
-                className="transition-opacity hover:opacity-70"
+                className="interactive-ink cursor-nav"
               >
                 {dict.footer.interfaces}
               </Link>
@@ -346,7 +359,7 @@ export function Footer({ locale, dict, socialLinks, settings }: FooterProps) {
             <li>
               <Link
                 href={`/${locale}/privacidad`}
-                className="transition-opacity hover:opacity-70"
+                className="interactive-ink cursor-nav"
               >
                 {dict.footer.privacy}
               </Link>
@@ -354,7 +367,7 @@ export function Footer({ locale, dict, socialLinks, settings }: FooterProps) {
           </ul>
         </div>
 
-        <div className="flex max-w-xl flex-col gap-4" id="contacto">
+        <div className="flex flex-col gap-4" id="contacto">
           <h3 className="text-base font-bold text-ink md:text-lg">
             {dict.footer.contact}
           </h3>
@@ -362,7 +375,7 @@ export function Footer({ locale, dict, socialLinks, settings }: FooterProps) {
             <li>
               <a
                 href={`mailto:${settings.email}`}
-                className="transition-opacity hover:opacity-70"
+                className="interactive-ink cursor-nav"
               >
                 {settings.email}
               </a>
@@ -370,7 +383,7 @@ export function Footer({ locale, dict, socialLinks, settings }: FooterProps) {
             <li>
               <a
                 href={`tel:${settings.phone.replace(/\s/g, "")}`}
-                className="transition-opacity hover:opacity-70"
+                className="interactive-ink cursor-nav"
               >
                 {settings.phone}
               </a>

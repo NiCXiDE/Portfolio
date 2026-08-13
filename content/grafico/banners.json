@@ -26,6 +26,7 @@
     },
     "year": "",
     "tags": ["impreso"],
+    "brandId": "citf",
     "detail": {
       "es": "Pieza impresa · foto IRL pendiente",
       "en": "Printed piece · IRL photo TBD"
@@ -82,6 +83,7 @@
       "en": "Promotional piece for Brigado Crew / JBC."
     },
     "relatedSrc": null,
-    "href": null
+    "href": null,
+    "fit": "cover"
   }
 ]

@@ -7,9 +7,15 @@ import { readFileSync } from "node:fs";
 import { resolve } from "node:path";
 import { createDataSource } from "../src/db/data-source";
 import {
+  BrandEntity,
+  BrandManualEntity,
   GraphicItemEntity,
+  NamedListItemEntity,
+  SiteSettingsEntity,
   UiListItemEntity,
   UiProjectEntity,
+  type BrandManualRow,
+  type BrandRow,
   type GraphicItemRow,
   type GraphicSection,
   type LocalizedJson,
@@ -86,6 +92,7 @@ function seedGraphics(
         .filter(Boolean);
       return items.length ? items : null;
     })(),
+    brandId: raw.brandId ? String(raw.brandId) : null,
     sortOrder,
     published: section !== "pending",
   }));
@@ -143,6 +150,7 @@ async function main() {
       period?: Localized | null;
       duration?: Localized | null;
       ctaKind?: UiProjectRow["ctaKind"];
+      brandId?: string | null;
     }>
   >("content/interfaces/projects.json");
 
@@ -158,12 +166,89 @@ async function main() {
     period: item.period ?? null,
     duration: item.duration ?? null,
     ctaKind: item.ctaKind ?? null,
+    brandId: item.brandId ? String(item.brandId) : null,
     sortOrder,
     published: true,
   }));
 
   await uiRepo.save(uiProjectRows);
   console.log(`Upserted ${uiProjectRows.length} UI projects.`);
+
+  const manuals = readJson<
+    Array<{
+      id: string;
+      cover: string;
+      pdf: string;
+      title: Localized;
+      year?: string;
+      meta?: Localized;
+      brandId?: string | null;
+    }>
+  >("content/grafico/brand-manuals.json");
+  const manualRepo = ds.getRepository(BrandManualEntity);
+  const manualRows: BrandManualRow[] = manuals.map((item, sortOrder) => ({
+    id: item.id,
+    coverPath: item.cover,
+    pdfPath: item.pdf,
+    title: item.title,
+    year: item.year ?? null,
+    meta: item.meta ?? null,
+    brandId: item.brandId ? String(item.brandId) : null,
+    sortOrder,
+    published: true,
+  }));
+  await manualRepo.save(manualRows);
+  console.log(`Upserted ${manualRows.length} brand manuals.`);
+
+  const brandRepo = ds.getRepository(BrandEntity);
+  const brandIds = new Set<string>();
+  for (const row of graphicRows) {
+    if (row.brandId) brandIds.add(row.brandId);
+  }
+  for (const row of uiProjectRows) {
+    if (row.brandId) brandIds.add(row.brandId);
+  }
+  for (const row of manualRows) {
+    if (row.brandId) brandIds.add(row.brandId);
+  }
+  const brandMeta: Record<
+    string,
+    { name: string; logoPath: string | null }
+  > = {
+    apsmm: {
+      name: "APSMM",
+      logoPath: "/assets/grafico/logos/apsmm.png",
+    },
+    seyier: {
+      name: "Seyier",
+      logoPath: "/assets/grafico/logos/seyier.svg",
+    },
+    citf: {
+      name: "Clúster de Innovación Tecnológica Formosa",
+      logoPath: "/assets/grafico/logos/vector-52.svg",
+    },
+  };
+  let brandsCreated = 0;
+  for (const id of brandIds) {
+    const existing = await brandRepo.findOneBy({ id });
+    if (existing) continue;
+    const meta = brandMeta[id];
+    const row: BrandRow = {
+      id,
+      name: meta?.name ?? id,
+      logoPath: meta?.logoPath ?? null,
+      logoAssetId: null,
+      href: null,
+      sortOrder: 999,
+      published: true,
+      createdAt: new Date(),
+    };
+    await brandRepo.save(row);
+    brandsCreated += 1;
+  }
+  if (brandsCreated) {
+    console.log(`Created ${brandsCreated} missing brand(s).`);
+  }
 
   const uiList = readJson<
     Array<{
@@ -195,6 +280,31 @@ async function main() {
 
   await uiListRepo.save(uiListRows);
   console.log(`Upserted ${uiListRows.length} UI list items.`);
+
+  const settingsRepo = ds.getRepository(SiteSettingsEntity);
+  const settings = await settingsRepo.findOneBy({ id: "main" });
+  if (settings) {
+    settings.graphicPreviewLimit = 5;
+    settings.interfacesPreviewLimit = 3;
+    await settingsRepo.save(settings);
+    console.log("Updated preview limits to 5 / 3.");
+  }
+
+  const namedRepo = ds.getRepository(NamedListItemEntity);
+  const clusterNames = [
+    "Clúster de Innovación Tecnológica Formosa",
+    "Cluster de Innovacion Tecnologica Formosa",
+  ];
+  for (const label of clusterNames) {
+    const rows = await namedRepo.find({ where: { label, kind: "company" } });
+    for (const row of rows) {
+      if (row.brandId !== "citf") {
+        row.brandId = "citf";
+        await namedRepo.save(row);
+        console.log(`Linked company “${label}” → citf`);
+      }
+    }
+  }
 
   await ds.destroy();
   console.log("Content sync complete.");

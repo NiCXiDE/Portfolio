@@ -16,6 +16,7 @@ import {
   type UiSlide,
 } from "@/lib/ui-slides";
 import { isAllPortraitSlides } from "@/components/UiPortraitStrip";
+import { MOTION_EASE } from "@/lib/motion";
 
 export type UiProjectDetail = {
   id: string;
@@ -29,6 +30,8 @@ export type UiProjectDetail = {
   duration: LocalizedString | null;
   ctaKind: "prototype" | "visitor" | "live" | null;
   category?: UiCategory;
+  brandId?: string | null;
+  relatedGraphics?: Array<{ href: string; label: string }>;
 };
 
 function resolveCtaKind(
@@ -118,8 +121,11 @@ export function UiProjectDetailModal({
   const brandsById = Object.fromEntries(brands.map((b) => [b.id, b]));
 
   const portraitFrameClass = sideCarousel
-    ? "relative aspect-[9/16] h-[min(58dvh,30rem)] w-auto max-w-[min(92%,17rem)] overflow-hidden bg-ink/5 sm:h-[min(72dvh,36rem)] sm:max-w-[min(100%,19rem)]"
-    : "relative aspect-[9/16] h-[min(48dvh,26rem)] w-auto max-w-[min(100%,14rem)] overflow-hidden bg-ink/5";
+    ? "relative aspect-[9/16] h-[min(58dvh,30rem)] w-auto max-w-[min(92%,17rem)] overflow-hidden bg-[color-mix(in_srgb,var(--sky-pale)_82%,var(--ink)_18%)] sm:h-[min(72dvh,36rem)] sm:max-w-[min(100%,19rem)]"
+    : "relative aspect-[9/16] h-[min(48dvh,26rem)] w-auto max-w-[min(100%,14rem)] overflow-hidden bg-[color-mix(in_srgb,var(--sky-pale)_82%,var(--ink)_18%)]";
+
+  const mediaPanelClass =
+    "bg-[color-mix(in_srgb,var(--sky-pale)_82%,var(--ink)_18%)]";
 
   return createPortal(
     <AnimatePresence>
@@ -133,7 +139,7 @@ export function UiProjectDetailModal({
           initial={reduceMotion ? false : { opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
-          transition={{ duration: 0.22, ease: [0.32, 0.72, 0, 1] }}
+          transition={{ duration: 0.26, ease: MOTION_EASE }}
         >
           <button
             type="button"
@@ -152,7 +158,7 @@ export function UiProjectDetailModal({
             }
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 12, scale: 0.99 }}
-            transition={{ duration: 0.28, ease: [0.32, 0.72, 0, 1] }}
+            transition={{ duration: 0.32, ease: MOTION_EASE }}
             onClick={(e) => e.stopPropagation()}
           >
             <button
@@ -168,8 +174,8 @@ export function UiProjectDetailModal({
               <div
                 className={
                   sideCarousel
-                    ? "relative flex w-full shrink-0 items-center justify-center bg-ink/10 px-3 py-4 sm:min-h-0 sm:w-[min(54%,26rem)] sm:flex-1 sm:px-4 sm:py-6"
-                    : `relative w-full shrink-0 bg-ink/10 ${
+                    ? `relative flex w-full shrink-0 items-center justify-center ${mediaPanelClass} px-3 py-4 sm:min-h-0 sm:w-[min(54%,26rem)] sm:flex-1 sm:px-4 sm:py-6`
+                    : `relative w-full shrink-0 ${mediaPanelClass} ${
                         isPortrait
                           ? "flex min-h-[min(52dvh,28rem)] items-center justify-center py-4"
                           : "aspect-video"
@@ -225,7 +231,7 @@ export function UiProjectDetailModal({
                     <button
                       type="button"
                       aria-label={dict.interfaces.carouselPrev}
-                      className="absolute left-2 top-1/2 z-10 flex size-9 -translate-y-1/2 items-center justify-center bg-ink/55 text-sky-pale transition-opacity hover:opacity-90"
+                      className="absolute left-2 top-1/2 z-10 flex size-9 -translate-y-1/2 items-center justify-center rounded-full bg-ink/55 text-sky-pale transition-opacity hover:opacity-90"
                       onClick={() =>
                         setSlide(
                           (i) => (i - 1 + slides.length) % slides.length,
@@ -237,7 +243,7 @@ export function UiProjectDetailModal({
                     <button
                       type="button"
                       aria-label={dict.interfaces.carouselNext}
-                      className="absolute right-2 top-1/2 z-10 flex size-9 -translate-y-1/2 items-center justify-center bg-ink/55 text-sky-pale transition-opacity hover:opacity-90"
+                      className="absolute right-2 top-1/2 z-10 flex size-9 -translate-y-1/2 items-center justify-center rounded-full bg-ink/55 text-sky-pale transition-opacity hover:opacity-90"
                       onClick={() =>
                         setSlide((i) => (i + 1) % slides.length)
                       }
@@ -323,6 +329,26 @@ export function UiProjectDetailModal({
                   {dict.interfaces.prototypeUnavailable}
                 </p>
               )}
+
+              {project.relatedGraphics && project.relatedGraphics.length > 0 ? (
+                <div className="space-y-2 border-t border-ink/10 pt-4">
+                  <p className="text-xs font-medium uppercase tracking-wide text-ink/55">
+                    {dict.grafico.alsoInProject}
+                  </p>
+                  <ul className="flex flex-col gap-1.5">
+                    {project.relatedGraphics.map((link) => (
+                      <li key={link.href + link.label}>
+                        <a
+                          href={link.href}
+                          className="text-sm underline underline-offset-4 opacity-80 transition-opacity hover:opacity-100"
+                        >
+                          {link.label}
+                        </a>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              ) : null}
             </div>
           </motion.div>
         </motion.div>

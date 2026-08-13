@@ -110,10 +110,17 @@ const es = {
     expandHint: "Tocá una pieza para ver detalle · Esc para cerrar",
     seeMore: "Ver más",
     seeAll: "Ver todas",
+    moreAbout: "Ver más sobre {name}",
+    alsoInProject: "También en este proyecto",
+    viewIdentity: "Ver identidad / logo",
+    viewUiProject: "Ver interfaz",
+    brandHubIntro: "Trabajo gráfico y de marca realizado con este proyecto.",
+    brandHubGraphics: "Piezas gráficas",
+    viewBrandWork: "Ver trabajo con {name}",
     hintCovers:
       "Artworks y portadas de música / playlists (disco, single, lista).",
     hintLogos:
-      "Marcas, wordmarks e íconos. Si un logo tiene recursos (pantallas, overlays), clickeá para ver la ficha.",
+      "Marcas, wordmarks e íconos. Tocá para expandir; si hay ficha con recursos, usá el enlace del detalle.",
     hintManuals: "Sistemas de marca documentados (portada + PDF).",
     hintIllustration:
       "Hubo dibujo (mano o digital) y la pieza gira alrededor de una figura o escena. Collages / tipografía pura van a otra sección.",
@@ -126,7 +133,7 @@ const es = {
     emptyBanners: "Pronto: banners + foto del impreso.",
     eventos: "Eventos",
     hintEventos:
-      "Campañas y difusión: clickeá un evento para ver portada, resumen y recursos.",
+      "Campañas y difusión: tocá para expandir; en el detalle podés abrir la ficha completa.",
     emptyEventos: "Pronto: campañas de eventos.",
     backToEvents: "Volver a Eventos",
     backToLogos: "Volver a Logotipos",
@@ -139,7 +146,14 @@ const es = {
   },
   footer: {
     social: "Seguime en Redes",
-    navigation: "Navegación",
+    navigation: "Navegación rápida",
+    explore: "Exploración",
+    exploreHint:
+      "Flecha = cursor normal. Mano = algo clickeable.",
+    cursorExpand: "Mano: interactuar / clickear",
+    cursorNav: "Flecha: cursor normal",
+    graphicSections: "Secciones de gráfico",
+    interfaceSections: "Categorías de interfaces",
     contact: "Contacto",
     home: "Inicio",
     graphic: "Diseño Gráfico",
@@ -177,6 +191,10 @@ const es = {
       {
         q: "¿Qué necesito enviarte para avanzar?",
         a: "Contexto del proyecto, referencias visuales si hay, plazos deseados y un contacto. Con eso armo el siguiente paso.",
+      },
+      {
+        q: "¿Cómo se desarrolló este sitio?",
+        a: "Partí de un prototipo en Figma y lo llevé a Cursor, donde se implementaron las interacciones, el motion y el resto del producto que ves acá.",
       },
     ],
   },
@@ -331,9 +349,16 @@ const en: typeof es = {
     expandHint: "Tap a piece for details · Esc to close",
     seeMore: "See more",
     seeAll: "See all",
+    moreAbout: "More about {name}",
+    alsoInProject: "Also in this project",
+    viewIdentity: "View identity / logo",
+    viewUiProject: "View interface",
+    brandHubIntro: "Graphic and brand work made with this project.",
+    brandHubGraphics: "Graphic pieces",
+    viewBrandWork: "See work with {name}",
     hintCovers: "Music / playlist artworks and covers (release, single, list).",
     hintLogos:
-      "Brands, wordmarks, and icons. Logos with extra assets (screens, overlays) open a detail page on click.",
+      "Brands, wordmarks, and icons. Tap to expand; if there’s a resource page, use the link in the detail panel.",
     hintManuals: "Documented brand systems (cover + PDF).",
     hintIllustration:
       "There was drawing (hand or digital) and the piece centers on a figure or scene. Pure type / collage land elsewhere.",
@@ -346,7 +371,7 @@ const en: typeof es = {
     emptyBanners: "Soon: banners + photo of the print.",
     eventos: "Events",
     hintEventos:
-      "Campaigns and promo: tap an event for cover, summary, and assets.",
+      "Campaigns and promo: tap to expand; open the full page from the detail panel.",
     emptyEventos: "Soon: event campaigns.",
     backToEvents: "Back to Events",
     backToLogos: "Back to Logos",
@@ -358,7 +383,14 @@ const en: typeof es = {
   },
   footer: {
     social: "Follow me",
-    navigation: "Navigation",
+    navigation: "Quick navigation",
+    explore: "Exploration",
+    exploreHint:
+      "Arrow = default cursor. Hand = something clickable.",
+    cursorExpand: "Hand: interact / click",
+    cursorNav: "Arrow: default cursor",
+    graphicSections: "Graphic sections",
+    interfaceSections: "Interface categories",
     contact: "Contact",
     home: "Home",
     graphic: "Graphic Design",
@@ -396,6 +428,10 @@ const en: typeof es = {
       {
         q: "What should I send to get started?",
         a: "Project context, visual references if any, desired timeline, and a contact. That's enough for the next step.",
+      },
+      {
+        q: "How was this site built?",
+        a: "I started from a Figma prototype and brought it into Cursor, where the interactions, motion, and the rest of the product you see here were implemented.",
       },
     ],
   },

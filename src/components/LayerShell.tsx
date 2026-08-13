@@ -21,6 +21,7 @@ import { JsonLdPerson } from "@/components/JsonLd";
 import { HomeLayer } from "@/components/layers/HomeLayer";
 import { GraphicLayer } from "@/components/layers/GraphicLayer";
 import { InterfacesLayer } from "@/components/layers/InterfacesLayer";
+import { LAYER_SLIDE_MS, MOTION_EASE } from "@/lib/motion";
 
 type Props = {
   locale: Locale;
@@ -29,7 +30,7 @@ type Props = {
   children?: ReactNode;
 };
 
-const SLIDE_MS = 420;
+const SLIDE_MS = LAYER_SLIDE_MS;
 const LAYER_COUNT = LAYER_ORDER.length;
 const PANE_PCT = 100 / LAYER_COUNT;
 
@@ -37,7 +38,7 @@ const GRAPHIC_SECTIONS =
   /\/grafico\/(covers|logos|personal|illustration|banners|eventos|manuals)(\/[^/]+)?\/?$/;
 const INTERFACE_SECTIONS =
   /\/interfaces\/(preventas|sistemas-a-medida|apps-mobile|proyectos-personales|system-design)\/?$/;
-const STANDALONE_PAGES = /\/privacidad\/?$/;
+const STANDALONE_PAGES = /\/(privacidad|marcas\/[^/]+)\/?$/;
 
 function isCatalogDetailPath(pathname: string) {
   return GRAPHIC_SECTIONS.test(pathname) || INTERFACE_SECTIONS.test(pathname);
@@ -66,6 +67,11 @@ export function LayerShell({ locale, dict, content, children }: Props) {
 
   useEffect(() => {
     canAnimate.current = true;
+  }, []);
+
+  useEffect(() => {
+    document.documentElement.classList.add("site-cursors");
+    return () => document.documentElement.classList.remove("site-cursors");
   }, []);
 
   const getActiveScroller = useCallback(
@@ -190,7 +196,7 @@ export function LayerShell({ locale, dict, content, children }: Props) {
 
   if (catalogDetail) {
     return (
-      <div className="relative h-dvh w-full overflow-hidden bg-white">
+      <div className="site-cursors relative h-dvh w-full overflow-hidden bg-white">
         <JsonLdPerson
           email={content.settings.email}
           socialLinks={content.socialLinks}
@@ -232,7 +238,7 @@ export function LayerShell({ locale, dict, content, children }: Props) {
 
   return (
     <div
-      className="relative h-dvh w-full overflow-hidden bg-white"
+      className="site-cursors relative h-dvh w-full overflow-hidden bg-white"
       onPointerDown={onPointerDown}
       onPointerUp={onPointerUp}
       onPointerCancel={() => {
@@ -254,7 +260,7 @@ export function LayerShell({ locale, dict, content, children }: Props) {
             : {
                 type: "tween",
                 duration: SLIDE_MS / 1000,
-                ease: [0.32, 0.72, 0, 1],
+                ease: MOTION_EASE,
               }
         }
       >

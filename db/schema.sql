@@ -91,6 +91,7 @@ CREATE TABLE IF NOT EXISTS graphic_items (
   related_src_path VARCHAR(512) NULL,
   related_asset_id VARCHAR(36) NULL,
   gallery_paths JSON NULL,
+  brand_id VARCHAR(64) NULL,
   sort_order INT NOT NULL DEFAULT 0,
   published TINYINT(1) NOT NULL DEFAULT 1,
   INDEX idx_graphic_section_order (section, sort_order)
@@ -103,6 +104,7 @@ CREATE TABLE IF NOT EXISTS brand_manuals (
   title JSON NOT NULL,
   year VARCHAR(32) NULL,
   meta JSON NULL,
+  brand_id VARCHAR(64) NULL,
   sort_order INT NOT NULL DEFAULT 0,
   published TINYINT(1) NOT NULL DEFAULT 1
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -114,6 +116,12 @@ CREATE TABLE IF NOT EXISTS ui_projects (
   meta JSON NOT NULL,
   images JSON NOT NULL,
   prototype_url VARCHAR(1024) NULL,
+  summary JSON NULL,
+  client VARCHAR(255) NULL,
+  period JSON NULL,
+  duration JSON NULL,
+  cta_kind VARCHAR(32) NULL,
+  brand_id VARCHAR(64) NULL,
   sort_order INT NOT NULL DEFAULT 0,
   published TINYINT(1) NOT NULL DEFAULT 1,
   INDEX idx_ui_category_order (category, sort_order)

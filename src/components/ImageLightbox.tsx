@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import { X } from "lucide-react";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
+import { MOTION_EASE } from "@/lib/motion";
 
 type Props = {
   src: string | null;
@@ -64,7 +65,7 @@ export function ImageLightbox({
           initial={reduceMotion ? false : { opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
-          transition={{ duration: 0.22, ease: [0.32, 0.72, 0, 1] }}
+          transition={{ duration: 0.26, ease: MOTION_EASE }}
         >
           <button
             type="button"
@@ -84,7 +85,7 @@ export function ImageLightbox({
             }
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.98, y: 6 }}
-            transition={{ duration: 0.3, ease: [0.32, 0.72, 0, 1] }}
+            transition={{ duration: 0.34, ease: MOTION_EASE }}
             onClick={(e) => e.stopPropagation()}
           >
             <button

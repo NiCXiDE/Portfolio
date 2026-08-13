@@ -26,6 +26,7 @@ import {
   ensureVectorTag,
   isVectorRecolorPath,
 } from "@/lib/graphic-constants";
+import type { BrandRef } from "@/lib/brands";
 
 export type GraphicItemDTO = {
   id: string;
@@ -42,6 +43,7 @@ export type GraphicItemDTO = {
   relatedSrcPath: string | null;
   relatedAssetId: string | null;
   galleryPaths: unknown[] | null;
+  brandId: string | null;
   sortOrder: number;
   published: boolean;
   /** Metadatos del asset para heurística de clasificación */
@@ -138,11 +140,13 @@ function GraphicFields({
   section,
   showIdInput,
   library,
+  brands = [],
 }: {
   item?: GraphicItemDTO;
   section: GraphicSection;
   showIdInput?: boolean;
   library?: { id: string; path: string; originalName: string | null }[];
+  brands?: BrandRef[];
 }) {
   const folder = `assets/grafico/${section}`;
   const tagsRef = useRef<HTMLInputElement>(null);
@@ -359,6 +363,26 @@ function GraphicFields({
         />
       )}
 
+      <label className="block">
+        <FieldLabel
+          hint="Vincula esta pieza a una marca/empresa para mostrar trabajo relacionado (sin clonar assets)."
+        >
+          Marca / proyecto
+        </FieldLabel>
+        <select
+          name="brandId"
+          defaultValue={item?.brandId ?? ""}
+          className={selectClass}
+        >
+          <option value="">Sin marca</option>
+          {brands.map((b) => (
+            <option key={b.id} value={b.id}>
+              {b.name} ({b.id})
+            </option>
+          ))}
+        </select>
+      </label>
+
       <div className="flex flex-wrap gap-4 text-sm">
         <label className="block">
           <FieldLabel hint="Cover = recorta. Contain = muestra toda.">
@@ -403,12 +427,14 @@ export function GraphicSectionClient({
   tagSlugs,
   saved,
   library = [],
+  brands = [],
 }: {
   section: GraphicSection;
   items: GraphicItemDTO[];
   tagSlugs: string[];
   saved?: string;
   library?: { id: string; path: string; originalName: string | null }[];
+  brands?: BrandRef[];
 }) {
   return (
     <div>
@@ -440,7 +466,12 @@ export function GraphicSectionClient({
           <WithGraphicPreview>
             <form action={saveGraphicItem} className="space-y-4">
               <input type="hidden" name="section" value={section} />
-              <GraphicFields section={section} showIdInput library={library} />
+              <GraphicFields
+                section={section}
+                showIdInput
+                library={library}
+                brands={brands}
+              />
               <button
                 type="submit"
                 className="inline-flex items-center gap-1.5 bg-ink px-3 py-2 text-sm text-sky-pale"
@@ -475,7 +506,12 @@ export function GraphicSectionClient({
                 <input type="hidden" name="section" value={section} />
                 <input type="hidden" name="id" value={item.id} />
                 <p className="text-xs text-ink/45">ID: {item.id}</p>
-                <GraphicFields item={item} section={section} library={library} />
+                <GraphicFields
+                  item={item}
+                  section={section}
+                  library={library}
+                  brands={brands}
+                />
                 <button
                   type="submit"
                   className="inline-flex items-center gap-1.5 bg-ink px-3 py-2 text-sm text-sky-pale"

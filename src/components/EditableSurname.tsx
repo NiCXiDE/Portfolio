@@ -129,7 +129,7 @@ export function EditableSurname() {
       >
         {layoutText || "\u00A0"}
       </span>
-      <div className="surname-box absolute left-0 top-0 inline-flex min-w-full items-end whitespace-nowrap border border-blue-select px-1.5 pb-1.5 pt-1 sm:px-2.5 sm:pb-2 sm:pt-1.5">
+      <div className="surname-box cursor-text absolute left-0 top-0 inline-flex min-w-full items-end whitespace-nowrap border border-blue-select px-1.5 pb-1.5 pt-1 sm:px-2.5 sm:pb-2 sm:pt-1.5">
         <span
           ref={ref}
           role="textbox"
@@ -138,7 +138,7 @@ export function EditableSurname() {
           suppressContentEditableWarning
           spellCheck={false}
           aria-label="Apellido editable"
-          className="surname-edit name-hero-text block whitespace-nowrap text-ink outline-none"
+          className="surname-edit name-hero-text block cursor-text whitespace-nowrap text-ink outline-none"
           onInput={(e) => {
             if (typing.current) return;
             const el = e.currentTarget;

@@ -1,25 +1,30 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import Link from "next/link";
 import type {
   MarqueeDisplayMode,
   MarqueeDirection,
   MarqueeSectionConfig,
 } from "@/lib/home-layout";
 import type { NamedListItemContent } from "@/lib/content";
+import type { Locale } from "@/i18n/config";
 
 type Props = {
   items: NamedListItemContent[];
   config: MarqueeSectionConfig;
+  locale: Locale;
   className?: string;
 };
 
 function MarqueeItem({
   item,
   displayMode,
+  locale,
 }: {
   item: NamedListItemContent;
   displayMode: MarqueeDisplayMode;
+  locale: Locale;
 }) {
   const showLogo =
     (displayMode === "logo" || displayMode === "both") && Boolean(item.logo);
@@ -28,8 +33,8 @@ function MarqueeItem({
     displayMode === "both" ||
     (displayMode === "logo" && !item.logo);
 
-  if (displayMode === "both" && showLogo) {
-    return (
+  const body =
+    displayMode === "both" && showLogo ? (
       <span className="marquee-item marquee-item--stack">
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img src={item.logo!} alt="" className="marquee-logo" />
@@ -37,22 +42,32 @@ function MarqueeItem({
           <span className="marquee-label">{item.label}</span>
         ) : null}
       </span>
+    ) : (
+      <span className="marquee-item">
+        {showLogo ? (
+          // eslint-disable-next-line @next/next/no-img-element
+          <img
+            src={item.logo!}
+            alt={showName ? "" : item.label}
+            className="marquee-logo"
+          />
+        ) : null}
+        {showName ? <span className="marquee-label">{item.label}</span> : null}
+      </span>
+    );
+
+  if (item.hubHref) {
+    return (
+      <Link
+        href={`/${locale}${item.hubHref}`}
+        className="marquee-link cursor-nav interactive-ink"
+      >
+        {body}
+      </Link>
     );
   }
 
-  return (
-    <span className="marquee-item">
-      {showLogo ? (
-        // eslint-disable-next-line @next/next/no-img-element
-        <img
-          src={item.logo!}
-          alt={showName ? "" : item.label}
-          className="marquee-logo"
-        />
-      ) : null}
-      {showName ? <span className="marquee-label">{item.label}</span> : null}
-    </span>
-  );
+  return body;
 }
 
 function MarqueeTrack({
@@ -60,11 +75,13 @@ function MarqueeTrack({
   displayMode,
   direction,
   speed,
+  locale,
 }: {
   items: NamedListItemContent[];
   displayMode: MarqueeDisplayMode;
   direction: MarqueeDirection;
   speed: number;
+  locale: Locale;
 }) {
   const trackRef = useRef<HTMLDivElement>(null);
   const [duration, setDuration] = useState(40);
@@ -90,7 +107,7 @@ function MarqueeTrack({
   const loop = [...items, ...items];
 
   return (
-    <div className="marquee-viewport" data-direction={direction}>
+    <div className="marquee-viewport cursor-grab" data-direction={direction}>
       <div
         ref={trackRef}
         className="marquee-track"
@@ -103,6 +120,7 @@ function MarqueeTrack({
             key={`${item.id}-${i}`}
             item={item}
             displayMode={displayMode}
+            locale={locale}
           />
         ))}
       </div>
@@ -120,7 +138,12 @@ function splitLines(items: NamedListItemContent[], lines: number) {
   return buckets;
 }
 
-export function InfiniteMarquee({ items, config, className = "" }: Props) {
+export function InfiniteMarquee({
+  items,
+  config,
+  locale,
+  className = "",
+}: Props) {
   if (!items.length) return null;
 
   const lines = splitLines(items, config.lines);
@@ -134,6 +157,7 @@ export function InfiniteMarquee({ items, config, className = "" }: Props) {
           displayMode={config.displayMode}
           direction={config.direction}
           speed={config.speed}
+          locale={locale}
         />
       ))}
     </div>

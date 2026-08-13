@@ -60,6 +60,8 @@ export type NamedListItemContent = {
   id: number;
   label: string;
   logo: string | null;
+  brandId?: string | null;
+  hubHref?: string | null;
 };
 
 export type TestimonialContent = {
@@ -91,6 +93,7 @@ export type GraphicItemContent = {
   fit?: "cover" | "contain";
   relatedSrc?: string | null;
   gallery?: GraphicGalleryItem[];
+  brandId?: string | null;
 };
 
 export type BrandManualContent = {
@@ -100,6 +103,7 @@ export type BrandManualContent = {
   title: LocalizedString;
   year?: string;
   meta?: LocalizedString;
+  brandId?: string | null;
 };
 
 export type UiProjectContent = {
@@ -119,6 +123,7 @@ export type UiProjectContent = {
   period: LocalizedString | null;
   duration: LocalizedString | null;
   ctaKind: "prototype" | "visitor" | "live" | null;
+  brandId?: string | null;
 };
 
 export type UiListItemContent = {
@@ -210,6 +215,8 @@ function mapGraphic(
     }));
   }
 
+  if (row.brandId) item.brandId = row.brandId;
+
   if (section === "covers" || section === "pending") {
     if (detail) item.usage = detail;
   } else if (detail) {
@@ -238,8 +245,8 @@ const defaultSettings: SiteSettingsContent = {
   },
   poweredBy: "POWERED BY PUSH",
   carouselIntervalMs: 2000,
-  graphicPreviewLimit: 7,
-  interfacesPreviewLimit: 7,
+  graphicPreviewLimit: 5,
+  interfacesPreviewLimit: 3,
   homeLayout: DEFAULT_HOME_LAYOUT,
 };
 
@@ -247,6 +254,7 @@ function mapNamed(
   kind: NamedListItemRow["kind"],
   named: NamedListItemRow[],
   brandsById: Record<string, BrandRef>,
+  hubBrandIds: Set<string>,
 ) {
   return named
     .filter((n) => n.kind === kind && n.published)
@@ -254,10 +262,16 @@ function mapNamed(
       const brand = n.brandId ? brandsById[n.brandId] : undefined;
       const label = brand?.name || n.label;
       const logoPath = brand?.logo ?? (n.logoPath ? mediaUrl(n.logoPath) : null);
+      const hubHref =
+        n.brandId && hubBrandIds.has(n.brandId)
+          ? `/marcas/${n.brandId}`
+          : null;
       return {
         id: n.id,
         label,
         logo: logoPath,
+        brandId: n.brandId ?? null,
+        hubHref,
       };
     });
 }
@@ -323,6 +337,17 @@ export async function loadPortfolioContent(): Promise<PortfolioContent> {
     }));
   const brandsById = Object.fromEntries(brands.map((b) => [b.id, b]));
 
+  const hubBrandIds = new Set<string>();
+  for (const g of graphics) {
+    if (g.published && g.brandId) hubBrandIds.add(g.brandId);
+  }
+  for (const p of uiProjects) {
+    if (p.published && p.brandId) hubBrandIds.add(p.brandId);
+  }
+  for (const m of manuals) {
+    if (m.published && m.brandId) hubBrandIds.add(m.brandId);
+  }
+
   const settings: SiteSettingsContent = settingsRow
     ? {
         email: settingsRow.email,
@@ -363,9 +388,9 @@ export async function loadPortfolioContent(): Promise<PortfolioContent> {
         src: mediaUrl(icon.srcPath),
         ...(icon.label ? { label: icon.label } : {}),
       })),
-    companies: mapNamed("company", named, brandsById),
-    pastProjects: mapNamed("past_project", named, brandsById),
-    currentProjects: mapNamed("current_project", named, brandsById),
+    companies: mapNamed("company", named, brandsById, hubBrandIds),
+    pastProjects: mapNamed("past_project", named, brandsById, hubBrandIds),
+    currentProjects: mapNamed("current_project", named, brandsById, hubBrandIds),
     testimonials: testimonials
       .filter((row) => !row.hidden)
       .map((row) => {
@@ -404,6 +429,7 @@ export async function loadPortfolioContent(): Promise<PortfolioContent> {
         title: m.title,
         ...(m.year ? { year: m.year } : {}),
         ...(m.meta ? { meta: m.meta } : {}),
+        brandId: m.brandId ?? null,
       })),
     uiProjects: uiProjects
       .filter((p) => p.published)
@@ -422,6 +448,7 @@ export async function loadPortfolioContent(): Promise<PortfolioContent> {
         period: p.period ?? null,
         duration: p.duration ?? null,
         ctaKind: p.ctaKind ?? null,
+        brandId: p.brandId ?? null,
       })),
     uiList: uiList
       .filter((item) => item.published)
@@ -459,3 +486,164 @@ export const GRAPHIC_PUBLIC_SECTIONS: Exclude<GraphicSection, "pending">[] = [
   "banners",
   "eventos",
 ];
+
+export type RelatedGraphicPiece = GraphicItemContent & {
+  section: Exclude<GraphicSection, "pending">;
+};
+
+export type BrandRelated = {
+  graphics: RelatedGraphicPiece[];
+  uiProjects: UiProjectContent[];
+  manuals: BrandManualContent[];
+};
+
+export async function relatedByBrand(
+  brandId: string,
+  opts?: {
+    excludeGraphicId?: string;
+    excludeUiId?: string;
+    excludeManualId?: string;
+  },
+): Promise<BrandRelated> {
+  const ds = await getDataSource();
+  const [graphicRows, uiRows, manualRows] = await Promise.all([
+    ds.getRepository(GraphicItemEntity).find({
+      where: { brandId, published: true },
+      order: { sortOrder: "ASC", id: "ASC" },
+    }),
+    ds.getRepository(UiProjectEntity).find({
+      where: { brandId, published: true },
+      order: { sortOrder: "ASC", id: "ASC" },
+    }),
+    ds.getRepository(BrandManualEntity).find({
+      where: { brandId, published: true },
+      order: { sortOrder: "ASC", id: "ASC" },
+    }),
+  ]);
+
+  const graphics: RelatedGraphicPiece[] = graphicRows
+    .filter(
+      (r) =>
+        r.section !== "pending" &&
+        r.id !== opts?.excludeGraphicId &&
+        GRAPHIC_PUBLIC_SECTIONS.includes(
+          r.section as Exclude<GraphicSection, "pending">,
+        ),
+    )
+    .map((r) => ({
+      ...mapGraphic(r, r.section),
+      section: r.section as Exclude<GraphicSection, "pending">,
+    }));
+
+  const uiProjects: UiProjectContent[] = uiRows
+    .filter((p) => p.id !== opts?.excludeUiId)
+    .map((p) => ({
+      id: p.id,
+      category: p.category,
+      title: p.title,
+      meta: p.meta,
+      images: normalizeUiSlides(p.images).map((slide) => ({
+        src: mediaUrl(slide.src),
+        aspect: slide.aspect,
+      })),
+      prototypeUrl: p.prototypeUrl,
+      summary: p.summary ?? null,
+      client: p.client ?? null,
+      period: p.period ?? null,
+      duration: p.duration ?? null,
+      ctaKind: p.ctaKind ?? null,
+      brandId: p.brandId ?? null,
+    }));
+
+  const manuals: BrandManualContent[] = manualRows
+    .filter((m) => m.id !== opts?.excludeManualId)
+    .map((m) => ({
+      id: m.id,
+      cover: mediaUrl(m.coverPath),
+      pdf: mediaUrl(m.pdfPath),
+      title: m.title,
+      ...(m.year ? { year: m.year } : {}),
+      ...(m.meta ? { meta: m.meta } : {}),
+      brandId: m.brandId ?? null,
+    }));
+
+  return { graphics, uiProjects, manuals };
+}
+
+export function brandRelatedCount(related: BrandRelated) {
+  return (
+    related.graphics.length +
+    related.uiProjects.length +
+    related.manuals.length
+  );
+}
+
+export function hrefForBrandHub(locale: string, brandId: string) {
+  return `/${locale}/marcas/${brandId}`;
+}
+
+export function hrefForBrandManual(locale: string, manualId: string) {
+  return `/${locale}/grafico/manuals`; // section listing; PDF opens from item
+}
+
+export async function loadBrandById(id: string) {
+  const ds = await getDataSource();
+  const row = await ds.getRepository(BrandEntity).findOne({
+    where: { id, published: true },
+  });
+  if (!row) return null;
+  return {
+    id: row.id,
+    name: row.name,
+    logo: row.logoPath ? mediaUrl(row.logoPath) : null,
+    logoPath: row.logoPath,
+    href: row.href,
+  } satisfies BrandRef;
+}
+
+export async function brandIdsWithRelatedWork(): Promise<Set<string>> {
+  const ds = await getDataSource();
+  const [graphics, ui, manuals] = await Promise.all([
+    ds.getRepository(GraphicItemEntity).find({
+      where: { published: true },
+      select: { brandId: true },
+    }),
+    ds.getRepository(UiProjectEntity).find({
+      where: { published: true },
+      select: { brandId: true },
+    }),
+    ds.getRepository(BrandManualEntity).find({
+      where: { published: true },
+      select: { brandId: true },
+    }),
+  ]);
+  const ids = new Set<string>();
+  for (const row of [...graphics, ...ui, ...manuals]) {
+    if (row.brandId) ids.add(row.brandId);
+  }
+  return ids;
+}
+
+export function hrefForBrandGraphic(
+  locale: string,
+  piece: RelatedGraphicPiece,
+): string {
+  if (piece.section === "logos" && (piece.gallery?.length ?? 0) > 0) {
+    return `/${locale}/grafico/logos/${piece.id}`;
+  }
+  if (piece.section === "eventos") {
+    return `/${locale}/grafico/eventos/${piece.id}`;
+  }
+  return `/${locale}/grafico/${piece.section}`;
+}
+
+export function hrefForBrandUi(locale: string): string {
+  return `/${locale}/interfaces`;
+}
+
+export function titleForBrandGraphic(
+  piece: RelatedGraphicPiece,
+  locale: Locale,
+): string {
+  return piece.title ? t(piece.title, locale) : piece.alt;
+}
