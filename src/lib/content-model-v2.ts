@@ -1,6 +1,6 @@
 import type {
   EntityType,
-  MigrationTargetType,
+  MigrationMapTargetType,
   PieceCategory,
   PieceOrigin,
   ProjectArea,
@@ -66,14 +66,17 @@ export const PIECE_ORIGINS = [
   "other",
 ] as const satisfies readonly PieceOrigin[];
 
-export const MIGRATION_TARGET_TYPES = [
+export const MIGRATION_MAP_TARGET_TYPES = [
   "entity",
   "project",
   "piece",
   "resource",
+] as const satisfies readonly MigrationMapTargetType[];
+
+export const MIGRATION_REPORT_OUTCOMES = [
   "skipped",
   "ambiguous",
-] as const satisfies readonly MigrationTargetType[];
+] as const satisfies readonly ("skipped" | "ambiguous")[];
 
 export function isEntityType(value: string): value is EntityType {
   return (ENTITY_TYPES as readonly string[]).includes(value);
@@ -101,7 +104,13 @@ export function isPieceCategory(value: string): value is PieceCategory {
   return (PIECE_CATEGORIES as readonly string[]).includes(value);
 }
 
-/** Validate optional month (1–12) used on projects. */
+export function isMigrationMapTargetType(
+  value: string,
+): value is MigrationMapTargetType {
+  return (MIGRATION_MAP_TARGET_TYPES as readonly string[]).includes(value);
+}
+
+/** Validate optional month (1-12) used on projects. */
 export function isValidMonth(month: number | null | undefined): boolean {
   if (month == null) return true;
   return Number.isInteger(month) && month >= 1 && month <= 12;

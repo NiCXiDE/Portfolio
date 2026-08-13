@@ -45,13 +45,14 @@ export type PieceCategory =
 
 export type PieceOrigin = "personal" | "client" | "other";
 
-export type MigrationTargetType =
+export type MigrationMapTargetType =
   | "entity"
   | "project"
   | "piece"
-  | "resource"
-  | "skipped"
-  | "ambiguous";
+  | "resource";
+
+/** Outcomes for dry-run reports only — never stored in migration_map. */
+export type MigrationReportOutcome = "skipped" | "ambiguous";
 
 export type PortfolioEntityRow = {
   id: string;
@@ -170,8 +171,8 @@ export type MigrationMapRow = {
   id: string;
   sourceTable: string;
   sourceId: string;
-  targetType: MigrationTargetType;
-  targetId: string | null;
+  targetType: MigrationMapTargetType;
+  targetId: string;
   notes: string | null;
   migratedAt: Date;
 };
@@ -204,7 +205,7 @@ export const PortfolioEntity = new EntitySchema<PortfolioEntityRow>({
     },
     href: { type: String, length: 1024, nullable: true },
     description: { type: "json", nullable: true },
-    visible: { type: Boolean, default: true },
+    visible: { type: Boolean, default: false },
     pageEnabled: { name: "page_enabled", type: Boolean, default: false },
     showOnHome: { name: "show_on_home", type: Boolean, default: false },
     homeOrder: { name: "home_order", type: Number, nullable: true },
@@ -247,7 +248,7 @@ export const ProjectEntity = new EntitySchema<ProjectRow>({
       nullable: true,
     },
     links: { type: "json", nullable: true },
-    published: { type: Boolean, default: true },
+    published: { type: Boolean, default: false },
     featured: { type: Boolean, default: false },
     caseStudyEnabled: {
       name: "case_study_enabled",
@@ -328,7 +329,7 @@ export const PieceEntity = new EntitySchema<PieceRow>({
       length: 64,
       nullable: true,
     },
-    published: { type: Boolean, default: true },
+    published: { type: Boolean, default: false },
     sortOrder: { name: "sort_order", type: Number, default: 0 },
     legacySection: {
       name: "legacy_section",
@@ -409,11 +410,16 @@ export const MigrationMapEntity = new EntitySchema<MigrationMapRow>({
     sourceTable: { name: "source_table", type: String, length: 64 },
     sourceId: { name: "source_id", type: String, length: 128 },
     targetType: { name: "target_type", type: String, length: 32 },
-    targetId: { name: "target_id", type: String, length: 128, nullable: true },
+    targetId: { name: "target_id", type: String, length: 128 },
     notes: { type: "text", nullable: true },
     migratedAt: { name: "migrated_at", type: Date, createDate: true },
   },
-  indices: [{ columns: ["sourceTable", "sourceId"], unique: true }],
+  indices: [
+    {
+      columns: ["sourceTable", "sourceId", "targetType", "targetId"],
+      unique: true,
+    },
+  ],
 });
 
 export const portfolioV2Entities = [

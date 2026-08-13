@@ -217,7 +217,7 @@ CREATE TABLE IF NOT EXISTS entities (
   logo_asset_id VARCHAR(36) NULL,
   href VARCHAR(1024) NULL,
   description JSON NULL,
-  visible TINYINT(1) NOT NULL DEFAULT 1,
+  visible TINYINT(1) NOT NULL DEFAULT 0,
   page_enabled TINYINT(1) NOT NULL DEFAULT 0,
   show_on_home TINYINT(1) NOT NULL DEFAULT 0,
   home_order INT NULL,
@@ -248,7 +248,7 @@ CREATE TABLE IF NOT EXISTS projects (
   cover_path VARCHAR(512) NULL,
   cover_asset_id VARCHAR(36) NULL,
   links JSON NULL,
-  published TINYINT(1) NOT NULL DEFAULT 1,
+  published TINYINT(1) NOT NULL DEFAULT 0,
   featured TINYINT(1) NOT NULL DEFAULT 0,
   case_study_enabled TINYINT(1) NOT NULL DEFAULT 0,
   show_on_home TINYINT(1) NOT NULL DEFAULT 0,
@@ -259,6 +259,10 @@ CREATE TABLE IF NOT EXISTS projects (
   UNIQUE KEY uq_projects_slug (slug),
   INDEX idx_projects_status (status, published, sort_order),
   INDEX idx_projects_home (show_on_home, home_order),
+  CONSTRAINT chk_projects_start_month
+    CHECK (start_month IS NULL OR (start_month >= 1 AND start_month <= 12)),
+  CONSTRAINT chk_projects_end_month
+    CHECK (end_month IS NULL OR (end_month >= 1 AND end_month <= 12)),
   CONSTRAINT fk_projects_cover_asset
     FOREIGN KEY (cover_asset_id) REFERENCES media_assets (id)
     ON DELETE SET NULL
@@ -311,7 +315,7 @@ CREATE TABLE IF NOT EXISTS pieces (
   href VARCHAR(1024) NULL,
   href_label JSON NULL,
   project_id VARCHAR(64) NULL,
-  published TINYINT(1) NOT NULL DEFAULT 1,
+  published TINYINT(1) NOT NULL DEFAULT 0,
   sort_order INT NOT NULL DEFAULT 0,
   legacy_section VARCHAR(32) NULL,
   legacy_gallery JSON NULL,
@@ -338,12 +342,14 @@ CREATE TABLE IF NOT EXISTS piece_resources (
   label JSON NULL,
   sort_order INT NOT NULL DEFAULT 0,
   INDEX idx_piece_resources_piece (piece_id, sort_order),
+  CONSTRAINT chk_piece_resources_media
+    CHECK (media_asset_id IS NOT NULL OR path IS NOT NULL),
   CONSTRAINT fk_piece_resources_piece
     FOREIGN KEY (piece_id) REFERENCES pieces (id)
     ON DELETE CASCADE,
   CONSTRAINT fk_piece_resources_asset
     FOREIGN KEY (media_asset_id) REFERENCES media_assets (id)
-    ON DELETE SET NULL
+    ON DELETE RESTRICT
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 CREATE TABLE IF NOT EXISTS project_resources (
@@ -356,12 +362,14 @@ CREATE TABLE IF NOT EXISTS project_resources (
   label JSON NULL,
   sort_order INT NOT NULL DEFAULT 0,
   INDEX idx_project_resources_project (project_id, sort_order),
+  CONSTRAINT chk_project_resources_media
+    CHECK (media_asset_id IS NOT NULL OR path IS NOT NULL),
   CONSTRAINT fk_project_resources_project
     FOREIGN KEY (project_id) REFERENCES projects (id)
     ON DELETE CASCADE,
   CONSTRAINT fk_project_resources_asset
     FOREIGN KEY (media_asset_id) REFERENCES media_assets (id)
-    ON DELETE SET NULL
+    ON DELETE RESTRICT
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 CREATE TABLE IF NOT EXISTS piece_tags (
@@ -381,10 +389,10 @@ CREATE TABLE IF NOT EXISTS migration_map (
   source_table VARCHAR(64) NOT NULL,
   source_id VARCHAR(128) NOT NULL,
   target_type VARCHAR(32) NOT NULL,
-  target_id VARCHAR(128) NULL,
+  target_id VARCHAR(128) NOT NULL,
   notes TEXT NULL,
   migrated_at DATETIME(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6),
-  UNIQUE KEY uq_migration_map_source (source_table, source_id)
+  UNIQUE KEY uq_migration_map_target (source_table, source_id, target_type, target_id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 ALTER TABLE testimonials

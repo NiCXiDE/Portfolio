@@ -2,7 +2,7 @@ import { config as loadEnv } from "dotenv";
 import { hashSync } from "bcryptjs";
 import { readFileSync } from "node:fs";
 import { resolve } from "node:path";
-import { createDataSource } from "../src/db/data-source";
+import { createDataSource, portfolioLegacyEntities } from "../src/db/data-source";
 import {
   AdminUserEntity,
   AdminAuditLogEntity,
@@ -149,7 +149,7 @@ function seedGraphics(
 }
 
 async function main() {
-  const ds = createDataSource(true);
+  const ds = createDataSource(true, portfolioLegacyEntities);
   await ds.initialize();
 
   console.log("Connected. Synchronizing schema & seeding…");

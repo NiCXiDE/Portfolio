@@ -34,14 +34,18 @@ function connectionConfig() {
 
 async function main() {
   const root = resolve(process.cwd(), "db");
-  const files = ["schema-v2.sql", "schema-v2-fks.sql"];
+  const files = [
+    "schema-v2.sql",
+    "schema-v2-patches.sql",
+    "schema-v2-fks.sql",
+  ];
 
   const conn = await mysql.createConnection(connectionConfig());
   try {
     for (const file of files) {
       const sqlPath = resolve(root, file);
       const sql = readFileSync(sqlPath, "utf8");
-      console.log(`Applying ${file} …`);
+      console.log(`Applying ${file} ...`);
       console.log("--- SQL preview (first 600 chars) ---");
       console.log(sql.slice(0, 600));
       console.log("--- end preview ---\n");
