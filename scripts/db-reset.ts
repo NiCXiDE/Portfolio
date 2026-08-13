@@ -35,7 +35,7 @@ async function main() {
   console.log("[db-reset] complete.");
 }
 
-if (isDirectScriptRun(["db-reset.ts"])) {
+if (isDirectScriptRun(["db-reset.ts"], import.meta.url)) {
   main().catch((err) => {
     console.error(err);
     process.exit(1);

@@ -313,7 +313,7 @@ export async function main() {
   console.log("Content sync complete.");
 }
 
-if (isDirectScriptRun(["sync-content.ts"])) {
+if (isDirectScriptRun(["sync-content.ts"], import.meta.url)) {
   main().catch((err) => {
     console.error(err);
     process.exit(1);

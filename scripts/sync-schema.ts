@@ -17,13 +17,20 @@ export function requireDestructiveDbApproval(scriptName: string): void {
   );
 }
 
-export function isDirectScriptRun(expectedBasenames: string[]): boolean {
+/**
+ * Detect direct CLI entry (tsx scripts/foo.ts).
+ * Pass the caller's `import.meta.url` — not the helper module's.
+ */
+export function isDirectScriptRun(
+  expectedBasenames: string[],
+  callerModuleUrl: string,
+): boolean {
   const entry = process.argv[1];
   if (!entry) return false;
   const base = entry.replace(/\\/g, "/").split("/").pop();
   if (!base || !expectedBasenames.includes(base)) return false;
   try {
-    return import.meta.url === pathToFileURL(resolve(entry)).href;
+    return callerModuleUrl === pathToFileURL(resolve(entry)).href;
   } catch {
     return false;
   }
@@ -38,7 +45,7 @@ async function main() {
   await ds.destroy();
 }
 
-if (isDirectScriptRun(["sync-schema.ts"])) {
+if (isDirectScriptRun(["sync-schema.ts"], import.meta.url)) {
   main().catch((err) => {
     console.error(err);
     process.exit(1);

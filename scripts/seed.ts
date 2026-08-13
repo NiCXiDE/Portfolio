@@ -533,7 +533,7 @@ export async function main() {
   await ds.destroy();
 }
 
-if (isDirectScriptRun(["seed.ts"])) {
+if (isDirectScriptRun(["seed.ts"], import.meta.url)) {
   main().catch((err) => {
     console.error(err);
     process.exit(1);

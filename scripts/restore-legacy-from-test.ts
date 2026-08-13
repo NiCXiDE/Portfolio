@@ -218,7 +218,7 @@ export async function main(): Promise<void> {
   }
 }
 
-if (isDirectScriptRun(["restore-legacy-from-test.ts"])) {
+if (isDirectScriptRun(["restore-legacy-from-test.ts"], import.meta.url)) {
   main().catch((err) => {
     console.error(err);
     process.exit(1);
