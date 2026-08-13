@@ -1,4 +1,8 @@
+import { readFileSync, existsSync } from "node:fs";
+import { resolve } from "node:path";
+import { compareDryRunReports, writeDryRunComparisonReport } from "./migrate-v2/compare-dry-runs";
 import { runContentV2DryRun } from "./migrate-v2/report";
+import type { DryRunReport } from "./migrate-v2/types";
 
 async function main() {
   const args = process.argv.slice(2);
@@ -20,7 +24,30 @@ async function main() {
     process.exit(1);
   }
 
-  await runContentV2DryRun({ compareFixtures });
+  const mysqlReport = await runContentV2DryRun({ compareFixtures });
+
+  if (compareFixtures) {
+    const fixturesJsonPath = resolve(
+      process.cwd(),
+      "reports",
+      "content-v2-dry-run-fixtures.json",
+    );
+    if (!existsSync(fixturesJsonPath)) {
+      console.warn(
+        "[migrate-v2] WARNING: reports/content-v2-dry-run-fixtures.json missing — skipping dry-run classification comparison.",
+      );
+    } else {
+      const fixturesReport = JSON.parse(
+        readFileSync(fixturesJsonPath, "utf8"),
+      ) as DryRunReport;
+      const comparison = compareDryRunReports(fixturesReport, mysqlReport);
+      const { mdPath } = writeDryRunComparisonReport(comparison);
+      console.log(
+        `[migrate-v2] Fixtures vs MySQL dry-run comparison: ${mdPath}`,
+      );
+    }
+  }
+
   console.log("\n--apply was NOT executed.");
 }
 

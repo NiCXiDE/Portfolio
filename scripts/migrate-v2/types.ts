@@ -170,6 +170,7 @@ export type ManualAnalysis = {
 export type DryRunReport = {
   generatedAt: string;
   mode: "dry-run";
+  source: "mysql";
   legacyCounts: Record<string, number>;
   v2CountsBefore: Record<string, number>;
   v2CountsAfter: Record<string, number>;

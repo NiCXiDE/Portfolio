@@ -19,6 +19,10 @@ import {
   countResources,
   enrichEntityWorkCounts,
 } from "./consolidate";
+import {
+  compareLegacySnapshots,
+  writeFixtureDriftReport,
+} from "./compare-fixtures";
 import { loadLegacySnapshot } from "./load-legacy";
 import { fixtureLegacyCounts, loadLegacyFromFixtures } from "./load-fixtures";
 import {
@@ -43,8 +47,8 @@ export function writeDryRunReports(
   outDir = resolve(process.cwd(), "reports"),
 ): { mdPath: string; jsonPath: string } {
   mkdirSync(outDir, { recursive: true });
-  const mdPath = resolve(outDir, "content-v2-dry-run.md");
-  const jsonPath = resolve(outDir, "content-v2-dry-run.json");
+  const mdPath = resolve(outDir, "content-v2-dry-run-mysql.md");
+  const jsonPath = resolve(outDir, "content-v2-dry-run-mysql.json");
 
   writeFileSync(jsonPath, JSON.stringify(report, null, 2), "utf8");
   writeFileSync(mdPath, renderMarkdown(report), "utf8");
@@ -59,6 +63,7 @@ function renderMarkdown(r: DryRunReport): string {
   lines.push("");
   lines.push(`Generado: ${r.generatedAt}`);
   lines.push(`Modo: **${r.mode}** (read-only, sin writes en V2)`);
+  lines.push(`Source: **${r.source}**`);
   lines.push("");
 
   lines.push("## Resumen ejecutivo");
@@ -274,7 +279,8 @@ export async function runContentV2DryRun(options: DryRunOptions = {}): Promise<D
   await ds.initialize();
 
   try {
-    console.log("[migrate-v2] Fase 3A - dry-run (read-only)\n");
+    console.log("[migrate-v2] Fase 3A - dry-run (read-only)");
+    console.log("[migrate-v2] source=mysql\n");
 
     const legacyCountsBefore = await countTables(ds, LEGACY_TABLES);
     const v2CountsBefore = await countTables(ds, V2_TABLES);
@@ -292,6 +298,10 @@ export async function runContentV2DryRun(options: DryRunOptions = {}): Promise<D
 
     if (options.compareFixtures) {
       const fixtureSnapshot = loadLegacyFromFixtures();
+      const driftReport = compareLegacySnapshots(snapshot, fixtureSnapshot);
+      const driftPath = writeFixtureDriftReport(driftReport);
+      console.log(`\n[migrate-v2] DB vs fixtures drift report: ${driftPath}`);
+
       const fixtureCounts = fixtureLegacyCounts(fixtureSnapshot);
       console.log("\nFixture vs DB legacy counts:");
       for (const table of LEGACY_TABLES) {
@@ -381,6 +391,7 @@ export async function runContentV2DryRun(options: DryRunOptions = {}): Promise<D
     const report: DryRunReport = {
       generatedAt: new Date().toISOString(),
       mode: "dry-run",
+      source: "mysql",
       legacyCounts: legacyCountsBefore,
       v2CountsBefore,
       v2CountsAfter,
