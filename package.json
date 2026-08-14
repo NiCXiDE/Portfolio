@@ -12,6 +12,7 @@
     "db:seed": "tsx scripts/seed.ts",
     "db:sync": "tsx scripts/sync-schema.ts",
     "db:apply-v2": "tsx scripts/apply-schema-v2.ts",
+    "db:apply-v2-freeze-3c2": "tsx scripts/apply-schema-v2-freeze-3c2.ts",
     "db:sync-content": "tsx scripts/sync-content.ts",
     "test:v2-helpers": "tsx scripts/test-v2-helpers.ts",
     "test:migrate-v2": "tsx scripts/test-migrate-v2-classifiers.ts",
