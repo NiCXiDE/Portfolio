@@ -1,7 +1,6 @@
 import { slugify } from "../../src/lib/slug";
 import type {
   BrandRow,
-  BrandManualRow,
   GraphicItemRow,
   NamedListItemRow,
   TagRow,

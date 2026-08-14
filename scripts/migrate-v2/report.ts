@@ -1,6 +1,6 @@
 import { config as loadEnv } from "dotenv";
 import { mkdirSync, writeFileSync } from "node:fs";
-import { dirname, resolve } from "node:path";
+import { resolve } from "node:path";
 import { createDataSource, portfolioLegacyEntities } from "../../src/db/data-source";
 import {
   classifyBrandManuals,
