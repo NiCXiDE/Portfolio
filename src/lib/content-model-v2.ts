@@ -4,6 +4,7 @@ import type {
   PieceCategory,
   PieceOrigin,
   ProjectArea,
+  ProjectContext,
   ProjectEntityRelationRole,
   ProjectRole,
   ProjectStatus,
@@ -32,10 +33,18 @@ export const PROJECT_AREAS = [
   "ux-ui",
 ] as const satisfies readonly ProjectArea[];
 
+export const PROJECT_CONTEXTS = [
+  "client-work",
+  "internal-work",
+  "presale",
+  "demo",
+  "personal",
+  "other",
+] as const satisfies readonly ProjectContext[];
+
 export const PROJECT_ROLES = [
   "ux",
   "ui",
-  "ux-ui",
   "graphic-design",
   "branding",
   "visual-direction",
@@ -47,16 +56,17 @@ export const PROJECT_ENTITY_RELATION_ROLES = [
   "client",
   "employer",
   "collaborator",
+  "intermediary",
   "brand-owner",
+  "responsible",
   "other",
 ] as const satisfies readonly ProjectEntityRelationRole[];
 
 export const PIECE_CATEGORIES = [
-  "identity",
-  "illustration",
-  "campaigns",
+  "visual-identity",
+  "illustration-artwork",
+  "campaigns-communication",
   "print",
-  "manual",
   "other",
 ] as const satisfies readonly PieceCategory[];
 
@@ -88,6 +98,10 @@ export function isProjectStatus(value: string): value is ProjectStatus {
 
 export function isProjectArea(value: string): value is ProjectArea {
   return (PROJECT_AREAS as readonly string[]).includes(value);
+}
+
+export function isProjectContext(value: string): value is ProjectContext {
+  return (PROJECT_CONTEXTS as readonly string[]).includes(value);
 }
 
 export function isProjectRole(value: string): value is ProjectRole {

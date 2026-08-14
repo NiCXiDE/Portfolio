@@ -116,3 +116,33 @@ SET @ddl = IF(@chk = 0,
   'ALTER TABLE project_resources ADD CONSTRAINT chk_project_resources_media CHECK (media_asset_id IS NOT NULL OR path IS NOT NULL)',
   'SELECT 1');
 PREPARE stmt FROM @ddl; EXECUTE stmt; DEALLOCATE PREPARE stmt;
+
+-- ---------------------------------------------------------------------------
+-- projects.context (V2 empty at freeze — NOT NULL, no artificial default)
+-- ---------------------------------------------------------------------------
+SET @col_exists = (
+  SELECT COUNT(*)
+  FROM information_schema.COLUMNS
+  WHERE TABLE_SCHEMA = DATABASE()
+    AND TABLE_NAME = 'projects'
+    AND COLUMN_NAME = 'context'
+);
+SET @ddl = IF(
+  @col_exists = 0,
+  'ALTER TABLE projects ADD COLUMN context VARCHAR(32) NOT NULL AFTER type',
+  'SELECT 1'
+);
+PREPARE stmt FROM @ddl; EXECUTE stmt; DEALLOCATE PREPARE stmt;
+
+-- ---------------------------------------------------------------------------
+-- piece_entities (N:M Piece <-> Entity)
+-- ---------------------------------------------------------------------------
+CREATE TABLE IF NOT EXISTS piece_entities (
+  piece_id VARCHAR(128) NOT NULL,
+  entity_id VARCHAR(64) NOT NULL,
+  relation_role VARCHAR(32) NOT NULL,
+  sort_order INT NOT NULL DEFAULT 0,
+  is_primary TINYINT(1) NOT NULL DEFAULT 0,
+  PRIMARY KEY (piece_id, entity_id, relation_role),
+  INDEX idx_piece_entities_entity (entity_id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;

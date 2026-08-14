@@ -46,6 +46,7 @@ CREATE TABLE IF NOT EXISTS projects (
   date_label JSON NULL,
   status VARCHAR(16) NOT NULL DEFAULT 'completed',
   type VARCHAR(64) NULL,
+  context VARCHAR(32) NOT NULL,
   cover_path VARCHAR(512) NULL,
   cover_asset_id VARCHAR(36) NULL,
   links JSON NULL,
@@ -144,6 +145,25 @@ CREATE TABLE IF NOT EXISTS pieces (
   CONSTRAINT fk_pieces_src_asset
     FOREIGN KEY (src_asset_id) REFERENCES media_assets (id)
     ON DELETE SET NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- ---------------------------------------------------------------------------
+-- piece_entities (N:M Piece <-> Entity)
+-- ---------------------------------------------------------------------------
+CREATE TABLE IF NOT EXISTS piece_entities (
+  piece_id VARCHAR(128) NOT NULL,
+  entity_id VARCHAR(64) NOT NULL,
+  relation_role VARCHAR(32) NOT NULL,
+  sort_order INT NOT NULL DEFAULT 0,
+  is_primary TINYINT(1) NOT NULL DEFAULT 0,
+  PRIMARY KEY (piece_id, entity_id, relation_role),
+  INDEX idx_piece_entities_entity (entity_id),
+  CONSTRAINT fk_piece_entities_piece
+    FOREIGN KEY (piece_id) REFERENCES pieces (id)
+    ON DELETE CASCADE,
+  CONSTRAINT fk_piece_entities_entity
+    FOREIGN KEY (entity_id) REFERENCES entities (id)
+    ON DELETE RESTRICT
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- ---------------------------------------------------------------------------

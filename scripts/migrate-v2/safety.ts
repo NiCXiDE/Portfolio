@@ -18,6 +18,7 @@ export const V2_TABLES = [
   "project_roles",
   "project_entities",
   "pieces",
+  "piece_entities",
   "piece_resources",
   "project_resources",
   "piece_tags",
@@ -82,13 +83,13 @@ export function assertLegacyBaseline(counts: TableCounts): void {
       "[safety] Legacy baseline mismatch in MySQL — dry-run aborted.\n" +
         mismatches.map((m) => `  - ${m}`).join("\n") +
         "\nRestore legacy data before running dry-run. " +
-        "Use --compare-fixtures to compare against content/ JSON without using fixtures as input.",
+        "Use --compare-fixtures to compare against content JSON without using fixtures as input.",
     );
   }
 }
 
-export const RESTORATION_EMPTY_TABLES = [
-  "admin_audit_logs",
+export const RESTORE_ITERATION_EMPTY_TABLES = [
+  "admin_audit_log",
   "graphic_items",
   "brand_manuals",
   "ui_projects",

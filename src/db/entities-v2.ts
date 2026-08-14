@@ -17,10 +17,18 @@ export type ProjectStatus = "ongoing" | "completed" | "archived";
 
 export type ProjectArea = "graphic" | "ux-ui";
 
+/** Work context for a project (required). */
+export type ProjectContext =
+  | "client-work"
+  | "internal-work"
+  | "presale"
+  | "demo"
+  | "personal"
+  | "other";
+
 export type ProjectRole =
   | "ux"
   | "ui"
-  | "ux-ui"
   | "graphic-design"
   | "branding"
   | "visual-direction"
@@ -31,16 +39,17 @@ export type ProjectEntityRelationRole =
   | "client"
   | "employer"
   | "collaborator"
+  | "intermediary"
   | "brand-owner"
+  | "responsible"
   | "other";
 
 /** Public-facing piece categories (graphic layer). */
 export type PieceCategory =
-  | "identity"
-  | "illustration"
-  | "campaigns"
+  | "visual-identity"
+  | "illustration-artwork"
+  | "campaigns-communication"
   | "print"
-  | "manual"
   | "other";
 
 export type PieceOrigin = "personal" | "client" | "other";
@@ -86,6 +95,7 @@ export type ProjectRow = {
   dateLabel: LocalizedJson | null;
   status: ProjectStatus;
   type: string | null;
+  context: ProjectContext;
   coverPath: string | null;
   coverAssetId: string | null;
   links: Record<string, unknown>[] | null;
@@ -113,6 +123,14 @@ export type ProjectEntityRow = {
   projectId: string;
   entityId: string;
   relationRole: ProjectEntityRelationRole;
+};
+
+export type PieceEntityRow = {
+  pieceId: string;
+  entityId: string;
+  relationRole: ProjectEntityRelationRole;
+  sortOrder: number;
+  isPrimary: boolean;
 };
 
 export type PieceRow = {
@@ -235,6 +253,7 @@ export const ProjectEntity = new EntitySchema<ProjectRow>({
     dateLabel: { name: "date_label", type: "json", nullable: true },
     status: { type: String, length: 16, default: "completed" },
     type: { type: String, length: 64, nullable: true },
+    context: { type: String, length: 32 },
     coverPath: {
       name: "cover_path",
       type: String,
@@ -297,6 +316,24 @@ export const ProjectEntityLinkEntity = new EntitySchema<ProjectEntityRow>({
       length: 32,
       primary: true,
     },
+  },
+  indices: [{ columns: ["entityId"] }],
+});
+
+export const PieceEntityLinkEntity = new EntitySchema<PieceEntityRow>({
+  name: "piece_entities",
+  tableName: "piece_entities",
+  columns: {
+    pieceId: { name: "piece_id", type: String, length: 128, primary: true },
+    entityId: { name: "entity_id", type: String, length: 64, primary: true },
+    relationRole: {
+      name: "relation_role",
+      type: String,
+      length: 32,
+      primary: true,
+    },
+    sortOrder: { name: "sort_order", type: Number, default: 0 },
+    isPrimary: { name: "is_primary", type: Boolean, default: false },
   },
   indices: [{ columns: ["entityId"] }],
 });
@@ -429,6 +466,7 @@ export const portfolioV2Entities = [
   ProjectRoleEntity,
   ProjectEntityLinkEntity,
   PieceEntity,
+  PieceEntityLinkEntity,
   PieceResourceEntity,
   ProjectResourceEntity,
   PieceTagEntity,

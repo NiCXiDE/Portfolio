@@ -155,6 +155,28 @@ SET @ddl = IF(@fk_exists = 0,
   'SELECT 1');
 PREPARE stmt FROM @ddl; EXECUTE stmt; DEALLOCATE PREPARE stmt;
 
+-- piece_entities.piece_id -> pieces CASCADE
+SET @fk_exists = (
+  SELECT COUNT(*) FROM information_schema.TABLE_CONSTRAINTS
+  WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = 'piece_entities'
+    AND CONSTRAINT_NAME = 'fk_piece_entities_piece'
+);
+SET @ddl = IF(@fk_exists = 0,
+  'ALTER TABLE piece_entities ADD CONSTRAINT fk_piece_entities_piece FOREIGN KEY (piece_id) REFERENCES pieces (id) ON DELETE CASCADE',
+  'SELECT 1');
+PREPARE stmt FROM @ddl; EXECUTE stmt; DEALLOCATE PREPARE stmt;
+
+-- piece_entities.entity_id -> entities RESTRICT
+SET @fk_exists = (
+  SELECT COUNT(*) FROM information_schema.TABLE_CONSTRAINTS
+  WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = 'piece_entities'
+    AND CONSTRAINT_NAME = 'fk_piece_entities_entity'
+);
+SET @ddl = IF(@fk_exists = 0,
+  'ALTER TABLE piece_entities ADD CONSTRAINT fk_piece_entities_entity FOREIGN KEY (entity_id) REFERENCES entities (id) ON DELETE RESTRICT',
+  'SELECT 1');
+PREPARE stmt FROM @ddl; EXECUTE stmt; DEALLOCATE PREPARE stmt;
+
 -- testimonials.entity_id -> entities SET NULL
 SET @fk_exists = (
   SELECT COUNT(*) FROM information_schema.TABLE_CONSTRAINTS
