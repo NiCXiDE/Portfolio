@@ -1,6 +1,6 @@
 # Content Model V2 — Dry Run Report
 
-Generado: 2026-08-14T02:10:19.526Z
+Generado: 2026-08-14T06:39:33.353Z
 Modo: **dry-run** (read-only, sin writes en V2)
 Source: **mysql**
 
@@ -8,14 +8,16 @@ Source: **mysql**
 
 | Métrica | Valor |
 |---------|------:|
-| Proposed Entities | 7 |
-| Proposed Projects | 16 |
-| Standalone Pieces | 44 |
-| Pieces en Projects | 17 |
+| Proposed Entities | 33 |
+| Proposed Projects | 31 |
+| Standalone Pieces | 30 |
+| Pieces en Projects | 18 |
+| Proposed piece_entities | 17 |
 | ProjectResources | 25 |
-| PieceResources | 63 |
+| PieceResources | 62 |
+| Lanes AUTO / MANUAL / DEFERRED / DISCARDED | 0 / 112 / 13 / 10 |
 | Confianza alta / media / baja | 30 / 38 / 0 |
-| Decisiones humanas | 73 |
+| Notas del manifesto (aplicadas) | 142 |
 
 ## Verificación de seguridad
 
@@ -43,6 +45,7 @@ project_areas: 0 → 0
 project_roles: 0 → 0
 project_entities: 0 → 0
 pieces: 0 → 0
+piece_entities: 0 → 0
 piece_resources: 0 → 0
 project_resources: 0 → 0
 piece_tags: 0 → 0
@@ -55,7 +58,7 @@ migration_map: 0 → 0
 - type: **company** (known)
 - slug: `push-software`
 - relaciones legacy: 2
-- pageEnabled sugerido: sí — Tiene logo, URL y múltiples relaciones legacy.
+- pageEnabled sugerido: sí — Decisión humana (pageEnabled=true).
 - confianza: alta
 - decisión humana: no
 
@@ -63,39 +66,15 @@ migration_map: 0 → 0
 - type: **company** (known)
 - slug: `aicore-it-specialists`
 - relaciones legacy: 2
-- pageEnabled sugerido: sí — Tiene logo, URL y múltiples relaciones legacy. 8 projects propuestos.
+- pageEnabled sugerido: sí — Decisión humana (pageEnabled=true).
 - confianza: alta
 - decisión humana: no
-
-### Lúdica Tech (`ludica`)
-- type: **company** (inferred)
-- slug: `ludica-tech`
-- relaciones legacy: 2
-- pageEnabled sugerido: sí — Tiene logo, URL y múltiples relaciones legacy.
-- confianza: media
-- decisión humana: sí
-
-### Órbita LΔB (`orbita-l-b`)
-- type: **company** (inferred)
-- slug: `orbita-l-b`
-- relaciones legacy: 2
-- pageEnabled sugerido: sí — Tiene logo, URL y múltiples relaciones legacy.
-- confianza: media
-- decisión humana: sí
-
-### APSMM (`apsmm`)
-- type: **association** (inferred)
-- slug: `apsmm`
-- relaciones legacy: 2
-- pageEnabled sugerido: no — pageEnabled debe decidirse manualmente; entidad puede existir sin página pública.
-- confianza: media
-- decisión humana: sí
 
 ### Clúster de Innovación Tecnológica Formosa (`citf`)
 - type: **institution** (known)
 - slug: `cluster-de-innovacion-tecnologica-formosa`
 - relaciones legacy: 7
-- pageEnabled sugerido: no — pageEnabled debe decidirse manualmente; entidad puede existir sin página pública.
+- pageEnabled sugerido: sí — Decisión humana (pageEnabled=true).
 - confianza: alta
 - decisión humana: no
 
@@ -103,7 +82,239 @@ migration_map: 0 → 0
 - type: **personal_brand** (known)
 - slug: `seyier`
 - relaciones legacy: 1
-- pageEnabled sugerido: no — pageEnabled debe decidirse manualmente; entidad puede existir sin página pública.
+- pageEnabled sugerido: no — Decisión humana (pageEnabled=false).
+- confianza: alta
+- decisión humana: no
+
+### APSMM (`apsmm`)
+- type: **association** (known)
+- slug: `apsmm`
+- relaciones legacy: 2
+- pageEnabled sugerido: no — Decisión humana (pageEnabled=false).
+- confianza: alta
+- decisión humana: no
+
+### Lúdica Tech (`ludica`)
+- type: **company** (known)
+- slug: `ludica-tech`
+- relaciones legacy: 2
+- pageEnabled sugerido: no — Decisión humana (pageEnabled=false).
+- confianza: alta
+- decisión humana: no
+
+### Órbita LΔB (`orbita-l-b`)
+- type: **company** (known)
+- slug: `orbita-l-b`
+- relaciones legacy: 2
+- pageEnabled sugerido: no — Decisión humana (pageEnabled=false).
+- confianza: alta
+- decisión humana: no
+
+### ADAPTO PAY (`adapto-pay`)
+- type: **company** (known)
+- slug: `adapto-pay`
+- relaciones legacy: 0
+- pageEnabled sugerido: no — Decisión humana (pageEnabled=false).
+- confianza: alta
+- decisión humana: no
+
+### CLEARWATER (`clearwater`)
+- type: **company** (known)
+- slug: `clearwater`
+- relaciones legacy: 0
+- pageEnabled sugerido: no — Decisión humana (pageEnabled=false).
+- confianza: alta
+- decisión humana: no
+
+### MIKROBIOL (`mikrobiol`)
+- type: **company** (known)
+- slug: `mikrobiol`
+- relaciones legacy: 0
+- pageEnabled sugerido: no — Decisión humana (pageEnabled=false).
+- confianza: alta
+- decisión humana: no
+
+### CASIBA (`casiba`)
+- type: **company** (known)
+- slug: `casiba`
+- relaciones legacy: 0
+- pageEnabled sugerido: no — Decisión humana (pageEnabled=false).
+- confianza: alta
+- decisión humana: no
+
+### PROXI (`proxi`)
+- type: **company** (known)
+- slug: `proxi`
+- relaciones legacy: 0
+- pageEnabled sugerido: no — Decisión humana (pageEnabled=false).
+- confianza: alta
+- decisión humana: no
+
+### Omnigroup (`omnigroup`)
+- type: **company** (known)
+- slug: `omnigroup`
+- relaciones legacy: 0
+- pageEnabled sugerido: no — Decisión humana (pageEnabled=false).
+- confianza: alta
+- decisión humana: no
+
+### Savil (`savil`)
+- type: **company** (known)
+- slug: `savil`
+- relaciones legacy: 0
+- pageEnabled sugerido: no — Decisión humana (pageEnabled=false).
+- confianza: alta
+- decisión humana: no
+
+### Cliente confidencial Inventariado (`confidential-inventariado-client`)
+- type: **other** (known)
+- slug: `cliente-confidencial-inventariado`
+- relaciones legacy: 0
+- pageEnabled sugerido: no — Decisión humana (pageEnabled=false).
+- confianza: alta
+- decisión humana: no
+
+### Cliente confidencial AML (`confidential-aml-client`)
+- type: **other** (known)
+- slug: `cliente-confidencial-aml`
+- relaciones legacy: 0
+- pageEnabled sugerido: no — Decisión humana (pageEnabled=false).
+- confianza: alta
+- decisión humana: no
+
+### Cliente privado Asesor Financiero (`confidential-asesor-client`)
+- type: **person** (known)
+- slug: `cliente-privado-asesor-financiero`
+- relaciones legacy: 0
+- pageEnabled sugerido: no — Decisión humana (pageEnabled=false).
+- confianza: alta
+- decisión humana: no
+
+### Cliente privado Sessions (`confidential-sessions-client`)
+- type: **other** (known)
+- slug: `cliente-privado-sessions`
+- relaciones legacy: 0
+- pageEnabled sugerido: no — Decisión humana (pageEnabled=false).
+- confianza: alta
+- decisión humana: no
+
+### Cliente confidencial Logística (`confidential-logistics-client`)
+- type: **other** (known)
+- slug: `cliente-confidencial-logistica`
+- relaciones legacy: 0
+- pageEnabled sugerido: no — Decisión humana (pageEnabled=false).
+- confianza: alta
+- decisión humana: no
+
+### Futulab (`futulab`)
+- type: **company** (known)
+- slug: `futulab`
+- relaciones legacy: 0
+- pageEnabled sugerido: no — Decisión humana (pageEnabled=false).
+- confianza: alta
+- decisión humana: no
+
+### Summit Holding (`summit-holding`)
+- type: **other** (known)
+- slug: `summit-holding`
+- relaciones legacy: 0
+- pageEnabled sugerido: no — Decisión humana (pageEnabled=false).
+- confianza: alta
+- decisión humana: no
+
+### Magic Cell (`magic-cell`)
+- type: **company** (known)
+- slug: `magic-cell`
+- relaciones legacy: 0
+- pageEnabled sugerido: no — Decisión humana (pageEnabled=false).
+- confianza: alta
+- decisión humana: no
+
+### Brigado Crew (`brigado-crew`)
+- type: **other** (known)
+- slug: `brigado-crew`
+- relaciones legacy: 0
+- pageEnabled sugerido: no — Decisión humana (pageEnabled=false).
+- confianza: alta
+- decisión humana: no
+
+### Templeton & Mathews (`templeton-mathews`)
+- type: **company** (known)
+- slug: `templeton-mathews`
+- relaciones legacy: 0
+- pageEnabled sugerido: no — Decisión humana (pageEnabled=false).
+- confianza: alta
+- decisión humana: no
+
+### Repuestos Carlitos (`repuestos-carlitos`)
+- type: **company** (known)
+- slug: `repuestos-carlitos`
+- relaciones legacy: 0
+- pageEnabled sugerido: no — Decisión humana (pageEnabled=false).
+- confianza: alta
+- decisión humana: no
+
+### La Estación (`la-estacion`)
+- type: **company** (known)
+- slug: `la-estacion`
+- relaciones legacy: 0
+- pageEnabled sugerido: no — Decisión humana (pageEnabled=false).
+- confianza: alta
+- decisión humana: no
+
+### EPICA (`epica`)
+- type: **company** (known)
+- slug: `epica`
+- relaciones legacy: 0
+- pageEnabled sugerido: no — Decisión humana (pageEnabled=false).
+- confianza: alta
+- decisión humana: no
+
+### Gobierno de Formosa (`gobierno-formosa`)
+- type: **institution** (known)
+- slug: `gobierno-de-formosa`
+- relaciones legacy: 0
+- pageEnabled sugerido: no — Decisión humana (pageEnabled=false).
+- confianza: alta
+- decisión humana: no
+
+### Instituto de Asistencia Social (`instituto-asistencia-social`)
+- type: **institution** (known)
+- slug: `instituto-de-asistencia-social`
+- relaciones legacy: 0
+- pageEnabled sugerido: no — Decisión humana (pageEnabled=false).
+- confianza: alta
+- decisión humana: no
+
+### Red de Clubes Digitales (`red-clubes-digitales`)
+- type: **organization** (known)
+- slug: `red-de-clubes-digitales`
+- relaciones legacy: 0
+- pageEnabled sugerido: no — Decisión humana (pageEnabled=false).
+- confianza: alta
+- decisión humana: no
+
+### Secretaría de Ciencia y Tecnología de Formosa (`secretaria-cyt-formosa`)
+- type: **institution** (known)
+- slug: `secretaria-de-ciencia-y-tecnologia-de-formosa`
+- relaciones legacy: 0
+- pageEnabled sugerido: no — Decisión humana (pageEnabled=false).
+- confianza: alta
+- decisión humana: no
+
+### Subsecretaría de Empleo de Formosa (`subsecretaria-empleo-formosa`)
+- type: **institution** (known)
+- slug: `subsecretaria-de-empleo-de-formosa`
+- relaciones legacy: 0
+- pageEnabled sugerido: no — Decisión humana (pageEnabled=false).
+- confianza: alta
+- decisión humana: no
+
+### Cloronor (`cloronor`)
+- type: **company** (known)
+- slug: `cloronor`
+- relaciones legacy: 0
+- pageEnabled sugerido: no — Decisión humana (pageEnabled=false).
 - confianza: alta
 - decisión humana: no
 
@@ -112,277 +323,537 @@ migration_map: 0 → 0
 ### AICORE IT Specialists — inventariado (`aicore-inventariado`)
 - slug: `aicore-it-specialists-inventariado`
 - areas: ux-ui
-- type: presale
-- status: archived
-- roles: PENDIENTE DE REVISIÓN
-- fuentes: ui_projects:aicore-inventariado
+- type: custom-system
+- status: completed
+- context: presale
+- published: sí
+- lane: MANUAL_DECISION_MIGRATED
+- roles: ux, ui, visual-direction
+- fuentes: ui_projects:sha256:ab7c1f3f5c8db8e3760f874bceaef8e76980f030240c973880b6616ef85a9846
 - pieces: 0 | resources: 1
-- confianza: media
+- confianza: alta
 - entities:
-  - AICORE IT Specialists → **client** (alta)
-- notas: Sin evidencia textual de rol UX/UI/branding/etc.
+  - AICORE IT Specialists → **employer** (alta)
+  - Cliente confidencial Inventariado → **client** (alta)
 
 ### Análisis contra el Lavado de Dinero (`aml-general`)
 - slug: `analisis-contra-el-lavado-de-dinero`
 - areas: ux-ui
 - type: custom-system
 - status: completed
-- roles: PENDIENTE DE REVISIÓN
+- context: client-work
+- published: sí
+- lane: MANUAL_DECISION_MIGRATED
+- roles: ux, ui
 - fuentes: ui_projects:aml-general
 - pieces: 0 | resources: 1
-- confianza: media
+- confianza: alta
 - entities:
-  - AICORE IT Specialists → **client** (alta)
-- notas: Sin evidencia textual de rol UX/UI/branding/etc.
+  - AICORE IT Specialists → **employer** (alta)
+  - Cliente confidencial AML → **client** (alta)
 
 ### Análisis contra el Lavado de Dinero en Casinos Digitales (`aml-casinos`)
 - slug: `analisis-contra-el-lavado-de-dinero-en-casinos-digitales`
 - areas: ux-ui
 - type: custom-system
 - status: completed
-- roles: PENDIENTE DE REVISIÓN
+- context: client-work
+- published: sí
+- lane: MANUAL_DECISION_MIGRATED
+- roles: ux, ui
 - fuentes: ui_projects:aml-casinos
 - pieces: 0 | resources: 1
-- confianza: media
+- confianza: alta
 - entities:
-  - AICORE IT Specialists → **client** (alta)
-- notas: Sin evidencia textual de rol UX/UI/branding/etc.
-
-### Asesor Financiero (`asesor-financiero`)
-- slug: `asesor-financiero`
-- areas: ux-ui
-- type: mobile-app
-- status: completed
-- roles: PENDIENTE DE REVISIÓN
-- fuentes: ui_projects:asesor-financiero
-- pieces: 0 | resources: 3
-- confianza: media
-- notas: Sin evidencia textual de rol UX/UI/branding/etc.
+  - AICORE IT Specialists → **employer** (alta)
+  - Cliente confidencial AML → **client** (alta)
 
 ### Billetera Digital - ADAPTO PAY (`adapto-pay`)
 - slug: `billetera-digital-adapto-pay`
 - areas: ux-ui
-- type: presale
+- type: mobile-app
 - status: completed
-- roles: PENDIENTE DE REVISIÓN
+- context: presale
+- published: sí
+- lane: MANUAL_DECISION_MIGRATED
+- roles: ux, ui
 - fuentes: ui_projects:adapto-pay
 - pieces: 0 | resources: 3
-- confianza: media
-- entities:
-  - ADAPTO PAY → **client** (media)
-  - AICORE IT Specialists → **collaborator** (alta)
-- notas: Sin evidencia textual de rol UX/UI/branding/etc.
-
-### EXPEDICIÓN POLO (`expedicion-polo`)
-- slug: `expedicion-polo`
-- areas: graphic
-- type: event
-- status: completed
-- roles: PENDIENTE DE REVISIÓN
-- fuentes: graphic_items:expedicion-polo
-- pieces: 1 | resources: 0
 - confianza: alta
 - entities:
-  - Clúster de Innovación Tecnológica Formosa → **client** (media)
-- notas: section=eventos → Project.type=event (regla fuerte aprobada).; Galería con 0 recursos → pieces/resources, no Project por galería sola.
+  - ADAPTO PAY → **client** (alta)
+  - AICORE IT Specialists → **employer** (alta)
 
 ### Generación de Informes para compra e inversión - CLEARWATER (`clearwater`)
 - slug: `generacion-de-informes-para-compra-e-inversion-clearwater`
 - areas: ux-ui
 - type: custom-system
 - status: completed
-- roles: PENDIENTE DE REVISIÓN
+- context: presale
+- published: sí
+- lane: MANUAL_DECISION_MIGRATED
+- roles: ux, ui
 - fuentes: ui_projects:clearwater
 - pieces: 0 | resources: 1
-- confianza: media
-- entities:
-  - CLEARWATER → **client** (media)
-  - AICORE IT Specialists → **collaborator** (alta)
-- notas: Sin evidencia textual de rol UX/UI/branding/etc.
-
-### Juegos Provinciales Tecnológicos (`juegos-provinciales`)
-- slug: `juegos-provinciales-tecnologicos`
-- areas: graphic
-- type: event
-- status: completed
-- roles: PENDIENTE DE REVISIÓN
-- fuentes: graphic_items:juegos-provinciales
-- pieces: 12 | resources: 0
 - confianza: alta
 - entities:
-  - Gobierno de Formosa → **client** (media)
-- notas: section=eventos → Project.type=event (regla fuerte aprobada).; Galería con 11 recursos → pieces/resources, no Project por galería sola.
+  - CLEARWATER → **client** (alta)
+  - AICORE IT Specialists → **employer** (alta)
 
-### Omnigroup — backoffice y tótem (`omnigroup`)
-- slug: `omnigroup-backoffice-y-totem`
+### Tienda de Insumos Medicinales - MIKROBIOL (`mikrobiol`)
+- slug: `tienda-de-insumos-medicinales-mikrobiol`
 - areas: ux-ui
-- type: presale
-- status: archived
-- roles: PENDIENTE DE REVISIÓN
-- fuentes: ui_projects:omnigroup
-- pieces: 0 | resources: 6
-- confianza: media
-- entities:
-  - Omnigroup → **client** (media)
-- notas: Sin evidencia textual de rol UX/UI/branding/etc.
-
-### Plataforma integral de ventas y pedidos B2B - PROXI (`proxi`)
-- slug: `plataforma-integral-de-ventas-y-pedidos-b2b-proxi`
-- areas: ux-ui
-- type: custom-system
+- type: web-app
 - status: completed
-- roles: PENDIENTE DE REVISIÓN
-- fuentes: ui_projects:proxi
-- pieces: 0 | resources: 0
-- confianza: media
-- entities:
-  - PROXI → **client** (media)
-  - AICORE IT Specialists → **collaborator** (alta)
-- notas: Sin evidencia textual de rol UX/UI/branding/etc.
-
-### Savil (`savil`)
-- slug: `savil`
-- areas: ux-ui
-- type: mobile-app
-- status: completed
-- roles: PENDIENTE DE REVISIÓN
-- fuentes: ui_projects:savil
-- pieces: 0 | resources: 3
-- confianza: media
-- entities:
-  - Savil → **client** (media)
-- notas: Sin evidencia textual de rol UX/UI/branding/etc.
-
-### Seyier — identidad visual (`seyier-visual-identity`)
-- slug: `seyier-identidad-visual`
-- areas: graphic
-- type: visual-identity
-- status: completed
-- roles: PENDIENTE DE REVISIÓN
-- fuentes: graphic_items:seyier
-- pieces: 4 | resources: 0
-- confianza: alta
-- entities:
-  - Seyier → **brand-owner** (alta)
-- notas: Proyecto de identidad visual completo (logo + pantallas).
-
-### Sistema de gestión — APSMM (`apsmm`)
-- slug: `sistema-de-gestion-apsmm`
-- areas: ux-ui
-- type: custom-system
-- status: completed
-- roles: ui
-- fuentes: ui_projects:apsmm
-- pieces: 0 | resources: 3
-- confianza: alta
-- entities:
-  - APSMM → **client** (alta)
-- notas: Coincidencia "\bui\b|\binterfaz\b|\binterface\b" → ui
-
-### Sistema de gestión de contenido del portfolio (`cms-portfolio`)
-- slug: `sistema-de-gestion-de-contenido-del-portfolio`
-- areas: ux-ui
-- type: personal
-- status: ongoing
-- roles: PENDIENTE DE REVISIÓN
-- fuentes: ui_projects:cms-portfolio
+- context: presale
+- published: sí
+- lane: MANUAL_DECISION_MIGRATED
+- roles: ux, ui
+- fuentes: ui_projects:mikrobiol
 - pieces: 0 | resources: 1
-- confianza: media
-- notas: Sin evidencia textual de rol UX/UI/branding/etc.
+- confianza: alta
+- entities:
+  - MIKROBIOL → **client** (alta)
+  - AICORE IT Specialists → **employer** (alta)
 
 ### Sistema de Gestión de Unidades de Tratamiento de Aire - CASIBA (`casiba`)
 - slug: `sistema-de-gestion-de-unidades-de-tratamiento-de-aire-casiba`
 - areas: ux-ui
 - type: custom-system
 - status: completed
-- roles: PENDIENTE DE REVISIÓN
+- context: presale
+- published: sí
+- lane: MANUAL_DECISION_MIGRATED
+- roles: ux, ui
 - fuentes: ui_projects:casiba
 - pieces: 0 | resources: 1
-- confianza: media
+- confianza: alta
 - entities:
-  - CASIBA → **client** (media)
-  - AICORE IT Specialists → **collaborator** (alta)
-- notas: Sin evidencia textual de rol UX/UI/branding/etc.
+  - CASIBA → **client** (alta)
+  - AICORE IT Specialists → **employer** (alta)
 
-### Tienda de Insumos Medicinales - MIKROBIOL (`mikrobiol`)
-- slug: `tienda-de-insumos-medicinales-mikrobiol`
+### Plataforma integral de ventas y pedidos B2B - PROXI (`proxi`)
+- slug: `plataforma-integral-de-ventas-y-pedidos-b2b-proxi`
 - areas: ux-ui
 - type: custom-system
 - status: completed
-- roles: PENDIENTE DE REVISIÓN
-- fuentes: ui_projects:mikrobiol
-- pieces: 0 | resources: 1
-- confianza: media
+- context: presale
+- published: no
+- lane: MANUAL_DECISION_MIGRATED
+- roles: ux, ui
+- fuentes: ui_projects:proxi
+- pieces: 0 | resources: 0
+- confianza: alta
 - entities:
-  - MIKROBIOL → **client** (media)
-  - AICORE IT Specialists → **collaborator** (alta)
-- notas: Sin evidencia textual de rol UX/UI/branding/etc.
+  - PROXI → **client** (alta)
+  - AICORE IT Specialists → **employer** (alta)
+
+### Sistema de gestión — APSMM (`apsmm`)
+- slug: `sistema-de-gestion-apsmm`
+- areas: ux-ui, graphic
+- type: custom-system
+- status: completed
+- context: presale
+- published: sí
+- lane: MANUAL_DECISION_MIGRATED
+- roles: ux, ui, graphic-design
+- fuentes: ui_projects:apsmm, graphic_items:apsmm
+- pieces: 1 | resources: 3
+- confianza: alta
+- entities:
+  - APSMM → **client** (alta)
+  - PUSH Software → **employer** (alta)
+
+### Omnigroup — backoffice y tótem (`omnigroup`)
+- slug: `omnigroup-backoffice-y-totem`
+- areas: ux-ui
+- type: custom-system
+- status: completed
+- context: presale
+- published: sí
+- lane: MANUAL_DECISION_MIGRATED
+- roles: ux, ui
+- fuentes: ui_projects:omnigroup
+- pieces: 0 | resources: 6
+- confianza: alta
+- entities:
+  - Omnigroup → **client** (alta)
+  - AICORE IT Specialists → **employer** (alta)
+
+### Savil (`savil`)
+- slug: `savil`
+- areas: ux-ui
+- type: mobile-app
+- status: completed
+- context: presale
+- published: sí
+- lane: MANUAL_DECISION_MIGRATED
+- roles: ux, ui
+- fuentes: ui_projects:savil
+- pieces: 0 | resources: 3
+- confianza: alta
+- entities:
+  - Savil → **client** (alta)
+
+### Asesor Financiero (`asesor-financiero`)
+- slug: `asesor-financiero`
+- areas: ux-ui
+- type: mobile-app
+- status: completed
+- context: presale
+- published: sí
+- lane: MANUAL_DECISION_MIGRATED
+- roles: ux, ui
+- fuentes: ui_projects:sha256:904f5aa089bb1e02e8400f56db2437ef53d331dee115a391d144839aa77c202e
+- pieces: 0 | resources: 3
+- confianza: alta
+- entities:
+  - Cliente privado Asesor Financiero → **client** (alta)
+
+### Sistema de gestión de contenido del portfolio (`cms-portfolio`)
+- slug: `sistema-de-gestion-de-contenido-del-portfolio`
+- areas: ux-ui
+- type: custom-system
+- status: ongoing
+- context: personal
+- published: sí
+- lane: MANUAL_DECISION_MIGRATED
+- roles: ux, ui
+- fuentes: ui_projects:cms-portfolio
+- pieces: 0 | resources: 1
+- confianza: alta
+
+### EXPEDICIÓN POLO (`expedicion-polo`)
+- slug: `expedicion-polo`
+- areas: graphic
+- type: event
+- status: completed
+- context: client-work
+- published: sí
+- lane: MANUAL_DECISION_MIGRATED
+- roles: graphic-design, visual-direction
+- fuentes: graphic_items:expedicion-polo
+- pieces: 1 | resources: 0
+- confianza: alta
+- entities:
+  - Clúster de Innovación Tecnológica Formosa → **responsible** (alta)
+
+### Juegos Provinciales Tecnológicos (`juegos-provinciales`)
+- slug: `juegos-provinciales-tecnologicos`
+- areas: graphic
+- type: event
+- status: completed
+- context: client-work
+- published: sí
+- lane: MANUAL_DECISION_MIGRATED
+- roles: graphic-design, visual-direction
+- fuentes: graphic_items:juegos-provinciales
+- pieces: 1 | resources: 0
+- confianza: alta
+- entities:
+  - Gobierno de Formosa → **client** (alta)
+
+### Identidad visual CITF 2025 (`citf-identity-2025`)
+- slug: `identidad-visual-citf-2025`
+- areas: graphic
+- type: branding
+- status: completed
+- context: client-work
+- published: sí
+- lane: MANUAL_DECISION_MIGRATED
+- roles: branding, graphic-design, visual-direction
+- fuentes: graphic_items:itf, graphic_items:banner-cluster, brand_manuals:citf
+- pieces: 2 | resources: 0
+- confianza: alta
+- entities:
+  - Clúster de Innovación Tecnológica Formosa → **brand-owner** (alta)
+
+### Identidad visual Seyier (`seyier-visual-identity`)
+- slug: `identidad-visual-seyier`
+- areas: graphic
+- type: branding
+- status: completed
+- context: other
+- published: sí
+- lane: MANUAL_DECISION_MIGRATED
+- roles: branding, graphic-design, visual-direction
+- fuentes: graphic_items:seyier
+- pieces: 1 | resources: 0
+- confianza: alta
+- entities:
+  - Seyier → **brand-owner** (alta)
+
+### Identidad visual PUSH (`push-visual-identity`)
+- slug: `identidad-visual-push`
+- areas: graphic
+- type: branding
+- status: ongoing
+- context: internal-work
+- published: sí
+- lane: MANUAL_DECISION_MIGRATED
+- roles: branding, graphic-design, visual-direction
+- fuentes: graphic_items:push, graphic_items:banner-push
+- pieces: 2 | resources: 0
+- confianza: alta
+- entities:
+  - PUSH Software → **brand-owner** (alta)
+
+### Identidad visual Futulab (`futulab-visual-identity`)
+- slug: `identidad-visual-futulab`
+- areas: graphic
+- type: branding
+- status: ongoing
+- context: client-work
+- published: sí
+- lane: MANUAL_DECISION_MIGRATED
+- roles: branding, graphic-design, visual-direction
+- fuentes: graphic_items:futulab
+- pieces: 1 | resources: 0
+- confianza: alta
+- entities:
+  - Futulab → **brand-owner** (alta)
+
+### Bass Series (`bass-series`)
+- slug: `bass-series`
+- areas: graphic
+- type: other
+- status: ongoing
+- context: personal
+- published: sí
+- lane: MANUAL_DECISION_MIGRATED
+- roles: graphic-design
+- fuentes: graphic_items:twenty-twenty-two-spotify, graphic_items:twenty-twenty-3, graphic_items:bass2k24, graphic_items:bass2025, graphic_items:bass2026
+- pieces: 5 | resources: 0
+- confianza: alta
+
+### Syllabi (`syllabi`)
+- slug: `syllabi`
+- areas: ux-ui
+- type: web-app
+- status: completed
+- context: other
+- published: no
+- lane: MANUAL_DECISION_MIGRATED
+- roles: ux, ui
+- fuentes: named_list_items:syllabi
+- pieces: 0 | resources: 0
+- confianza: alta
+
+### MICROTIME (`microtime`)
+- slug: `microtime`
+- areas: ux-ui, graphic
+- type: custom-system
+- status: ongoing
+- context: internal-work
+- published: no
+- lane: MANUAL_DECISION_MIGRATED
+- roles: ui, graphic-design
+- fuentes: named_list_items:microtime, graphic_items:microtime
+- pieces: 1 | resources: 0
+- confianza: alta
+- entities:
+  - PUSH Software → **employer** (alta)
+
+### Sessions (`sessions`)
+- slug: `sessions`
+- areas: ux-ui, graphic
+- type: custom-system
+- status: completed
+- context: client-work
+- published: sí
+- lane: MANUAL_DECISION_MIGRATED
+- roles: ux, ui, graphic-design
+- fuentes: named_list_items:sessions, graphic_items:sessions
+- pieces: 1 | resources: 0
+- confianza: alta
+- entities:
+  - PUSH Software → **employer** (alta)
+  - Cliente privado Sessions → **client** (alta)
+
+### Concitar (`concitar`)
+- slug: `concitar`
+- areas: ux-ui, graphic
+- type: web-app
+- status: completed
+- context: internal-work
+- published: sí
+- lane: MANUAL_DECISION_MIGRATED
+- roles: ux, ui, graphic-design
+- fuentes: named_list_items:concitar, graphic_items:concitar
+- pieces: 1 | resources: 0
+- confianza: alta
+- entities:
+  - PUSH Software → **employer** (alta)
+
+### Taily (`taily`)
+- slug: `taily`
+- areas: ux-ui, graphic
+- type: mobile-app
+- status: ongoing
+- context: internal-work
+- published: sí
+- lane: MANUAL_DECISION_MIGRATED
+- roles: ux, ui, graphic-design
+- fuentes: named_list_items:taily, graphic_items:taily
+- pieces: 1 | resources: 0
+- confianza: alta
+- entities:
+  - PUSH Software → **employer** (alta)
+
+### Marketplace de Frutas y Verduras (`simaas-marketplace`)
+- slug: `marketplace-de-frutas-y-verduras`
+- areas: ux-ui
+- type: web-app
+- status: completed
+- context: presale
+- published: sí
+- lane: MANUAL_DECISION_MIGRATED
+- roles: ux, ui
+- fuentes: ui_list_items:simaas
+- pieces: 0 | resources: 0
+- confianza: alta
+- entities:
+  - Órbita LΔB → **intermediary** (alta)
+
+### Sistema de Autodiagnóstico Transformación Digital (`templeton-digital-transformation-assessment`)
+- slug: `sistema-de-autodiagnostico-transformacion-digital`
+- areas: ux-ui
+- type: custom-system
+- status: completed
+- context: presale
+- published: sí
+- lane: MANUAL_DECISION_MIGRATED
+- roles: ux, ui
+- fuentes: ui_list_items:templeton
+- pieces: 0 | resources: 0
+- confianza: alta
+- entities:
+  - Templeton & Mathews → **client** (alta)
+  - AICORE IT Specialists → **intermediary** (alta)
+
+### Sistema de logística (confidencial) (`confidential-logistics-system`)
+- slug: `sistema-de-logistica-confidencial`
+- areas: ux-ui
+- type: custom-system
+- status: completed
+- context: client-work
+- published: no
+- lane: MANUAL_DECISION_MIGRATED
+- roles: 
+- fuentes: ui_projects:sha256:d17f3254ce9d0ac30defba16843c78525410304a91d5df7c634d90a3f6a21b75
+- pieces: 0 | resources: 0
+- confianza: alta
+- entities:
+  - AICORE IT Specialists → **employer** (alta)
+  - Cliente confidencial Logística → **client** (alta)
+
+### Landing & Tienda - Repuestos Carlitos (`repuestos-carlitos`)
+- slug: `landing-tienda-repuestos-carlitos`
+- areas: ux-ui, graphic
+- type: web-app
+- status: completed
+- context: client-work
+- published: sí
+- lane: MANUAL_DECISION_MIGRATED
+- roles: ux, ui, graphic-design
+- fuentes: ui_list_items:carlitos
+- pieces: 0 | resources: 0
+- confianza: alta
+- entities:
+  - PUSH Software → **employer** (alta)
+  - Repuestos Carlitos → **client** (alta)
+
+### Mental Training Tech 24.5 (`mental-training-tech-24-5`)
+- slug: `mental-training-tech-24-5`
+- areas: ux-ui
+- type: mobile-app
+- status: completed
+- context: presale
+- published: sí
+- lane: MANUAL_DECISION_MIGRATED
+- roles: 
+- fuentes: named_list_items:mental-training-tech-24-5
+- pieces: 0 | resources: 0
+- confianza: alta
+- entities:
+  - AICORE IT Specialists → **employer** (alta)
+
+### Cloronor — Plataforma de inversión (`cloronor-trading`)
+- slug: `cloronor-plataforma-de-inversion`
+- areas: ux-ui
+- type: web-app
+- status: completed
+- context: presale
+- published: sí
+- lane: MANUAL_DECISION_MIGRATED
+- roles: ux, ui
+- fuentes: ui_list_items:cloronor-trading
+- pieces: 0 | resources: 0
+- confianza: alta
+- entities:
+  - Cloronor → **client** (alta)
+  - AICORE IT Specialists → **intermediary** (alta)
 
 ## Standalone Pieces
 
 | ID | Título | Categoría | Origin | Tags | Conf |
 |----|--------|-----------|--------|------|------|
-| banner-push | Banner PUSH | print | client | impreso | media |
-| odyssey-plant-head | Odyssey — plant head figure | illustration-artwork | other | nsfw | media |
+| fablab | FabLab | visual-identity | client |  | alta |
+| labcom | labcom | visual-identity | client |  | alta |
+| summit-holding | Summit Holding | visual-identity | client | vector | alta |
+| magic-cell | MAGIC CELL | visual-identity | client | vector | alta |
+| brigado-crew | Brigado Crew / JBC | campaigns-communication | client | impreso | alta |
+| banner-samsung | Banner Samsung | print | client | impreso | alta |
+| banner-alfaj-metro | Banner Alfaj / Metro | print | client | impreso | alta |
+| tdt | TDT — The Dream Team | visual-identity | personal | tdt, vector | alta |
+| nick-tdt-beach | Nick TDT Beach | illustration-artwork | personal | tdt, pixel-art | alta |
 | mantis | Mantis by Magnetude | illustration-artwork | personal |  | alta |
-| kadaver-jez-ebel | KADAVER - Jez_ebel bootleg | illustration-artwork | other | cover | alta |
-| buhoprofe | Buho Profe | visual-identity | client |  | media |
-| banner-cluster | Banner Cluster | print | client | impreso | media |
-| nick-tdt-beach | Nick TDT Beach | illustration-artwork | other | pixel-art | media |
 | marauda-type-logo-ayala | Marauda type logo — Ayala | illustration-artwork | personal | vector, fan-art | alta |
-| ive-no-idea | I've No Idea But I Love It | illustration-artwork | other | cover | alta |
 | banana-thinking | Banana thinking illustration | illustration-artwork | personal |  | alta |
-| summit-holding | Summit Holding | visual-identity | client | vector | media |
-| penguin-knife | Penguin tattoo concept | illustration-artwork | other | vector, tattoo | media |
-| banner-samsung | Banner Samsung | print | client | impreso | media |
-| barely-alive | This Is Barely Alive '24 Update | illustration-artwork | other | cover | alta |
 | demon-no-scape | Demon illustration — No Scape | illustration-artwork | personal |  | alta |
-| speeditious | Speeditious | illustration-artwork | other | cover | alta |
-| banner-alfaj-metro | Banner Alfaj / Metro | print | client | impreso | media |
-| push | PUSH Software | visual-identity | client |  | media |
 | grime-marauda | Grime — Marauda | illustration-artwork | personal | grime | alta |
-| brigado-crew | Brigado Crew / JBC | print | client | impreso | media |
-| rockcito | Rockcito To Wake Up | illustration-artwork | other | cover | alta |
-| microtime | Microtime | visual-identity | client | vector | media |
-| futulab | futulΔb | visual-identity | client | vector | media |
 | grime-pawn | Grime pawn — Ayala | illustration-artwork | personal | grime | alta |
-| cover-emoji | Cover | illustration-artwork | other | cover | alta |
-| fablab | FabLab | visual-identity | client |  | media |
 | nicoide-not-impostor | Nicoide was not an Impostor | illustration-artwork | personal | fan-art, pixel-art | alta |
-| bass2k24 | Bass2k24 | illustration-artwork | other | bass-series, cover | alta |
-| bass2025 | 2025 IN BASS | illustration-artwork | other | bass-series, cover | alta |
 | nicoide-geometry-dash | NICOIDE — Geometry Dash wordmark | illustration-artwork | personal | fan-art | alta |
-| labcom | labcom | visual-identity | client |  | media |
 | we-are-barely-world | We Are Barely Alive — Mario world parody | illustration-artwork | personal | fan-art | alta |
-| twenty-twenty-two-spotify | Twenty Twenty Two | illustration-artwork | other | bass-series, cover | alta |
-| sessions | sessions | visual-identity | client |  | media |
 | sad-machine-makenix | Sad Machine - Makenix Remix | illustration-artwork | personal | fan-art | alta |
-| concitar | CONCITAR | visual-identity | client |  | media |
-| twenty-twenty-3 | Twenty Twenty 3 | illustration-artwork | other | bass-series, cover | alta |
-| apsmm | Asociación de Profesionales de Salud de la Marina Mercante | visual-identity | client |  | media |
-| bass2026 | BASS 2026 | illustration-artwork | other | bass-series, cover | alta |
-| reggaeton | Reggaeton Rukistrukis | illustration-artwork | other | cover | alta |
-| itf | ITF Cluster | visual-identity | client |  | media |
-| taily | Taily | visual-identity | client |  | media |
-| tdt | TDT — The Dream Team | visual-identity | client | vector | media |
-| magic-cell | MAGIC CELL | visual-identity | client | vector | media |
+| kadaver-jez-ebel | KADAVER - Jez_ebel bootleg | illustration-artwork | personal | fan-art, cover | alta |
+| ive-no-idea | I've No Idea But I Love It | illustration-artwork | personal | fan-art, cover | alta |
+| barely-alive | This Is Barely Alive '24 Update | illustration-artwork | personal | fan-art, cover | alta |
+| speeditious | Speeditious | illustration-artwork | personal | cover | alta |
+| rockcito | Rockcito To Wake Up | illustration-artwork | personal | cover | alta |
+| cover-emoji | Cover | illustration-artwork | personal | cover | alta |
+| reggaeton | Reggaeton Rukistrukis | illustration-artwork | personal | cover | alta |
+| odyssey-plant-head | Odyssey — plant head figure | illustration-artwork | personal | nsfw | alta |
+| penguin-knife | Penguin tattoo concept | illustration-artwork | personal | vector, tattoo | alta |
+| maxi-boo | maxi-boo | illustration-artwork | personal | fan-art | alta |
+| ux-and-x | ux-and-x | illustration-artwork | personal |  | alta |
+
+## Proposed piece_entities
+
+| pieceId | entityId | entityName | role | primary | sort |
+|---------|----------|------------|------|---------|------|
+| fablab | citf | Clúster de Innovación Tecnológica Formosa | responsible | sí | 0 |
+| labcom | citf | Clúster de Innovación Tecnológica Formosa | responsible | sí | 0 |
+| summit-holding | summit-holding | Summit Holding | brand-owner | sí | 0 |
+| magic-cell | magic-cell | Magic Cell | brand-owner | sí | 0 |
+| brigado-crew | brigado-crew | Brigado Crew | brand-owner | sí | 0 |
+| banner-samsung | citf | Clúster de Innovación Tecnológica Formosa | responsible | sí | 0 |
+| banner-samsung | red-clubes-digitales | Red de Clubes Digitales | other | no | 1 |
+| banner-alfaj-metro | citf | Clúster de Innovación Tecnológica Formosa | responsible | sí | 0 |
+| itf | citf | Clúster de Innovación Tecnológica Formosa | brand-owner | sí | 0 |
+| banner-cluster | citf | Clúster de Innovación Tecnológica Formosa | brand-owner | sí | 0 |
+| push | push | PUSH Software | brand-owner | sí | 0 |
+| banner-push | push | PUSH Software | brand-owner | sí | 0 |
+| futulab | futulab | Futulab | brand-owner | sí | 0 |
+| apsmm | apsmm | APSMM | client | sí | 0 |
+| seyier | seyier | Seyier | brand-owner | sí | 0 |
+| expedicion-polo | citf | Clúster de Innovación Tecnológica Formosa | responsible | sí | 0 |
+| juegos-provinciales | gobierno-formosa | Gobierno de Formosa | client | sí | 0 |
 
 ## Project ↔ Entity relationships requiring review
 
-- **Billetera Digital - ADAPTO PAY** ↔ **ADAPTO PAY**: rol `client` — ui_projects.client="ADAPTO PAY" (cliente final) (media)
-- **Billetera Digital - ADAPTO PAY** ↔ **AICORE IT Specialists**: rol `collaborator` — Colaboración con @aicore - noviembre 2024 (alta)
-- **Generación de Informes para compra e inversión - CLEARWATER** ↔ **CLEARWATER**: rol `client` — ui_projects.client="CLEARWATER" (cliente final) (media)
-- **Generación de Informes para compra e inversión - CLEARWATER** ↔ **AICORE IT Specialists**: rol `collaborator` — Colaboración con @aicore - enero 2024 (alta)
-- **Tienda de Insumos Medicinales - MIKROBIOL** ↔ **MIKROBIOL**: rol `client` — ui_projects.client="MIKROBIOL" (cliente final) (media)
-- **Tienda de Insumos Medicinales - MIKROBIOL** ↔ **AICORE IT Specialists**: rol `collaborator` — Colaboración con @aicore - octubre 2024 (alta)
-- **Sistema de Gestión de Unidades de Tratamiento de Aire - CASIBA** ↔ **CASIBA**: rol `client` — ui_projects.client="CASIBA" (cliente final) (media)
-- **Sistema de Gestión de Unidades de Tratamiento de Aire - CASIBA** ↔ **AICORE IT Specialists**: rol `collaborator` — Colaboración con @aicore - septiembre 2024 (alta)
-- **Plataforma integral de ventas y pedidos B2B - PROXI** ↔ **PROXI**: rol `client` — ui_projects.client="PROXI" (cliente final) (media)
-- **Plataforma integral de ventas y pedidos B2B - PROXI** ↔ **AICORE IT Specialists**: rol `collaborator` — Colaboración con @aicore - enero 2024 (alta)
-- **Omnigroup — backoffice y tótem** ↔ **Omnigroup**: rol `client` — ui_projects.client="Omnigroup" (media)
-- **Savil** ↔ **Savil**: rol `client` — ui_projects.client="Savil" (media)
-- **Juegos Provinciales Tecnológicos** ↔ **Gobierno de Formosa**: rol `client` — Campaña de difusión para el Gobierno de Formosa: gaming, robótica y música en vivo. Polo Científico, Tecnológico y de Innovación · 21 de junio. (media)
-- **EXPEDICIÓN POLO** ↔ **Clúster de Innovación Tecnológica Formosa**: rol `client` — graphic_items.brandId=citf (media)
+_Ninguna relación marcada para revisión._
 
 ## Mapping categorías gráficas legacy → propuesta
 
@@ -421,46 +892,46 @@ Slugs en piezas ausentes del catálogo: —
 
 | ID | kind | label | clasificación | target | home replacement |
 |----|------|-------|---------------|--------|------------------|
-| 35 | current_project | Concitar | project_candidate | projects:concitar (nuevo?) | Project.showOnHome + status=ongoing |
-| 1 | company | AICORE IT Specialists | entity_existing | entities:aicore | Entity.showOnHome + homeOrder |
-| 19 | past_project | Adapto Pay | project_candidate | projects:adapto-pay (nuevo?) | Project.showOnHome + status=completed |
-| 2 | company | Asociación de Profesionales de Salud de la Marina Mercante | home_text_only | nueva Entity o texto | Entity.showOnHome (si se crea) o mantener listado |
-| 36 | current_project | MICROTIME | project_candidate | projects:microtime (nuevo?) | Project.showOnHome + status=ongoing |
-| 20 | past_project | Asesor Financiero | project_existing | projects:asesor-financiero | Project.showOnHome + status=completed |
-| 21 | past_project | [deferred-confidential] | project_candidate | projects:[deferred-confidential] (nuevo?) | Project.showOnHome + status=completed |
-| 37 | current_project | Repuestos Carlitos | project_candidate | projects:repuestos-carlitos (nuevo?) | Project.showOnHome + status=ongoing |
-| 3 | company | bind | home_text_only | nueva Entity o texto | Entity.showOnHome (si se crea) o mantener listado |
-| 38 | current_project | Sessions | project_candidate | projects:sessions (nuevo?) | Project.showOnHome + status=ongoing |
-| 4 | company | Cloronor | home_text_only | nueva Entity o texto | Entity.showOnHome (si se crea) o mantener listado |
-| 22 | past_project | Casiba | project_candidate | projects:casiba (nuevo?) | Project.showOnHome + status=completed |
-| 39 | current_project | Syllabi | project_candidate | projects:syllabi (nuevo?) | Project.showOnHome + status=ongoing |
-| 5 | company | Clúster de Innovación Tecnológica Formosa | entity_existing | entities:citf | Entity.showOnHome + homeOrder |
-| 23 | past_project | Clearwater | project_candidate | projects:clearwater (nuevo?) | Project.showOnHome + status=completed |
-| 40 | current_project | Taily | project_candidate | projects:taily (nuevo?) | Project.showOnHome + status=ongoing |
-| 24 | past_project | Cloronor | project_candidate | projects:cloronor (nuevo?) | Project.showOnHome + status=completed |
-| 6 | company | Empresa Provincial de Innovación y Conocimiento Abierto | home_text_only | nueva Entity o texto | Entity.showOnHome (si se crea) o mantener listado |
-| 25 | past_project | EXPEDICIÓN POLO | project_existing | projects:expedicion-polo | Project.showOnHome + status=completed |
-| 7 | company | FabLab | home_text_only | nueva Entity o texto | Entity.showOnHome (si se crea) o mantener listado |
-| 8 | company | FISERV. | home_text_only | nueva Entity o texto | Entity.showOnHome (si se crea) o mantener listado |
-| 26 | past_project | fiserv. | project_candidate | projects:fiserv (nuevo?) | Project.showOnHome + status=completed |
-| 27 | past_project | [deferred-confidential] | project_candidate | projects:[deferred-confidential] (nuevo?) | Project.showOnHome + status=completed |
-| 9 | company | Gobierno de Formosa | home_text_only | nueva Entity o texto | Entity.showOnHome (si se crea) o mantener listado |
-| 10 | company | Instituto de Asistencia Social | home_text_only | nueva Entity o texto | Entity.showOnHome (si se crea) o mantener listado |
-| 28 | past_project | Juegos Provinciales Tecnológicos | project_existing | projects:juegos-provinciales | Project.showOnHome + status=completed |
-| 29 | past_project | La Estación | project_candidate | projects:la-estacion (nuevo?) | Project.showOnHome + status=completed |
-| 11 | company | Labcom | home_text_only | nueva Entity o texto | Entity.showOnHome (si se crea) o mantener listado |
-| 30 | past_project | Mental Tech Training | project_candidate | projects:mental-tech-training (nuevo?) | Project.showOnHome + status=completed |
-| 12 | company | Lúdica Tech | entity_existing | entities:ludica | Entity.showOnHome + homeOrder |
-| 31 | past_project | omni group | project_candidate | projects:omni-group (nuevo?) | Project.showOnHome + status=completed |
-| 13 | company | Ministerio de Economia, Hacienda y Finanzas | home_text_only | nueva Entity o texto | Entity.showOnHome (si se crea) o mantener listado |
-| 32 | past_project | proxi | project_candidate | projects:proxi (nuevo?) | Project.showOnHome + status=completed |
-| 14 | company | Órbita LΔB | entity_existing | entities:orbita-l-b | Entity.showOnHome + homeOrder |
-| 33 | past_project | SIMAAS | project_candidate | projects:simaas (nuevo?) | Project.showOnHome + status=completed |
-| 15 | company | PUSH Software | entity_existing | entities:push | Entity.showOnHome + homeOrder |
-| 16 | company | Red de Clubes Digitales | home_text_only | nueva Entity o texto | Entity.showOnHome (si se crea) o mantener listado |
-| 34 | past_project | Templeton & Matthews | project_candidate | projects:templeton-matthews (nuevo?) | Project.showOnHome + status=completed |
-| 17 | company | Secretaría de Ciencia y Tecnología de Formosa | home_text_only | nueva Entity o texto | Entity.showOnHome (si se crea) o mantener listado |
-| 18 | company | Subsecretaría de Empleo de Formosa | home_text_only | nueva Entity o texto | Entity.showOnHome (si se crea) o mantener listado |
+| 35 | current_project | Concitar | home_text_only | DISCARDED:named_list_runtime | Entity/Project.showOnHome |
+| 1 | company | AICORE IT Specialists | home_text_only | DISCARDED:named_list_runtime | Entity/Project.showOnHome |
+| 19 | past_project | Adapto Pay | home_text_only | DISCARDED:named_list_runtime | Entity/Project.showOnHome |
+| 2 | company | Asociación de Profesionales de Salud de la Marina Mercante | home_text_only | DISCARDED:named_list_runtime | Entity/Project.showOnHome |
+| 36 | current_project | MICROTIME | home_text_only | DISCARDED:named_list_runtime | Entity/Project.showOnHome |
+| 20 | past_project | Asesor Financiero | home_text_only | DISCARDED:named_list_runtime | Entity/Project.showOnHome |
+| 21 | past_project | [deferred-confidential] | home_text_only | DISCARDED:named_list_runtime | Entity/Project.showOnHome |
+| 37 | current_project | Repuestos Carlitos | home_text_only | DISCARDED:named_list_runtime | Entity/Project.showOnHome |
+| 3 | company | bind | home_text_only | DISCARDED:named_list_runtime | Entity/Project.showOnHome |
+| 38 | current_project | Sessions | home_text_only | DISCARDED:named_list_runtime | Entity/Project.showOnHome |
+| 4 | company | Cloronor | home_text_only | DISCARDED:named_list_runtime | Entity/Project.showOnHome |
+| 22 | past_project | Casiba | home_text_only | DISCARDED:named_list_runtime | Entity/Project.showOnHome |
+| 39 | current_project | Syllabi | home_text_only | DISCARDED:named_list_runtime | Entity/Project.showOnHome |
+| 5 | company | Clúster de Innovación Tecnológica Formosa | home_text_only | DISCARDED:named_list_runtime | Entity/Project.showOnHome |
+| 23 | past_project | Clearwater | home_text_only | DISCARDED:named_list_runtime | Entity/Project.showOnHome |
+| 40 | current_project | Taily | home_text_only | DISCARDED:named_list_runtime | Entity/Project.showOnHome |
+| 24 | past_project | Cloronor | home_text_only | DISCARDED:named_list_runtime | Entity/Project.showOnHome |
+| 6 | company | Empresa Provincial de Innovación y Conocimiento Abierto | home_text_only | DISCARDED:named_list_runtime | Entity/Project.showOnHome |
+| 25 | past_project | EXPEDICIÓN POLO | home_text_only | DISCARDED:named_list_runtime | Entity/Project.showOnHome |
+| 7 | company | FabLab | home_text_only | DISCARDED:named_list_runtime | Entity/Project.showOnHome |
+| 8 | company | [deferred] | home_text_only | DISCARDED:named_list_runtime | Entity/Project.showOnHome |
+| 26 | past_project | [deferred] | home_text_only | DISCARDED:named_list_runtime | Entity/Project.showOnHome |
+| 27 | past_project | [deferred-confidential] | home_text_only | DISCARDED:named_list_runtime | Entity/Project.showOnHome |
+| 9 | company | Gobierno de Formosa | home_text_only | DISCARDED:named_list_runtime | Entity/Project.showOnHome |
+| 10 | company | Instituto de Asistencia Social | home_text_only | DISCARDED:named_list_runtime | Entity/Project.showOnHome |
+| 28 | past_project | Juegos Provinciales Tecnológicos | home_text_only | DISCARDED:named_list_runtime | Entity/Project.showOnHome |
+| 29 | past_project | La Estación | home_text_only | DISCARDED:named_list_runtime | Entity/Project.showOnHome |
+| 11 | company | Labcom | home_text_only | DISCARDED:named_list_runtime | Entity/Project.showOnHome |
+| 30 | past_project | Mental Tech Training | home_text_only | DISCARDED:named_list_runtime | Entity/Project.showOnHome |
+| 12 | company | Lúdica Tech | home_text_only | DISCARDED:named_list_runtime | Entity/Project.showOnHome |
+| 31 | past_project | omni group | home_text_only | DISCARDED:named_list_runtime | Entity/Project.showOnHome |
+| 13 | company | Ministerio de Economia, Hacienda y Finanzas | home_text_only | DISCARDED:named_list_runtime | Entity/Project.showOnHome |
+| 32 | past_project | proxi | home_text_only | DISCARDED:named_list_runtime | Entity/Project.showOnHome |
+| 14 | company | Órbita LΔB | home_text_only | DISCARDED:named_list_runtime | Entity/Project.showOnHome |
+| 33 | past_project | SIMAAS | home_text_only | DISCARDED:named_list_runtime | Entity/Project.showOnHome |
+| 15 | company | PUSH Software | home_text_only | DISCARDED:named_list_runtime | Entity/Project.showOnHome |
+| 16 | company | Red de Clubes Digitales | home_text_only | DISCARDED:named_list_runtime | Entity/Project.showOnHome |
+| 34 | past_project | Templeton & Matthews | home_text_only | DISCARDED:named_list_runtime | Entity/Project.showOnHome |
+| 17 | company | Secretaría de Ciencia y Tecnología de Formosa | home_text_only | DISCARDED:named_list_runtime | Entity/Project.showOnHome |
+| 18 | company | Subsecretaría de Empleo de Formosa | home_text_only | DISCARDED:named_list_runtime | Entity/Project.showOnHome |
 
 ## Testimonials
 
@@ -492,182 +963,165 @@ Slugs en piezas ausentes del catálogo: —
 - C: Piece manual independiente sin Project.
 - **Recomendación B**: Permite distinguir manuales por año (2025 vs futuro 2026) sin inventar datos del 2026.
 
+## Deferred
+
+- `cloronor-landing` (project): **Cloronor landing** — Landing Cloronor pendiente de modelado; trading ya en manifest
+- `sha256:de76f827893389a0a02cdf1a3322100c0c474b28ffe203e2fa8eaab0150487b8` (project): **[deferred-confidential]** — Fuente confidencial deferred; no crear Entity/Project público
+- `sha256:98fe442255035a1459bb5b86fda03d7c34c23d512b1b5bf3a5ecb7a802601895` (project): **[deferred-confidential]** — Fuente confidencial deferred; no crear Entity/Project público
+- `fiserv` (entity): **[deferred]** — Entity vs Project ambiguo hasta confirmación humana
+- `microtime-published` (published): **Microtime published** — published=false temporal hasta autorización
+- `proxi-published` (published): **Proxi published** — published=false hasta revisión contractual
+- `syllabi-published` (published): **Syllabi published** — published=false hasta autorización de publicación
+- `microtime-ux-role` (role): **Microtime UX role** — Rol UX pendiente; no inferir
+- `juegos-client-validation` (validation): **Juegos Provinciales client** — Relación Gobierno de Formosa → client es provisional; validar en Admin
+- `second-simaas` (project): **Segundo SIMAAS (eventos/foros)** — No crear segundo Project SIMAAS aún
+- `simaas-aicore-later` (relation): **SIMAAS ↔ AICORE** — No modelar AICORE en SIMAAS en esta etapa
+- `orbita-case-by-case` (relation): **Órbita relations** — Relaciones Órbita case-by-case; no resolver client automáticamente
+- `logistics-personal-roles` (role): **Confidential logistics UX/UI roles** — Roles personales no inferir; dejar vacío hasta decisión
+
+## Discarded
+
+- `bind` (entity): **bind** — No migrar Entity; label home sin decisión de entidad
+- `ministerio-economia` (home_label): **Ministerio de Economia, Hacienda y Finanzas** — No migrar Entity ni label como entidad estructural
+- `cloronor-store` (project): **Cloronor store** — No crear Project store; trading migrado aparte; landing diferida
+- `named-list-runtime` (named_list): **named_list runtime Home** — named_list_items DEPRECATED post-cutover; Home = Entity/Project.showOnHome + published + status
+- `entity-labcom` (entity): **Labcom** — Piece standalone → CITF via piece_entities; no Entity Labcom
+- `entity-fablab` (entity): **FabLab** — Piece standalone → CITF; no Entity ni Project FabLab
+- `entity-nsxide` (entity): **NSXIDE** — Alias/tag de Bass Series; no Entity
+- `buhoprofe-branding-authorship` (authorship): **buhoprofe branding** — No Piece de branding del usuario; solo ProjectResource contextual de Syllabi
+- `invent-citf-2026` (invention): **Identidad / manual CITF 2026** — No inventar identidad 2026
+- `invent-push-2027` (invention): **Manual / identidad PUSH 2027** — No inventar identidad futura
+
 ## migration_map preview (NO insertado)
 
-Total mappings propuestos: 170
+Total mappings propuestos: 124
 
 | source | target |
 |--------|--------|
 | brands:push | entity:push |
 | brands:aicore | entity:aicore |
-| brands:ludica | entity:ludica |
-| brands:orbita-l-b | entity:orbita-l-b |
-| brands:apsmm | entity:apsmm |
 | brands:citf | entity:citf |
 | brands:seyier | entity:seyier |
-| ui_projects:apsmm | project:apsmm |
-| ui_projects:apsmm | resource:apsmm-screen-1 (project_resource) |
-| ui_projects:apsmm | resource:apsmm-screen-2 (project_resource) |
-| ui_projects:apsmm | resource:apsmm-screen-3 (project_resource) |
-| ui_projects:aml-casinos | project:aml-casinos |
-| ui_projects:aml-casinos | resource:aml-casinos-screen-1 (project_resource) |
+| brands:apsmm | entity:apsmm |
+| brands:ludica | entity:ludica |
+| brands:orbita-l-b | entity:orbita-l-b |
+| decision_manifest:adapto-pay | entity:adapto-pay |
+| decision_manifest:clearwater | entity:clearwater |
+| decision_manifest:mikrobiol | entity:mikrobiol |
+| decision_manifest:casiba | entity:casiba |
+| decision_manifest:proxi | entity:proxi |
+| decision_manifest:omnigroup | entity:omnigroup |
+| decision_manifest:savil | entity:savil |
+| decision_manifest:confidential-inventariado-client | entity:confidential-inventariado-client (source_id fingerprint avoids accidental plaintext; not a cryptographic secret store) |
+| decision_manifest:confidential-aml-client | entity:confidential-aml-client (source_id fingerprint avoids accidental plaintext; not a cryptographic secret store) |
+| decision_manifest:confidential-asesor-client | entity:confidential-asesor-client (source_id fingerprint avoids accidental plaintext; not a cryptographic secret store) |
+| decision_manifest:confidential-sessions-client | entity:confidential-sessions-client (source_id fingerprint avoids accidental plaintext; not a cryptographic secret store) |
+| decision_manifest:confidential-logistics-client | entity:confidential-logistics-client (source_id fingerprint avoids accidental plaintext; not a cryptographic secret store) |
+| decision_manifest:futulab | entity:futulab |
+| decision_manifest:summit-holding | entity:summit-holding |
+| decision_manifest:magic-cell | entity:magic-cell |
+| decision_manifest:brigado-crew | entity:brigado-crew |
+| decision_manifest:templeton-mathews | entity:templeton-mathews |
+| decision_manifest:repuestos-carlitos | entity:repuestos-carlitos |
+| decision_manifest:la-estacion | entity:la-estacion |
+| decision_manifest:epica | entity:epica |
+| decision_manifest:gobierno-formosa | entity:gobierno-formosa |
+| decision_manifest:instituto-asistencia-social | entity:instituto-asistencia-social |
+| decision_manifest:red-clubes-digitales | entity:red-clubes-digitales |
+| decision_manifest:secretaria-cyt-formosa | entity:secretaria-cyt-formosa |
+| decision_manifest:subsecretaria-empleo-formosa | entity:subsecretaria-empleo-formosa |
+| decision_manifest:cloronor | entity:cloronor |
+| ui_projects:sha256:ab7c1f3f5c8db8e3760f874bceaef8e76980f030240c973880b6616ef85a9846 | project:aicore-inventariado (source_id fingerprint avoids accidental plaintext; not a cryptographic secret store) |
 | ui_projects:aml-general | project:aml-general |
-| ui_projects:aml-general | resource:aml-general-screen-1 (project_resource) |
+| ui_projects:aml-casinos | project:aml-casinos |
 | ui_projects:adapto-pay | project:adapto-pay |
-| ui_projects:adapto-pay | resource:adapto-pay-screen-1 (project_resource) |
-| ui_projects:adapto-pay | resource:adapto-pay-screen-2 (project_resource) |
-| ui_projects:adapto-pay | resource:adapto-pay-screen-3 (project_resource) |
 | ui_projects:clearwater | project:clearwater |
-| ui_projects:clearwater | resource:clearwater-screen-1 (project_resource) |
 | ui_projects:mikrobiol | project:mikrobiol |
-| ui_projects:mikrobiol | resource:mikrobiol-screen-1 (project_resource) |
 | ui_projects:casiba | project:casiba |
-| ui_projects:casiba | resource:casiba-screen-1 (project_resource) |
 | ui_projects:proxi | project:proxi |
-| ui_projects:cms-portfolio | project:cms-portfolio |
-| ui_projects:cms-portfolio | resource:cms-portfolio-screen-1 (project_resource) |
+| ui_projects:apsmm | project:apsmm |
+| graphic_items:apsmm | project:apsmm |
 | ui_projects:omnigroup | project:omnigroup |
-| ui_projects:omnigroup | resource:omnigroup-screen-1 (project_resource) |
-| ui_projects:omnigroup | resource:omnigroup-screen-2 (project_resource) |
-| ui_projects:omnigroup | resource:omnigroup-screen-3 (project_resource) |
-| ui_projects:omnigroup | resource:omnigroup-screen-4 (project_resource) |
-| ui_projects:omnigroup | resource:omnigroup-screen-5 (project_resource) |
-| ui_projects:omnigroup | resource:omnigroup-screen-6 (project_resource) |
 | ui_projects:savil | project:savil |
-| ui_projects:savil | resource:savil-screen-1 (project_resource) |
-| ui_projects:savil | resource:savil-screen-2 (project_resource) |
-| ui_projects:savil | resource:savil-screen-3 (project_resource) |
-| ui_projects:asesor-financiero | project:asesor-financiero |
-| ui_projects:asesor-financiero | resource:asesor-financiero-screen-1 (project_resource) |
-| ui_projects:asesor-financiero | resource:asesor-financiero-screen-2 (project_resource) |
-| ui_projects:asesor-financiero | resource:asesor-financiero-screen-3 (project_resource) |
-| ui_projects:aicore-inventariado | project:aicore-inventariado |
-| ui_projects:aicore-inventariado | resource:aicore-inventariado-screen-1 (project_resource) |
-| graphic_items:banner-push | piece:banner-push |
-| graphic_items:banner-push | resource:banner-push-src |
-| graphic_items:odyssey-plant-head | piece:odyssey-plant-head |
-| graphic_items:odyssey-plant-head | resource:odyssey-plant-head-src |
-| graphic_items:mantis | piece:mantis |
-| graphic_items:mantis | resource:mantis-src |
-| graphic_items:kadaver-jez-ebel | piece:kadaver-jez-ebel |
-| graphic_items:kadaver-jez-ebel | resource:kadaver-jez-ebel-src |
-| graphic_items:buhoprofe | piece:buhoprofe |
-| graphic_items:buhoprofe | resource:buhoprofe-src |
-| graphic_items:juegos-provinciales | project:juegos-provinciales |
-| graphic_items:juegos-provinciales | piece:juegos-provinciales-cover |
-| graphic_items:juegos-provinciales | resource:juegos-provinciales-src |
-| graphic_items:juegos-provinciales | resource:juegos-provinciales-related |
-| graphic_items:juegos-provinciales | piece:juegos-provinciales-deliverable-1 |
-| graphic_items:juegos-provinciales | resource:juegos-provinciales-g-0 |
-| graphic_items:juegos-provinciales | piece:juegos-provinciales-deliverable-2 |
-| graphic_items:juegos-provinciales | resource:juegos-provinciales-g-1 |
-| graphic_items:juegos-provinciales | piece:juegos-provinciales-deliverable-3 |
-| graphic_items:juegos-provinciales | resource:juegos-provinciales-g-2 |
-| graphic_items:juegos-provinciales | piece:juegos-provinciales-deliverable-4 |
-| graphic_items:juegos-provinciales | resource:juegos-provinciales-g-3 |
-| graphic_items:juegos-provinciales | piece:juegos-provinciales-deliverable-5 |
-| graphic_items:juegos-provinciales | resource:juegos-provinciales-g-4 |
-| graphic_items:juegos-provinciales | piece:juegos-provinciales-deliverable-6 |
-| graphic_items:juegos-provinciales | resource:juegos-provinciales-g-5 |
-| graphic_items:juegos-provinciales | piece:juegos-provinciales-deliverable-7 |
-| graphic_items:juegos-provinciales | resource:juegos-provinciales-g-6 |
-| graphic_items:juegos-provinciales | piece:juegos-provinciales-deliverable-8 |
-| graphic_items:juegos-provinciales | resource:juegos-provinciales-g-7 |
-| graphic_items:juegos-provinciales | piece:juegos-provinciales-deliverable-9 |
-| graphic_items:juegos-provinciales | resource:juegos-provinciales-g-8 |
-| graphic_items:juegos-provinciales | piece:juegos-provinciales-deliverable-10 |
-| graphic_items:juegos-provinciales | resource:juegos-provinciales-g-9 |
-| graphic_items:juegos-provinciales | piece:juegos-provinciales-deliverable-11 |
-| graphic_items:juegos-provinciales | resource:juegos-provinciales-g-10 |
-| graphic_items:seyier | project:seyier-visual-identity |
-| graphic_items:seyier | piece:seyier-logo |
-| graphic_items:seyier | piece:seyier-screen-1 |
-| graphic_items:seyier | piece:seyier-screen-2 |
-| graphic_items:seyier | piece:seyier-screen-3 |
-| graphic_items:banner-cluster | piece:banner-cluster |
-| graphic_items:banner-cluster | resource:banner-cluster-src |
-| graphic_items:nick-tdt-beach | piece:nick-tdt-beach |
-| graphic_items:nick-tdt-beach | resource:nick-tdt-beach-src |
-| graphic_items:marauda-type-logo-ayala | piece:marauda-type-logo-ayala |
-| graphic_items:marauda-type-logo-ayala | resource:marauda-type-logo-ayala-src |
-| graphic_items:ive-no-idea | piece:ive-no-idea |
-| graphic_items:ive-no-idea | resource:ive-no-idea-src |
+| ui_projects:sha256:904f5aa089bb1e02e8400f56db2437ef53d331dee115a391d144839aa77c202e | project:asesor-financiero (source_id fingerprint avoids accidental plaintext; not a cryptographic secret store) |
+| ui_projects:cms-portfolio | project:cms-portfolio |
 | graphic_items:expedicion-polo | project:expedicion-polo |
-| graphic_items:expedicion-polo | piece:expedicion-polo-cover |
-| graphic_items:expedicion-polo | resource:expedicion-polo-src |
-| graphic_items:expedicion-polo | resource:expedicion-polo-related |
-| graphic_items:banana-thinking | piece:banana-thinking |
-| graphic_items:banana-thinking | resource:banana-thinking-src |
-| graphic_items:summit-holding | piece:summit-holding |
-| graphic_items:summit-holding | resource:summit-holding-src |
-| graphic_items:penguin-knife | piece:penguin-knife |
-| graphic_items:penguin-knife | resource:penguin-knife-src |
-| graphic_items:banner-samsung | piece:banner-samsung |
-| graphic_items:banner-samsung | resource:banner-samsung-src |
-| graphic_items:barely-alive | piece:barely-alive |
-| graphic_items:barely-alive | resource:barely-alive-src |
-| graphic_items:demon-no-scape | piece:demon-no-scape |
-| graphic_items:demon-no-scape | resource:demon-no-scape-src |
-| graphic_items:speeditious | piece:speeditious |
-| graphic_items:speeditious | resource:speeditious-src |
-| graphic_items:banner-alfaj-metro | piece:banner-alfaj-metro |
-| graphic_items:banner-alfaj-metro | resource:banner-alfaj-metro-src |
-| graphic_items:push | piece:push |
-| graphic_items:push | resource:push-src |
-| graphic_items:grime-marauda | piece:grime-marauda |
-| graphic_items:grime-marauda | resource:grime-marauda-src |
-| graphic_items:brigado-crew | piece:brigado-crew |
-| graphic_items:brigado-crew | resource:brigado-crew-src |
-| graphic_items:rockcito | piece:rockcito |
-| graphic_items:rockcito | resource:rockcito-src |
-| graphic_items:microtime | piece:microtime |
-| graphic_items:microtime | resource:microtime-src |
-| graphic_items:futulab | piece:futulab |
-| graphic_items:futulab | resource:futulab-src |
-| graphic_items:grime-pawn | piece:grime-pawn |
-| graphic_items:grime-pawn | resource:grime-pawn-src |
-| graphic_items:cover-emoji | piece:cover-emoji |
-| graphic_items:cover-emoji | resource:cover-emoji-src |
-| graphic_items:fablab | piece:fablab |
-| graphic_items:fablab | resource:fablab-src |
-| graphic_items:nicoide-not-impostor | piece:nicoide-not-impostor |
-| graphic_items:nicoide-not-impostor | resource:nicoide-not-impostor-src |
-| graphic_items:bass2k24 | piece:bass2k24 |
-| graphic_items:bass2k24 | resource:bass2k24-src |
-| graphic_items:bass2025 | piece:bass2025 |
-| graphic_items:bass2025 | resource:bass2025-src |
-| graphic_items:nicoide-geometry-dash | piece:nicoide-geometry-dash |
-| graphic_items:nicoide-geometry-dash | resource:nicoide-geometry-dash-src |
-| graphic_items:labcom | piece:labcom |
-| graphic_items:labcom | resource:labcom-src |
-| graphic_items:we-are-barely-world | piece:we-are-barely-world |
-| graphic_items:we-are-barely-world | resource:we-are-barely-world-src |
-| graphic_items:twenty-twenty-two-spotify | piece:twenty-twenty-two-spotify |
-| graphic_items:twenty-twenty-two-spotify | resource:twenty-twenty-two-spotify-src |
-| graphic_items:sessions | piece:sessions |
-| graphic_items:sessions | resource:sessions-src |
-| graphic_items:sad-machine-makenix | piece:sad-machine-makenix |
-| graphic_items:sad-machine-makenix | resource:sad-machine-makenix-src |
-| graphic_items:concitar | piece:concitar |
-| graphic_items:concitar | resource:concitar-src |
-| graphic_items:twenty-twenty-3 | piece:twenty-twenty-3 |
-| graphic_items:twenty-twenty-3 | resource:twenty-twenty-3-src |
-| graphic_items:apsmm | piece:apsmm |
-| graphic_items:apsmm | resource:apsmm-src |
-| graphic_items:bass2026 | piece:bass2026 |
-| graphic_items:bass2026 | resource:bass2026-src |
-| graphic_items:reggaeton | piece:reggaeton |
-| graphic_items:reggaeton | resource:reggaeton-src |
-| graphic_items:itf | piece:itf |
-| graphic_items:itf | resource:itf-src |
-| graphic_items:taily | piece:taily |
-| graphic_items:taily | resource:taily-src |
-| graphic_items:tdt | piece:tdt |
-| graphic_items:tdt | resource:tdt-src |
-| graphic_items:magic-cell | piece:magic-cell |
-| graphic_items:magic-cell | resource:magic-cell-src |
-| brand_manuals:citf | project:citf-manual-2025 (Recomendación B — pendiente confirmación humana) |
-| brand_manuals:citf | piece:citf-manual |
+| graphic_items:juegos-provinciales | project:juegos-provinciales |
+| graphic_items:itf | project:citf-identity-2025 |
+| graphic_items:banner-cluster | project:citf-identity-2025 |
+| brand_manuals:citf | project:citf-identity-2025 |
+| graphic_items:seyier | project:seyier-visual-identity |
+| graphic_items:push | project:push-visual-identity |
+| graphic_items:banner-push | project:push-visual-identity |
+| graphic_items:futulab | project:futulab-visual-identity |
+| graphic_items:twenty-twenty-two-spotify | project:bass-series |
+| graphic_items:twenty-twenty-3 | project:bass-series |
+| graphic_items:bass2k24 | project:bass-series |
+| graphic_items:bass2025 | project:bass-series |
+| graphic_items:bass2026 | project:bass-series |
+| named_list_items:syllabi | project:syllabi |
+| named_list_items:microtime | project:microtime |
+| graphic_items:microtime | project:microtime |
+| named_list_items:sessions | project:sessions |
+| graphic_items:sessions | project:sessions |
+| named_list_items:concitar | project:concitar |
+| graphic_items:concitar | project:concitar |
+| named_list_items:taily | project:taily |
+| graphic_items:taily | project:taily |
+| ui_list_items:simaas | project:simaas-marketplace |
+| ui_list_items:templeton | project:templeton-digital-transformation-assessment |
+| ui_projects:sha256:d17f3254ce9d0ac30defba16843c78525410304a91d5df7c634d90a3f6a21b75 | project:confidential-logistics-system (source_id fingerprint avoids accidental plaintext; not a cryptographic secret store) |
+| ui_list_items:carlitos | project:repuestos-carlitos |
+| named_list_items:mental-training-tech-24-5 | project:mental-training-tech-24-5 |
+| ui_list_items:cloronor-trading | project:cloronor-trading |
+| graphic_items:fablab | piece:fablab (lane=MANUAL_DECISION_MIGRATED) |
+| graphic_items:labcom | piece:labcom (lane=MANUAL_DECISION_MIGRATED) |
+| graphic_items:summit-holding | piece:summit-holding (lane=MANUAL_DECISION_MIGRATED) |
+| graphic_items:magic-cell | piece:magic-cell (lane=MANUAL_DECISION_MIGRATED) |
+| graphic_items:brigado-crew | piece:brigado-crew (lane=MANUAL_DECISION_MIGRATED) |
+| graphic_items:banner-samsung | piece:banner-samsung (lane=MANUAL_DECISION_MIGRATED) |
+| graphic_items:banner-alfaj-metro | piece:banner-alfaj-metro (lane=MANUAL_DECISION_MIGRATED) |
+| graphic_items:tdt | piece:tdt (lane=MANUAL_DECISION_MIGRATED) |
+| graphic_items:nick-tdt-beach | piece:nick-tdt-beach (lane=MANUAL_DECISION_MIGRATED) |
+| graphic_items:mantis | piece:mantis (lane=MANUAL_DECISION_MIGRATED) |
+| graphic_items:marauda-type-logo-ayala | piece:marauda-type-logo-ayala (lane=MANUAL_DECISION_MIGRATED) |
+| graphic_items:banana-thinking | piece:banana-thinking (lane=MANUAL_DECISION_MIGRATED) |
+| graphic_items:demon-no-scape | piece:demon-no-scape (lane=MANUAL_DECISION_MIGRATED) |
+| graphic_items:grime-marauda | piece:grime-marauda (lane=MANUAL_DECISION_MIGRATED) |
+| graphic_items:grime-pawn | piece:grime-pawn (lane=MANUAL_DECISION_MIGRATED) |
+| graphic_items:nicoide-not-impostor | piece:nicoide-not-impostor (lane=MANUAL_DECISION_MIGRATED) |
+| graphic_items:nicoide-geometry-dash | piece:nicoide-geometry-dash (lane=MANUAL_DECISION_MIGRATED) |
+| graphic_items:we-are-barely-world | piece:we-are-barely-world (lane=MANUAL_DECISION_MIGRATED) |
+| graphic_items:sad-machine-makenix | piece:sad-machine-makenix (lane=MANUAL_DECISION_MIGRATED) |
+| graphic_items:kadaver-jez-ebel | piece:kadaver-jez-ebel (lane=MANUAL_DECISION_MIGRATED) |
+| graphic_items:ive-no-idea | piece:ive-no-idea (lane=MANUAL_DECISION_MIGRATED) |
+| graphic_items:barely-alive | piece:barely-alive (lane=MANUAL_DECISION_MIGRATED) |
+| graphic_items:speeditious | piece:speeditious (lane=MANUAL_DECISION_MIGRATED) |
+| graphic_items:rockcito | piece:rockcito (lane=MANUAL_DECISION_MIGRATED) |
+| graphic_items:cover-emoji | piece:cover-emoji (lane=MANUAL_DECISION_MIGRATED) |
+| graphic_items:reggaeton | piece:reggaeton (lane=MANUAL_DECISION_MIGRATED) |
+| graphic_items:odyssey-plant-head | piece:odyssey-plant-head (lane=MANUAL_DECISION_MIGRATED) |
+| graphic_items:penguin-knife | piece:penguin-knife (lane=MANUAL_DECISION_MIGRATED) |
+| graphic_items:maxi-boo | piece:maxi-boo (lane=MANUAL_DECISION_MIGRATED) |
+| graphic_items:ux-and-x | piece:ux-and-x (lane=MANUAL_DECISION_MIGRATED) |
+| graphic_items:itf | piece:itf (lane=MANUAL_DECISION_MIGRATED) |
+| graphic_items:banner-cluster | piece:banner-cluster (lane=MANUAL_DECISION_MIGRATED) |
+| graphic_items:push | piece:push (lane=MANUAL_DECISION_MIGRATED) |
+| graphic_items:banner-push | piece:banner-push (lane=MANUAL_DECISION_MIGRATED) |
+| graphic_items:futulab | piece:futulab (lane=MANUAL_DECISION_MIGRATED) |
+| graphic_items:apsmm | piece:apsmm (lane=MANUAL_DECISION_MIGRATED) |
+| graphic_items:seyier | piece:seyier (lane=MANUAL_DECISION_MIGRATED) |
+| graphic_items:expedicion-polo | piece:expedicion-polo (lane=MANUAL_DECISION_MIGRATED) |
+| graphic_items:juegos-provinciales | piece:juegos-provinciales (lane=MANUAL_DECISION_MIGRATED) |
+| graphic_items:microtime | piece:microtime (lane=MANUAL_DECISION_MIGRATED) |
+| graphic_items:sessions | piece:sessions (lane=MANUAL_DECISION_MIGRATED) |
+| graphic_items:concitar | piece:concitar (lane=MANUAL_DECISION_MIGRATED) |
+| graphic_items:taily | piece:taily (lane=MANUAL_DECISION_MIGRATED) |
+| graphic_items:twenty-twenty-two-spotify | piece:twenty-twenty-two-spotify (lane=MANUAL_DECISION_MIGRATED) |
+| graphic_items:twenty-twenty-3 | piece:twenty-twenty-3 (lane=MANUAL_DECISION_MIGRATED) |
+| graphic_items:bass2k24 | piece:bass2k24 (lane=MANUAL_DECISION_MIGRATED) |
+| graphic_items:bass2025 | piece:bass2025 (lane=MANUAL_DECISION_MIGRATED) |
+| graphic_items:bass2026 | piece:bass2026 (lane=MANUAL_DECISION_MIGRATED) |
 
 ## Inventario registro por registro
 
@@ -1811,78 +2265,147 @@ Total mappings propuestos: 170
   - B: Project nuevo de identidad "Manual de Marca CITF 2025" con Piece manual.
   - C: Piece manual independiente sin Project.
 
-## Decisiones humanas necesarias
+## Decisiones humanas (notas del manifesto aplicado)
 
-- Entity "APSMM" (apsmm): confirmar type=association
-- Entity "Lúdica Tech" (ludica): confirmar type=company
-- Entity "Órbita LΔB" (orbita-l-b): confirmar type=company
-- Relación Billetera Digital - ADAPTO PAY ↔ ADAPTO PAY: rol client (ui_projects.client="ADAPTO PAY" (cliente final))
-- Relación Billetera Digital - ADAPTO PAY ↔ AICORE IT Specialists: rol collaborator (Colaboración con @aicore - noviembre 2024)
-- Relación EXPEDICIÓN POLO ↔ Clúster de Innovación Tecnológica Formosa: rol client (graphic_items.brandId=citf)
-- Relación Generación de Informes para compra e inversión - CLEARWATER ↔ AICORE IT Specialists: rol collaborator (Colaboración con @aicore - enero 2024)
-- Relación Generación de Informes para compra e inversión - CLEARWATER ↔ CLEARWATER: rol client (ui_projects.client="CLEARWATER" (cliente final))
-- Relación Juegos Provinciales Tecnológicos ↔ Gobierno de Formosa: rol client (Campaña de difusión para el Gobierno de Formosa: gaming, robótica y música en vivo. Polo Científico, Tecnológico y de Innovación · 21 de junio.)
-- Relación Omnigroup — backoffice y tótem ↔ Omnigroup: rol client (ui_projects.client="Omnigroup")
-- Relación Plataforma integral de ventas y pedidos B2B - PROXI ↔ AICORE IT Specialists: rol collaborator (Colaboración con @aicore - enero 2024)
-- Relación Plataforma integral de ventas y pedidos B2B - PROXI ↔ PROXI: rol client (ui_projects.client="PROXI" (cliente final))
-- Relación Savil ↔ Savil: rol client (ui_projects.client="Savil")
-- Relación Sistema de Gestión de Unidades de Tratamiento de Aire - CASIBA ↔ AICORE IT Specialists: rol collaborator (Colaboración con @aicore - septiembre 2024)
-- Relación Sistema de Gestión de Unidades de Tratamiento de Aire - CASIBA ↔ CASIBA: rol client (ui_projects.client="CASIBA" (cliente final))
-- Relación Tienda de Insumos Medicinales - MIKROBIOL ↔ AICORE IT Specialists: rol collaborator (Colaboración con @aicore - octubre 2024)
-- Relación Tienda de Insumos Medicinales - MIKROBIOL ↔ MIKROBIOL: rol client (ui_projects.client="MIKROBIOL" (cliente final))
-- brand_manual citf: elegir alternativa B (Permite distinguir manuales por año (2025 vs futuro 2026) sin inventar datos del 2026.)
-- brand_manuals:citf — Manual de Marca 2025 CITF: Permite distinguir manuales por año (2025 vs futuro 2026) sin inventar datos del 2026.
-- brands:apsmm — APSMM: Nombre sugiere asociación; no hay decisión explícita registrada.
-- brands:ludica — Lúdica Tech: Nombre/sitio sugieren empresa; requiere confirmación.
-- brands:orbita-l-b — Órbita LΔB: Nombre/sitio sugieren empresa; requiere confirmación.
-- graphic_items:apsmm — Asociación de Profesionales de Salud de la Marina Mercante: Entregable aislado sin hub de proyecto profesional.
-- graphic_items:expedicion-polo — EXPEDICIÓN POLO: section=eventos → candidato fuerte a Project.type=event.
-- graphic_items:fablab — FabLab: Entregable aislado sin hub de proyecto profesional.
-- graphic_items:futulab — futulΔb: Entregable aislado sin hub de proyecto profesional.
-- graphic_items:itf — ITF Cluster: Entregable aislado sin hub de proyecto profesional.
-- graphic_items:juegos-provinciales — Juegos Provinciales Tecnológicos: section=eventos → candidato fuerte a Project.type=event.
-- graphic_items:push — PUSH Software: Entregable aislado sin hub de proyecto profesional.
-- named_list_items #10 "Instituto de Asistencia Social": Organización solo en home list; no está en brands.
-- named_list_items #11 "Labcom": Organización solo en home list; no está en brands.
-- named_list_items #13 "Ministerio de Economia, Hacienda y Finanzas": Organización solo en home list; no está en brands.
-- named_list_items #16 "Red de Clubes Digitales": Organización solo en home list; no está en brands.
-- named_list_items #17 "Secretaría de Ciencia y Tecnología de Formosa": Organización solo en home list; no está en brands.
-- named_list_items #18 "Subsecretaría de Empleo de Formosa": Organización solo en home list; no está en brands.
-- named_list_items #19 "Adapto Pay": Proyecto anterior en home sin fuente legacy directa.
-- named_list_items #2 "Asociación de Profesionales de Salud de la Marina Mercante": Organización solo en home list; no está en brands.
-- named_list_items #21 "[deferred-confidential]": Proyecto anterior en home sin fuente legacy directa.
-- named_list_items #22 "Casiba": Proyecto anterior en home sin fuente legacy directa.
-- named_list_items #23 "Clearwater": Proyecto anterior en home sin fuente legacy directa.
-- named_list_items #24 "Cloronor": Proyecto anterior en home sin fuente legacy directa.
-- named_list_items #26 "fiserv.": Proyecto anterior en home sin fuente legacy directa.
-- named_list_items #27 "[deferred-confidential]": Proyecto anterior en home sin fuente legacy directa.
-- named_list_items #29 "La Estación": Proyecto anterior en home sin fuente legacy directa.
-- named_list_items #3 "bind": Organización solo en home list; no está en brands.
-- named_list_items #30 "Mental Tech Training": Proyecto anterior en home sin fuente legacy directa.
-- named_list_items #31 "omni group": Proyecto anterior en home sin fuente legacy directa.
-- named_list_items #32 "proxi": Proyecto anterior en home sin fuente legacy directa.
-- named_list_items #33 "SIMAAS": Proyecto anterior en home sin fuente legacy directa.
-- named_list_items #34 "Templeton & Matthews": Proyecto anterior en home sin fuente legacy directa.
-- named_list_items #35 "Concitar": Proyecto actual en home sin registro ui/graphic equivalente.
-- named_list_items #36 "MICROTIME": Proyecto actual en home sin registro ui/graphic equivalente.
-- named_list_items #37 "Repuestos Carlitos": Proyecto actual en home sin registro ui/graphic equivalente.
-- named_list_items #38 "Sessions": Proyecto actual en home sin registro ui/graphic equivalente.
-- named_list_items #39 "Syllabi": Proyecto actual en home sin registro ui/graphic equivalente.
-- named_list_items #4 "Cloronor": Organización solo en home list; no está en brands.
-- named_list_items #40 "Taily": Proyecto actual en home sin registro ui/graphic equivalente.
-- named_list_items #6 "Empresa Provincial de Innovación y Conocimiento Abierto": Organización solo en home list; no está en brands.
-- named_list_items #7 "FabLab": Organización solo en home list; no está en brands.
-- named_list_items #8 "FISERV.": Organización solo en home list; no está en brands.
-- named_list_items #9 "Gobierno de Formosa": Organización solo en home list; no está en brands.
-- ui_projects:adapto-pay — Billetera Digital - ADAPTO PAY: ui_projects son candidatos fuertes a Project con area ux-ui.
-- ui_projects:aicore-inventariado — AICORE IT Specialists — inventariado: ui_projects son candidatos fuertes a Project con area ux-ui.
-- ui_projects:aml-casinos — Análisis contra el Lavado de Dinero en Casinos Digitales: ui_projects son candidatos fuertes a Project con area ux-ui.
-- ui_projects:aml-general — Análisis contra el Lavado de Dinero: ui_projects son candidatos fuertes a Project con area ux-ui.
-- ui_projects:asesor-financiero — Asesor Financiero: ui_projects son candidatos fuertes a Project con area ux-ui.
-- ui_projects:casiba — Sistema de Gestión de Unidades de Tratamiento de Aire - CASIBA: ui_projects son candidatos fuertes a Project con area ux-ui.
-- ui_projects:clearwater — Generación de Informes para compra e inversión - CLEARWATER: ui_projects son candidatos fuertes a Project con area ux-ui.
-- ui_projects:cms-portfolio — Sistema de gestión de contenido del portfolio: ui_projects son candidatos fuertes a Project con area ux-ui.
-- ui_projects:mikrobiol — Tienda de Insumos Medicinales - MIKROBIOL: ui_projects son candidatos fuertes a Project con area ux-ui.
-- ui_projects:omnigroup — Omnigroup — backoffice y tótem: ui_projects son candidatos fuertes a Project con area ux-ui.
-- ui_projects:proxi — Plataforma integral de ventas y pedidos B2B - PROXI: ui_projects son candidatos fuertes a Project con area ux-ui.
-- ui_projects:savil — Savil: ui_projects son candidatos fuertes a Project con area ux-ui.
+- MANUAL entity push
+- MANUAL entity aicore
+- MANUAL entity citf
+- MANUAL entity seyier
+- MANUAL entity apsmm
+- MANUAL entity ludica
+- MANUAL entity orbita-l-b
+- MANUAL entity adapto-pay
+- MANUAL entity clearwater
+- MANUAL entity mikrobiol
+- MANUAL entity casiba
+- MANUAL entity proxi
+- MANUAL entity omnigroup
+- MANUAL entity savil
+- MANUAL entity confidential-inventariado-client
+- MANUAL entity confidential-aml-client
+- MANUAL entity confidential-asesor-client
+- MANUAL entity confidential-sessions-client
+- MANUAL entity confidential-logistics-client
+- MANUAL entity futulab
+- MANUAL entity summit-holding
+- MANUAL entity magic-cell
+- MANUAL entity brigado-crew
+- MANUAL entity templeton-mathews
+- MANUAL entity repuestos-carlitos
+- MANUAL entity la-estacion
+- MANUAL entity epica
+- MANUAL entity gobierno-formosa
+- MANUAL entity instituto-asistencia-social
+- MANUAL entity red-clubes-digitales
+- MANUAL entity secretaria-cyt-formosa
+- MANUAL entity subsecretaria-empleo-formosa
+- MANUAL entity cloronor
+- MANUAL piece itf
+- MANUAL piece banner-cluster
+- MANUAL piece push
+- MANUAL piece banner-push
+- MANUAL piece futulab
+- MANUAL piece apsmm
+- MANUAL piece seyier
+- MANUAL piece expedicion-polo
+- MANUAL piece juegos-provinciales
+- MANUAL piece microtime
+- MANUAL piece sessions
+- MANUAL piece concitar
+- MANUAL piece taily
+- MANUAL piece twenty-twenty-two-spotify
+- MANUAL piece twenty-twenty-3
+- MANUAL piece bass2k24
+- MANUAL piece bass2025
+- MANUAL piece bass2026
+- MANUAL piece fablab
+- MANUAL piece labcom
+- MANUAL piece summit-holding
+- MANUAL piece magic-cell
+- MANUAL piece brigado-crew
+- MANUAL piece banner-samsung
+- MANUAL piece banner-alfaj-metro
+- MANUAL piece tdt
+- MANUAL piece nick-tdt-beach
+- MANUAL piece mantis
+- MANUAL piece marauda-type-logo-ayala
+- MANUAL piece banana-thinking
+- MANUAL piece demon-no-scape
+- MANUAL piece grime-marauda
+- MANUAL piece grime-pawn
+- MANUAL piece nicoide-not-impostor
+- MANUAL piece nicoide-geometry-dash
+- MANUAL piece we-are-barely-world
+- MANUAL piece sad-machine-makenix
+- MANUAL piece kadaver-jez-ebel
+- MANUAL piece ive-no-idea
+- MANUAL piece barely-alive
+- MANUAL piece speeditious
+- MANUAL piece rockcito
+- MANUAL piece cover-emoji
+- MANUAL piece reggaeton
+- MANUAL piece odyssey-plant-head
+- MANUAL piece penguin-knife
+- MANUAL piece maxi-boo
+- MANUAL piece ux-and-x
+- DISCARDED piece buhoprofe (resource-only)
+- MANUAL project aicore-inventariado (confidential)
+- MANUAL project aml-general (confidential)
+- MANUAL project aml-casinos (confidential)
+- MANUAL project adapto-pay
+- MANUAL project clearwater
+- MANUAL project mikrobiol
+- MANUAL project casiba
+- MANUAL project proxi
+- MANUAL project apsmm
+- MANUAL project omnigroup
+- MANUAL project savil
+- MANUAL project asesor-financiero (confidential)
+- MANUAL project cms-portfolio
+- MANUAL project expedicion-polo
+- MANUAL project juegos-provinciales
+- MANUAL project citf-identity-2025
+- MANUAL project seyier-visual-identity
+- MANUAL project push-visual-identity
+- MANUAL project futulab-visual-identity
+- MANUAL project bass-series
+- MANUAL project syllabi
+- MANUAL project microtime
+- MANUAL project sessions (confidential)
+- MANUAL project concitar
+- MANUAL project taily
+- MANUAL project simaas-marketplace
+- MANUAL project templeton-digital-transformation-assessment
+- MANUAL project confidential-logistics-system (confidential)
+- MANUAL project repuestos-carlitos
+- MANUAL project mental-training-tech-24-5
+- MANUAL project cloronor-trading
+- DISCARDED bind
+- DISCARDED ministerio-economia
+- DISCARDED cloronor-store
+- DISCARDED named-list-runtime
+- DISCARDED entity-labcom
+- DISCARDED entity-fablab
+- DISCARDED entity-nsxide
+- DISCARDED buhoprofe-branding-authorship
+- DISCARDED invent-citf-2026
+- DISCARDED invent-push-2027
+- DEFERRED cloronor-landing
+- DEFERRED [deferred-confidential:sha256:de76f827893]
+- DEFERRED [deferred-confidential:sha256:98fe4422550]
+- DEFERRED [deferred:[deferred]-label]
+- DEFERRED microtime-published
+- DEFERRED proxi-published
+- DEFERRED syllabi-published
+- DEFERRED microtime-ux-role
+- DEFERRED juegos-client-validation
+- DEFERRED second-simaas
+- DEFERRED simaas-aicore-later
+- DEFERRED orbita-case-by-case
+- DEFERRED logistics-personal-roles
+- RESOURCE_ONLY piece buhoprofe → project syllabi
+- source_id fingerprint avoids accidental plaintext; not a cryptographic secret store
+- MANUAL testimonial facundo → push
+- MANUAL testimonial ezequiel → aicore
+- MANUAL testimonial joaquin → ludica
+- MANUAL testimonial matias → orbita-l-b
