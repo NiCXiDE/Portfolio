@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-08-14T02:10:19.526Z",
+  "generatedAt": "2026-08-13T21:41:22.926Z",
   "mode": "dry-run",
   "source": "mysql",
   "legacyCounts": {
@@ -98,7 +98,7 @@
     {
       "sourceTable": "brands",
       "legacyId": "ludica",
-      "title": "Lúdica Tech",
+      "title": "L??dica Tech",
       "classification": "Entity candidata",
       "proposedDestination": "entities:ludica",
       "proposedRelations": [],
@@ -107,7 +107,7 @@
       "requiresHumanDecision": true,
       "observations": [
         "type sugerido: company",
-        "slug sugerido: ludica-tech",
+        "slug sugerido: l-dica-tech",
         "logo: /assets/inicio/testimonials/logos/ludica-tech-Vector.svg",
         "web: https://www.ludicatech.com.ar/",
         "relaciones legacy: 2 (named_list_items:1, testimonials:1)",
@@ -125,7 +125,7 @@
     {
       "sourceTable": "brands",
       "legacyId": "orbita-l-b",
-      "title": "Órbita LΔB",
+      "title": "??rbita L??B",
       "classification": "Entity candidata",
       "proposedDestination": "entities:orbita-l-b",
       "proposedRelations": [],
@@ -134,7 +134,7 @@
       "requiresHumanDecision": true,
       "observations": [
         "type sugerido: company",
-        "slug sugerido: orbita-l-b",
+        "slug sugerido: rbita-l-b",
         "logo: /assets/inicio/testimonials/logos/orbitalab-Vector.svg",
         "web: https://www.instagram.com/orbitalab.ar/",
         "relaciones legacy: 2 (named_list_items:1, testimonials:1)",
@@ -179,7 +179,7 @@
     {
       "sourceTable": "brands",
       "legacyId": "citf",
-      "title": "Clúster de Innovación Tecnológica Formosa",
+      "title": "Cl??ster de Innovaci??n Tecnol??gica Formosa",
       "classification": "Entity candidata",
       "proposedDestination": "entities:citf",
       "proposedRelations": [],
@@ -188,7 +188,7 @@
       "requiresHumanDecision": false,
       "observations": [
         "type sugerido: institution",
-        "slug sugerido: cluster-de-innovacion-tecnologica-formosa",
+        "slug sugerido: cl-ster-de-innovaci-n-tecnol-gica-formosa",
         "logo: /assets/grafico/logos/vector-52.svg",
         "web: —",
         "relaciones legacy: 7 (graphic_items:5, brand_manuals:1, named_list_items:1)",
@@ -233,7 +233,7 @@
     {
       "sourceTable": "ui_projects",
       "legacyId": "apsmm",
-      "title": "Sistema de gestión — APSMM",
+      "title": "Sistema de gesti??n ??? APSMM",
       "classification": "Project (ux-ui)",
       "proposedDestination": "projects:apsmm",
       "proposedRelations": [
@@ -250,7 +250,7 @@
       "confidence": "alta",
       "requiresHumanDecision": false,
       "observations": [
-        "slug: sistema-de-gestion-apsmm",
+        "slug: sistema-de-gesti-n-apsmm",
         "status: completed (Sin match en named_list; default completed para sistemas entregados.)",
         "type: custom-system",
         "area: ux-ui",
@@ -292,7 +292,7 @@
     {
       "sourceTable": "ui_projects",
       "legacyId": "aml-casinos",
-      "title": "Análisis contra el Lavado de Dinero en Casinos Digitales",
+      "title": "An??lisis contra el Lavado de Dinero en Casinos Digitales",
       "classification": "Project (ux-ui)",
       "proposedDestination": "projects:aml-casinos",
       "proposedRelations": [
@@ -309,7 +309,7 @@
       "confidence": "media",
       "requiresHumanDecision": true,
       "observations": [
-        "slug: analisis-contra-el-lavado-de-dinero-en-casinos-digitales",
+        "slug: an-lisis-contra-el-lavado-de-dinero-en-casinos-digitales",
         "status: completed (Sin match en named_list; default completed para sistemas entregados.)",
         "type: custom-system",
         "area: ux-ui",
@@ -337,7 +337,7 @@
     {
       "sourceTable": "ui_projects",
       "legacyId": "aml-general",
-      "title": "Análisis contra el Lavado de Dinero",
+      "title": "An??lisis contra el Lavado de Dinero",
       "classification": "Project (ux-ui)",
       "proposedDestination": "projects:aml-general",
       "proposedRelations": [
@@ -354,7 +354,7 @@
       "confidence": "media",
       "requiresHumanDecision": true,
       "observations": [
-        "slug: analisis-contra-el-lavado-de-dinero",
+        "slug: an-lisis-contra-el-lavado-de-dinero",
         "status: completed (Sin match en named_list; default completed para sistemas entregados.)",
         "type: custom-system",
         "area: ux-ui",
@@ -398,7 +398,7 @@
           "entityId": "aicore",
           "entityName": "AICORE IT Specialists",
           "relationRole": "collaborator",
-          "evidence": "Colaboración con @aicore - noviembre 2024",
+          "evidence": "Colaboraci??n con @aicore - noviembre 2024",
           "confidence": "alta",
           "requiresReview": true
         }
@@ -449,7 +449,7 @@
     {
       "sourceTable": "ui_projects",
       "legacyId": "clearwater",
-      "title": "Generación de Informes para compra e inversión - CLEARWATER",
+      "title": "Generaci??n de Informes para compra e inversi??n - CLEARWATER",
       "classification": "Project (ux-ui)",
       "proposedDestination": "projects:clearwater",
       "proposedRelations": [
@@ -465,7 +465,7 @@
           "entityId": "aicore",
           "entityName": "AICORE IT Specialists",
           "relationRole": "collaborator",
-          "evidence": "Colaboración con @aicore - enero 2024",
+          "evidence": "Colaboraci??n con @aicore - enero 2024",
           "confidence": "alta",
           "requiresReview": true
         }
@@ -474,7 +474,7 @@
       "confidence": "media",
       "requiresHumanDecision": true,
       "observations": [
-        "slug: generacion-de-informes-para-compra-e-inversion-clearwater",
+        "slug: generaci-n-de-informes-para-compra-e-inversi-n-clearwater",
         "status: completed (Coincide con named_list_items past_project \"Clearwater\".)",
         "type: custom-system",
         "area: ux-ui",
@@ -518,7 +518,7 @@
           "entityId": "aicore",
           "entityName": "AICORE IT Specialists",
           "relationRole": "collaborator",
-          "evidence": "Colaboración con @aicore - octubre 2024",
+          "evidence": "Colaboraci??n con @aicore - octubre 2024",
           "confidence": "alta",
           "requiresReview": true
         }
@@ -555,7 +555,7 @@
     {
       "sourceTable": "ui_projects",
       "legacyId": "casiba",
-      "title": "Sistema de Gestión de Unidades de Tratamiento de Aire - CASIBA",
+      "title": "Sistema de Gesti??n de Unidades de Tratamiento de Aire - CASIBA",
       "classification": "Project (ux-ui)",
       "proposedDestination": "projects:casiba",
       "proposedRelations": [
@@ -571,7 +571,7 @@
           "entityId": "aicore",
           "entityName": "AICORE IT Specialists",
           "relationRole": "collaborator",
-          "evidence": "Colaboración con @aicore - septiembre 2024",
+          "evidence": "Colaboraci??n con @aicore - septiembre 2024",
           "confidence": "alta",
           "requiresReview": true
         }
@@ -580,7 +580,7 @@
       "confidence": "media",
       "requiresHumanDecision": true,
       "observations": [
-        "slug: sistema-de-gestion-de-unidades-de-tratamiento-de-aire-casiba",
+        "slug: sistema-de-gesti-n-de-unidades-de-tratamiento-de-aire-casiba",
         "status: completed (Coincide con named_list_items past_project \"Casiba\".)",
         "type: custom-system",
         "area: ux-ui",
@@ -624,7 +624,7 @@
           "entityId": "aicore",
           "entityName": "AICORE IT Specialists",
           "relationRole": "collaborator",
-          "evidence": "Colaboración con @aicore - enero 2024",
+          "evidence": "Colaboraci??n con @aicore - enero 2024",
           "confidence": "alta",
           "requiresReview": true
         }
@@ -654,7 +654,7 @@
     {
       "sourceTable": "ui_projects",
       "legacyId": "cms-portfolio",
-      "title": "Sistema de gestión de contenido del portfolio",
+      "title": "Sistema de gesti??n de contenido del portfolio",
       "classification": "Project (ux-ui)",
       "proposedDestination": "projects:cms-portfolio",
       "proposedRelations": [],
@@ -662,7 +662,7 @@
       "confidence": "media",
       "requiresHumanDecision": true,
       "observations": [
-        "slug: sistema-de-gestion-de-contenido-del-portfolio",
+        "slug: sistema-de-gesti-n-de-contenido-del-portfolio",
         "status: ongoing (Categoría proyectos-personales; sin match en home lists.)",
         "type: personal",
         "area: ux-ui",
@@ -690,7 +690,7 @@
     {
       "sourceTable": "ui_projects",
       "legacyId": "omnigroup",
-      "title": "Omnigroup — backoffice y tótem",
+      "title": "Omnigroup ??? backoffice y t??tem",
       "classification": "Project (ux-ui)",
       "proposedDestination": "projects:omnigroup",
       "proposedRelations": [
@@ -707,7 +707,7 @@
       "confidence": "media",
       "requiresHumanDecision": true,
       "observations": [
-        "slug: omnigroup-backoffice-y-totem",
+        "slug: omnigroup-backoffice-y-t-tem",
         "status: archived (Preventa; probablemente no activa.)",
         "type: presale",
         "area: ux-ui",
@@ -879,7 +879,7 @@
     {
       "sourceTable": "ui_projects",
       "legacyId": "aicore-inventariado",
-      "title": "AICORE IT Specialists — inventariado",
+      "title": "AICORE IT Specialists ??? inventariado",
       "classification": "Project (ux-ui)",
       "proposedDestination": "projects:aicore-inventariado",
       "proposedRelations": [
@@ -959,7 +959,7 @@
     {
       "sourceTable": "graphic_items",
       "legacyId": "odyssey-plant-head",
-      "title": "Odyssey — plant head figure",
+      "title": "Odyssey ??? plant head figure",
       "classification": "B. Piece sin Project",
       "proposedDestination": "pieces:odyssey-plant-head",
       "proposedRelations": [],
@@ -1099,7 +1099,7 @@
     {
       "sourceTable": "graphic_items",
       "legacyId": "juegos-provinciales",
-      "title": "Juegos Provinciales Tecnológicos",
+      "title": "Juegos Provinciales Tecnol??gicos",
       "classification": "A. Project (+ Pieces)",
       "proposedDestination": "projects:juegos-provinciales",
       "proposedRelations": [
@@ -1107,7 +1107,7 @@
           "entityId": "pending-gobierno-formosa",
           "entityName": "Gobierno de Formosa",
           "relationRole": "client",
-          "evidence": "Campaña de difusión para el Gobierno de Formosa: gaming, robótica y música en vivo. Polo Científico, Tecnológico y de Innovación · 21 de junio.",
+          "evidence": "Campa??a de difusi??n para el Gobierno de Formosa: gaming, rob??tica y m??sica en vivo. Polo Cient??fico, Tecnol??gico y de Innovaci??n ?? 21 de junio.",
           "confidence": "media",
           "requiresReview": true
         }
@@ -1352,7 +1352,7 @@
       "proposedRelations": [
         {
           "entityId": "citf",
-          "entityName": "Clúster de Innovación Tecnológica Formosa",
+          "entityName": "Cl??ster de Innovaci??n Tecnol??gica Formosa",
           "relationRole": "other",
           "evidence": "graphic_items.brandId=citf",
           "confidence": "media",
@@ -1425,7 +1425,7 @@
     {
       "sourceTable": "graphic_items",
       "legacyId": "marauda-type-logo-ayala",
-      "title": "Marauda type logo — Ayala",
+      "title": "Marauda type logo ??? Ayala",
       "classification": "B. Piece sin Project",
       "proposedDestination": "pieces:marauda-type-logo-ayala",
       "proposedRelations": [],
@@ -1495,13 +1495,13 @@
     {
       "sourceTable": "graphic_items",
       "legacyId": "expedicion-polo",
-      "title": "EXPEDICIÓN POLO",
+      "title": "EXPEDICI??N POLO",
       "classification": "A. Project (+ Pieces)",
       "proposedDestination": "projects:expedicion-polo",
       "proposedRelations": [
         {
           "entityId": "citf",
-          "entityName": "Clúster de Innovación Tecnológica Formosa",
+          "entityName": "Cl??ster de Innovaci??n Tecnol??gica Formosa",
           "relationRole": "client",
           "evidence": "graphic_items.brandId=citf",
           "confidence": "media",
@@ -1727,7 +1727,7 @@
     {
       "sourceTable": "graphic_items",
       "legacyId": "demon-no-scape",
-      "title": "Demon illustration — No Scape",
+      "title": "Demon illustration ??? No Scape",
       "classification": "B. Piece sin Project",
       "proposedDestination": "pieces:demon-no-scape",
       "proposedRelations": [],
@@ -1868,7 +1868,7 @@
     {
       "sourceTable": "graphic_items",
       "legacyId": "grime-marauda",
-      "title": "Grime — Marauda",
+      "title": "Grime ??? Marauda",
       "classification": "B. Piece sin Project",
       "proposedDestination": "pieces:grime-marauda",
       "proposedRelations": [],
@@ -2008,13 +2008,13 @@
     {
       "sourceTable": "graphic_items",
       "legacyId": "futulab",
-      "title": "futulΔb",
+      "title": "futul??b",
       "classification": "B. Piece sin Project",
       "proposedDestination": "pieces:futulab",
       "proposedRelations": [
         {
           "entityId": "citf",
-          "entityName": "Clúster de Innovación Tecnológica Formosa",
+          "entityName": "Cl??ster de Innovaci??n Tecnol??gica Formosa",
           "relationRole": "other",
           "evidence": "graphic_items.brandId=citf",
           "confidence": "media",
@@ -2033,7 +2033,7 @@
         "categoría gráfica: visual-identity",
         "origin: client",
         "tags propuestos: vector",
-        "brandId=citf (Clúster de Innovación Tecnológica Formosa); considerar vincular Entity sin crear Project artificial."
+        "brandId=citf (Cl??ster de Innovaci??n Tecnol??gica Formosa); considerar vincular Entity sin crear Project artificial."
       ],
       "migrationMappings": [
         {
@@ -2053,7 +2053,7 @@
     {
       "sourceTable": "graphic_items",
       "legacyId": "grime-pawn",
-      "title": "Grime pawn — Ayala",
+      "title": "Grime pawn ??? Ayala",
       "classification": "B. Piece sin Project",
       "proposedDestination": "pieces:grime-pawn",
       "proposedRelations": [],
@@ -2129,7 +2129,7 @@
       "proposedRelations": [
         {
           "entityId": "citf",
-          "entityName": "Clúster de Innovación Tecnológica Formosa",
+          "entityName": "Cl??ster de Innovaci??n Tecnol??gica Formosa",
           "relationRole": "other",
           "evidence": "graphic_items.brandId=citf",
           "confidence": "media",
@@ -2148,7 +2148,7 @@
         "categoría gráfica: visual-identity",
         "origin: client",
         "tags propuestos: —",
-        "brandId=citf (Clúster de Innovación Tecnológica Formosa); considerar vincular Entity sin crear Project artificial."
+        "brandId=citf (Cl??ster de Innovaci??n Tecnol??gica Formosa); considerar vincular Entity sin crear Project artificial."
       ],
       "migrationMappings": [
         {
@@ -2273,7 +2273,7 @@
     {
       "sourceTable": "graphic_items",
       "legacyId": "nicoide-geometry-dash",
-      "title": "NICOIDE — Geometry Dash wordmark",
+      "title": "NICOIDE ??? Geometry Dash wordmark",
       "classification": "B. Piece sin Project",
       "proposedDestination": "pieces:nicoide-geometry-dash",
       "proposedRelations": [],
@@ -2343,7 +2343,7 @@
     {
       "sourceTable": "graphic_items",
       "legacyId": "we-are-barely-world",
-      "title": "We Are Barely Alive — Mario world parody",
+      "title": "We Are Barely Alive ??? Mario world parody",
       "classification": "B. Piece sin Project",
       "proposedDestination": "pieces:we-are-barely-world",
       "proposedRelations": [],
@@ -2553,7 +2553,7 @@
     {
       "sourceTable": "graphic_items",
       "legacyId": "apsmm",
-      "title": "Asociación de Profesionales de Salud de la Marina Mercante",
+      "title": "Asociaci??n de Profesionales de Salud de la Marina Mercante",
       "classification": "B. Piece sin Project",
       "proposedDestination": "pieces:apsmm",
       "proposedRelations": [
@@ -2674,7 +2674,7 @@
       "proposedRelations": [
         {
           "entityId": "citf",
-          "entityName": "Clúster de Innovación Tecnológica Formosa",
+          "entityName": "Cl??ster de Innovaci??n Tecnol??gica Formosa",
           "relationRole": "other",
           "evidence": "graphic_items.brandId=citf",
           "confidence": "media",
@@ -2693,7 +2693,7 @@
         "categoría gráfica: visual-identity",
         "origin: client",
         "tags propuestos: —",
-        "brandId=citf (Clúster de Innovación Tecnológica Formosa); considerar vincular Entity sin crear Project artificial."
+        "brandId=citf (Cl??ster de Innovaci??n Tecnol??gica Formosa); considerar vincular Entity sin crear Project artificial."
       ],
       "migrationMappings": [
         {
@@ -2748,7 +2748,7 @@
     {
       "sourceTable": "graphic_items",
       "legacyId": "tdt",
-      "title": "TDT — The Dream Team",
+      "title": "TDT ??? The Dream Team",
       "classification": "B. Piece sin Project",
       "proposedDestination": "pieces:tdt",
       "proposedRelations": [],
@@ -2824,7 +2824,7 @@
       "proposedRelations": [
         {
           "entityId": "citf",
-          "entityName": "Clúster de Innovación Tecnológica Formosa",
+          "entityName": "Cl??ster de Innovaci??n Tecnol??gica Formosa",
           "relationRole": "brand-owner",
           "evidence": "brand_manuals.brandId=citf",
           "confidence": "alta",
@@ -2896,8 +2896,8 @@
     },
     {
       "id": "ludica",
-      "slug": "ludica-tech",
-      "name": "Lúdica Tech",
+      "slug": "l-dica-tech",
+      "name": "L??dica Tech",
       "type": "company",
       "typeSource": "inferred",
       "logoPath": "/assets/inicio/testimonials/logos/ludica-tech-Vector.svg",
@@ -2914,8 +2914,8 @@
     },
     {
       "id": "orbita-l-b",
-      "slug": "orbita-l-b",
-      "name": "Órbita LΔB",
+      "slug": "rbita-l-b",
+      "name": "??rbita L??B",
       "type": "company",
       "typeSource": "inferred",
       "logoPath": "/assets/inicio/testimonials/logos/orbitalab-Vector.svg",
@@ -2951,8 +2951,8 @@
     },
     {
       "id": "citf",
-      "slug": "cluster-de-innovacion-tecnologica-formosa",
-      "name": "Clúster de Innovación Tecnológica Formosa",
+      "slug": "cl-ster-de-innovaci-n-tecnol-gica-formosa",
+      "name": "Cl??ster de Innovaci??n Tecnol??gica Formosa",
       "type": "institution",
       "typeSource": "known",
       "logoPath": "/assets/grafico/logos/vector-52.svg",
@@ -2992,7 +2992,7 @@
     {
       "id": "aicore-inventariado",
       "slug": "aicore-it-specialists-inventariado",
-      "name": "AICORE IT Specialists — inventariado",
+      "name": "AICORE IT Specialists ??? inventariado",
       "areas": [
         "ux-ui"
       ],
@@ -3028,8 +3028,8 @@
     },
     {
       "id": "aml-general",
-      "slug": "analisis-contra-el-lavado-de-dinero",
-      "name": "Análisis contra el Lavado de Dinero",
+      "slug": "an-lisis-contra-el-lavado-de-dinero",
+      "name": "An??lisis contra el Lavado de Dinero",
       "areas": [
         "ux-ui"
       ],
@@ -3065,8 +3065,8 @@
     },
     {
       "id": "aml-casinos",
-      "slug": "analisis-contra-el-lavado-de-dinero-en-casinos-digitales",
-      "name": "Análisis contra el Lavado de Dinero en Casinos Digitales",
+      "slug": "an-lisis-contra-el-lavado-de-dinero-en-casinos-digitales",
+      "name": "An??lisis contra el Lavado de Dinero en Casinos Digitales",
       "areas": [
         "ux-ui"
       ],
@@ -3163,7 +3163,7 @@
           "entityId": "aicore",
           "entityName": "AICORE IT Specialists",
           "relationRole": "collaborator",
-          "evidence": "Colaboración con @aicore - noviembre 2024",
+          "evidence": "Colaboraci??n con @aicore - noviembre 2024",
           "confidence": "alta",
           "requiresReview": true
         }
@@ -3199,8 +3199,8 @@
     },
     {
       "id": "expedicion-polo",
-      "slug": "expedicion-polo",
-      "name": "EXPEDICIÓN POLO",
+      "slug": "expedici-n-polo",
+      "name": "EXPEDICI??N POLO",
       "areas": [
         "graphic"
       ],
@@ -3210,7 +3210,7 @@
       "entities": [
         {
           "entityId": "citf",
-          "entityName": "Clúster de Innovación Tecnológica Formosa",
+          "entityName": "Cl??ster de Innovaci??n Tecnol??gica Formosa",
           "relationRole": "client",
           "evidence": "graphic_items.brandId=citf",
           "confidence": "media",
@@ -3232,8 +3232,8 @@
     },
     {
       "id": "clearwater",
-      "slug": "generacion-de-informes-para-compra-e-inversion-clearwater",
-      "name": "Generación de Informes para compra e inversión - CLEARWATER",
+      "slug": "generaci-n-de-informes-para-compra-e-inversi-n-clearwater",
+      "name": "Generaci??n de Informes para compra e inversi??n - CLEARWATER",
       "areas": [
         "ux-ui"
       ],
@@ -3253,7 +3253,7 @@
           "entityId": "aicore",
           "entityName": "AICORE IT Specialists",
           "relationRole": "collaborator",
-          "evidence": "Colaboración con @aicore - enero 2024",
+          "evidence": "Colaboraci??n con @aicore - enero 2024",
           "confidence": "alta",
           "requiresReview": true
         }
@@ -3277,8 +3277,8 @@
     },
     {
       "id": "juegos-provinciales",
-      "slug": "juegos-provinciales-tecnologicos",
-      "name": "Juegos Provinciales Tecnológicos",
+      "slug": "juegos-provinciales-tecnol-gicos",
+      "name": "Juegos Provinciales Tecnol??gicos",
       "areas": [
         "graphic"
       ],
@@ -3290,7 +3290,7 @@
           "entityId": "pending-gobierno-formosa",
           "entityName": "Gobierno de Formosa",
           "relationRole": "client",
-          "evidence": "Campaña de difusión para el Gobierno de Formosa: gaming, robótica y música en vivo. Polo Científico, Tecnológico y de Innovación · 21 de junio.",
+          "evidence": "Campa??a de difusi??n para el Gobierno de Formosa: gaming, rob??tica y m??sica en vivo. Polo Cient??fico, Tecnol??gico y de Innovaci??n ?? 21 de junio.",
           "confidence": "media",
           "requiresReview": true
         }
@@ -3321,8 +3321,8 @@
     },
     {
       "id": "omnigroup",
-      "slug": "omnigroup-backoffice-y-totem",
-      "name": "Omnigroup — backoffice y tótem",
+      "slug": "omnigroup-backoffice-y-t-tem",
+      "name": "Omnigroup ??? backoffice y t??tem",
       "areas": [
         "ux-ui"
       ],
@@ -3409,7 +3409,7 @@
           "entityId": "aicore",
           "entityName": "AICORE IT Specialists",
           "relationRole": "collaborator",
-          "evidence": "Colaboración con @aicore - enero 2024",
+          "evidence": "Colaboraci??n con @aicore - enero 2024",
           "confidence": "alta",
           "requiresReview": true
         }
@@ -3510,8 +3510,8 @@
     },
     {
       "id": "apsmm",
-      "slug": "sistema-de-gestion-apsmm",
-      "name": "Sistema de gestión — APSMM",
+      "slug": "sistema-de-gesti-n-apsmm",
+      "name": "Sistema de gesti??n ??? APSMM",
       "areas": [
         "ux-ui"
       ],
@@ -3561,8 +3561,8 @@
     },
     {
       "id": "cms-portfolio",
-      "slug": "sistema-de-gestion-de-contenido-del-portfolio",
-      "name": "Sistema de gestión de contenido del portfolio",
+      "slug": "sistema-de-gesti-n-de-contenido-del-portfolio",
+      "name": "Sistema de gesti??n de contenido del portfolio",
       "areas": [
         "ux-ui"
       ],
@@ -3589,8 +3589,8 @@
     },
     {
       "id": "casiba",
-      "slug": "sistema-de-gestion-de-unidades-de-tratamiento-de-aire-casiba",
-      "name": "Sistema de Gestión de Unidades de Tratamiento de Aire - CASIBA",
+      "slug": "sistema-de-gesti-n-de-unidades-de-tratamiento-de-aire-casiba",
+      "name": "Sistema de Gesti??n de Unidades de Tratamiento de Aire - CASIBA",
       "areas": [
         "ux-ui"
       ],
@@ -3610,7 +3610,7 @@
           "entityId": "aicore",
           "entityName": "AICORE IT Specialists",
           "relationRole": "collaborator",
-          "evidence": "Colaboración con @aicore - septiembre 2024",
+          "evidence": "Colaboraci??n con @aicore - septiembre 2024",
           "confidence": "alta",
           "requiresReview": true
         }
@@ -3655,7 +3655,7 @@
           "entityId": "aicore",
           "entityName": "AICORE IT Specialists",
           "relationRole": "collaborator",
-          "evidence": "Colaboración con @aicore - octubre 2024",
+          "evidence": "Colaboraci??n con @aicore - octubre 2024",
           "confidence": "alta",
           "requiresReview": true
         }
@@ -3698,7 +3698,7 @@
     },
     {
       "id": "odyssey-plant-head",
-      "title": "Odyssey — plant head figure",
+      "title": "Odyssey ??? plant head figure",
       "category": "illustration-artwork",
       "origin": "other",
       "tags": [
@@ -3796,7 +3796,7 @@
     },
     {
       "id": "marauda-type-logo-ayala",
-      "title": "Marauda type logo — Ayala",
+      "title": "Marauda type logo ??? Ayala",
       "category": "illustration-artwork",
       "origin": "personal",
       "tags": [
@@ -3915,7 +3915,7 @@
     },
     {
       "id": "demon-no-scape",
-      "title": "Demon illustration — No Scape",
+      "title": "Demon illustration ??? No Scape",
       "category": "illustration-artwork",
       "origin": "personal",
       "tags": [],
@@ -3979,7 +3979,7 @@
     },
     {
       "id": "grime-marauda",
-      "title": "Grime — Marauda",
+      "title": "Grime ??? Marauda",
       "category": "illustration-artwork",
       "origin": "personal",
       "tags": [
@@ -4047,7 +4047,7 @@
     },
     {
       "id": "futulab",
-      "title": "futulΔb",
+      "title": "futul??b",
       "category": "visual-identity",
       "origin": "client",
       "tags": [
@@ -4064,7 +4064,7 @@
     },
     {
       "id": "grime-pawn",
-      "title": "Grime pawn — Ayala",
+      "title": "Grime pawn ??? Ayala",
       "category": "illustration-artwork",
       "origin": "personal",
       "tags": [
@@ -4167,7 +4167,7 @@
     },
     {
       "id": "nicoide-geometry-dash",
-      "title": "NICOIDE — Geometry Dash wordmark",
+      "title": "NICOIDE ??? Geometry Dash wordmark",
       "category": "illustration-artwork",
       "origin": "personal",
       "tags": [
@@ -4199,7 +4199,7 @@
     },
     {
       "id": "we-are-barely-world",
-      "title": "We Are Barely Alive — Mario world parody",
+      "title": "We Are Barely Alive ??? Mario world parody",
       "category": "illustration-artwork",
       "origin": "personal",
       "tags": [
@@ -4299,7 +4299,7 @@
     },
     {
       "id": "apsmm",
-      "title": "Asociación de Profesionales de Salud de la Marina Mercante",
+      "title": "Asociaci??n de Profesionales de Salud de la Marina Mercante",
       "category": "visual-identity",
       "origin": "client",
       "tags": [],
@@ -4379,7 +4379,7 @@
     },
     {
       "id": "tdt",
-      "title": "TDT — The Dream Team",
+      "title": "TDT ??? The Dream Team",
       "category": "visual-identity",
       "origin": "client",
       "tags": [
@@ -4415,7 +4415,7 @@
   "piecesInProjects": [
     {
       "id": "juegos-provinciales-cover",
-      "title": "Juegos Provinciales Tecnológicos — portada",
+      "title": "Juegos Provinciales Tecnol??gicos — portada",
       "category": "campaigns-communication",
       "origin": "client",
       "projectId": "juegos-provinciales",
@@ -4438,7 +4438,7 @@
     },
     {
       "id": "juegos-provinciales-deliverable-1",
-      "title": "Juegos Provinciales Tecnológicos — entregable 1",
+      "title": "Juegos Provinciales Tecnol??gicos — entregable 1",
       "category": "campaigns-communication",
       "origin": "client",
       "projectId": "juegos-provinciales",
@@ -4456,7 +4456,7 @@
     },
     {
       "id": "juegos-provinciales-deliverable-2",
-      "title": "Juegos Provinciales Tecnológicos — entregable 2",
+      "title": "Juegos Provinciales Tecnol??gicos — entregable 2",
       "category": "campaigns-communication",
       "origin": "client",
       "projectId": "juegos-provinciales",
@@ -4474,7 +4474,7 @@
     },
     {
       "id": "juegos-provinciales-deliverable-3",
-      "title": "Juegos Provinciales Tecnológicos — entregable 3",
+      "title": "Juegos Provinciales Tecnol??gicos — entregable 3",
       "category": "campaigns-communication",
       "origin": "client",
       "projectId": "juegos-provinciales",
@@ -4492,7 +4492,7 @@
     },
     {
       "id": "juegos-provinciales-deliverable-4",
-      "title": "Juegos Provinciales Tecnológicos — entregable 4",
+      "title": "Juegos Provinciales Tecnol??gicos — entregable 4",
       "category": "campaigns-communication",
       "origin": "client",
       "projectId": "juegos-provinciales",
@@ -4510,7 +4510,7 @@
     },
     {
       "id": "juegos-provinciales-deliverable-5",
-      "title": "Juegos Provinciales Tecnológicos — entregable 5",
+      "title": "Juegos Provinciales Tecnol??gicos — entregable 5",
       "category": "campaigns-communication",
       "origin": "client",
       "projectId": "juegos-provinciales",
@@ -4528,7 +4528,7 @@
     },
     {
       "id": "juegos-provinciales-deliverable-6",
-      "title": "Juegos Provinciales Tecnológicos — entregable 6",
+      "title": "Juegos Provinciales Tecnol??gicos — entregable 6",
       "category": "campaigns-communication",
       "origin": "client",
       "projectId": "juegos-provinciales",
@@ -4546,7 +4546,7 @@
     },
     {
       "id": "juegos-provinciales-deliverable-7",
-      "title": "Juegos Provinciales Tecnológicos — entregable 7",
+      "title": "Juegos Provinciales Tecnol??gicos — entregable 7",
       "category": "campaigns-communication",
       "origin": "client",
       "projectId": "juegos-provinciales",
@@ -4564,7 +4564,7 @@
     },
     {
       "id": "juegos-provinciales-deliverable-8",
-      "title": "Juegos Provinciales Tecnológicos — entregable 8",
+      "title": "Juegos Provinciales Tecnol??gicos — entregable 8",
       "category": "campaigns-communication",
       "origin": "client",
       "projectId": "juegos-provinciales",
@@ -4582,7 +4582,7 @@
     },
     {
       "id": "juegos-provinciales-deliverable-9",
-      "title": "Juegos Provinciales Tecnológicos — entregable 9",
+      "title": "Juegos Provinciales Tecnol??gicos — entregable 9",
       "category": "campaigns-communication",
       "origin": "client",
       "projectId": "juegos-provinciales",
@@ -4600,7 +4600,7 @@
     },
     {
       "id": "juegos-provinciales-deliverable-10",
-      "title": "Juegos Provinciales Tecnológicos — entregable 10",
+      "title": "Juegos Provinciales Tecnol??gicos — entregable 10",
       "category": "campaigns-communication",
       "origin": "client",
       "projectId": "juegos-provinciales",
@@ -4618,7 +4618,7 @@
     },
     {
       "id": "juegos-provinciales-deliverable-11",
-      "title": "Juegos Provinciales Tecnológicos — entregable 11",
+      "title": "Juegos Provinciales Tecnol??gicos — entregable 11",
       "category": "campaigns-communication",
       "origin": "client",
       "projectId": "juegos-provinciales",
@@ -4708,7 +4708,7 @@
     },
     {
       "id": "expedicion-polo-cover",
-      "title": "EXPEDICIÓN POLO — portada",
+      "title": "EXPEDICI??N POLO — portada",
       "category": "campaigns-communication",
       "origin": "client",
       "projectId": "expedicion-polo",
@@ -4747,13 +4747,13 @@
       "entityId": "aicore",
       "entityName": "AICORE IT Specialists",
       "suggestedRole": "collaborator",
-      "legacyEvidence": "Colaboración con @aicore - noviembre 2024",
+      "legacyEvidence": "Colaboraci??n con @aicore - noviembre 2024",
       "confidence": "alta",
       "requiresReview": true
     },
     {
       "projectId": "clearwater",
-      "projectName": "Generación de Informes para compra e inversión - CLEARWATER",
+      "projectName": "Generaci??n de Informes para compra e inversi??n - CLEARWATER",
       "entityId": "pending-entity",
       "entityName": "CLEARWATER",
       "suggestedRole": "client",
@@ -4763,11 +4763,11 @@
     },
     {
       "projectId": "clearwater",
-      "projectName": "Generación de Informes para compra e inversión - CLEARWATER",
+      "projectName": "Generaci??n de Informes para compra e inversi??n - CLEARWATER",
       "entityId": "aicore",
       "entityName": "AICORE IT Specialists",
       "suggestedRole": "collaborator",
-      "legacyEvidence": "Colaboración con @aicore - enero 2024",
+      "legacyEvidence": "Colaboraci??n con @aicore - enero 2024",
       "confidence": "alta",
       "requiresReview": true
     },
@@ -4787,13 +4787,13 @@
       "entityId": "aicore",
       "entityName": "AICORE IT Specialists",
       "suggestedRole": "collaborator",
-      "legacyEvidence": "Colaboración con @aicore - octubre 2024",
+      "legacyEvidence": "Colaboraci??n con @aicore - octubre 2024",
       "confidence": "alta",
       "requiresReview": true
     },
     {
       "projectId": "casiba",
-      "projectName": "Sistema de Gestión de Unidades de Tratamiento de Aire - CASIBA",
+      "projectName": "Sistema de Gesti??n de Unidades de Tratamiento de Aire - CASIBA",
       "entityId": "pending-entity",
       "entityName": "CASIBA",
       "suggestedRole": "client",
@@ -4803,11 +4803,11 @@
     },
     {
       "projectId": "casiba",
-      "projectName": "Sistema de Gestión de Unidades de Tratamiento de Aire - CASIBA",
+      "projectName": "Sistema de Gesti??n de Unidades de Tratamiento de Aire - CASIBA",
       "entityId": "aicore",
       "entityName": "AICORE IT Specialists",
       "suggestedRole": "collaborator",
-      "legacyEvidence": "Colaboración con @aicore - septiembre 2024",
+      "legacyEvidence": "Colaboraci??n con @aicore - septiembre 2024",
       "confidence": "alta",
       "requiresReview": true
     },
@@ -4827,13 +4827,13 @@
       "entityId": "aicore",
       "entityName": "AICORE IT Specialists",
       "suggestedRole": "collaborator",
-      "legacyEvidence": "Colaboración con @aicore - enero 2024",
+      "legacyEvidence": "Colaboraci??n con @aicore - enero 2024",
       "confidence": "alta",
       "requiresReview": true
     },
     {
       "projectId": "omnigroup",
-      "projectName": "Omnigroup — backoffice y tótem",
+      "projectName": "Omnigroup ??? backoffice y t??tem",
       "entityId": "pending-entity",
       "entityName": "Omnigroup",
       "suggestedRole": "client",
@@ -4853,19 +4853,19 @@
     },
     {
       "projectId": "juegos-provinciales",
-      "projectName": "Juegos Provinciales Tecnológicos",
+      "projectName": "Juegos Provinciales Tecnol??gicos",
       "entityId": "pending-gobierno-formosa",
       "entityName": "Gobierno de Formosa",
       "suggestedRole": "client",
-      "legacyEvidence": "Campaña de difusión para el Gobierno de Formosa: gaming, robótica y música en vivo. Polo Científico, Tecnológico y de Innovación · 21 de junio.",
+      "legacyEvidence": "Campa??a de difusi??n para el Gobierno de Formosa: gaming, rob??tica y m??sica en vivo. Polo Cient??fico, Tecnol??gico y de Innovaci??n ?? 21 de junio.",
       "confidence": "media",
       "requiresReview": true
     },
     {
       "projectId": "expedicion-polo",
-      "projectName": "EXPEDICIÓN POLO",
+      "projectName": "EXPEDICI??N POLO",
       "entityId": "citf",
-      "entityName": "Clúster de Innovación Tecnológica Formosa",
+      "entityName": "Cl??ster de Innovaci??n Tecnol??gica Formosa",
       "suggestedRole": "client",
       "legacyEvidence": "graphic_items.brandId=citf",
       "confidence": "media",
@@ -5002,7 +5002,7 @@
     {
       "id": 2,
       "kind": "company",
-      "label": "Asociación de Profesionales de Salud de la Marina Mercante",
+      "label": "Asociaci??n de Profesionales de Salud de la Marina Mercante",
       "brandId": null,
       "classification": "home_text_only",
       "proposedTarget": "nueva Entity o texto",
@@ -5122,7 +5122,7 @@
     {
       "id": 5,
       "kind": "company",
-      "label": "Clúster de Innovación Tecnológica Formosa",
+      "label": "Cl??ster de Innovaci??n Tecnol??gica Formosa",
       "brandId": "citf",
       "classification": "entity_existing",
       "proposedTarget": "entities:citf",
@@ -5170,7 +5170,7 @@
     {
       "id": 6,
       "kind": "company",
-      "label": "Empresa Provincial de Innovación y Conocimiento Abierto",
+      "label": "Empresa Provincial de Innovaci??n y Conocimiento Abierto",
       "brandId": null,
       "classification": "home_text_only",
       "proposedTarget": "nueva Entity o texto",
@@ -5182,7 +5182,7 @@
     {
       "id": 25,
       "kind": "past_project",
-      "label": "EXPEDICIÓN POLO",
+      "label": "EXPEDICI??N POLO",
       "brandId": null,
       "classification": "project_existing",
       "proposedTarget": "projects:expedicion-polo",
@@ -5266,7 +5266,7 @@
     {
       "id": 28,
       "kind": "past_project",
-      "label": "Juegos Provinciales Tecnológicos",
+      "label": "Juegos Provinciales Tecnol??gicos",
       "brandId": null,
       "classification": "project_existing",
       "proposedTarget": "projects:juegos-provinciales",
@@ -5278,10 +5278,10 @@
     {
       "id": 29,
       "kind": "past_project",
-      "label": "La Estación",
+      "label": "La Estaci??n",
       "brandId": null,
       "classification": "project_candidate",
-      "proposedTarget": "projects:la-estacion (nuevo?)",
+      "proposedTarget": "projects:la-estaci-n (nuevo?)",
       "homeReplacement": "Project.showOnHome + status=completed",
       "confidence": "media",
       "requiresHumanDecision": true,
@@ -5314,7 +5314,7 @@
     {
       "id": 12,
       "kind": "company",
-      "label": "Lúdica Tech",
+      "label": "L??dica Tech",
       "brandId": "ludica",
       "classification": "entity_existing",
       "proposedTarget": "entities:ludica",
@@ -5362,7 +5362,7 @@
     {
       "id": 14,
       "kind": "company",
-      "label": "Órbita LΔB",
+      "label": "??rbita L??B",
       "brandId": "orbita-l-b",
       "classification": "entity_existing",
       "proposedTarget": "entities:orbita-l-b",
@@ -5422,7 +5422,7 @@
     {
       "id": 17,
       "kind": "company",
-      "label": "Secretaría de Ciencia y Tecnología de Formosa",
+      "label": "Secretar??a de Ciencia y Tecnolog??a de Formosa",
       "brandId": null,
       "classification": "home_text_only",
       "proposedTarget": "nueva Entity o texto",
@@ -5434,7 +5434,7 @@
     {
       "id": 18,
       "kind": "company",
-      "label": "Subsecretaría de Empleo de Formosa",
+      "label": "Subsecretar??a de Empleo de Formosa",
       "brandId": null,
       "classification": "home_text_only",
       "proposedTarget": "nueva Entity o texto",
@@ -5481,9 +5481,9 @@
     },
     {
       "id": "joaquin",
-      "authorName": "Amarilla Joaquín",
+      "authorName": "Amarilla Joaqu??n",
       "proposedEntityId": "ludica",
-      "proposedEntityName": "Lúdica Tech",
+      "proposedEntityName": "L??dica Tech",
       "redundantAfterLink": [
         "company_brand_id (reemplazado por entity_id)",
         "company_name (si coincide con Entity.name)"
@@ -5498,9 +5498,9 @@
     },
     {
       "id": "matias",
-      "authorName": "Mendoza Matías",
+      "authorName": "Mendoza Mat??as",
       "proposedEntityId": "orbita-l-b",
-      "proposedEntityName": "Órbita LΔB",
+      "proposedEntityName": "??rbita L??B",
       "redundantAfterLink": [
         "company_brand_id (reemplazado por entity_id)",
         "company_name (si coincide con Entity.name)"
@@ -5554,50 +5554,50 @@
     "baja": 0
   },
   "humanDecisions": [
+    "Entity \"??rbita L??B\" (orbita-l-b): confirmar type=company",
     "Entity \"APSMM\" (apsmm): confirmar type=association",
-    "Entity \"Lúdica Tech\" (ludica): confirmar type=company",
-    "Entity \"Órbita LΔB\" (orbita-l-b): confirmar type=company",
+    "Entity \"L??dica Tech\" (ludica): confirmar type=company",
     "Relación Billetera Digital - ADAPTO PAY ↔ ADAPTO PAY: rol client (ui_projects.client=\"ADAPTO PAY\" (cliente final))",
-    "Relación Billetera Digital - ADAPTO PAY ↔ AICORE IT Specialists: rol collaborator (Colaboración con @aicore - noviembre 2024)",
-    "Relación EXPEDICIÓN POLO ↔ Clúster de Innovación Tecnológica Formosa: rol client (graphic_items.brandId=citf)",
-    "Relación Generación de Informes para compra e inversión - CLEARWATER ↔ AICORE IT Specialists: rol collaborator (Colaboración con @aicore - enero 2024)",
-    "Relación Generación de Informes para compra e inversión - CLEARWATER ↔ CLEARWATER: rol client (ui_projects.client=\"CLEARWATER\" (cliente final))",
-    "Relación Juegos Provinciales Tecnológicos ↔ Gobierno de Formosa: rol client (Campaña de difusión para el Gobierno de Formosa: gaming, robótica y música en vivo. Polo Científico, Tecnológico y de Innovación · 21 de junio.)",
-    "Relación Omnigroup — backoffice y tótem ↔ Omnigroup: rol client (ui_projects.client=\"Omnigroup\")",
-    "Relación Plataforma integral de ventas y pedidos B2B - PROXI ↔ AICORE IT Specialists: rol collaborator (Colaboración con @aicore - enero 2024)",
+    "Relación Billetera Digital - ADAPTO PAY ↔ AICORE IT Specialists: rol collaborator (Colaboraci??n con @aicore - noviembre 2024)",
+    "Relación EXPEDICI??N POLO ↔ Cl??ster de Innovaci??n Tecnol??gica Formosa: rol client (graphic_items.brandId=citf)",
+    "Relación Generaci??n de Informes para compra e inversi??n - CLEARWATER ↔ AICORE IT Specialists: rol collaborator (Colaboraci??n con @aicore - enero 2024)",
+    "Relación Generaci??n de Informes para compra e inversi??n - CLEARWATER ↔ CLEARWATER: rol client (ui_projects.client=\"CLEARWATER\" (cliente final))",
+    "Relación Juegos Provinciales Tecnol??gicos ↔ Gobierno de Formosa: rol client (Campa??a de difusi??n para el Gobierno de Formosa: gaming, rob??tica y m??sica en vivo. Polo Cient??fico, Tecnol??gico y de Innovaci??n ?? 21 de junio.)",
+    "Relación Omnigroup ??? backoffice y t??tem ↔ Omnigroup: rol client (ui_projects.client=\"Omnigroup\")",
+    "Relación Plataforma integral de ventas y pedidos B2B - PROXI ↔ AICORE IT Specialists: rol collaborator (Colaboraci??n con @aicore - enero 2024)",
     "Relación Plataforma integral de ventas y pedidos B2B - PROXI ↔ PROXI: rol client (ui_projects.client=\"PROXI\" (cliente final))",
     "Relación Savil ↔ Savil: rol client (ui_projects.client=\"Savil\")",
-    "Relación Sistema de Gestión de Unidades de Tratamiento de Aire - CASIBA ↔ AICORE IT Specialists: rol collaborator (Colaboración con @aicore - septiembre 2024)",
-    "Relación Sistema de Gestión de Unidades de Tratamiento de Aire - CASIBA ↔ CASIBA: rol client (ui_projects.client=\"CASIBA\" (cliente final))",
-    "Relación Tienda de Insumos Medicinales - MIKROBIOL ↔ AICORE IT Specialists: rol collaborator (Colaboración con @aicore - octubre 2024)",
+    "Relación Sistema de Gesti??n de Unidades de Tratamiento de Aire - CASIBA ↔ AICORE IT Specialists: rol collaborator (Colaboraci??n con @aicore - septiembre 2024)",
+    "Relación Sistema de Gesti??n de Unidades de Tratamiento de Aire - CASIBA ↔ CASIBA: rol client (ui_projects.client=\"CASIBA\" (cliente final))",
+    "Relación Tienda de Insumos Medicinales - MIKROBIOL ↔ AICORE IT Specialists: rol collaborator (Colaboraci??n con @aicore - octubre 2024)",
     "Relación Tienda de Insumos Medicinales - MIKROBIOL ↔ MIKROBIOL: rol client (ui_projects.client=\"MIKROBIOL\" (cliente final))",
     "brand_manual citf: elegir alternativa B (Permite distinguir manuales por año (2025 vs futuro 2026) sin inventar datos del 2026.)",
     "brand_manuals:citf — Manual de Marca 2025 CITF: Permite distinguir manuales por año (2025 vs futuro 2026) sin inventar datos del 2026.",
     "brands:apsmm — APSMM: Nombre sugiere asociación; no hay decisión explícita registrada.",
-    "brands:ludica — Lúdica Tech: Nombre/sitio sugieren empresa; requiere confirmación.",
-    "brands:orbita-l-b — Órbita LΔB: Nombre/sitio sugieren empresa; requiere confirmación.",
-    "graphic_items:apsmm — Asociación de Profesionales de Salud de la Marina Mercante: Entregable aislado sin hub de proyecto profesional.",
-    "graphic_items:expedicion-polo — EXPEDICIÓN POLO: section=eventos → candidato fuerte a Project.type=event.",
+    "brands:ludica — L??dica Tech: Nombre/sitio sugieren empresa; requiere confirmación.",
+    "brands:orbita-l-b — ??rbita L??B: Nombre/sitio sugieren empresa; requiere confirmación.",
+    "graphic_items:apsmm — Asociaci??n de Profesionales de Salud de la Marina Mercante: Entregable aislado sin hub de proyecto profesional.",
+    "graphic_items:expedicion-polo — EXPEDICI??N POLO: section=eventos → candidato fuerte a Project.type=event.",
     "graphic_items:fablab — FabLab: Entregable aislado sin hub de proyecto profesional.",
-    "graphic_items:futulab — futulΔb: Entregable aislado sin hub de proyecto profesional.",
+    "graphic_items:futulab — futul??b: Entregable aislado sin hub de proyecto profesional.",
     "graphic_items:itf — ITF Cluster: Entregable aislado sin hub de proyecto profesional.",
-    "graphic_items:juegos-provinciales — Juegos Provinciales Tecnológicos: section=eventos → candidato fuerte a Project.type=event.",
+    "graphic_items:juegos-provinciales — Juegos Provinciales Tecnol??gicos: section=eventos → candidato fuerte a Project.type=event.",
     "graphic_items:push — PUSH Software: Entregable aislado sin hub de proyecto profesional.",
     "named_list_items #10 \"Instituto de Asistencia Social\": Organización solo en home list; no está en brands.",
     "named_list_items #11 \"Labcom\": Organización solo en home list; no está en brands.",
     "named_list_items #13 \"Ministerio de Economia, Hacienda y Finanzas\": Organización solo en home list; no está en brands.",
     "named_list_items #16 \"Red de Clubes Digitales\": Organización solo en home list; no está en brands.",
-    "named_list_items #17 \"Secretaría de Ciencia y Tecnología de Formosa\": Organización solo en home list; no está en brands.",
-    "named_list_items #18 \"Subsecretaría de Empleo de Formosa\": Organización solo en home list; no está en brands.",
+    "named_list_items #17 \"Secretar??a de Ciencia y Tecnolog??a de Formosa\": Organización solo en home list; no está en brands.",
+    "named_list_items #18 \"Subsecretar??a de Empleo de Formosa\": Organización solo en home list; no está en brands.",
     "named_list_items #19 \"Adapto Pay\": Proyecto anterior en home sin fuente legacy directa.",
-    "named_list_items #2 \"Asociación de Profesionales de Salud de la Marina Mercante\": Organización solo en home list; no está en brands.",
+    "named_list_items #2 \"Asociaci??n de Profesionales de Salud de la Marina Mercante\": Organización solo en home list; no está en brands.",
     "named_list_items #21 \"Athenas\": Proyecto anterior en home sin fuente legacy directa.",
     "named_list_items #22 \"Casiba\": Proyecto anterior en home sin fuente legacy directa.",
     "named_list_items #23 \"Clearwater\": Proyecto anterior en home sin fuente legacy directa.",
     "named_list_items #24 \"Cloronor\": Proyecto anterior en home sin fuente legacy directa.",
     "named_list_items #26 \"fiserv.\": Proyecto anterior en home sin fuente legacy directa.",
     "named_list_items #27 \"Inspector\": Proyecto anterior en home sin fuente legacy directa.",
-    "named_list_items #29 \"La Estación\": Proyecto anterior en home sin fuente legacy directa.",
+    "named_list_items #29 \"La Estaci??n\": Proyecto anterior en home sin fuente legacy directa.",
     "named_list_items #3 \"bind\": Organización solo en home list; no está en brands.",
     "named_list_items #30 \"Mental Tech Training\": Proyecto anterior en home sin fuente legacy directa.",
     "named_list_items #31 \"omni group\": Proyecto anterior en home sin fuente legacy directa.",
@@ -5611,20 +5611,20 @@
     "named_list_items #39 \"Syllabi\": Proyecto actual en home sin registro ui/graphic equivalente.",
     "named_list_items #4 \"Cloronor\": Organización solo en home list; no está en brands.",
     "named_list_items #40 \"Taily\": Proyecto actual en home sin registro ui/graphic equivalente.",
-    "named_list_items #6 \"Empresa Provincial de Innovación y Conocimiento Abierto\": Organización solo en home list; no está en brands.",
+    "named_list_items #6 \"Empresa Provincial de Innovaci??n y Conocimiento Abierto\": Organización solo en home list; no está en brands.",
     "named_list_items #7 \"FabLab\": Organización solo en home list; no está en brands.",
     "named_list_items #8 \"FISERV.\": Organización solo en home list; no está en brands.",
     "named_list_items #9 \"Gobierno de Formosa\": Organización solo en home list; no está en brands.",
     "ui_projects:adapto-pay — Billetera Digital - ADAPTO PAY: ui_projects son candidatos fuertes a Project con area ux-ui.",
-    "ui_projects:aicore-inventariado — AICORE IT Specialists — inventariado: ui_projects son candidatos fuertes a Project con area ux-ui.",
-    "ui_projects:aml-casinos — Análisis contra el Lavado de Dinero en Casinos Digitales: ui_projects son candidatos fuertes a Project con area ux-ui.",
-    "ui_projects:aml-general — Análisis contra el Lavado de Dinero: ui_projects son candidatos fuertes a Project con area ux-ui.",
+    "ui_projects:aicore-inventariado — AICORE IT Specialists ??? inventariado: ui_projects son candidatos fuertes a Project con area ux-ui.",
+    "ui_projects:aml-casinos — An??lisis contra el Lavado de Dinero en Casinos Digitales: ui_projects son candidatos fuertes a Project con area ux-ui.",
+    "ui_projects:aml-general — An??lisis contra el Lavado de Dinero: ui_projects son candidatos fuertes a Project con area ux-ui.",
     "ui_projects:asesor-financiero — Asesor Financiero: ui_projects son candidatos fuertes a Project con area ux-ui.",
-    "ui_projects:casiba — Sistema de Gestión de Unidades de Tratamiento de Aire - CASIBA: ui_projects son candidatos fuertes a Project con area ux-ui.",
-    "ui_projects:clearwater — Generación de Informes para compra e inversión - CLEARWATER: ui_projects son candidatos fuertes a Project con area ux-ui.",
-    "ui_projects:cms-portfolio — Sistema de gestión de contenido del portfolio: ui_projects son candidatos fuertes a Project con area ux-ui.",
+    "ui_projects:casiba — Sistema de Gesti??n de Unidades de Tratamiento de Aire - CASIBA: ui_projects son candidatos fuertes a Project con area ux-ui.",
+    "ui_projects:clearwater — Generaci??n de Informes para compra e inversi??n - CLEARWATER: ui_projects son candidatos fuertes a Project con area ux-ui.",
+    "ui_projects:cms-portfolio — Sistema de gesti??n de contenido del portfolio: ui_projects son candidatos fuertes a Project con area ux-ui.",
     "ui_projects:mikrobiol — Tienda de Insumos Medicinales - MIKROBIOL: ui_projects son candidatos fuertes a Project con area ux-ui.",
-    "ui_projects:omnigroup — Omnigroup — backoffice y tótem: ui_projects son candidatos fuertes a Project con area ux-ui.",
+    "ui_projects:omnigroup — Omnigroup ??? backoffice y t??tem: ui_projects son candidatos fuertes a Project con area ux-ui.",
     "ui_projects:proxi — Plataforma integral de ventas y pedidos B2B - PROXI: ui_projects son candidatos fuertes a Project con area ux-ui.",
     "ui_projects:savil — Savil: ui_projects son candidatos fuertes a Project con area ux-ui."
   ],
