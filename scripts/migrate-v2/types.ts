@@ -53,6 +53,13 @@ export type ProposedPiece = {
   tags: string[];
   resources: ProposedResource[];
   confidence: Confidence;
+  published?: boolean;
+  lane?: string;
+  entityLinks?: {
+    entityId: string;
+    relationRole: string;
+    isPrimary?: boolean;
+  }[];
 };
 
 export type ProposedProject = {
@@ -69,6 +76,12 @@ export type ProposedProject = {
   legacySources: string[];
   confidence: Confidence;
   notes?: string[];
+  /** Required on every project emitted by applyDecisionManifest */
+  context?: string;
+  published?: boolean;
+  showOnHome?: boolean;
+  lane?: string;
+  confidential?: boolean;
 };
 
 export type ProposedEntity = {
@@ -85,6 +98,11 @@ export type ProposedEntity = {
   pageEnabledReason: string;
   requiresHumanDecision: boolean;
   confidence: Confidence;
+  visible?: boolean;
+  pageEnabled?: boolean;
+  showOnHome?: boolean;
+  lane?: string;
+  confidential?: boolean;
 };
 
 export type RecordAnalysis = {
@@ -167,6 +185,15 @@ export type ManualAnalysis = {
   requiresHumanDecision: boolean;
 };
 
+export type ProposedPieceEntityLink = {
+  pieceId: string;
+  entityId: string;
+  entityName: string;
+  relationRole: string;
+  sortOrder: number;
+  isPrimary: boolean;
+};
+
 export type DryRunReport = {
   generatedAt: string;
   mode: "dry-run";
@@ -183,6 +210,7 @@ export type DryRunReport = {
   proposedProjects: ProposedProject[];
   standalonePieces: ProposedPiece[];
   piecesInProjects: ProposedPiece[];
+  proposedPieceEntities: ProposedPieceEntityLink[];
   entityRelationsRequiringReview: EntityRelationReview[];
   tagAnalysis: TagAnalysis;
   namedListItems: NamedListAnalysis[];
@@ -192,11 +220,20 @@ export type DryRunReport = {
   confidenceCounts: { alta: number; media: number; baja: number };
   humanDecisions: string[];
   migrationMapPreview: MigrationMapEntry[];
+  laneCounts: {
+    AUTO_MIGRATED: number;
+    MANUAL_DECISION_MIGRATED: number;
+    DEFERRED: number;
+    DISCARDED: number;
+  };
+  discarded: Array<{ id: string; kind: string; label: string; reason: string }>;
+  deferred: Array<{ id: string; kind: string; label: string; reason: string }>;
   summary: {
     proposedEntities: number;
     proposedProjects: number;
     standalonePieces: number;
     piecesInProjects: number;
+    proposedPieceEntities: number;
     projectResources: number;
     pieceResources: number;
   };

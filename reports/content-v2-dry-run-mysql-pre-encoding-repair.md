@@ -427,7 +427,7 @@ Slugs en piezas ausentes del catálogo: —
 | 2 | company | Asociaci??n de Profesionales de Salud de la Marina Mercante | home_text_only | nueva Entity o texto | Entity.showOnHome (si se crea) o mantener listado |
 | 36 | current_project | MICROTIME | project_candidate | projects:microtime (nuevo?) | Project.showOnHome + status=ongoing |
 | 20 | past_project | Asesor Financiero | project_existing | projects:asesor-financiero | Project.showOnHome + status=completed |
-| 21 | past_project | Athenas | project_candidate | projects:athenas (nuevo?) | Project.showOnHome + status=completed |
+| 21 | past_project | [deferred-confidential] | project_candidate | projects:[deferred-confidential] (nuevo?) | Project.showOnHome + status=completed |
 | 37 | current_project | Repuestos Carlitos | project_candidate | projects:repuestos-carlitos (nuevo?) | Project.showOnHome + status=ongoing |
 | 3 | company | bind | home_text_only | nueva Entity o texto | Entity.showOnHome (si se crea) o mantener listado |
 | 38 | current_project | Sessions | project_candidate | projects:sessions (nuevo?) | Project.showOnHome + status=ongoing |
@@ -443,7 +443,7 @@ Slugs en piezas ausentes del catálogo: —
 | 7 | company | FabLab | home_text_only | nueva Entity o texto | Entity.showOnHome (si se crea) o mantener listado |
 | 8 | company | FISERV. | home_text_only | nueva Entity o texto | Entity.showOnHome (si se crea) o mantener listado |
 | 26 | past_project | fiserv. | project_candidate | projects:fiserv (nuevo?) | Project.showOnHome + status=completed |
-| 27 | past_project | Inspector | project_candidate | projects:inspector (nuevo?) | Project.showOnHome + status=completed |
+| 27 | past_project | [deferred-confidential] | project_candidate | projects:[deferred-confidential] (nuevo?) | Project.showOnHome + status=completed |
 | 9 | company | Gobierno de Formosa | home_text_only | nueva Entity o texto | Entity.showOnHome (si se crea) o mantener listado |
 | 10 | company | Instituto de Asistencia Social | home_text_only | nueva Entity o texto | Entity.showOnHome (si se crea) o mantener listado |
 | 28 | past_project | Juegos Provinciales Tecnol??gicos | project_existing | projects:juegos-provinciales | Project.showOnHome + status=completed |
@@ -1850,12 +1850,12 @@ Total mappings propuestos: 170
 - named_list_items #18 "Subsecretar??a de Empleo de Formosa": Organización solo en home list; no está en brands.
 - named_list_items #19 "Adapto Pay": Proyecto anterior en home sin fuente legacy directa.
 - named_list_items #2 "Asociaci??n de Profesionales de Salud de la Marina Mercante": Organización solo en home list; no está en brands.
-- named_list_items #21 "Athenas": Proyecto anterior en home sin fuente legacy directa.
+- named_list_items #21 "[deferred-confidential]": Proyecto anterior en home sin fuente legacy directa.
 - named_list_items #22 "Casiba": Proyecto anterior en home sin fuente legacy directa.
 - named_list_items #23 "Clearwater": Proyecto anterior en home sin fuente legacy directa.
 - named_list_items #24 "Cloronor": Proyecto anterior en home sin fuente legacy directa.
 - named_list_items #26 "fiserv.": Proyecto anterior en home sin fuente legacy directa.
-- named_list_items #27 "Inspector": Proyecto anterior en home sin fuente legacy directa.
+- named_list_items #27 "[deferred-confidential]": Proyecto anterior en home sin fuente legacy directa.
 - named_list_items #29 "La Estaci??n": Proyecto anterior en home sin fuente legacy directa.
 - named_list_items #3 "bind": Organización solo en home list; no está en brands.
 - named_list_items #30 "Mental Tech Training": Proyecto anterior en home sin fuente legacy directa.

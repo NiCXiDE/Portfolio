@@ -41,14 +41,21 @@ const KNOWN_BRAND_ENTITY_TYPES: Record<string, string> = {
   seyier: "personal_brand",
 };
 
-const ROLE_KEYWORDS: Array<{ pattern: RegExp; role: string }> = [
-  { pattern: /\bux\s*\/\s*ui\b|\bux-ui\b|\bui\/ux\b/i, role: "ux-ui" },
-  { pattern: /\bvisual direction\b|\bdirecci[oó]n visual\b/i, role: "visual-direction" },
-  { pattern: /\bfrontend\b|\bfront-end\b/i, role: "frontend" },
-  { pattern: /\bbranding\b|\bidentidad\b|\bmarca\b/i, role: "branding" },
-  { pattern: /\bgraphic design\b|\bdiseño gr[aá]fico\b/i, role: "graphic-design" },
-  { pattern: /\bux\b|\bexperiencia de usuario\b/i, role: "ux" },
-  { pattern: /\bui\b|\binterfaz\b|\binterface\b/i, role: "ui" },
+const ROLE_KEYWORDS: Array<{ pattern: RegExp; roles: string[] }> = [
+  // "UX/UI" expands to discrete roles; never emit catalog role "ux-ui".
+  { pattern: /\bux\s*\/\s*ui\b|\bux-ui\b|\bui\/ux\b/i, roles: ["ux", "ui"] },
+  {
+    pattern: /\bvisual direction\b|\bdirecci[oó]n visual\b/i,
+    roles: ["visual-direction"],
+  },
+  { pattern: /\bfrontend\b|\bfront-end\b/i, roles: ["frontend"] },
+  { pattern: /\bbranding\b|\bidentidad\b|\bmarca\b/i, roles: ["branding"] },
+  {
+    pattern: /\bgraphic design\b|\bdiseño gr[aá]fico\b/i,
+    roles: ["graphic-design"],
+  },
+  { pattern: /\bux\b|\bexperiencia de usuario\b/i, roles: ["ux"] },
+  { pattern: /\bui\b|\binterfaz\b|\binterface\b/i, roles: ["ui"] },
 ];
 
 function brandNameById(brands: BrandRow[], id: string | null): string | null {
@@ -203,10 +210,12 @@ function inferUiRoles(project: UiProjectRow): {
 
   const found = new Set<string>();
   const evidence: string[] = [];
-  for (const { pattern, role } of ROLE_KEYWORDS) {
+  for (const { pattern, roles } of ROLE_KEYWORDS) {
     if (pattern.test(text)) {
-      found.add(role);
-      evidence.push(`Coincidencia "${pattern.source}" → ${role}`);
+      for (const role of roles) {
+        found.add(role);
+        evidence.push(`Coincidencia "${pattern.source}" → ${role}`);
+      }
     }
   }
 

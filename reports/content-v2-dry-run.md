@@ -440,13 +440,13 @@ Slugs en piezas ausentes del catálogo: —
 | 18 | company | Subsecretaría de Empleo de Formosa | home_text_only | nueva Entity o texto | Entity.showOnHome (si se crea) o mantener listado |
 | 19 | past_project | Adapto Pay | project_candidate | projects:adapto-pay (nuevo?) | Project.showOnHome + status=completed |
 | 20 | past_project | Asesor Financiero | project_existing | projects:asesor-financiero | Project.showOnHome + status=completed |
-| 21 | past_project | Athenas | project_candidate | projects:athenas (nuevo?) | Project.showOnHome + status=completed |
+| 21 | past_project | [deferred-confidential] | project_candidate | projects:[deferred-confidential] (nuevo?) | Project.showOnHome + status=completed |
 | 22 | past_project | Casiba | project_candidate | projects:casiba (nuevo?) | Project.showOnHome + status=completed |
 | 23 | past_project | Clearwater | project_candidate | projects:clearwater (nuevo?) | Project.showOnHome + status=completed |
 | 24 | past_project | Cloronor | project_candidate | projects:cloronor (nuevo?) | Project.showOnHome + status=completed |
 | 25 | past_project | EXPEDICIÓN POLO | project_existing | projects:expedicion-polo | Project.showOnHome + status=completed |
 | 26 | past_project | fiserv. | project_candidate | projects:fiserv (nuevo?) | Project.showOnHome + status=completed |
-| 27 | past_project | Inspector | project_candidate | projects:inspector (nuevo?) | Project.showOnHome + status=completed |
+| 27 | past_project | [deferred-confidential] | project_candidate | projects:[deferred-confidential] (nuevo?) | Project.showOnHome + status=completed |
 | 28 | past_project | Juegos Provinciales Tecnológicos | project_existing | projects:juegos-provinciales | Project.showOnHome + status=completed |
 | 29 | past_project | La Estación | project_candidate | projects:la-estacion (nuevo?) | Project.showOnHome + status=completed |
 | 30 | past_project | Mental Tech Training | project_candidate | projects:mental-tech-training (nuevo?) | Project.showOnHome + status=completed |
@@ -1849,12 +1849,12 @@ Total mappings propuestos: 170
 - named_list_items #18 "Subsecretaría de Empleo de Formosa": Organización solo en home list; no está en brands.
 - named_list_items #19 "Adapto Pay": Proyecto anterior en home sin fuente legacy directa.
 - named_list_items #2 "Asociación de Profesionales de Salud de la Marina Mercante": Organización solo en home list; no está en brands.
-- named_list_items #21 "Athenas": Proyecto anterior en home sin fuente legacy directa.
+- named_list_items #21 "[deferred-confidential]": Proyecto anterior en home sin fuente legacy directa.
 - named_list_items #22 "Casiba": Proyecto anterior en home sin fuente legacy directa.
 - named_list_items #23 "Clearwater": Proyecto anterior en home sin fuente legacy directa.
 - named_list_items #24 "Cloronor": Proyecto anterior en home sin fuente legacy directa.
 - named_list_items #26 "fiserv.": Proyecto anterior en home sin fuente legacy directa.
-- named_list_items #27 "Inspector": Proyecto anterior en home sin fuente legacy directa.
+- named_list_items #27 "[deferred-confidential]": Proyecto anterior en home sin fuente legacy directa.
 - named_list_items #29 "La Estación": Proyecto anterior en home sin fuente legacy directa.
 - named_list_items #3 "bind": Organización solo en home list; no está en brands.
 - named_list_items #30 "Mental Tech Training": Proyecto anterior en home sin fuente legacy directa.

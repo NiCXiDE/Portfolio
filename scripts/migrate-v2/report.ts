@@ -2,6 +2,7 @@ import { config as loadEnv } from "dotenv";
 import { mkdirSync, writeFileSync } from "node:fs";
 import { resolve } from "node:path";
 import { createDataSource, portfolioLegacyEntities } from "../../src/db/data-source";
+import { applyDecisionManifest } from "./apply-decisions";
 import {
   classifyBrandManuals,
   classifyBrands,
@@ -12,8 +13,6 @@ import {
   classifyUiProjects,
 } from "./classifiers";
 import {
-  buildMigrationMapPreview,
-  collectHumanDecisions,
   consolidateProjects,
   countConfidence,
   countResources,
@@ -23,6 +22,7 @@ import {
   compareLegacySnapshots,
   writeFixtureDriftReport,
 } from "./compare-fixtures";
+import { fingerprintSourceId } from "./decisions";
 import { loadLegacySnapshot } from "./load-legacy";
 import { fixtureLegacyCounts, loadLegacyFromFixtures } from "./load-fixtures";
 import {
@@ -38,8 +38,68 @@ import type { DryRunReport, RecordAnalysis } from "./types";
 
 loadEnv({ path: resolve(process.cwd(), ".env") });
 
+const CONFIDENTIAL_ALIAS_RE = /\b(athenas|inspector)\b/i;
+const FISERV_ALIAS_RE = /\bfiserv\b/i;
+
 function mdEscape(value: string): string {
   return value.replace(/\|/g, "\\|").replace(/\n/g, " ");
+}
+
+/** Sanitize named_list / deferred labels for report output. */
+function sanitizeSensitiveLabel(label: string): string {
+  if (/athenas|inspector/i.test(label)) return "[deferred-confidential]";
+  if (/fiserv/i.test(label)) return "[deferred]";
+  return label;
+}
+
+function sanitizeDeferredOrDiscardedItem<
+  T extends { id: string; label: string },
+>(item: T): T {
+  if (
+    CONFIDENTIAL_ALIAS_RE.test(item.id) ||
+    CONFIDENTIAL_ALIAS_RE.test(item.label)
+  ) {
+    return {
+      ...item,
+      id: fingerprintSourceId(item.id),
+      label: "[deferred-confidential]",
+    };
+  }
+  if (FISERV_ALIAS_RE.test(item.id) || FISERV_ALIAS_RE.test(item.label)) {
+    return {
+      ...item,
+      label: "[deferred]",
+    };
+  }
+  return item;
+}
+
+function sanitizeHumanDecisionNote(note: string): string {
+  if (CONFIDENTIAL_ALIAS_RE.test(note)) {
+    return note
+      .replace(/\bathenas\b/gi, "[deferred-confidential]")
+      .replace(/\binspector\b/gi, "[deferred-confidential]");
+  }
+  if (FISERV_ALIAS_RE.test(note)) {
+    return note.replace(/\bfiserv\b/gi, "[deferred]");
+  }
+  return note;
+}
+
+/** Redact confidential aliases from inventory records before JSON/md output. */
+function sanitizeRecord(rec: RecordAnalysis): RecordAnalysis {
+  if (
+    CONFIDENTIAL_ALIAS_RE.test(rec.legacyId) ||
+    CONFIDENTIAL_ALIAS_RE.test(rec.title)
+  ) {
+    return {
+      ...rec,
+      legacyId: fingerprintSourceId(rec.legacyId),
+      title: "[deferred-confidential]",
+      proposedDestination: "DEFERRED",
+    };
+  }
+  return rec;
 }
 
 export function writeDryRunReports(
@@ -74,10 +134,14 @@ function renderMarkdown(r: DryRunReport): string {
   lines.push(`| Proposed Projects | ${r.summary.proposedProjects} |`);
   lines.push(`| Standalone Pieces | ${r.summary.standalonePieces} |`);
   lines.push(`| Pieces en Projects | ${r.summary.piecesInProjects} |`);
+  lines.push(`| Proposed piece_entities | ${r.summary.proposedPieceEntities} |`);
   lines.push(`| ProjectResources | ${r.summary.projectResources} |`);
   lines.push(`| PieceResources | ${r.summary.pieceResources} |`);
+  lines.push(
+    `| Lanes AUTO / MANUAL / DEFERRED / DISCARDED | ${r.laneCounts.AUTO_MIGRATED} / ${r.laneCounts.MANUAL_DECISION_MIGRATED} / ${r.laneCounts.DEFERRED} / ${r.laneCounts.DISCARDED} |`,
+  );
   lines.push(`| Confianza alta / media / baja | ${r.confidenceCounts.alta} / ${r.confidenceCounts.media} / ${r.confidenceCounts.baja} |`);
-  lines.push(`| Decisiones humanas | ${r.humanDecisions.length} |`);
+  lines.push(`| Notas del manifesto (aplicadas) | ${r.humanDecisions.length} |`);
   lines.push("");
 
   lines.push("## Verificación de seguridad");
@@ -122,6 +186,9 @@ function renderMarkdown(r: DryRunReport): string {
     lines.push(`- areas: ${p.areas.join(", ")}`);
     lines.push(`- type: ${p.type ?? "—"}`);
     lines.push(`- status: ${p.status}`);
+    if (p.context != null) lines.push(`- context: ${p.context}`);
+    if (p.published != null) lines.push(`- published: ${p.published ? "sí" : "no"}`);
+    if (p.lane != null) lines.push(`- lane: ${p.lane}`);
     lines.push(
       `- roles: ${Array.isArray(p.roles) ? p.roles.join(", ") : p.roles}`,
     );
@@ -150,6 +217,21 @@ function renderMarkdown(r: DryRunReport): string {
     lines.push(
       `| ${p.id} | ${mdEscape(p.title)} | ${p.category} | ${p.origin} | ${p.tags.join(", ")} | ${p.confidence} |`,
     );
+  }
+  lines.push("");
+
+  lines.push("## Proposed piece_entities");
+  lines.push("");
+  if (!r.proposedPieceEntities.length) {
+    lines.push("_Ningún link piece↔entity propuesto._");
+  } else {
+    lines.push("| pieceId | entityId | entityName | role | primary | sort |");
+    lines.push("|---------|----------|------------|------|---------|------|");
+    for (const link of r.proposedPieceEntities) {
+      lines.push(
+        `| ${link.pieceId} | ${link.entityId} | ${mdEscape(link.entityName)} | ${link.relationRole} | ${link.isPrimary ? "sí" : "no"} | ${link.sortOrder} |`,
+      );
+    }
   }
   lines.push("");
 
@@ -200,8 +282,9 @@ function renderMarkdown(r: DryRunReport): string {
   lines.push("| ID | kind | label | clasificación | target | home replacement |");
   lines.push("|----|------|-------|---------------|--------|------------------|");
   for (const n of r.namedListItems) {
+    const label = sanitizeSensitiveLabel(n.label);
     lines.push(
-      `| ${n.id} | ${n.kind} | ${mdEscape(n.label)} | ${n.classification} | ${mdEscape(n.proposedTarget)} | ${mdEscape(n.homeReplacement)} |`,
+      `| ${n.id} | ${n.kind} | ${mdEscape(label)} | ${n.classification} | ${mdEscape(n.proposedTarget)} | ${mdEscape(n.homeReplacement)} |`,
     );
   }
   lines.push("");
@@ -226,6 +309,32 @@ function renderMarkdown(r: DryRunReport): string {
     lines.push(`- **Recomendación ${m.recommendation}**: ${m.recommendationReason}`);
     lines.push("");
   }
+
+  lines.push("## Deferred");
+  lines.push("");
+  if (!r.deferred.length) {
+    lines.push("_Ningún ítem deferred._");
+  } else {
+    for (const d of r.deferred) {
+      lines.push(
+        `- \`${d.id}\` (${d.kind}): **${sanitizeSensitiveLabel(d.label)}** — ${d.reason}`,
+      );
+    }
+  }
+  lines.push("");
+
+  lines.push("## Discarded");
+  lines.push("");
+  if (!r.discarded.length) {
+    lines.push("_Ningún ítem discarded._");
+  } else {
+    for (const d of r.discarded) {
+      lines.push(
+        `- \`${d.id}\` (${d.kind}): **${sanitizeSensitiveLabel(d.label)}** — ${d.reason}`,
+      );
+    }
+  }
+  lines.push("");
 
   lines.push("## migration_map preview (NO insertado)");
   lines.push("");
@@ -260,7 +369,7 @@ function renderMarkdown(r: DryRunReport): string {
     lines.push("");
   }
 
-  lines.push("## Decisiones humanas necesarias");
+  lines.push("## Decisiones humanas (notas del manifesto aplicado)");
   lines.push("");
   for (const d of r.humanDecisions) {
     lines.push(`- ${d}`);
@@ -279,7 +388,7 @@ export async function runContentV2DryRun(options: DryRunOptions = {}): Promise<D
   await ds.initialize();
 
   try {
-    console.log("[migrate-v2] Fase 3A - dry-run (read-only)");
+    console.log("[migrate-v2] Fase 3C.2 - dry-run (read-only) + decision manifest");
     console.log("[migrate-v2] source=mysql\n");
 
     const legacyCountsBefore = await countTables(ds, LEGACY_TABLES);
@@ -336,40 +445,51 @@ export async function runContentV2DryRun(options: DryRunOptions = {}): Promise<D
       proposedEntities,
     );
 
+    const applied = applyDecisionManifest(
+      {
+        entities: proposedEntities,
+        projects: consolidatedProjects,
+        standalonePieces: graphicResult.standalonePieces,
+        piecesInProjects: graphicResult.piecesInProjects,
+        testimonials: testimonialAnalysis,
+        namedListItems: namedListAnalysis,
+      },
+      snapshot,
+    );
+
+    if (applied.validationErrors.length) {
+      throw new Error(
+        "[migrate-v2] Decision manifest validation failed:\n" +
+          applied.validationErrors.map((e) => `  - ${e}`).join("\n"),
+      );
+    }
+
     const records: RecordAnalysis[] = [
       ...brandResult.records,
       ...uiResult.records,
       ...graphicResult.records,
       ...manualResult.records,
-    ];
+    ].map(sanitizeRecord);
 
-    const entityRelationsRequiringReview = [
-      ...uiResult.relationReviews,
-      ...graphicResult.relationReviews,
-    ];
+    // Manifest resolved roles — no pending relation reviews after decisions
+    const entityRelationsRequiringReview: DryRunReport["entityRelationsRequiringReview"] =
+      [];
 
-    const humanDecisions = collectHumanDecisions(
-      records,
-      proposedEntities,
-      entityRelationsRequiringReview,
-      namedListAnalysis,
-      testimonialAnalysis,
-      manualResult.manuals,
-    );
+    const humanDecisions = applied.humanDecisionNotes.map(sanitizeHumanDecisionNote);
 
     const resourceCounts = countResources(
-      consolidatedProjects,
-      graphicResult.standalonePieces,
-      graphicResult.piecesInProjects,
+      applied.proposedProjects,
+      applied.standalonePieces,
+      applied.piecesInProjects,
     );
 
-    const migrationMapPreview = buildMigrationMapPreview(
-      records,
-      consolidatedProjects,
-      graphicResult.standalonePieces,
-      graphicResult.piecesInProjects,
-      proposedEntities,
-    );
+    const discarded = applied.discarded.map(sanitizeDeferredOrDiscardedItem);
+    const deferred = applied.deferred.map(sanitizeDeferredOrDiscardedItem);
+
+    const namedListItems = applied.namedListItems.map((n) => ({
+      ...n,
+      label: sanitizeSensitiveLabel(n.label),
+    }));
 
     const legacyCountsAfter = await countTables(ds, LEGACY_TABLES);
     const v2CountsAfter = await countTables(ds, V2_TABLES);
@@ -400,24 +520,35 @@ export async function runContentV2DryRun(options: DryRunOptions = {}): Promise<D
       legacyCountsUnchanged,
       v2Untouched,
       records,
-      proposedEntities,
-      proposedProjects: consolidatedProjects,
-      standalonePieces: graphicResult.standalonePieces,
-      piecesInProjects: graphicResult.piecesInProjects,
+      proposedEntities: applied.proposedEntities,
+      proposedProjects: applied.proposedProjects,
+      standalonePieces: applied.standalonePieces,
+      piecesInProjects: applied.piecesInProjects,
+      proposedPieceEntities: applied.proposedPieceEntities,
       entityRelationsRequiringReview,
       tagAnalysis,
-      namedListItems: namedListAnalysis,
-      testimonials: testimonialAnalysis,
+      namedListItems,
+      testimonials: applied.testimonials,
       brandManuals: manualResult.manuals,
       graphicCategoryMapping: graphicResult.categoryMapping,
       confidenceCounts: countConfidence(records),
       humanDecisions,
-      migrationMapPreview,
+      migrationMapPreview: applied.migrationMapPreview,
+      laneCounts: {
+        AUTO_MIGRATED: applied.laneCounts.AUTO_MIGRATED ?? 0,
+        MANUAL_DECISION_MIGRATED:
+          applied.laneCounts.MANUAL_DECISION_MIGRATED ?? 0,
+        DEFERRED: applied.laneCounts.DEFERRED ?? 0,
+        DISCARDED: applied.laneCounts.DISCARDED ?? 0,
+      },
+      discarded,
+      deferred,
       summary: {
-        proposedEntities: proposedEntities.length,
-        proposedProjects: consolidatedProjects.length,
-        standalonePieces: graphicResult.standalonePieces.length,
-        piecesInProjects: graphicResult.piecesInProjects.length,
+        proposedEntities: applied.proposedEntities.length,
+        proposedProjects: applied.proposedProjects.length,
+        standalonePieces: applied.standalonePieces.length,
+        piecesInProjects: applied.piecesInProjects.length,
+        proposedPieceEntities: applied.proposedPieceEntities.length,
         projectResources: resourceCounts.projectResources,
         pieceResources: resourceCounts.pieceResources,
       },
@@ -430,12 +561,18 @@ export async function runContentV2DryRun(options: DryRunOptions = {}): Promise<D
     console.log(`  Proposed Projects: ${report.summary.proposedProjects}`);
     console.log(`  Standalone Pieces: ${report.summary.standalonePieces}`);
     console.log(`  Pieces in Projects: ${report.summary.piecesInProjects}`);
+    console.log(
+      `  Proposed piece_entities: ${report.summary.proposedPieceEntities}`,
+    );
     console.log(`  ProjectResources: ${report.summary.projectResources}`);
     console.log(`  PieceResources: ${report.summary.pieceResources}`);
     console.log(
+      `  Lanes AUTO/MANUAL/DEFERRED/DISCARDED: ${report.laneCounts.AUTO_MIGRATED}/${report.laneCounts.MANUAL_DECISION_MIGRATED}/${report.laneCounts.DEFERRED}/${report.laneCounts.DISCARDED}`,
+    );
+    console.log(
       `  Confidence alta/media/baja: ${report.confidenceCounts.alta}/${report.confidenceCounts.media}/${report.confidenceCounts.baja}`,
     );
-    console.log(`  Human decisions: ${report.humanDecisions.length}`);
+    console.log(`  Manifest notes: ${report.humanDecisions.length}`);
     console.log(`\nReport: ${mdPath}`);
     console.log(`JSON:   ${jsonPath}`);
     console.log("\nV2 counts (after): unchanged at 0.");
