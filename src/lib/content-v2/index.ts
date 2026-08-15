@@ -1,8 +1,8 @@
 /**
- * Isolated V2 public read model (Phase 4B).
+ * Isolated V2 public read model (Phase 4B) + Home adapter (Phase 4C.2).
  *
- * NOT wired to public pages yet — legacy `src/lib/content.ts` remains the
- * runtime source for Home / Gráfico / Interfaces / marcas.
+ * `getHomeContentV2` is available but NOT wired to public pages yet —
+ * legacy `src/lib/content.ts` remains the runtime source for Home.
  */
 export type {
   PublicEntitySummary,
@@ -40,3 +40,16 @@ export {
 export { getPublicPieceBySlugV2, getPublicPiecesV2 } from "./pieces";
 
 export { getPublicTestimonialsV2 } from "./testimonials";
+
+export {
+  buildHomeContentV2,
+  getHomeContentV2,
+  publicExternalHref,
+  splitHomeProjectsV2,
+} from "./home";
+export type {
+  HomeContentV2,
+  HomeEntityItemV2,
+  HomeProjectItemV2,
+  HomeTestimonialItemV2,
+} from "./home";

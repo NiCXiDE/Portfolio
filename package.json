@@ -24,6 +24,8 @@
     "inspect:runtime-v2-read-model": "tsx scripts/inspect-runtime-v2-read-model.ts",
     "db:apply-home-data-patch-4c1": "tsx scripts/apply-home-data-patch-4c1.ts",
     "inspect:home-data-patch-4c1": "tsx scripts/inspect-home-data-patch-4c1.ts",
+    "inspect:home-v2": "tsx scripts/inspect-home-v2.ts",
+    "test:home-v2-adapter": "tsx --test scripts/test-home-v2-adapter.ts",
     "db:reset": "tsx scripts/db-reset.ts"
   },
   "dependencies": {
