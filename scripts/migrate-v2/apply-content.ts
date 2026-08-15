@@ -8,6 +8,7 @@ import type { DecisionApplicationResult } from "./apply-decisions";
 import { buildProposedPlan } from "./build-proposed";
 import { galleryPaths, localizedEs } from "./load-legacy";
 import {
+  assertCanonicalTestimonials,
   assertLegacyBaseline,
   assertV2Empty,
   countTables,
@@ -454,6 +455,7 @@ export async function runContentV2Apply(
 
     assertV2Empty(v2CountsBefore);
     assertLegacyBaseline(legacyCountsBefore);
+    await assertCanonicalTestimonials(ds);
 
     console.log("Legacy counts (before):");
     console.log(formatCounts(legacyCountsBefore));

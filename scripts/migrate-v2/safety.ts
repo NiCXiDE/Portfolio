@@ -58,17 +58,25 @@ export function assertV2Empty(counts: TableCounts): void {
   }
 }
 
-/** Expected legacy row counts after backup baseline (pre-migration). */
+/** Expected legacy row counts after backup baseline (pre-migration).
+ *  testimonials: count is NOT exact — validated via CANONICAL_TESTIMONIAL_IDS. */
 export const LEGACY_BASELINE: TableCounts = {
   graphic_items: 47,
   ui_projects: 13,
   brands: 7,
   brand_manuals: 1,
-  testimonials: 5,
   named_list_items: 40,
   tags: 9,
   ui_list_items: 8,
 };
+
+/** Canonical testimonials required for migration (extra rows allowed). */
+export const CANONICAL_TESTIMONIAL_IDS = [
+  "facundo",
+  "ezequiel",
+  "joaquin",
+  "matias",
+] as const;
 
 export function assertLegacyBaseline(counts: TableCounts): void {
   const mismatches: string[] = [];
@@ -84,6 +92,22 @@ export function assertLegacyBaseline(counts: TableCounts): void {
         mismatches.map((m) => `  - ${m}`).join("\n") +
         "\nRestore legacy data before running dry-run. " +
         "Use --compare-fixtures to compare against content JSON without using fixtures as input.",
+    );
+  }
+}
+
+/** Ensures the 4 approved testimonials exist; additional rows are ignored. */
+export async function assertCanonicalTestimonials(ds: DataSource): Promise<void> {
+  const rows = (await ds.query(
+    `SELECT id FROM testimonials WHERE id IN (?, ?, ?, ?)`,
+    [...CANONICAL_TESTIMONIAL_IDS],
+  )) as Array<{ id: string }>;
+  const found = new Set(rows.map((r) => r.id));
+  const missing = CANONICAL_TESTIMONIAL_IDS.filter((id) => !found.has(id));
+  if (missing.length) {
+    throw new Error(
+      "[safety] Missing canonical testimonials — aborted.\n" +
+        missing.map((id) => `  - ${id}`).join("\n"),
     );
   }
 }

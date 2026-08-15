@@ -16,6 +16,7 @@ import { fingerprintSourceId } from "./decisions";
 import { loadLegacySnapshot } from "./load-legacy";
 import { fixtureLegacyCounts, loadLegacyFromFixtures } from "./load-fixtures";
 import {
+  assertCanonicalTestimonials,
   assertLegacyBaseline,
   assertV2Empty,
   countTables,
@@ -392,6 +393,7 @@ export async function runContentV2DryRun(options: DryRunOptions = {}): Promise<D
 
     assertV2Empty(v2CountsBefore);
     assertLegacyBaseline(legacyCountsBefore);
+    await assertCanonicalTestimonials(ds);
 
     const snapshot = await loadLegacySnapshot(ds);
 
