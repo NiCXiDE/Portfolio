@@ -21,6 +21,7 @@
     "db:migrate-v2-apply": "tsx scripts/migrate-content-v2.ts --apply",
     "db:apply-fk-testimonials-rehearsal": "tsx scripts/apply-fk-testimonials-rehearsal.ts",
     "db:apply-fk-testimonials-live": "tsx scripts/apply-fk-testimonials-live.ts",
+    "inspect:runtime-v2-read-model": "tsx scripts/inspect-runtime-v2-read-model.ts",
     "db:reset": "tsx scripts/db-reset.ts"
   },
   "dependencies": {
