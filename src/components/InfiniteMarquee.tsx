@@ -57,6 +57,19 @@ function MarqueeItem({
     );
 
   if (item.hubHref) {
+    const external = /^https?:\/\//i.test(item.hubHref);
+    if (external) {
+      return (
+        <a
+          href={item.hubHref}
+          target="_blank"
+          rel="noreferrer"
+          className="marquee-link cursor-nav interactive-ink"
+        >
+          {body}
+        </a>
+      );
+    }
     return (
       <Link
         href={`/${locale}${item.hubHref}`}

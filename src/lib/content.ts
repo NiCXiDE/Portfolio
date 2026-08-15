@@ -276,7 +276,19 @@ function mapNamed(
     });
 }
 
-export async function loadPortfolioContent(): Promise<PortfolioContent> {
+export type LoadPortfolioContentOptions = {
+  /**
+   * include (default): load named_list_items + testimonials for Home.
+   * omit: skip those queries — Home fields filled by V2 mapper (4C.4).
+   */
+  homeLists?: "include" | "omit";
+};
+
+export async function loadPortfolioContent(
+  options: LoadPortfolioContentOptions = {},
+): Promise<PortfolioContent> {
+  const homeLists = options.homeLists ?? "include";
+  const omitHomeLists = homeLists === "omit";
   const ds = await getDataSource();
 
   const [
@@ -294,12 +306,16 @@ export async function loadPortfolioContent(): Promise<PortfolioContent> {
     brandRows,
   ] = await Promise.all([
     ds.getRepository(BioEntity).findOneByOrFail({ id: "main" }),
-    ds.getRepository(NamedListItemEntity).find({
-      order: { sortOrder: "ASC", id: "ASC" },
-    }),
-    ds.getRepository(TestimonialEntity).find({
-      order: { sortOrder: "ASC", id: "ASC" },
-    }),
+    omitHomeLists
+      ? Promise.resolve([] as NamedListItemRow[])
+      : ds.getRepository(NamedListItemEntity).find({
+          order: { sortOrder: "ASC", id: "ASC" },
+        }),
+    omitHomeLists
+      ? Promise.resolve([])
+      : ds.getRepository(TestimonialEntity).find({
+          order: { sortOrder: "ASC", id: "ASC" },
+        }),
     ds.getRepository(GraphicItemEntity).find({
       order: { sortOrder: "ASC", id: "ASC" },
     }),
@@ -388,31 +404,39 @@ export async function loadPortfolioContent(): Promise<PortfolioContent> {
         src: mediaUrl(icon.srcPath),
         ...(icon.label ? { label: icon.label } : {}),
       })),
-    companies: mapNamed("company", named, brandsById, hubBrandIds),
-    pastProjects: mapNamed("past_project", named, brandsById, hubBrandIds),
-    currentProjects: mapNamed("current_project", named, brandsById, hubBrandIds),
-    testimonials: testimonials
-      .filter((row) => !row.hidden)
-      .map((row) => {
-        const brand = row.companyBrandId
-          ? brandsById[row.companyBrandId]
-          : undefined;
-        return {
-          id: row.id,
-          name: row.name,
-          image: mediaUrl(row.imagePath),
-          quote: row.quote,
-          role: row.role,
-          company: {
-            name: row.companyName || brand?.name || "",
-            logo: row.companyLogoPath
-              ? mediaUrl(row.companyLogoPath)
-              : brand?.logo ?? null,
-            href: row.companyHref || brand?.href || null,
-            linkLabel: row.linkLabel,
-          },
-        };
-      }),
+    companies: omitHomeLists
+      ? []
+      : mapNamed("company", named, brandsById, hubBrandIds),
+    pastProjects: omitHomeLists
+      ? []
+      : mapNamed("past_project", named, brandsById, hubBrandIds),
+    currentProjects: omitHomeLists
+      ? []
+      : mapNamed("current_project", named, brandsById, hubBrandIds),
+    testimonials: omitHomeLists
+      ? []
+      : testimonials
+          .filter((row) => !row.hidden)
+          .map((row) => {
+            const brand = row.companyBrandId
+              ? brandsById[row.companyBrandId]
+              : undefined;
+            return {
+              id: row.id,
+              name: row.name,
+              image: mediaUrl(row.imagePath),
+              quote: row.quote,
+              role: row.role,
+              company: {
+                name: row.companyName || brand?.name || "",
+                logo: row.companyLogoPath
+                  ? mediaUrl(row.companyLogoPath)
+                  : brand?.logo ?? null,
+                href: row.companyHref || brand?.href || null,
+                linkLabel: row.linkLabel,
+              },
+            };
+          }),
     covers: bySection(graphics, "covers"),
     logos: bySection(graphics, "logos"),
     personal: bySection(graphics, "personal"),

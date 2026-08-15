@@ -1,8 +1,9 @@
 /**
- * Isolated V2 public read model (Phase 4B) + Home adapter (Phase 4C.2).
+ * Isolated V2 public read model (Phase 4B) + Home adapter/runtime (4C.2–4C.4).
  *
- * `getHomeContentV2` is available but NOT wired to public pages yet —
- * legacy `src/lib/content.ts` remains the runtime source for Home.
+ * Locale layout may use `loadPortfolioContentForLocale` when
+ * HOME_CONTENT_SOURCE=v2. Default remains legacy. Graphic/Interfaces
+ * still use legacy tables via the shell loader.
  */
 export type {
   PublicEntitySummary,
@@ -68,3 +69,16 @@ export type {
   HomeShadowSnapshot,
   ShadowDiff,
 } from "./home-shadow";
+
+export { getHomeContentSource } from "./home-source";
+export type { HomeContentSource } from "./home-source";
+
+export { mapHomeContentV2ToCurrentUI, stableNumericId } from "./home-ui";
+export type { HomeUiLists } from "./home-ui";
+
+export {
+  getLastHomeLoadTrace,
+  loadPortfolioContentForLocale,
+  resetHomeLoadTrace,
+} from "./home-runtime";
+export type { HomeLoadTrace } from "./home-runtime";
