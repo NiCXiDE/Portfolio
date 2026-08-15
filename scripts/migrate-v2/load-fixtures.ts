@@ -10,6 +10,7 @@ import type {
   NamedListKind,
   TagRow,
   TestimonialRow,
+  UiListItemRow,
   UiProjectRow,
 } from "../../src/db/entities";
 import { slugifyBrand } from "../../src/lib/brands";
@@ -343,6 +344,25 @@ export function loadLegacyFromFixtures(): LegacySnapshot {
     published: true,
   }));
 
+  const uiListRaw = readJson<
+    Array<{
+      id: string;
+      title: Localized;
+      logo?: string;
+      caption?: string;
+      wordmark?: string;
+    }>
+  >("content/interfaces/list.json");
+  const uiListItems: UiListItemRow[] = uiListRaw.map((item, sortOrder) => ({
+    id: item.id,
+    title: item.title,
+    logoPath: item.logo ?? null,
+    caption: item.caption ?? null,
+    wordmark: item.wordmark ?? null,
+    sortOrder,
+    published: true,
+  }));
+
   return {
     brands: brandRows,
     graphicItems,
@@ -351,22 +371,11 @@ export function loadLegacyFromFixtures(): LegacySnapshot {
     testimonials: testimonialRows,
     namedListItems,
     tags: defaultTags,
+    uiListItems,
   };
 }
 
 export function fixtureLegacyCounts(snapshot: LegacySnapshot): Record<string, number> {
-  const uiList = (() => {
-    try {
-      return (
-        JSON.parse(
-          readFileSync(resolve(process.cwd(), "content/interfaces/list.json"), "utf8"),
-        ) as unknown[]
-      ).length;
-    } catch {
-      return 0;
-    }
-  })();
-
   return {
     graphic_items: snapshot.graphicItems.length,
     ui_projects: snapshot.uiProjects.length,
@@ -375,6 +384,6 @@ export function fixtureLegacyCounts(snapshot: LegacySnapshot): Record<string, nu
     testimonials: snapshot.testimonials.length,
     named_list_items: snapshot.namedListItems.length,
     tags: snapshot.tags.length,
-    ui_list_items: uiList,
+    ui_list_items: snapshot.uiListItems.length,
   };
 }

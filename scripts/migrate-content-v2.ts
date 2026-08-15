@@ -1,8 +1,16 @@
 import { readFileSync, existsSync } from "node:fs";
 import { resolve } from "node:path";
+import { config as loadEnv } from "dotenv";
 import { compareDryRunReports, writeDryRunComparisonReport } from "./migrate-v2/compare-dry-runs";
+import {
+  runContentV2Apply,
+  resolveDatabaseTarget,
+  REHEARSAL_DATABASE,
+} from "./migrate-v2/apply-content";
 import { runContentV2DryRun } from "./migrate-v2/report";
 import type { DryRunReport } from "./migrate-v2/types";
+
+loadEnv({ path: resolve(process.cwd(), ".env") });
 
 async function main() {
   const args = process.argv.slice(2);
@@ -12,16 +20,19 @@ async function main() {
 
   if (!dryRun && !apply) {
     console.error(
-      "Usage: tsx scripts/migrate-content-v2.ts --dry-run [--compare-fixtures]|--apply",
+      "Usage: tsx scripts/migrate-content-v2.ts --dry-run [--compare-fixtures] | --apply",
     );
     process.exit(1);
   }
 
   if (apply) {
-    console.error(
-      "[migrate-v2] --apply is NOT enabled in Fase 3A. Use --dry-run only.",
-    );
-    process.exit(1);
+    const target = resolveDatabaseTarget();
+    const rehearsal =
+      target.effectiveDatabase === REHEARSAL_DATABASE &&
+      process.env.V2_REHEARSAL_APPROVED === "1";
+
+    await runContentV2Apply({ rehearsal });
+    return;
   }
 
   const mysqlReport = await runContentV2DryRun({ compareFixtures });
@@ -29,8 +40,7 @@ async function main() {
   if (compareFixtures) {
     const fixturesJsonPath = resolve(
       process.cwd(),
-      "reports",
-      "content-v2-dry-run-fixtures.json",
+      "reports/content-v2-dry-run-fixtures.json",
     );
     if (!existsSync(fixturesJsonPath)) {
       console.warn(
@@ -47,8 +57,6 @@ async function main() {
       );
     }
   }
-
-  console.log("\n--apply was NOT executed.");
 }
 
 main().catch((err) => {

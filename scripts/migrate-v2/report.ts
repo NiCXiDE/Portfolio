@@ -2,22 +2,12 @@ import { config as loadEnv } from "dotenv";
 import { mkdirSync, writeFileSync } from "node:fs";
 import { resolve } from "node:path";
 import { createDataSource, portfolioLegacyEntities } from "../../src/db/data-source";
-import { applyDecisionManifest } from "./apply-decisions";
+import { buildProposedPlan } from "./build-proposed";
 import {
-  classifyBrandManuals,
-  classifyBrands,
-  classifyGraphicItems,
-  classifyNamedListItems,
-  classifyTags,
-  classifyTestimonials,
-  classifyUiProjects,
-} from "./classifiers";
-import {
-  consolidateProjects,
   countConfidence,
   countResources,
-  enrichEntityWorkCounts,
 } from "./consolidate";
+import { writeCoverageReport } from "./coverage";
 import {
   compareLegacySnapshots,
   writeFixtureDriftReport,
@@ -388,7 +378,7 @@ export async function runContentV2DryRun(options: DryRunOptions = {}): Promise<D
   await ds.initialize();
 
   try {
-    console.log("[migrate-v2] Fase 3C.2 - dry-run (read-only) + decision manifest");
+    console.log("[migrate-v2] Fase 3C.3A - dry-run (read-only) + decision manifest");
     console.log("[migrate-v2] source=mysql\n");
 
     const legacyCountsBefore = await countTables(ds, LEGACY_TABLES);
@@ -421,55 +411,22 @@ export async function runContentV2DryRun(options: DryRunOptions = {}): Promise<D
       }
     }
 
-    const brandResult = classifyBrands(snapshot);
-    const uiResult = classifyUiProjects(snapshot);
-    const graphicResult = classifyGraphicItems(snapshot);
-    const manualResult = classifyBrandManuals(snapshot);
-    const tagAnalysis = classifyTags(snapshot);
-    const testimonialAnalysis = classifyTestimonials(snapshot);
+    const { applied, classifiers } = await buildProposedPlan(ds);
+    const {
+      manualResult,
+      tagAnalysis,
+      graphicResult,
+      records: classifierRecords,
+    } = classifiers;
 
-    const consolidatedProjects = consolidateProjects(
-      uiResult.projects,
-      graphicResult.projects,
-      snapshot.namedListItems,
-    );
+    const records: RecordAnalysis[] = classifierRecords.map(sanitizeRecord);
 
-    const proposedEntities = enrichEntityWorkCounts(
-      brandResult.entities,
-      consolidatedProjects,
-    );
-
-    const namedListAnalysis = classifyNamedListItems(
-      snapshot,
-      consolidatedProjects,
-      proposedEntities,
-    );
-
-    const applied = applyDecisionManifest(
-      {
-        entities: proposedEntities,
-        projects: consolidatedProjects,
-        standalonePieces: graphicResult.standalonePieces,
-        piecesInProjects: graphicResult.piecesInProjects,
-        testimonials: testimonialAnalysis,
-        namedListItems: namedListAnalysis,
-      },
+    const coveragePaths = writeCoverageReport(
+      resolve(process.cwd(), "reports/content-v2-coverage-mysql.md"),
+      applied,
       snapshot,
     );
-
-    if (applied.validationErrors.length) {
-      throw new Error(
-        "[migrate-v2] Decision manifest validation failed:\n" +
-          applied.validationErrors.map((e) => `  - ${e}`).join("\n"),
-      );
-    }
-
-    const records: RecordAnalysis[] = [
-      ...brandResult.records,
-      ...uiResult.records,
-      ...graphicResult.records,
-      ...manualResult.records,
-    ].map(sanitizeRecord);
+    console.log(`\n[migrate-v2] Coverage report: ${coveragePaths.mdPath}`);
 
     // Manifest resolved roles — no pending relation reviews after decisions
     const entityRelationsRequiringReview: DryRunReport["entityRelationsRequiringReview"] =

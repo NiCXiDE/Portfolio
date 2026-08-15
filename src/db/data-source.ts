@@ -77,8 +77,12 @@ declare global {
 export function createDataSource(
   synchronize = false,
   entities: typeof portfolioEntities = portfolioEntities,
+  overrides?: { database?: string },
 ) {
   const conn = connectionOptions();
+  if (overrides?.database) {
+    conn.database = overrides.database;
+  }
   return new DataSource({
     type: "mysql",
     ...conn,

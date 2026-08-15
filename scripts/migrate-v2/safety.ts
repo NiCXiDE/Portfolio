@@ -64,7 +64,7 @@ export const LEGACY_BASELINE: TableCounts = {
   ui_projects: 13,
   brands: 7,
   brand_manuals: 1,
-  testimonials: 4,
+  testimonials: 5,
   named_list_items: 40,
   tags: 9,
   ui_list_items: 8,

@@ -17,6 +17,7 @@
     "test:v2-helpers": "tsx scripts/test-v2-helpers.ts",
     "test:migrate-v2": "tsx scripts/test-migrate-v2-classifiers.ts",
     "db:migrate-v2-dry-run": "tsx scripts/migrate-content-v2.ts --dry-run",
+    "db:migrate-v2-apply-rehearsal": "tsx scripts/migrate-content-v2.ts --apply",
     "db:reset": "tsx scripts/db-reset.ts"
   },
   "dependencies": {

@@ -525,7 +525,7 @@ export function applyDecisionManifest(
           `RESOURCE_ONLY piece ${legacyId} → project ${decision.asProjectResourceOnly.projectId}`,
         );
         humanDecisionNotes.push(
-          `DISCARDED piece ${legacyId} (resource-only)`,
+          `DISCARDED piece ${legacyId} (resource-only → project_resource on ${decision.asProjectResourceOnly.projectId})`,
         );
       } else {
         humanDecisionNotes.push(`DISCARDED piece ${legacyId}`);
@@ -646,6 +646,39 @@ export function applyDecisionManifest(
       };
     },
   );
+
+  /* Materialize asProjectResourceOnly → ProjectResource (no Piece, no branding authorship) */
+  const asProjectResourceErrors: string[] = [];
+  for (const decision of decisions.pieces) {
+    if (!decision.asProjectResourceOnly) continue;
+    const { projectId, note } = decision.asProjectResourceOnly;
+    const project = proposedProjects.find((p) => p.id === projectId);
+    if (!project) {
+      asProjectResourceErrors.push(
+        `asProjectResourceOnly: project "${projectId}" missing for graphic_items:${decision.legacyGraphicItemId}`,
+      );
+      continue;
+    }
+    const graphic = snapshot.graphicItems.find(
+      (g) => g.id === decision.legacyGraphicItemId,
+    );
+    const path = graphic?.srcPath?.trim();
+    if (!path) {
+      asProjectResourceErrors.push(
+        `asProjectResourceOnly: missing srcPath for graphic_items:${decision.legacyGraphicItemId}`,
+      );
+      continue;
+    }
+    const resourceId = `${decision.legacyGraphicItemId}-project-resource`;
+    if (!project.resources.some((r) => r.id === resourceId)) {
+      project.resources.push({
+        id: resourceId,
+        path,
+        kind: "project_resource",
+        label: note,
+      });
+    }
+  }
 
   const proposedProjectIds = new Set(proposedProjects.map((p) => p.id));
 
@@ -811,6 +844,18 @@ export function applyDecisionManifest(
     });
   }
 
+  for (const decision of decisions.pieces) {
+    if (!decision.asProjectResourceOnly) continue;
+    const resourceId = `${decision.legacyGraphicItemId}-project-resource`;
+    migrationMapPreview.push({
+      sourceTable: "graphic_items",
+      sourceId: decision.legacyGraphicItemId,
+      targetType: "resource",
+      targetId: resourceId,
+      notes: `asProjectResourceOnly → ${decision.asProjectResourceOnly.projectId}; contextual asset, not branding authorship`,
+    });
+  }
+
   // Strip any accidental deferred/discarded targets from map
   const filteredMap = migrationMapPreview.filter((entry) => {
     if (entry.targetType === "entity" || entry.targetType === "project") {
@@ -845,7 +890,10 @@ export function applyDecisionManifest(
     humanDecisionNotes: dedupeNotes(humanDecisionNotes),
   };
 
-  const validationErrors = validateResult(partial, decisions);
+  const validationErrors = [
+    ...validateResult(partial, decisions),
+    ...asProjectResourceErrors,
+  ];
   const laneCounts = countLanes(
     proposedEntities,
     proposedProjects,

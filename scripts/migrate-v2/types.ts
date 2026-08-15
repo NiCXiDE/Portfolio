@@ -247,4 +247,5 @@ export type LegacySnapshot = {
   testimonials: import("../../src/db/entities").TestimonialRow[];
   namedListItems: import("../../src/db/entities").NamedListItemRow[];
   tags: import("../../src/db/entities").TagRow[];
+  uiListItems: import("../../src/db/entities").UiListItemRow[];
 };

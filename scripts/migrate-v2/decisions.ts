@@ -1697,6 +1697,13 @@ export const migrationDecisions: DecisionManifest = {
 
   deferred: [
     {
+      id: "yas",
+      kind: "other",
+      label: "testimonial:yas entity mapping",
+      reason:
+        "Nuevo testimonial post-freeze (yas); entity mapping pendiente de decisión humana — no inventar link",
+    },
+    {
       id: "cloronor-landing",
       kind: "project",
       label: "Cloronor landing",

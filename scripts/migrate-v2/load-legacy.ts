@@ -6,6 +6,7 @@ import {
   NamedListItemEntity,
   TagEntity,
   TestimonialEntity,
+  UiListItemEntity,
   UiProjectEntity,
 } from "../../src/db/entities";
 import type { LegacySnapshot } from "./types";
@@ -19,6 +20,7 @@ async function loadLegacyFromDb(ds: DataSource): Promise<LegacySnapshot> {
     testimonials,
     namedListItems,
     tags,
+    uiListItems,
   ] = await Promise.all([
     ds.getRepository(BrandEntity).find({ order: { sortOrder: "ASC" } }),
     ds.getRepository(GraphicItemEntity).find({ order: { sortOrder: "ASC" } }),
@@ -27,6 +29,7 @@ async function loadLegacyFromDb(ds: DataSource): Promise<LegacySnapshot> {
     ds.getRepository(TestimonialEntity).find({ order: { sortOrder: "ASC" } }),
     ds.getRepository(NamedListItemEntity).find({ order: { sortOrder: "ASC" } }),
     ds.getRepository(TagEntity).find({ order: { sortOrder: "ASC" } }),
+    ds.getRepository(UiListItemEntity).find({ order: { sortOrder: "ASC" } }),
   ]);
 
   return {
@@ -37,6 +40,7 @@ async function loadLegacyFromDb(ds: DataSource): Promise<LegacySnapshot> {
     testimonials,
     namedListItems,
     tags,
+    uiListItems,
   };
 }
 
