@@ -53,3 +53,18 @@ export type {
   HomeProjectItemV2,
   HomeTestimonialItemV2,
 } from "./home";
+
+export {
+  compareHomeShadows,
+  normalizeHomeContentV2,
+  normalizeLegacyHome,
+  resolveLegacyCompanyKey,
+  resolveLegacyProjectKey,
+  HOME_CONTENT_SOURCE_FLAG_DESIGN,
+  HOME_UI_MAPPING_4C4,
+} from "./home-shadow";
+export type {
+  HomeShadowReport,
+  HomeShadowSnapshot,
+  ShadowDiff,
+} from "./home-shadow";

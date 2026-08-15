@@ -25,7 +25,9 @@
     "db:apply-home-data-patch-4c1": "tsx scripts/apply-home-data-patch-4c1.ts",
     "inspect:home-data-patch-4c1": "tsx scripts/inspect-home-data-patch-4c1.ts",
     "inspect:home-v2": "tsx scripts/inspect-home-v2.ts",
+    "inspect:home-shadow": "tsx scripts/inspect-home-shadow.ts",
     "test:home-v2-adapter": "tsx --test scripts/test-home-v2-adapter.ts",
+    "test:home-shadow": "tsx --test scripts/test-home-shadow.ts",
     "db:reset": "tsx scripts/db-reset.ts"
   },
   "dependencies": {
