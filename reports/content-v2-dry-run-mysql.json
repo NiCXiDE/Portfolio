@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-08-15T04:51:43.117Z",
+  "generatedAt": "2026-08-15T06:49:04.417Z",
   "mode": "dry-run",
   "source": "mysql",
   "legacyCounts": {
@@ -7908,6 +7908,7 @@
     "piecesInProjects": 18,
     "proposedPieceEntities": 17,
     "projectResources": 26,
-    "pieceResources": 62
+    "pieceResources": 2,
+    "pieceSrcPaths": 60
   }
 }

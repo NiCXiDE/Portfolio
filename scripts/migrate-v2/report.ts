@@ -126,8 +126,13 @@ function renderMarkdown(r: DryRunReport): string {
   lines.push(`| Standalone Pieces | ${r.summary.standalonePieces} |`);
   lines.push(`| Pieces en Projects | ${r.summary.piecesInProjects} |`);
   lines.push(`| Proposed piece_entities | ${r.summary.proposedPieceEntities} |`);
-  lines.push(`| ProjectResources | ${r.summary.projectResources} |`);
-  lines.push(`| PieceResources | ${r.summary.pieceResources} |`);
+  lines.push(`| ProjectResources (→ project_resources) | ${r.summary.projectResources} |`);
+  lines.push(
+    `| PieceResources (→ piece_resources) | ${r.summary.pieceResources} |`,
+  );
+  lines.push(
+    `| PieceSrcPaths (→ pieces.src_path) | ${r.summary.pieceSrcPaths} |`,
+  );
   lines.push(
     `| Lanes AUTO / MANUAL / DEFERRED / DISCARDED | ${r.laneCounts.AUTO_MIGRATED} / ${r.laneCounts.MANUAL_DECISION_MIGRATED} / ${r.laneCounts.DEFERRED} / ${r.laneCounts.DISCARDED} |`,
   );
@@ -510,6 +515,7 @@ export async function runContentV2DryRun(options: DryRunOptions = {}): Promise<D
         proposedPieceEntities: applied.proposedPieceEntities.length,
         projectResources: resourceCounts.projectResources,
         pieceResources: resourceCounts.pieceResources,
+        pieceSrcPaths: resourceCounts.pieceSrcPaths,
       },
     };
 
@@ -524,7 +530,12 @@ export async function runContentV2DryRun(options: DryRunOptions = {}): Promise<D
       `  Proposed piece_entities: ${report.summary.proposedPieceEntities}`,
     );
     console.log(`  ProjectResources: ${report.summary.projectResources}`);
-    console.log(`  PieceResources: ${report.summary.pieceResources}`);
+    console.log(
+      `  PieceResources (→ piece_resources): ${report.summary.pieceResources}`,
+    );
+    console.log(
+      `  PieceSrcPaths (→ pieces.src_path): ${report.summary.pieceSrcPaths}`,
+    );
     console.log(
       `  Lanes AUTO/MANUAL/DEFERRED/DISCARDED: ${report.laneCounts.AUTO_MIGRATED}/${report.laneCounts.MANUAL_DECISION_MIGRATED}/${report.laneCounts.DEFERRED}/${report.laneCounts.DISCARDED}`,
     );

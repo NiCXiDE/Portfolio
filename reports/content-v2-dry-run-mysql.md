@@ -1,6 +1,6 @@
 # Content Model V2 — Dry Run Report
 
-Generado: 2026-08-15T04:51:43.117Z
+Generado: 2026-08-15T06:49:04.417Z
 Modo: **dry-run** (read-only, sin writes en V2)
 Source: **mysql**
 
@@ -13,8 +13,9 @@ Source: **mysql**
 | Standalone Pieces | 30 |
 | Pieces en Projects | 18 |
 | Proposed piece_entities | 17 |
-| ProjectResources | 26 |
-| PieceResources | 62 |
+| ProjectResources (→ project_resources) | 26 |
+| PieceResources (→ piece_resources) | 2 |
+| PieceSrcPaths (→ pieces.src_path) | 60 |
 | Lanes AUTO / MANUAL / DEFERRED / DISCARDED | 0 / 112 / 14 / 10 |
 | Confianza alta / media / baja | 30 / 38 / 0 |
 | Notas del manifesto (aplicadas) | 143 |

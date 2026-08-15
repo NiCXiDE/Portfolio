@@ -235,7 +235,10 @@ export type DryRunReport = {
     piecesInProjects: number;
     proposedPieceEntities: number;
     projectResources: number;
+    /** Rows that will be inserted into `piece_resources` (`kind: piece_resource`). */
     pieceResources: number;
+    /** `kind: piece_src` resources; materialize on `pieces.src_path`, not as table rows. */
+    pieceSrcPaths: number;
   };
 };
 

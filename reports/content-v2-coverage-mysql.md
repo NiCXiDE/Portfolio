@@ -1,6 +1,6 @@
 # Content Model V2 — Legacy coverage
 
-Generado: 2026-08-15T06:33:31.507Z
+Generado: 2026-08-15T06:49:04.263Z
 
 Total filas: 130
 UNMAPPED: 0

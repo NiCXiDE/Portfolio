@@ -198,13 +198,24 @@ export function countConfidence(records: RecordAnalysis[]): {
   return counts;
 }
 
+/**
+ * Storage-aligned resource counts (Proposed metrics).
+ * - projectResources → rows in `project_resources`
+ * - pieceResources → rows in `piece_resources` (`kind: piece_resource` only)
+ * - pieceSrcPaths → materialize on `pieces.src_path` (`kind: piece_src`; not table rows)
+ */
 export function countResources(
   projects: ProposedProject[],
   standalonePieces: ProposedPiece[],
   piecesInProjects: ProposedPiece[],
-): { projectResources: number; pieceResources: number } {
+): {
+  projectResources: number;
+  pieceResources: number;
+  pieceSrcPaths: number;
+} {
   let projectResources = 0;
   let pieceResources = 0;
+  let pieceSrcPaths = 0;
 
   for (const p of projects) {
     projectResources += p.resources.filter((r) => r.kind === "project_resource").length;
@@ -212,11 +223,12 @@ export function countResources(
 
   for (const piece of [...standalonePieces, ...piecesInProjects]) {
     pieceResources += piece.resources.filter(
-      (r) => r.kind === "piece_resource" || r.kind === "piece_src",
+      (r) => r.kind === "piece_resource",
     ).length;
+    pieceSrcPaths += piece.resources.filter((r) => r.kind === "piece_src").length;
   }
 
-  return { projectResources, pieceResources };
+  return { projectResources, pieceResources, pieceSrcPaths };
 }
 
 export function enrichEntityWorkCounts(
