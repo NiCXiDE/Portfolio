@@ -1,6 +1,6 @@
 # Content Model V2 — Dry Run Report
 
-Generado: 2026-08-14T06:39:33.353Z
+Generado: 2026-08-15T04:51:43.117Z
 Modo: **dry-run** (read-only, sin writes en V2)
 Source: **mysql**
 
@@ -13,11 +13,11 @@ Source: **mysql**
 | Standalone Pieces | 30 |
 | Pieces en Projects | 18 |
 | Proposed piece_entities | 17 |
-| ProjectResources | 25 |
+| ProjectResources | 26 |
 | PieceResources | 62 |
-| Lanes AUTO / MANUAL / DEFERRED / DISCARDED | 0 / 112 / 13 / 10 |
+| Lanes AUTO / MANUAL / DEFERRED / DISCARDED | 0 / 112 / 14 / 10 |
 | Confianza alta / media / baja | 30 / 38 / 0 |
-| Notas del manifesto (aplicadas) | 142 |
+| Notas del manifesto (aplicadas) | 143 |
 
 ## Verificación de seguridad
 
@@ -31,7 +31,7 @@ graphic_items: 47
 ui_projects: 13
 brands: 7
 brand_manuals: 1
-testimonials: 4
+testimonials: 5
 named_list_items: 40
 tags: 9
 ui_list_items: 8
@@ -636,7 +636,7 @@ migration_map: 0 → 0
 - lane: MANUAL_DECISION_MIGRATED
 - roles: ux, ui
 - fuentes: named_list_items:syllabi
-- pieces: 0 | resources: 0
+- pieces: 0 | resources: 1
 - confianza: alta
 
 ### MICROTIME (`microtime`)
@@ -940,6 +940,11 @@ Slugs en piezas ausentes del catálogo: —
 - redundante tras link: company_brand_id (reemplazado por entity_id); company_name (si coincide con Entity.name)
 - conservar override: company_logo_path — override si difiere del logo Entity; company_href — override de URL pública
 
+### Yas Silveira (`yas`)
+- entity propuesta: — (—)
+- redundante tras link: —
+- conservar override: —
+
 ### Maranga Ezequiel (`ezequiel`)
 - entity propuesta: aicore (AICORE IT Specialists)
 - redundante tras link: company_brand_id (reemplazado por entity_id); company_name (si coincide con Entity.name)
@@ -965,6 +970,7 @@ Slugs en piezas ausentes del catálogo: —
 
 ## Deferred
 
+- `yas` (other): **testimonial:yas entity mapping** — Nuevo testimonial post-freeze (yas); entity mapping pendiente de decisión humana — no inventar link
 - `cloronor-landing` (project): **Cloronor landing** — Landing Cloronor pendiente de modelado; trading ya en manifest
 - `sha256:de76f827893389a0a02cdf1a3322100c0c474b28ffe203e2fa8eaab0150487b8` (project): **[deferred-confidential]** — Fuente confidencial deferred; no crear Entity/Project público
 - `sha256:98fe442255035a1459bb5b86fda03d7c34c23d512b1b5bf3a5ecb7a802601895` (project): **[deferred-confidential]** — Fuente confidencial deferred; no crear Entity/Project público
@@ -994,7 +1000,7 @@ Slugs en piezas ausentes del catálogo: —
 
 ## migration_map preview (NO insertado)
 
-Total mappings propuestos: 124
+Total mappings propuestos: 125
 
 | source | target |
 |--------|--------|
@@ -1122,6 +1128,7 @@ Total mappings propuestos: 124
 | graphic_items:bass2k24 | piece:bass2k24 (lane=MANUAL_DECISION_MIGRATED) |
 | graphic_items:bass2025 | piece:bass2025 (lane=MANUAL_DECISION_MIGRATED) |
 | graphic_items:bass2026 | piece:bass2026 (lane=MANUAL_DECISION_MIGRATED) |
+| graphic_items:buhoprofe | resource:buhoprofe-project-resource (asProjectResourceOnly → syllabi; contextual asset, not branding authorship) |
 
 ## Inventario registro por registro
 
@@ -2348,7 +2355,7 @@ Total mappings propuestos: 124
 - MANUAL piece penguin-knife
 - MANUAL piece maxi-boo
 - MANUAL piece ux-and-x
-- DISCARDED piece buhoprofe (resource-only)
+- DISCARDED piece buhoprofe (resource-only → project_resource on syllabi)
 - MANUAL project aicore-inventariado (confidential)
 - MANUAL project aml-general (confidential)
 - MANUAL project aml-casinos (confidential)
@@ -2390,6 +2397,7 @@ Total mappings propuestos: 124
 - DISCARDED buhoprofe-branding-authorship
 - DISCARDED invent-citf-2026
 - DISCARDED invent-push-2027
+- DEFERRED yas
 - DEFERRED cloronor-landing
 - DEFERRED [deferred-confidential:sha256:de76f827893]
 - DEFERRED [deferred-confidential:sha256:98fe4422550]

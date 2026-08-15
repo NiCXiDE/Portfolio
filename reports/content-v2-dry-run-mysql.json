@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-08-14T06:39:33.353Z",
+  "generatedAt": "2026-08-15T04:51:43.117Z",
   "mode": "dry-run",
   "source": "mysql",
   "legacyCounts": {
@@ -7,7 +7,7 @@
     "ui_projects": 13,
     "brands": 7,
     "brand_manuals": 1,
-    "testimonials": 4,
+    "testimonials": 5,
     "named_list_items": 40,
     "tags": 9,
     "ui_list_items": 8
@@ -4457,7 +4457,14 @@
       ],
       "entities": [],
       "pieces": [],
-      "resources": [],
+      "resources": [
+        {
+          "id": "buhoprofe-project-resource",
+          "path": "/assets/grafico/logos/buhoprofe-1.svg",
+          "kind": "project_resource",
+          "label": "Solo vectorización contextual; no crear Piece de branding del usuario"
+        }
+      ],
       "legacySources": [
         "named_list_items:syllabi"
       ],
@@ -6644,6 +6651,17 @@
       "reason": "Decisión humana: testimonial facundo → entity push."
     },
     {
+      "id": "yas",
+      "authorName": "Yas Silveira",
+      "proposedEntityId": null,
+      "proposedEntityName": null,
+      "redundantAfterLink": [],
+      "keepAsOverride": [],
+      "confidence": "baja",
+      "requiresHumanDecision": true,
+      "reason": "Sin brand vinculado; no crear Person Entity para el autor."
+    },
+    {
       "id": "ezequiel",
       "authorName": "Maranga Ezequiel",
       "proposedEntityId": "aicore",
@@ -6816,7 +6834,7 @@
     "MANUAL piece penguin-knife",
     "MANUAL piece maxi-boo",
     "MANUAL piece ux-and-x",
-    "DISCARDED piece buhoprofe (resource-only)",
+    "DISCARDED piece buhoprofe (resource-only → project_resource on syllabi)",
     "MANUAL project aicore-inventariado (confidential)",
     "MANUAL project aml-general (confidential)",
     "MANUAL project aml-casinos (confidential)",
@@ -6858,6 +6876,7 @@
     "DISCARDED buhoprofe-branding-authorship",
     "DISCARDED invent-citf-2026",
     "DISCARDED invent-push-2027",
+    "DEFERRED yas",
     "DEFERRED cloronor-landing",
     "DEFERRED [deferred-confidential:sha256:de76f827893]",
     "DEFERRED [deferred-confidential:sha256:98fe4422550]",
@@ -7678,12 +7697,19 @@
       "targetType": "piece",
       "targetId": "bass2026",
       "notes": "lane=MANUAL_DECISION_MIGRATED"
+    },
+    {
+      "sourceTable": "graphic_items",
+      "sourceId": "buhoprofe",
+      "targetType": "resource",
+      "targetId": "buhoprofe-project-resource",
+      "notes": "asProjectResourceOnly → syllabi; contextual asset, not branding authorship"
     }
   ],
   "laneCounts": {
     "AUTO_MIGRATED": 0,
     "MANUAL_DECISION_MIGRATED": 112,
-    "DEFERRED": 13,
+    "DEFERRED": 14,
     "DISCARDED": 10
   },
   "discarded": [
@@ -7757,6 +7783,12 @@
     }
   ],
   "deferred": [
+    {
+      "id": "yas",
+      "kind": "other",
+      "label": "testimonial:yas entity mapping",
+      "reason": "Nuevo testimonial post-freeze (yas); entity mapping pendiente de decisión humana — no inventar link"
+    },
     {
       "id": "cloronor-landing",
       "kind": "project",
@@ -7875,7 +7907,7 @@
     "standalonePieces": 30,
     "piecesInProjects": 18,
     "proposedPieceEntities": 17,
-    "projectResources": 25,
+    "projectResources": 26,
     "pieceResources": 62
   }
 }
