@@ -12,7 +12,7 @@ import {
   compareLegacySnapshots,
   writeFixtureDriftReport,
 } from "./compare-fixtures";
-import { fingerprintSourceId } from "./decisions";
+import { fingerprintSourceId, migrationDecisions } from "./decisions";
 import { loadLegacySnapshot } from "./load-legacy";
 import { fixtureLegacyCounts, loadLegacyFromFixtures } from "./load-fixtures";
 import {
@@ -532,6 +532,31 @@ export async function runContentV2DryRun(options: DryRunOptions = {}): Promise<D
       `  Confidence alta/media/baja: ${report.confidenceCounts.alta}/${report.confidenceCounts.media}/${report.confidenceCounts.baja}`,
     );
     console.log(`  Manifest notes: ${report.humanDecisions.length}`);
+    const tagAdditions = migrationDecisions.tagCatalogAdditions;
+    const requiredTags = new Set<string>();
+    for (const p of [
+      ...applied.standalonePieces,
+      ...applied.piecesInProjects,
+    ]) {
+      for (const t of p.tags) requiredTags.add(t);
+    }
+    const existingTags = new Set(snapshot.tags.map((t) => t.slug));
+    const allowedTags = new Set([
+      ...existingTags,
+      ...tagAdditions.map((a) => a.slug),
+    ]);
+    const missingAfterAdditions = [...requiredTags].filter(
+      (s) => !allowedTags.has(s),
+    );
+    console.log(
+      `  Tags PRE=${existingTags.size}; V2 additions=${tagAdditions.length} (${tagAdditions.map((a) => a.slug).join(",")}); POST expected=${existingTags.size + tagAdditions.filter((a) => !existingTags.has(a.slug)).length}; missing after additions=${missingAfterAdditions.length}`,
+    );
+    if (missingAfterAdditions.length) {
+      throw new Error(
+        "[migrate-v2] Tag catalog incomplete after declaring additions:\n" +
+          missingAfterAdditions.map((s) => `  - ${s}`).join("\n"),
+      );
+    }
     console.log(`\nReport: ${mdPath}`);
     console.log(`JSON:   ${jsonPath}`);
     console.log("\nV2 counts (after): unchanged at 0.");

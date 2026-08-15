@@ -220,12 +220,24 @@ export type DeferredItem = {
   relatedIds?: string[];
 };
 
+/** Tags approved for INSERT during apply (not present in legacy catalog). */
+export type TagCatalogAddition = {
+  slug: string;
+  labelEs: string;
+  labelEn: string;
+  isNsfw?: boolean;
+  sortOrder: number;
+  reason: string;
+};
+
 export type DecisionManifest = {
   version: 1;
   entities: EntityDecision[];
   projects: ProjectDecision[];
   pieces: PieceDecision[];
   testimonials: { id: string; entityId: string }[];
+  /** Explicit V2 catalog additions — inserted in apply before piece_tags */
+  tagCatalogAdditions: TagCatalogAddition[];
   discarded: DiscardedItem[];
   deferred: DeferredItem[];
 };
@@ -1626,6 +1638,32 @@ export const migrationDecisions: DecisionManifest = {
     { id: "ezequiel", entityId: "aicore" },
     { id: "joaquin", entityId: "ludica" },
     { id: "matias", entityId: "orbita-l-b" },
+  ],
+
+  /**
+   * PRE-APPLY legacy tags = 9.
+   * These 2 additions are manifest-only (not legacy sources).
+   * POST-APPLY expected tags = 11.
+   */
+  tagCatalogAdditions: [
+    {
+      slug: "tdt",
+      labelEs: "TDT",
+      labelEn: "TDT",
+      isNsfw: false,
+      sortOrder: 100,
+      reason:
+        "Approved catalog addition — personal TDT pieces (tdt, nick-tdt-beach)",
+    },
+    {
+      slug: "cover",
+      labelEs: "Portada / carátula",
+      labelEn: "Cover",
+      isNsfw: false,
+      sortOrder: 101,
+      reason:
+        "Approved catalog addition — transversal cover/artwork tag (portada/carátula)",
+    },
   ],
 
   discarded: [

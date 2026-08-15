@@ -6,14 +6,18 @@ import { createDataSource, portfolioLegacyEntities } from "../../src/db/data-sou
 import { slugify } from "../../src/lib/slug";
 import type { DecisionApplicationResult } from "./apply-decisions";
 import { buildProposedPlan } from "./build-proposed";
+import {
+  migrationDecisions,
+  type TagCatalogAddition,
+} from "./decisions";
 import { galleryPaths, localizedEs } from "./load-legacy";
 import {
   assertCanonicalTestimonials,
   assertLegacyBaseline,
   assertV2Empty,
   countTables,
-  countsEqual,
   formatCounts,
+  LEGACY_BASELINE,
   LEGACY_TABLES,
   V2_TABLES,
 } from "./safety";
@@ -304,6 +308,102 @@ async function insertPieceTags(
   }
 }
 
+function collectRequiredTagSlugs(pieces: ProposedPiece[]): string[] {
+  const slugs = new Set<string>();
+  for (const piece of pieces) {
+    for (const tag of piece.tags) slugs.add(tag);
+  }
+  return [...slugs].sort();
+}
+
+/**
+ * Preflight: every proposed piece_tags slug must exist in `tags`
+ * OR be declared in tagCatalogAdditions. Abort before transaction.
+ */
+export async function assertPieceTagsCatalogReady(
+  ds: DataSource,
+  pieces: ProposedPiece[],
+  additions: TagCatalogAddition[] = migrationDecisions.tagCatalogAdditions,
+): Promise<{ existing: string[]; required: string[]; missing: string[] }> {
+  const rows = (await ds.query(`SELECT slug FROM tags`)) as Array<{
+    slug: string;
+  }>;
+  const existing = rows.map((r) => r.slug).sort();
+  const allowed = new Set([
+    ...existing,
+    ...additions.map((a) => a.slug),
+  ]);
+  const required = collectRequiredTagSlugs(pieces);
+  const missing = required.filter((slug) => !allowed.has(slug));
+
+  if (missing.length) {
+    throw new Error(
+      "[migrate-v2] ABORT: piece_tags reference tag_slug(s) not in catalog " +
+        "and not declared as V2 tagCatalogAdditions:\n" +
+        missing.map((s) => `  - ${s}`).join("\n"),
+    );
+  }
+
+  return { existing, required, missing };
+}
+
+/**
+ * INSERT approved catalog additions (tdt, cover, …) before piece_tags.
+ * Returns number of rows actually inserted in this run.
+ */
+async function ensureCatalogTagAdditions(
+  qr: QueryRunner,
+  additions: TagCatalogAddition[],
+): Promise<number> {
+  let inserted = 0;
+
+  for (const tag of additions) {
+    const rows = (await qr.query(
+      `SELECT slug, label_es AS labelEs, label_en AS labelEn, is_nsfw AS isNsfw
+       FROM tags WHERE slug = ?`,
+      [tag.slug],
+    )) as Array<{
+      slug: string;
+      labelEs: string;
+      labelEn: string;
+      isNsfw: number | boolean;
+    }>;
+
+    if (rows.length === 0) {
+      await qr.query(
+        `INSERT INTO tags (slug, label_es, label_en, is_nsfw, sort_order)
+         VALUES (?, ?, ?, ?, ?)`,
+        [
+          tag.slug,
+          tag.labelEs,
+          tag.labelEn,
+          tag.isNsfw ? 1 : 0,
+          tag.sortOrder,
+        ],
+      );
+      inserted += 1;
+      continue;
+    }
+
+    const row = rows[0];
+    const rowNsfw = Boolean(row.isNsfw);
+    const expectedNsfw = Boolean(tag.isNsfw);
+    if (rowNsfw !== expectedNsfw) {
+      throw new Error(
+        `[migrate-v2] tag "${tag.slug}" exists with incompatible is_nsfw ` +
+          `(found=${rowNsfw}, expected=${expectedNsfw}) — abort/rollback`,
+      );
+    }
+    if (!row.labelEs?.trim() || !row.labelEn?.trim()) {
+      throw new Error(
+        `[migrate-v2] tag "${tag.slug}" exists with empty labels — abort/rollback`,
+      );
+    }
+  }
+
+  return inserted;
+}
+
 async function insertPieceEntities(
   qr: QueryRunner,
   applied: DecisionApplicationResult,
@@ -404,8 +504,9 @@ async function applyPlanInTransaction(
   ds: DataSource,
   applied: DecisionApplicationResult,
   snapshot: LegacySnapshot,
-): Promise<void> {
+): Promise<{ tagsInserted: number }> {
   const allPieces = [...applied.standalonePieces, ...applied.piecesInProjects];
+  const additions = migrationDecisions.tagCatalogAdditions;
   const qr = ds.createQueryRunner();
   await qr.connect();
   await qr.startTransaction();
@@ -421,11 +522,14 @@ async function applyPlanInTransaction(
     await insertPieces(qr, allPieces, snapshot);
     await insertPieceResources(qr, allPieces);
     await insertProjectResources(qr, applied.proposedProjects);
+    /* Catalog additions (tdt, cover) before piece_tags FK. */
+    const tagsInserted = await ensureCatalogTagAdditions(qr, additions);
     await insertPieceTags(qr, allPieces);
     await insertPieceEntities(qr, applied);
     await insertMigrationMap(qr, applied.migrationMapPreview);
 
     await qr.commitTransaction();
+    return { tagsInserted };
   } catch (err) {
     await qr.rollbackTransaction();
     throw err;
@@ -463,21 +567,48 @@ export async function runContentV2Apply(
     console.log(formatCounts(v2CountsBefore));
 
     const { applied, snapshot } = await buildProposedPlan(ds);
+    const allPieces = [...applied.standalonePieces, ...applied.piecesInProjects];
+    const tagPreflight = await assertPieceTagsCatalogReady(ds, allPieces);
+    console.log(
+      `\n[migrate-v2] Tag catalog preflight: required=${tagPreflight.required.length} ` +
+        `existing=${tagPreflight.existing.length} ` +
+        `additions=${migrationDecisions.tagCatalogAdditions.length} missing=0`,
+    );
+    console.log(
+      `  PRE tags=${legacyCountsBefore.tags ?? 0}; ` +
+        `V2 additions=${migrationDecisions.tagCatalogAdditions.map((t) => t.slug).join(",")}; ` +
+        `POST expected=${(legacyCountsBefore.tags ?? 0) + migrationDecisions.tagCatalogAdditions.filter((a) => !tagPreflight.existing.includes(a.slug)).length}`,
+    );
 
-    await applyPlanInTransaction(ds, applied, snapshot);
+    const { tagsInserted } = await applyPlanInTransaction(ds, applied, snapshot);
 
     const legacyCountsAfter = await countTables(ds, LEGACY_TABLES);
     const v2CountsAfter = await countTables(ds, V2_TABLES);
 
-    if (!countsEqual(legacyCountsBefore, legacyCountsAfter)) {
+    for (const table of Object.keys(LEGACY_BASELINE)) {
+      if (table === "tags") continue;
+      if ((legacyCountsBefore[table] ?? 0) !== (legacyCountsAfter[table] ?? 0)) {
+        throw new Error(
+          `[safety] Legacy table "${table}" count changed after apply ` +
+            `(${legacyCountsBefore[table]} → ${legacyCountsAfter[table]}).`,
+        );
+      }
+    }
+
+    const expectedTags =
+      (legacyCountsBefore.tags ?? 0) + tagsInserted;
+    if ((legacyCountsAfter.tags ?? 0) !== expectedTags) {
       throw new Error(
-        "[safety] Legacy counts changed after apply — unexpected (entity_id UPDATE must not change counts).",
+        `[safety] tags count after apply: expected ${expectedTags} ` +
+          `(PRE ${legacyCountsBefore.tags}+inserted ${tagsInserted}), ` +
+          `found ${legacyCountsAfter.tags}`,
       );
     }
-    assertLegacyBaseline(legacyCountsAfter);
 
     console.log("\n[migrate-v2] Apply committed.");
-    console.log("Legacy counts (after): unchanged");
+    console.log(
+      `Legacy counts (after): unchanged except tags ${legacyCountsBefore.tags} → ${legacyCountsAfter.tags} (+${tagsInserted} catalog additions)`,
+    );
     console.log(formatCounts(legacyCountsAfter));
     console.log("\nV2 counts (after):");
     console.log(formatCounts(v2CountsAfter));
@@ -485,6 +616,10 @@ export async function runContentV2Apply(
       `\n  entities: ${v2CountsAfter.entities ?? 0}, projects: ${v2CountsAfter.projects ?? 0}, pieces: ${v2CountsAfter.pieces ?? 0}`,
     );
     console.log(`  migration_map: ${v2CountsAfter.migration_map ?? 0}`);
+    console.log(
+      "  Writes: INSERT V2 + migration_map + tags(catalog additions only); " +
+        "UPDATE testimonials.entity_id (4 canonical). No DELETE/TRUNCATE/schema.",
+    );
     console.log(
       "  NOTE: fk_testimonials_entity still pending — validated manually (0 invalid refs).",
     );

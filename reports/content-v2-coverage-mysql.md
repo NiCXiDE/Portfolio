@@ -1,9 +1,16 @@
 # Content Model V2 — Legacy coverage
 
-Generado: 2026-08-15T04:51:43.010Z
+Generado: 2026-08-15T06:33:31.507Z
 
 Total filas: 130
 UNMAPPED: 0
+
+## Tag catalog note
+
+- Legacy PRE-APPLY tags = **9** (coverage 9/9)
+- V2 catalog additions (manifest, not legacy sources) = **2**: `tdt`, `cover`
+- POST-APPLY expected tags = **11**
+- 9 → 11 after apply is intentional catalog growth, not corruption
 
 ## Counts by source table
 

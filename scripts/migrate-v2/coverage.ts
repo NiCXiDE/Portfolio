@@ -427,6 +427,7 @@ function renderCoverageMarkdown(rows: LegacyCoverageRow[]): string {
     byTable[row.sourceTable] = (byTable[row.sourceTable] ?? 0) + 1;
   }
   const unmapped = rows.filter((r) => r.lane === "UNMAPPED").length;
+  const additions = migrationDecisions.tagCatalogAdditions;
 
   const lines: string[] = [
     "# Content Model V2 — Legacy coverage",
@@ -435,6 +436,13 @@ function renderCoverageMarkdown(rows: LegacyCoverageRow[]): string {
     "",
     `Total filas: ${rows.length}`,
     `UNMAPPED: ${unmapped}`,
+    "",
+    "## Tag catalog note",
+    "",
+    `- Legacy PRE-APPLY tags = **${EXPECTED_COVERAGE_COUNTS.tags}** (coverage 9/9)`,
+    `- V2 catalog additions (manifest, not legacy sources) = **${additions.length}**: ${additions.map((a) => `\`${a.slug}\``).join(", ")}`,
+    `- POST-APPLY expected tags = **${EXPECTED_COVERAGE_COUNTS.tags + additions.length}**`,
+    `- 9 → 11 after apply is intentional catalog growth, not corruption`,
     "",
     "## Counts by source table",
     "",
