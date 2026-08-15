@@ -25,8 +25,11 @@ import type { ProposedEntity, ProposedPiece, ProposedProject, LegacySnapshot } f
 
 loadEnv({ path: resolve(process.cwd(), ".env") });
 
-/** Rehearsal TEMP DB — exact whitelist for --apply until live apply is authorized. */
+/** Rehearsal TEMP DB — exact whitelist for rehearsal --apply. */
 export const REHEARSAL_DATABASE = "portfolio_v2_apply_test";
+
+/** Live production DB — requires V2_APPLY_APPROVED=1 (never unlocked by rehearsal env). */
+export const LIVE_DATABASE = "portfolio";
 
 export type ApplyOptions = {
   /** Rehearsal apply (portfolio_v2_apply_test); logged only — guards always run. */
@@ -79,24 +82,43 @@ export function logDatabaseTarget(info: DatabaseTargetInfo = resolveDatabaseTarg
 }
 
 /**
- * --apply (rehearsal phase): ONLY portfolio_v2_apply_test + V2_REHEARSAL_APPROVED=1.
- * Any other database aborts before transaction/writes.
+ * --apply guards (exact; no cross-unlock):
+ * - rehearsal: database === portfolio_v2_apply_test AND V2_REHEARSAL_APPROVED=1
+ * - live:      database === portfolio AND V2_APPLY_APPROVED=1
+ * Any other combination / database → ABORT before writes.
  */
 export function assertApplyGuards(database: string): void {
   logDatabaseTarget();
 
-  if (database !== REHEARSAL_DATABASE) {
+  const rehearsalOk =
+    database === REHEARSAL_DATABASE &&
+    process.env.V2_REHEARSAL_APPROVED === "1";
+  const liveOk =
+    database === LIVE_DATABASE && process.env.V2_APPLY_APPROVED === "1";
+
+  if (rehearsalOk || liveOk) {
+    return;
+  }
+
+  if (database === LIVE_DATABASE) {
     throw new Error(
-      `[migrate-v2] ABORT: --apply whitelist is exclusively "${REHEARSAL_DATABASE}" ` +
-        `(effective database="${database}"). Live portfolio apply is not authorized.`,
+      `[migrate-v2] ABORT: live database "${LIVE_DATABASE}" requires V2_APPLY_APPROVED=1 ` +
+        `(V2_REHEARSAL_APPROVED does not authorize live).`,
     );
   }
 
-  if (process.env.V2_REHEARSAL_APPROVED !== "1") {
+  if (database === REHEARSAL_DATABASE) {
     throw new Error(
-      `[migrate-v2] ABORT: database ${REHEARSAL_DATABASE} requires V2_REHEARSAL_APPROVED=1`,
+      `[migrate-v2] ABORT: database ${REHEARSAL_DATABASE} requires V2_REHEARSAL_APPROVED=1 ` +
+        `(V2_APPLY_APPROVED does not authorize rehearsal TEMP).`,
     );
   }
+
+  throw new Error(
+    `[migrate-v2] ABORT: database "${database}" is not authorized for --apply. ` +
+      `Allowed: "${REHEARSAL_DATABASE}"+V2_REHEARSAL_APPROVED=1 or ` +
+      `"${LIVE_DATABASE}"+V2_APPLY_APPROVED=1.`,
+  );
 }
 
 function boolToTinyint(value: boolean | undefined, defaultValue = false): number {
@@ -544,8 +566,8 @@ export async function runContentV2Apply(
   const target = resolveDatabaseTarget();
   assertApplyGuards(target.effectiveDatabase);
 
-  const mode = options.rehearsal ? "rehearsal-apply" : "apply";
-  console.log(`[migrate-v2] Fase 3C.3 — ${mode} (transactional writes to V2)`);
+  const mode = options.rehearsal ? "rehearsal-apply" : "live-apply";
+  console.log(`[migrate-v2] Fase 3C.5 — ${mode} (transactional writes to V2)`);
   console.log("[migrate-v2] source=mysql\n");
 
   const ds = createDataSource(false, portfolioLegacyEntities, {

@@ -31,6 +31,7 @@ async function main() {
       target.effectiveDatabase === REHEARSAL_DATABASE &&
       process.env.V2_REHEARSAL_APPROVED === "1";
 
+    // Live: rehearsal=false; assertApplyGuards enforces portfolio + V2_APPLY_APPROVED=1.
     await runContentV2Apply({ rehearsal });
     return;
   }
