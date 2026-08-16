@@ -236,7 +236,7 @@ test("sorting determinism left to reader; adapter preserves input order from bui
   );
 });
 
-test("manualStatus DETAIL_GAP and seyier gallery gap flagged", () => {
+test("manualStatus DETAIL_GAP and seyier gallery gap flagged when incomplete", () => {
   const content = buildGraphicContentV2("es", [
     piece({ id: "seyier", resources: [], srcUrl: "/seyier.svg" }),
   ]);
@@ -244,4 +244,119 @@ test("manualStatus DETAIL_GAP and seyier gallery gap flagged", () => {
   assert.equal(content.manuals.length, 0);
   assert.equal(content.meta.seyierGalleryGap, true);
   assert.equal(content.pieces[0]?.imageUrl, "/seyier.svg");
+});
+
+test("manual tag routes Piece to manuals[] not sections; category stays visual-identity", () => {
+  const content = buildGraphicContentV2("es", [
+    piece({
+      id: "citf-manual-2025",
+      category: "visual-identity",
+      srcUrl: "/assets/grafico/brand-manuals/citf-manual-2025-cover.png",
+      year: "2025",
+      detail: {
+        es: "Clúster de Innovación Tecnológica Formosa",
+        en: "Formosa Technology Innovation Cluster",
+      },
+      tags: [
+        {
+          slug: "manual",
+          labelEs: "Manual",
+          labelEn: "Manual",
+          isNsfw: false,
+        },
+      ],
+      resources: [
+        {
+          id: "pdf1",
+          path: "/assets/grafico/brand-manuals/citf-manual-2025.pdf",
+          url: "/assets/grafico/brand-manuals/citf-manual-2025.pdf",
+          kind: "piece_resource",
+          label: { es: "PDF", en: "PDF" },
+          sortOrder: 0,
+        },
+      ],
+      projectId: "citf-identity-2025",
+      project: {
+        id: "citf-identity-2025",
+        slug: "identidad-visual-citf-2025",
+        title: { es: "CITF", en: "CITF" },
+      },
+    }),
+    piece({
+      id: "itf",
+      category: "visual-identity",
+      projectId: "citf-identity-2025",
+      project: {
+        id: "citf-identity-2025",
+        slug: "identidad-visual-citf-2025",
+        title: { es: "CITF", en: "CITF" },
+      },
+    }),
+  ]);
+  assert.equal(content.meta.manualStatus, "PRESENT");
+  assert.equal(content.manuals.length, 1);
+  assert.equal(content.manuals[0]?.id, "citf-manual-2025");
+  assert.equal(content.manuals[0]?.year, "2025");
+  assert.equal(
+    content.manuals[0]?.pdfUrl,
+    "/assets/grafico/brand-manuals/citf-manual-2025.pdf",
+  );
+  assert.equal(content.pieces.map((p) => p.id).includes("citf-manual-2025"), false);
+  assert.equal(
+    content.sections
+      .flatMap((s) => s.items)
+      .some((i) => i.id === "citf-manual-2025"),
+    false,
+  );
+  assert.equal(content.pieces.length, 1);
+  assert.equal(content.pieces[0]?.id, "itf");
+  assert.equal(content.meta.counts.manuals, 1);
+  assert.equal(content.meta.counts.pieces, 1);
+});
+
+test("Seyier 1→4 split closes gallery gap; siblings visible as Pieces", () => {
+  const project = {
+    id: "seyier-visual-identity",
+    slug: "identidad-visual-seyier",
+    title: { es: "Seyier", en: "Seyier" },
+  };
+  const content = buildGraphicContentV2("es", [
+    piece({
+      id: "seyier",
+      category: "visual-identity",
+      projectId: project.id,
+      project,
+      srcUrl: "/assets/grafico/logos/seyier.svg",
+    }),
+    piece({
+      id: "seyier-inicio",
+      category: "visual-identity",
+      projectId: project.id,
+      project,
+      srcUrl: "/assets/grafico/logos/seyier/inicio.png",
+      title: { es: "Pantalla de inicio", en: "Starting screen" },
+    }),
+    piece({
+      id: "seyier-portada",
+      category: "visual-identity",
+      projectId: project.id,
+      project,
+      srcUrl: "/assets/grafico/logos/seyier/portada-fondo.png",
+      title: { es: "Portada", en: "Stream cover" },
+    }),
+    piece({
+      id: "seyier-overlay",
+      category: "visual-identity",
+      projectId: project.id,
+      project,
+      srcUrl: "/assets/grafico/logos/seyier/overlay-ejemplo.png",
+      title: { es: "Overlay", en: "Overlay example" },
+    }),
+  ]);
+  assert.equal(content.meta.seyierGalleryGap, false);
+  assert.equal(content.pieces.length, 4);
+  assert.equal(
+    content.sections.find((s) => s.id === "visual-identity")?.items.length,
+    4,
+  );
 });

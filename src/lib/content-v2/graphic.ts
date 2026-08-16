@@ -125,12 +125,40 @@ export type GraphicSectionV2 = {
 
 export type GraphicManualV2 = {
   id: string;
+  slug: string | null;
   title: string;
+  year: string | null;
+  detail: string | null;
   coverUrl: string | null;
   pdfUrl: string | null;
   projectId: string | null;
   entityId: string | null;
 };
+
+/** Tag that routes a visual-identity Piece into Graphic manuals[] (not sections). */
+export const MANUAL_TAG_SLUG = "manual";
+
+export function isManualTaggedPiece(
+  piece: Pick<PublicPieceSummary, "tags">,
+): boolean {
+  return piece.tags.some((t) => t.slug === MANUAL_TAG_SLUG);
+}
+
+/** PDF for manuals: prefer .pdf path/url, else first resource (CITF model). */
+export function resolveManualPdfUrl(
+  piece: Pick<PublicPieceSummary, "resources">,
+): string | null {
+  const ranked = [...piece.resources].sort(
+    (a, b) => a.sortOrder - b.sortOrder,
+  );
+  const byExt = ranked.find((r) => {
+    const u = (r.url ?? r.path ?? "").toLowerCase();
+    return u.endsWith(".pdf");
+  });
+  if (byExt) return byExt.url ?? byExt.path ?? null;
+  const first = ranked[0];
+  return first?.url ?? first?.path ?? null;
+}
 
 export type GraphicPieceDetailV2 = GraphicPieceItemV2 & {
   resources: Array<{
@@ -151,12 +179,15 @@ export type GraphicPieceDetailV2 = GraphicPieceItemV2 & {
 export type GraphicContentV2 = {
   locale: Locale;
   sections: GraphicSectionV2[];
+  /** Regular Graphic pieces only — excludes tag=`manual` (those live in manuals[]). */
   pieces: GraphicPieceItemV2[];
-  /** Empty until a V2 semantic manual exists (see meta.manualStatus). */
+  /** Pieces tagged `manual` (category remains visual-identity). */
   manuals: GraphicManualV2[];
   meta: {
     counts: {
+      /** Regular pieces (not manuals). */
       pieces: number;
+      manuals: number;
       standalone: number;
       projectLinked: number;
       missingMainImage: number;
@@ -362,14 +393,44 @@ function buildSessionsReview(pieces: GraphicPieceItemV2[]): {
   };
 }
 
+function mapManualItem(
+  piece: PublicPieceSummary,
+  locale: Locale,
+): GraphicManualV2 | null {
+  if (GRAPHIC_NEVER_RETURN_IDS.has(piece.id)) return null;
+  const title =
+    pickLocalized(piece.title, locale).trim() ||
+    piece.alt.trim() ||
+    piece.id;
+  const entity = resolveSafeEntityContext(piece);
+  return {
+    id: piece.id,
+    slug: piece.slug,
+    title,
+    year: piece.year,
+    detail: pickLocalized(piece.detail, locale).trim() || null,
+    coverUrl: resolvePieceMainImage(piece),
+    pdfUrl: resolveManualPdfUrl(piece),
+    projectId: piece.projectId ?? piece.project?.id ?? null,
+    entityId: entity?.id ?? null,
+  };
+}
+
 /** Pure assembly — unit-test friendly. */
 export function buildGraphicContentV2(
   locale: Locale,
   publicPieces: PublicPieceSummary[],
 ): GraphicContentV2 {
-  const items = publicPieces
+  const manualSources = publicPieces.filter(isManualTaggedPiece);
+  const regularSources = publicPieces.filter((p) => !isManualTaggedPiece(p));
+
+  const items = regularSources
     .map((p) => mapPieceItem(p, locale))
     .filter((p): p is GraphicPieceItemV2 => p != null);
+
+  const manuals = manualSources
+    .map((p) => mapManualItem(p, locale))
+    .filter((m): m is GraphicManualV2 => m != null);
 
   const byCategory: Record<string, number> = {};
   for (const item of items) {
@@ -385,9 +446,16 @@ export function buildGraphicContentV2(
   // Drop empty "other" only; keep other sections even if empty? Prefer non-empty only.
   const nonEmptySections = sections.filter((s) => s.items.length > 0);
 
-  const seyier = publicPieces.find((p) => p.id === "seyier");
+  // Seyier gap closed when project has logo + 3 view Pieces (approved split).
+  const seyierFamily = publicPieces.filter(
+    (p) =>
+      p.id === "seyier" ||
+      p.id.startsWith("seyier-") ||
+      p.projectId === "seyier-visual-identity" ||
+      p.project?.id === "seyier-visual-identity",
+  );
   const seyierGalleryGap = Boolean(
-    seyier && seyier.resources.length === 0,
+    publicPieces.some((p) => p.id === "seyier") && seyierFamily.length < 4,
   );
 
   const { sessionsReview, sessionsPieceIds } = buildSessionsReview(items);
@@ -396,10 +464,11 @@ export function buildGraphicContentV2(
     locale,
     sections: nonEmptySections,
     pieces: items,
-    manuals: [],
+    manuals,
     meta: {
       counts: {
         pieces: items.length,
+        manuals: manuals.length,
         standalone: items.filter((p) => !p.project).length,
         projectLinked: items.filter((p) => Boolean(p.project)).length,
         missingMainImage: items.filter((p) => !p.imageUrl).length,
@@ -408,7 +477,7 @@ export function buildGraphicContentV2(
         withResources: items.filter((p) => p.resourceCount > 0).length,
         byCategory,
       },
-      manualStatus: "DETAIL_GAP",
+      manualStatus: manuals.length > 0 ? "PRESENT" : "DETAIL_GAP",
       seyierGalleryGap,
       sessionsReview,
       sessionsPieceIds,
@@ -474,8 +543,9 @@ export const GRAPHIC_UI_CONTRACT_4D2 = [
   {
     uiNeed: "gallery",
     legacyField: "galleryPaths",
-    v2Source: "piece_resources → detail.gallery",
-    transition: "GAP (seyier empty resources)",
+    v2Source:
+      "piece_resources → detail.gallery OR split sibling Pieces (Seyier)",
+    transition: "MAPPING (Seyier = EXPECTED_SPLIT_INTO_PIECES)",
   },
   {
     uiNeed: "brand / entity",
@@ -498,8 +568,8 @@ export const GRAPHIC_UI_CONTRACT_4D2 = [
   {
     uiNeed: "manual",
     legacyField: "brand_manuals (citf)",
-    v2Source: "none yet (no ProjectResource PDF)",
-    transition: "GAP DETAIL_GAP",
+    v2Source: "Piece tag=manual → manuals[] + PDF piece_resource",
+    transition: "DIRECT (4D.3C)",
   },
   {
     uiNeed: "personal section",

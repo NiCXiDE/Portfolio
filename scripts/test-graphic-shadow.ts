@@ -105,7 +105,7 @@ test("manual gap expected — does not fail when survivors ok", () => {
   assert.equal(graphicV2.manuals.length, 0);
 });
 
-test("Seyier gallery gap expected", () => {
+test("Seyier gallery gap expected when split incomplete", () => {
   const seen = new Set<string>();
   const row = classifyLegacyItem(
     legacyItem({
@@ -119,6 +119,48 @@ test("Seyier gallery gap expected", () => {
     seen,
   );
   assert.equal(row.result, "EXPECTED_DETAIL_GAP_GALLERY");
+});
+
+test("Seyier EXPECTED_SPLIT_INTO_PIECES when 4 Pieces present", () => {
+  const project = {
+    id: "seyier-visual-identity",
+    slug: "seyier",
+    title: { es: "Seyier", en: "Seyier" },
+  };
+  const seen = new Set<string>();
+  const v2 = buildGraphicContentV2("es", [
+    piece({
+      id: "seyier",
+      category: "visual-identity",
+      projectId: project.id,
+      project,
+    }),
+    piece({
+      id: "seyier-inicio",
+      category: "visual-identity",
+      projectId: project.id,
+      project,
+    }),
+    piece({
+      id: "seyier-portada",
+      category: "visual-identity",
+      projectId: project.id,
+      project,
+    }),
+    piece({
+      id: "seyier-overlay",
+      category: "visual-identity",
+      projectId: project.id,
+      project,
+    }),
+  ]).pieces;
+  const row = classifyLegacyItem(
+    legacyItem({ key: "seyier", section: "logos", hasGallery: true }),
+    v2,
+    seen,
+  );
+  assert.equal(row.result, "EXPECTED_SPLIT_INTO_PIECES");
+  assert.equal(seen.size, 4);
 });
 
 test("unexpected missing fails classification", () => {
@@ -202,8 +244,11 @@ test("ES/EN snapshots normalize titles with fallback", () => {
   assert.equal(legacy.items[0]?.displayTitle, "Titulo");
 });
 
-test("taxonomy mapping has personal EXPECTED_REMOVAL", () => {
+test("taxonomy mapping has personal EXPECTED_REMOVAL and manuals RENAMED", () => {
   const rows = buildTaxonomyRows();
   const personal = rows.find((r) => r.legacySection === "personal");
   assert.equal(personal?.status, "EXPECTED_REMOVAL");
+  const manuals = rows.find((r) => r.legacySection === "manuals");
+  assert.equal(manuals?.status, "RENAMED");
+  assert.equal(manuals?.v2Category, "visual-identity");
 });

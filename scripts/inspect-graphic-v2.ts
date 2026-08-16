@@ -58,15 +58,26 @@ async function main() {
   );
 
   const checks = {
-    pieces44: es.meta.counts.pieces === 44,
-    standalone27: es.meta.counts.standalone === 27,
-    projectLinked17: es.meta.counts.projectLinked === 17,
+    pieces47: es.meta.counts.pieces === 47,
+    manuals1: es.meta.counts.manuals === 1 && es.manuals.length === 1,
+    manualPresent: es.meta.manualStatus === "PRESENT",
+    manualNotInSections: !es.sections
+      .flatMap((s) => s.items)
+      .some((i) => i.id === "citf-manual-2025"),
+    manualPdf: Boolean(es.manuals[0]?.pdfUrl),
+    seyier4:
+      es.pieces.filter(
+        (p) =>
+          p.id === "seyier" ||
+          p.id.startsWith("seyier-") ||
+          p.project?.id === "seyier-visual-identity",
+      ).length === 4,
+    seyierGapClosed: es.meta.seyierGalleryGap === false,
     missingMain0: es.meta.counts.missingMainImage === 0,
     discarded0: discardedLeaks.length === 0,
     forbidden0: forbiddenHits.length === 0,
     deniedRole0: deniedRoleLeak.length === 0,
     enSameCount: en.meta.counts.pieces === es.meta.counts.pieces,
-    manualsGap: es.meta.manualStatus === "DETAIL_GAP",
   };
 
   const ok = Object.values(checks).every(Boolean);
@@ -78,6 +89,14 @@ async function main() {
         checks,
         ok,
         counts: es.meta.counts,
+        manuals: es.manuals.map((m) => ({
+          id: m.id,
+          title: m.title,
+          year: m.year,
+          coverUrl: m.coverUrl,
+          pdfUrl: m.pdfUrl,
+          projectId: m.projectId,
+        })),
         sections: es.sections.map((s) => ({
           id: s.id,
           label: s.label,
@@ -97,7 +116,7 @@ async function main() {
     ),
   );
   console.log(
-    `graphic_v2_ok=${ok} pieces=${es.meta.counts.pieces} standalone=${es.meta.counts.standalone} projectLinked=${es.meta.counts.projectLinked}`,
+    `graphic_v2_ok=${ok} pieces=${es.meta.counts.pieces} manuals=${es.meta.counts.manuals} seyierGap=${es.meta.seyierGalleryGap}`,
   );
 
   await ds.destroy();

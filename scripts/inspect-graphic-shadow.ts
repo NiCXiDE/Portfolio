@@ -48,6 +48,7 @@ async function main() {
     },
     V2: {
       pieces: es.v2.pieces,
+      manuals: es.v2.manuals,
       standalone: es.v2.standalone,
       projectLinked: es.v2.projectLinked,
       byCategory: es.v2.byCategory,
@@ -57,14 +58,12 @@ async function main() {
     UNEXPECTED_MISSING: es.unexpectedMissing,
     UNEXPECTED_DUPLICATE: es.unexpectedDuplicate,
     DETAIL_GAPS: {
-      CITF_manual: "EXPECTED_DETAIL_GAP_MANUAL",
+      CITF_manual: es.detailGaps.manualCitf
+        ? "EXPECTED_DETAIL_GAP_MANUAL"
+        : "RESOLVED",
       Seyier_gallery: es.detailGaps.seyierGallery
         ? "EXPECTED_DETAIL_GAP_GALLERY"
-        : "none",
-      manualUiImpact:
-        "GraphicLayer section grafico-manuales + /grafico/manuals — first-class listing, PDF expand/download",
-      seyierUiImpact:
-        "Logo expand gallery / possible detail route extras — main list thumb OK",
+        : "RESOLVED_SPLIT_INTO_PIECES",
     },
     results: es.results,
     sessions: es.sessions,

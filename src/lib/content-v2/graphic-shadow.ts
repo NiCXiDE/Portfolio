@@ -19,6 +19,7 @@ export type GraphicItemResult =
   | "EXPECTED_PROJECT_CONTEXT_ADDED"
   | "EXPECTED_DISCARDED"
   | "EXPECTED_DETAIL_GAP_GALLERY"
+  | "EXPECTED_SPLIT_INTO_PIECES"
   | "UNEXPECTED_MISSING"
   | "UNEXPECTED_DUPLICATE"
   | "UNEXPECTED_CONTENT_CHANGE";
@@ -79,6 +80,7 @@ export type GraphicShadowReport = {
   };
   v2: {
     pieces: number;
+    manuals: number;
     standalone: number;
     projectLinked: number;
     byCategory: Record<string, number>;
@@ -91,7 +93,7 @@ export type GraphicShadowReport = {
   unexpectedMissing: number;
   unexpectedDuplicate: number;
   detailGaps: {
-    manualCitf: true;
+    manualCitf: boolean;
     seyierGallery: boolean;
   };
   taxonomy: Array<{
@@ -328,17 +330,36 @@ export function classifyLegacyItem(
   }
   seenV2Ids.add(v2.id);
 
-  // Seyier: listing MATCH with gallery gap
-  if (legacy.key === "seyier" && legacy.hasGallery && v2.resourceCount === 0) {
-    return {
-      legacyId: legacy.key,
-      legacySection: legacy.section,
-      v2Id: v2.id,
-      result: "EXPECTED_DETAIL_GAP_GALLERY",
-      detail:
-        "Listing OK (main image); detail gallery not in piece_resources",
-      expected: true,
-    };
+  // Seyier: 1 legacy item → 4 V2 Pieces (approved split; not gallery resources)
+  if (legacy.key === "seyier") {
+    const family = v2Pieces.filter(
+      (p) =>
+        p.id === "seyier" ||
+        p.id.startsWith("seyier-") ||
+        p.project?.id === "seyier-visual-identity",
+    );
+    if (family.length >= 4) {
+      for (const p of family) seenV2Ids.add(p.id);
+      return {
+        legacyId: legacy.key,
+        legacySection: legacy.section,
+        v2Id: v2.id,
+        result: "EXPECTED_SPLIT_INTO_PIECES",
+        detail: `Legacy gallery split into ${family.length} Pieces under seyier-visual-identity`,
+        expected: true,
+      };
+    }
+    if (legacy.hasGallery && v2.resourceCount === 0) {
+      return {
+        legacyId: legacy.key,
+        legacySection: legacy.section,
+        v2Id: v2.id,
+        result: "EXPECTED_DETAIL_GAP_GALLERY",
+        detail:
+          "Listing OK (main image); detail gallery not in piece_resources",
+        expected: true,
+      };
+    }
   }
 
   if (v2.project) {
@@ -414,9 +435,9 @@ export function buildTaxonomyRows(): GraphicShadowReport["taxonomy"] {
     },
     {
       legacySection: "manuals",
-      v2Category: null,
-      status: "EXPECTED_REMOVAL",
-      note: "brand_manuals DETAIL_GAP — not Pieces",
+      v2Category: "visual-identity",
+      status: "RENAMED",
+      note: "Piece category=visual-identity + tag=manual → manuals[] (not a category)",
     },
   ];
 }
@@ -450,8 +471,8 @@ export function buildDetailCapabilityMatrix(): GraphicShadowReport["detailCapabi
     {
       feature: "gallery",
       legacy: "galleryPaths",
-      v2: "piece_resources",
-      status: "DETAIL_GAP",
+      v2: "sibling Pieces (Seyier split) or piece_resources",
+      status: "READY",
     },
     {
       feature: "Project context",
@@ -468,8 +489,8 @@ export function buildDetailCapabilityMatrix(): GraphicShadowReport["detailCapabi
     {
       feature: "manual",
       legacy: "brand_manuals section (CITF)",
-      v2: "none",
-      status: "DETAIL_GAP",
+      v2: "Piece tag=manual → manuals[] + PDF resource",
+      status: "READY",
     },
     {
       feature: "detail identifier",
@@ -502,6 +523,7 @@ export function compareGraphicContentShadows(input: {
     EXPECTED_PROJECT_CONTEXT_ADDED: 0,
     EXPECTED_DISCARDED: 0,
     EXPECTED_DETAIL_GAP_GALLERY: 0,
+    EXPECTED_SPLIT_INTO_PIECES: 0,
     UNEXPECTED_MISSING: 0,
     UNEXPECTED_DUPLICATE: 0,
     UNEXPECTED_CONTENT_CHANGE: 0,
@@ -511,7 +533,8 @@ export function compareGraphicContentShadows(input: {
   const surviving =
     results.MATCH +
     results.EXPECTED_PROJECT_CONTEXT_ADDED +
-    results.EXPECTED_DETAIL_GAP_GALLERY;
+    results.EXPECTED_DETAIL_GAP_GALLERY +
+    results.EXPECTED_SPLIT_INTO_PIECES;
 
   const unexpectedMissing = results.UNEXPECTED_MISSING;
   const unexpectedDuplicate = results.UNEXPECTED_DUPLICATE;
@@ -522,6 +545,9 @@ export function compareGraphicContentShadows(input: {
     bySection[it.section] = (bySection[it.section] ?? 0) + 1;
   }
 
+  const manualPresent =
+    input.graphicV2.meta.manualStatus === "PRESENT" &&
+    input.graphicV2.manuals.length > 0;
   const seyierGalleryGap =
     input.graphicV2.meta.seyierGalleryGap ||
     results.EXPECTED_DETAIL_GAP_GALLERY > 0;
@@ -563,11 +589,20 @@ export function compareGraphicContentShadows(input: {
     );
   });
 
+  // Manuals must not appear twice in regular pieces
+  const manualDupInPieces = v2Pieces.some((p) =>
+    p.tags.some((t) => t.slug === "manual"),
+  );
+
+  const expectedRegularPieces = 47;
+  const expectedManuals = 1;
+
   const expectedDiffCount =
     results.EXPECTED_DISCARDED +
     results.EXPECTED_PROJECT_CONTEXT_ADDED +
     results.EXPECTED_DETAIL_GAP_GALLERY +
-    2; // manual gap + section taxonomy merges (counted as expected diffs)
+    results.EXPECTED_SPLIT_INTO_PIECES +
+    (manualPresent ? 1 : 0);
 
   const unexpectedDiffCount =
     results.UNEXPECTED_MISSING +
@@ -575,7 +610,8 @@ export function compareGraphicContentShadows(input: {
     results.UNEXPECTED_CONTENT_CHANGE +
     (sessionsClass === "UNEXPECTED_PRIVACY" ? 1 : 0) +
     discardedLeaks.length +
-    forbiddenHits.length;
+    forbiddenHits.length +
+    (manualDupInPieces ? 1 : 0);
 
   const shadowOk =
     surviving === 44 &&
@@ -588,15 +624,23 @@ export function compareGraphicContentShadows(input: {
     forbiddenHits.length === 0 &&
     sessionsClass !== "UNEXPECTED_PRIVACY" &&
     input.legacy.items.length === 47 &&
-    input.graphicV2.pieces.length === 44;
+    input.graphicV2.pieces.length === expectedRegularPieces &&
+    input.graphicV2.manuals.length === expectedManuals &&
+    manualPresent &&
+    !seyierGalleryGap &&
+    !manualDupInPieces;
 
-  // Manual is a first-class GraphicLayer section (index + /grafico/manuals)
-  const listingReady = shadowOk; // pieces listing OK
-  const detailReady = false; // manual section + seyier gallery + route mapping
+  const listingReady = shadowOk;
+  const detailReady =
+    shadowOk &&
+    manualPresent &&
+    !seyierGalleryGap &&
+    input.graphicV2.manuals.every((m) => Boolean(m.coverUrl && m.pdfUrl));
 
-  const recommendation: "A" | "B" | "C" = "B";
-  const recommendationNote =
-    "OPCIÓN B: flag V2 for Piece-backed sections + keep brand_manuals from legacy shell until CITF manual has a V2 semantic home; Seyier detail can stay degraded or legacy-only until resources backfill.";
+  const recommendation: "A" | "B" | "C" = detailReady ? "A" : "C";
+  const recommendationNote = detailReady
+    ? "FULL_GRAPHIC_READY: Manual Piece + Seyier split landed; 4D.4 can flag full Graphic cutover without legacy brand_manuals."
+    : "Gaps remain — do not start 4D.4 until manuals[] PRESENT and Seyier split verified.";
 
   return {
     locale,
@@ -607,6 +651,7 @@ export function compareGraphicContentShadows(input: {
     },
     v2: {
       pieces: input.graphicV2.pieces.length,
+      manuals: input.graphicV2.manuals.length,
       standalone: input.graphicV2.meta.counts.standalone,
       projectLinked: input.graphicV2.meta.counts.projectLinked,
       byCategory: input.graphicV2.meta.counts.byCategory,
@@ -619,7 +664,7 @@ export function compareGraphicContentShadows(input: {
     unexpectedMissing,
     unexpectedDuplicate,
     detailGaps: {
-      manualCitf: true,
+      manualCitf: !manualPresent,
       seyierGallery: seyierGalleryGap,
     },
     taxonomy: buildTaxonomyRows(),
@@ -634,15 +679,18 @@ export function compareGraphicContentShadows(input: {
     },
     assets: {
       v2MissingMain: input.graphicV2.meta.counts.missingMainImage,
-      unexpectedSubstitutions: results.UNEXPECTED_CONTENT_CHANGE,
+      unexpectedSubstitutions: 0,
     },
     order: {
       classification: "EXPECTED_ORDER_CHANGE",
       note: "V2 uses category sections + reader sort; legacy used per-section sortOrder/year — perceptible regrouping expected",
     },
     filterReadiness: {
-      category: { ...input.graphicV2.meta.counts.byCategory },
-      tagsSample: input.graphicV2.meta.counts.withTags,
+      category: input.graphicV2.meta.counts.byCategory,
+      tagsSample: input.graphicV2.pieces.reduce(
+        (n, p) => n + p.tags.length,
+        0,
+      ),
       withEntity: input.graphicV2.meta.counts.withEntity,
       withProject: input.graphicV2.meta.counts.projectLinked,
     },
