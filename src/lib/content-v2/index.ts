@@ -72,6 +72,40 @@ export type {
   ShadowDiff,
 } from "./home-shadow";
 
+export {
+  buildGraphicContentV2,
+  categoryToSectionId,
+  getGraphicContentV2,
+  getGraphicPieceDetailV2,
+  resolvePieceMainImage,
+  resolveSafeEntityContext,
+  GRAPHIC_NEVER_RETURN_IDS,
+  GRAPHIC_PUBLIC_ENTITY_ROLES,
+  GRAPHIC_SECTION_LABELS,
+  GRAPHIC_UI_CONTRACT_4D2,
+} from "./graphic";
+export type {
+  GraphicContentV2,
+  GraphicPieceDetailV2,
+  GraphicPieceItemV2,
+  GraphicSectionIdV2,
+  GraphicSectionV2,
+} from "./graphic";
+
+export {
+  compareGraphicShadows,
+  normalizeLegacyGraphic,
+  normalizeV2Pieces,
+  SECTION_TO_V2_CATEGORY,
+  GRAPHIC_ENTITY_CONTEXT_RULE_PROPOSAL,
+} from "./graphic-shadow";
+export type {
+  GraphicItemMapping,
+  GraphicMapStatus,
+  GraphicShadowReport,
+  GraphicShadowSnapshot,
+} from "./graphic-shadow";
+
 export { getHomeContentSource } from "./home-source";
 export type { HomeContentSource } from "./home-source";
 
