@@ -93,15 +93,19 @@ export type {
 } from "./graphic";
 
 export {
-  compareGraphicShadows,
+  buildTaxonomyRows,
+  classifyLegacyItem,
+  compareGraphicContentShadows,
+  normalizeGraphicContentV2Snapshot,
   normalizeLegacyGraphic,
-  normalizeV2Pieces,
+  normalizeLegacyGraphicSnapshot,
   SECTION_TO_V2_CATEGORY,
-  GRAPHIC_ENTITY_CONTEXT_RULE_PROPOSAL,
+  EXPECTED_DISCARDED_GRAPHIC_IDS,
 } from "./graphic-shadow";
 export type {
-  GraphicItemMapping,
-  GraphicMapStatus,
+  GraphicItemResult,
+  GraphicItemShadowRow,
+  GraphicShadowItem,
   GraphicShadowReport,
   GraphicShadowSnapshot,
 } from "./graphic-shadow";

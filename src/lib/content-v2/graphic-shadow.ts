@@ -1,142 +1,154 @@
 /**
- * Graphic shadow comparison (Phase 4D.0).
+ * Graphic shadow comparison (Phase 4D.3).
  *
- * READ-ONLY semantic snapshots: legacy graphic_items vs public Pieces V2.
- * Not wired to public Graphic requests — inspectors only.
+ * READ-ONLY semantic snapshots: legacy Graphic runtime vs GraphicContentV2.
+ * Not wired to public Graphic requests — inspectors/tests only.
  */
+import type { Locale } from "@/i18n/config";
 import type {
   BrandManualContent,
   GraphicItemContent,
   PortfolioContent,
 } from "@/lib/content";
-import type { PublicPieceSummary } from "./types";
+import { t } from "@/lib/content";
+import type { GraphicContentV2, GraphicPieceItemV2 } from "./graphic";
+import { GRAPHIC_NEVER_RETURN_IDS } from "./graphic";
 
-export type GraphicMapStatus =
+export type GraphicItemResult =
   | "MATCH"
-  | "REPLACED_BY_PROJECT_PIECE"
-  | "DISCARDED"
-  | "BLOCKED"
-  | "NEEDS_DATA_DECISION"
-  | "MISSING_V2";
+  | "EXPECTED_PROJECT_CONTEXT_ADDED"
+  | "EXPECTED_DISCARDED"
+  | "EXPECTED_DETAIL_GAP_GALLERY"
+  | "UNEXPECTED_MISSING"
+  | "UNEXPECTED_DUPLICATE"
+  | "UNEXPECTED_CONTENT_CHANGE";
+
+export type TaxonomyStatus =
+  | "MATCH"
+  | "RENAMED"
+  | "MERGED"
+  | "EXPECTED_REMOVAL"
+  | "UNEXPECTED";
+
+export type DetailCapabilityStatus =
+  | "READY"
+  | "MAPPING_REQUIRED"
+  | "DETAIL_GAP"
+  | "NOT_REQUIRED";
 
 export type GraphicShadowItem = {
   key: string;
+  displayTitle: string;
   section: string;
-  hasSrc: boolean;
+  hasMainImage: boolean;
+  tags: string[];
   hasGallery: boolean;
-  tagCount: number;
-  hasBrand: boolean;
+  hasBrandContext: boolean;
+  detailId: string;
   year: string | null;
 };
 
-export type GraphicShadowPiece = {
+export type GraphicShadowManual = {
   key: string;
-  category: string;
-  origin: string | null;
-  standalone: boolean;
-  projectId: string | null;
-  hasSrc: boolean;
-  resourceCount: number;
-  tagCount: number;
-  entityCount: number;
-  year: string | null;
+  hasCover: boolean;
+  hasPdf: boolean;
 };
 
-export type GraphicItemMapping = {
+export type GraphicShadowSnapshot = {
+  locale: Locale;
+  items: GraphicShadowItem[];
+  manuals: GraphicShadowManual[];
+  sections: Array<{ id: string; count: number }>;
+};
+
+export type GraphicItemShadowRow = {
   legacyId: string;
   legacySection: string;
-  status: GraphicMapStatus;
-  v2PieceIds: string[];
-  v2ProjectId: string | null;
+  v2Id: string | null;
+  result: GraphicItemResult;
   detail: string;
   expected: boolean;
 };
 
-export type GraphicShadowSnapshot = {
-  items: GraphicShadowItem[];
-  manuals: Array<{ key: string; hasCover: boolean; hasPdf: boolean }>;
-};
-
-export type GraphicV2Snapshot = {
-  pieces: GraphicShadowPiece[];
-};
-
 export type GraphicShadowReport = {
-  legacyCounts: {
+  locale: Locale;
+  legacy: {
     graphicItems: number;
-    bySection: Record<string, number>;
     manuals: number;
+    bySection: Record<string, number>;
   };
-  v2Counts: {
-    publicPieces: number;
+  v2: {
+    pieces: number;
     standalone: number;
-    withProject: number;
-    withEntity: number;
-    withTags: number;
-    withResources: number;
-    withSrc: number;
+    projectLinked: number;
     byCategory: Record<string, number>;
+    missingMainImage: number;
   };
-  mapping: {
-    MATCH: number;
-    REPLACED_BY_PROJECT_PIECE: number;
-    DISCARDED: number;
-    BLOCKED: number;
-    NEEDS_DATA_DECISION: number;
-    MISSING_V2: number;
+  results: Record<GraphicItemResult, number>;
+  rows: GraphicItemShadowRow[];
+  surviving: number;
+  expectedDiscarded: number;
+  unexpectedMissing: number;
+  unexpectedDuplicate: number;
+  detailGaps: {
+    manualCitf: true;
+    seyierGallery: boolean;
   };
-  mappings: GraphicItemMapping[];
-  expected: string[];
-  unexpected: string[];
+  taxonomy: Array<{
+    legacySection: string;
+    v2Category: string | null;
+    status: TaxonomyStatus;
+    note: string;
+  }>;
+  detailCapability: Array<{
+    feature: string;
+    legacy: string;
+    v2: string;
+    status: DetailCapabilityStatus;
+  }>;
+  sessions: {
+    classification: "EXPECTED_PUBLIC" | "UNEXPECTED_PRIVACY" | "ABSENT";
+    pieceIds: string[];
+  };
   privacy: {
     forbiddenHits: string[];
-    buhoprofePublic: boolean;
-    unpublishedProjectPieceLeak: string[];
-    sessionsPublic: boolean;
+    discardedLeaks: string[];
   };
   assets: {
-    legacyMissingSrc: string[];
-    v2MissingSrc: string[];
-    legacyGalleryWithoutResources: string[];
+    v2MissingMain: number;
+    unexpectedSubstitutions: number;
   };
+  order: {
+    classification: "EXPECTED_ORDER_CHANGE" | "UNEXPECTED_ORDER_CHANGE";
+    note: string;
+  };
+  filterReadiness: {
+    category: Record<string, number>;
+    tagsSample: number;
+    withEntity: number;
+    withProject: number;
+  };
+  expectedDiffCount: number;
+  unexpectedDiffCount: number;
   shadowOk: boolean;
+  readiness: {
+    listing: "LISTING_READY_FOR_FLAG" | "LISTING_NOT_READY";
+    detail: "DETAIL_READY" | "DETAIL_NOT_READY";
+    overall:
+      | "LISTING_READY_FOR_FLAG"
+      | "LISTING_NOT_READY"
+      | "DETAIL_NOT_READY"
+      | "FULL_GRAPHIC_READY";
+  };
+  recommendation: "A" | "B" | "C";
+  recommendationNote: string;
 };
 
-/** Legacy graphic items expected absent as public Pieces (migration decisions). */
 export const EXPECTED_DISCARDED_GRAPHIC_IDS = new Set([
-  "buhoprofe", // resource-only → Syllabi; not user's branding Piece
-  "labcom", // published=false intentional (CITF-related; not public Piece)
-]);
-
-/** Legacy IDs whose Pieces belong to unpublished Projects — not public V2. */
-export const EXPECTED_UNPUBLISHED_PROJECT_GRAPHIC_IDS = new Set([
+  "buhoprofe",
   "microtime",
+  "labcom",
 ]);
-
-/**
- * Known legacy→project consolidations (graphic item becomes project piece(s)).
- * Status REPLACED_BY_PROJECT_PIECE when piece(s) exist under a project.
- */
-export const LEGACY_TO_PROJECT_HINTS: Record<string, string> = {
-  apsmm: "apsmm",
-  "expedicion-polo": "expedicion-polo",
-  "juegos-provinciales": "juegos-provinciales",
-  itf: "citf-identity", // may vary — resolved live
-  "banner-cluster": "citf-identity",
-  push: "push-identity",
-  "banner-push": "push-identity",
-  seyier: "seyier",
-  futulab: "futulab",
-  microtime: "microtime",
-  sessions: "sessions",
-  concitar: "concitar",
-  taily: "taily",
-  "twenty-twenty-two-spotify": "bass-series",
-  "twenty-twenty-3": "bass-series",
-  bass2k24: "bass-series",
-  bass2025: "bass-series",
-  bass2026: "bass-series",
-};
 
 export const SECTION_TO_V2_CATEGORY: Record<string, string> = {
   logos: "visual-identity",
@@ -147,7 +159,7 @@ export const SECTION_TO_V2_CATEGORY: Record<string, string> = {
   eventos: "campaigns-communication",
 };
 
-export const FORBIDDEN_GRAPHIC_ALIASES = [
+const FORBIDDEN = [
   "syllabi",
   "microtime",
   "proxi",
@@ -155,6 +167,8 @@ export const FORBIDDEN_GRAPHIC_ALIASES = [
   "asesor-financiero",
   "aml-general",
   "aml-casinos",
+  "buhoprofe",
+  "labcom",
 ];
 
 const PUBLIC_SECTIONS = [
@@ -166,11 +180,20 @@ const PUBLIC_SECTIONS = [
   "eventos",
 ] as const;
 
-function itemKey(item: GraphicItemContent): string {
-  return String(item.id);
+function titleOf(
+  item: GraphicItemContent,
+  locale: Locale,
+): string {
+  if (item.title) {
+    const localized = t(item.title, locale).trim();
+    if (localized) return localized;
+    const es = (item.title.es ?? "").trim();
+    if (es) return es;
+  }
+  return item.alt || String(item.id);
 }
 
-export function normalizeLegacyGraphic(
+export function normalizeLegacyGraphicSnapshot(
   content: Pick<
     PortfolioContent,
     | "covers"
@@ -181,17 +204,20 @@ export function normalizeLegacyGraphic(
     | "eventos"
     | "brandManuals"
   >,
+  locale: Locale,
 ): GraphicShadowSnapshot {
   const items: GraphicShadowItem[] = [];
   const push = (section: string, list: GraphicItemContent[]) => {
     for (const item of list) {
       items.push({
-        key: itemKey(item),
+        key: String(item.id),
+        displayTitle: titleOf(item, locale),
         section,
-        hasSrc: Boolean(item.src),
+        hasMainImage: Boolean(item.src?.trim()),
+        tags: Array.isArray(item.tags) ? [...item.tags] : [],
         hasGallery: Boolean(item.gallery?.length),
-        tagCount: item.tags?.length ?? 0,
-        hasBrand: Boolean(item.brandId),
+        hasBrandContext: Boolean(item.brandId),
+        detailId: String(item.id),
         year: item.year ?? null,
       });
     }
@@ -203,152 +229,137 @@ export function normalizeLegacyGraphic(
   push("banners", content.banners);
   push("eventos", content.eventos);
 
+  const bySection = new Map<string, number>();
+  for (const it of items) {
+    bySection.set(it.section, (bySection.get(it.section) ?? 0) + 1);
+  }
+
   const manuals = (content.brandManuals ?? []).map((m: BrandManualContent) => ({
     key: m.id,
     hasCover: Boolean(m.cover),
     hasPdf: Boolean(m.pdf),
   }));
 
-  return { items, manuals };
+  return {
+    locale,
+    items,
+    manuals,
+    sections: [...bySection.entries()].map(([id, count]) => ({ id, count })),
+  };
 }
 
-export function normalizeV2Pieces(
-  pieces: PublicPieceSummary[],
-): GraphicV2Snapshot {
+export function normalizeGraphicContentV2Snapshot(
+  graphic: GraphicContentV2,
+): GraphicShadowSnapshot {
+  const items: GraphicShadowItem[] = graphic.pieces.map((p) => ({
+    key: p.id,
+    displayTitle: p.title,
+    section: p.category,
+    hasMainImage: Boolean(p.imageUrl?.trim()),
+    tags: p.tags.map((t) => t.slug),
+    hasGallery: p.resourceCount > 0,
+    hasBrandContext: Boolean(p.entity),
+    detailId: p.slug ?? p.id,
+    year: p.year,
+  }));
+
   return {
-    pieces: pieces.map((p) => ({
-      key: p.id,
-      category: p.category,
-      origin: p.origin,
-      standalone: !p.projectId,
-      projectId: p.projectId,
-      hasSrc: Boolean(p.srcUrl),
-      resourceCount: p.resources.length,
-      tagCount: p.tags.length,
-      entityCount: p.entities.filter((e) => e.entity != null).length,
-      year: p.year,
+    locale: graphic.locale,
+    items,
+    manuals: graphic.manuals.map((m) => ({
+      key: m.id,
+      hasCover: Boolean(m.coverUrl),
+      hasPdf: Boolean(m.pdfUrl),
+    })),
+    sections: graphic.sections.map((s) => ({
+      id: s.id,
+      count: s.items.length,
     })),
   };
 }
 
-/** Resolve V2 pieces that descend from a legacy graphic id. */
-export function findPiecesForLegacyId(
+function findV2Piece(
   legacyId: string,
-  allPieces: PublicPieceSummary[],
-  /** Include non-public rows from raw DB for mapping diagnostics */
-  allPieceRows?: Array<{
-    id: string;
-    projectId: string | null;
-    published: boolean;
-  }>,
-): {
-  public: PublicPieceSummary[];
-  privateIds: string[];
-} {
-  const hint = LEGACY_TO_PROJECT_HINTS[legacyId];
-  const publicHits = allPieces.filter((p) => {
-    if (p.id === legacyId) return true;
-    if (p.id.startsWith(`${legacyId}-`)) return true;
-    if (p.projectId === legacyId) return true;
-    if (hint && (p.projectId === hint || p.project?.id === hint)) return true;
-    return false;
-  });
-
-  const privateIds: string[] = [];
-  if (allPieceRows) {
-    for (const row of allPieceRows) {
-      const related =
-        row.id === legacyId ||
-        row.id.startsWith(`${legacyId}-`) ||
-        row.projectId === legacyId ||
-        (hint != null && row.projectId === hint);
-      if (!related) continue;
-      if (!allPieces.some((p) => p.id === row.id)) {
-        privateIds.push(row.id);
-      }
-    }
-  }
-
-  return { public: publicHits, privateIds };
+  pieces: GraphicPieceItemV2[],
+): GraphicPieceItemV2 | undefined {
+  return (
+    pieces.find((p) => p.id === legacyId) ??
+    pieces.find((p) => p.id.startsWith(`${legacyId}-`))
+  );
 }
 
-export function mapLegacyItem(
+export function classifyLegacyItem(
   legacy: GraphicShadowItem,
-  publicPieces: PublicPieceSummary[],
-  allPieceRows: Array<{
-    id: string;
-    projectId: string | null;
-    published: boolean;
-  }>,
-): GraphicItemMapping {
-  const { public: pubs, privateIds } = findPiecesForLegacyId(
-    legacy.key,
-    publicPieces,
-    allPieceRows,
-  );
-
+  v2Pieces: GraphicPieceItemV2[],
+  seenV2Ids: Set<string>,
+): GraphicItemShadowRow {
   if (EXPECTED_DISCARDED_GRAPHIC_IDS.has(legacy.key)) {
     return {
       legacyId: legacy.key,
       legacySection: legacy.section,
-      status: "DISCARDED",
-      v2PieceIds: privateIds.length ? privateIds : pubs.map((p) => p.id),
-      v2ProjectId: null,
-      detail:
-        legacy.key === "labcom"
-          ? "Expected unpublished Piece (migration published=false)"
-          : "Expected discarded (migration: not a public branding Piece)",
+      v2Id: null,
+      result: "EXPECTED_DISCARDED",
+      detail: "Approved migration discard — not a public Graphic Piece",
       expected: true,
     };
   }
 
-  if (pubs.length > 0) {
-    const projectId = pubs.find((p) => p.projectId)?.projectId ?? null;
-    const status: GraphicMapStatus = projectId
-      ? "REPLACED_BY_PROJECT_PIECE"
-      : "MATCH";
+  const v2 = findV2Piece(legacy.key, v2Pieces);
+  if (!v2) {
     return {
       legacyId: legacy.key,
       legacySection: legacy.section,
-      status,
-      v2PieceIds: pubs.map((p) => p.id),
-      v2ProjectId: projectId,
+      v2Id: null,
+      result: "UNEXPECTED_MISSING",
+      detail: "No surviving V2 Piece",
+      expected: false,
+    };
+  }
+
+  if (seenV2Ids.has(v2.id)) {
+    return {
+      legacyId: legacy.key,
+      legacySection: legacy.section,
+      v2Id: v2.id,
+      result: "UNEXPECTED_DUPLICATE",
+      detail: `V2 Piece ${v2.id} already matched`,
+      expected: false,
+    };
+  }
+  seenV2Ids.add(v2.id);
+
+  // Seyier: listing MATCH with gallery gap
+  if (legacy.key === "seyier" && legacy.hasGallery && v2.resourceCount === 0) {
+    return {
+      legacyId: legacy.key,
+      legacySection: legacy.section,
+      v2Id: v2.id,
+      result: "EXPECTED_DETAIL_GAP_GALLERY",
       detail:
-        status === "MATCH"
-          ? "Standalone public Piece"
-          : `Public Piece(s) under project ${projectId}`,
+        "Listing OK (main image); detail gallery not in piece_resources",
       expected: true,
     };
   }
 
-  if (privateIds.length > 0) {
-    const unpublishedExpected =
-      EXPECTED_UNPUBLISHED_PROJECT_GRAPHIC_IDS.has(legacy.key) ||
-      privateIds.some((id) =>
-        ["microtime", "sessions", "syllabi"].some((f) => id.includes(f)),
-      );
+  if (v2.project) {
     return {
       legacyId: legacy.key,
       legacySection: legacy.section,
-      status: unpublishedExpected ? "DISCARDED" : "BLOCKED",
-      v2PieceIds: privateIds,
-      v2ProjectId: allPieceRows.find((r) => r.id === privateIds[0])?.projectId ?? null,
-      detail: unpublishedExpected
-        ? "Piece exists but parent Project unpublished / not public (expected)"
-        : "Piece exists but not public — needs review",
-      expected: unpublishedExpected,
+      v2Id: v2.id,
+      result: "EXPECTED_PROJECT_CONTEXT_ADDED",
+      detail: `Same Piece with project context ${v2.project.id}`,
+      expected: true,
     };
   }
 
-  // No piece row at all
-  if (LEGACY_TO_PROJECT_HINTS[legacy.key]) {
+  // Soft content check: main image presence should match for survivors
+  if (legacy.hasMainImage && !v2.imageUrl) {
     return {
       legacyId: legacy.key,
       legacySection: legacy.section,
-      status: "NEEDS_DATA_DECISION",
-      v2PieceIds: [],
-      v2ProjectId: LEGACY_TO_PROJECT_HINTS[legacy.key],
-      detail: "Hinted project consolidation but no Piece row found",
+      v2Id: v2.id,
+      result: "UNEXPECTED_CONTENT_CHANGE",
+      detail: "Legacy had main image; V2 missing",
       expected: false,
     };
   }
@@ -356,152 +367,316 @@ export function mapLegacyItem(
   return {
     legacyId: legacy.key,
     legacySection: legacy.section,
-    status: "MISSING_V2",
-    v2PieceIds: [],
-    v2ProjectId: null,
-    detail: "No V2 Piece found for legacy graphic item",
-    expected: false,
+    v2Id: v2.id,
+    result: "MATCH",
+    detail: "Standalone public Piece",
+    expected: true,
   };
 }
 
-export function compareGraphicShadows(input: {
+export function buildTaxonomyRows(): GraphicShadowReport["taxonomy"] {
+  return [
+    {
+      legacySection: "logos",
+      v2Category: "visual-identity",
+      status: "RENAMED",
+      note: "UI label still Logos/Wordmarks",
+    },
+    {
+      legacySection: "covers",
+      v2Category: "illustration-artwork",
+      status: "MERGED",
+      note: "Merged with illustration + personal into one category",
+    },
+    {
+      legacySection: "illustration",
+      v2Category: "illustration-artwork",
+      status: "MERGED",
+      note: "Same V2 category as covers/personal",
+    },
+    {
+      legacySection: "personal",
+      v2Category: "illustration-artwork",
+      status: "EXPECTED_REMOVAL",
+      note: "Not a V2 category — pieces survive via origin/tags",
+    },
+    {
+      legacySection: "banners",
+      v2Category: "print",
+      status: "RENAMED",
+      note: "print category",
+    },
+    {
+      legacySection: "eventos",
+      v2Category: "campaigns-communication",
+      status: "RENAMED",
+      note: "campaigns-communication",
+    },
+    {
+      legacySection: "manuals",
+      v2Category: null,
+      status: "EXPECTED_REMOVAL",
+      note: "brand_manuals DETAIL_GAP — not Pieces",
+    },
+  ];
+}
+
+export function buildDetailCapabilityMatrix(): GraphicShadowReport["detailCapability"] {
+  return [
+    {
+      feature: "main image",
+      legacy: "srcPath",
+      v2: "imageUrl via src_path",
+      status: "READY",
+    },
+    {
+      feature: "title",
+      legacy: "title|alt",
+      v2: "localized title",
+      status: "READY",
+    },
+    {
+      feature: "description",
+      legacy: "detail",
+      v2: "detail localized",
+      status: "READY",
+    },
+    {
+      feature: "tags",
+      legacy: "tags[]",
+      v2: "piece_tags",
+      status: "READY",
+    },
+    {
+      feature: "gallery",
+      legacy: "galleryPaths",
+      v2: "piece_resources",
+      status: "DETAIL_GAP",
+    },
+    {
+      feature: "Project context",
+      legacy: "n/a / implicit brand",
+      v2: "project summary optional",
+      status: "READY",
+    },
+    {
+      feature: "Entity/brand context",
+      legacy: "brandId → /marcas",
+      v2: "safe entity context",
+      status: "MAPPING_REQUIRED",
+    },
+    {
+      feature: "manual",
+      legacy: "brand_manuals section (CITF)",
+      v2: "none",
+      status: "DETAIL_GAP",
+    },
+    {
+      feature: "detail identifier",
+      legacy: "id routes",
+      v2: "id|slug",
+      status: "MAPPING_REQUIRED",
+    },
+    {
+      feature: "localization",
+      legacy: "t()",
+      v2: "pickLocalized",
+      status: "READY",
+    },
+  ];
+}
+
+export function compareGraphicContentShadows(input: {
   legacy: GraphicShadowSnapshot;
-  v2: GraphicV2Snapshot;
-  publicPieces: PublicPieceSummary[];
-  allPieceRows: Array<{
-    id: string;
-    projectId: string | null;
-    published: boolean;
-  }>;
+  graphicV2: GraphicContentV2;
 }): GraphicShadowReport {
+  const locale = input.legacy.locale;
+  const v2Pieces = input.graphicV2.pieces;
+  const seen = new Set<string>();
+  const rows = input.legacy.items.map((item) =>
+    classifyLegacyItem(item, v2Pieces, seen),
+  );
+
+  const results: Record<GraphicItemResult, number> = {
+    MATCH: 0,
+    EXPECTED_PROJECT_CONTEXT_ADDED: 0,
+    EXPECTED_DISCARDED: 0,
+    EXPECTED_DETAIL_GAP_GALLERY: 0,
+    UNEXPECTED_MISSING: 0,
+    UNEXPECTED_DUPLICATE: 0,
+    UNEXPECTED_CONTENT_CHANGE: 0,
+  };
+  for (const r of rows) results[r.result] += 1;
+
+  const surviving =
+    results.MATCH +
+    results.EXPECTED_PROJECT_CONTEXT_ADDED +
+    results.EXPECTED_DETAIL_GAP_GALLERY;
+
+  const unexpectedMissing = results.UNEXPECTED_MISSING;
+  const unexpectedDuplicate = results.UNEXPECTED_DUPLICATE;
+
   const bySection: Record<string, number> = {};
   for (const s of PUBLIC_SECTIONS) bySection[s] = 0;
-  for (const item of input.legacy.items) {
-    bySection[item.section] = (bySection[item.section] ?? 0) + 1;
+  for (const it of input.legacy.items) {
+    bySection[it.section] = (bySection[it.section] ?? 0) + 1;
   }
 
-  const byCategory: Record<string, number> = {};
-  for (const p of input.v2.pieces) {
-    byCategory[p.category] = (byCategory[p.category] ?? 0) + 1;
-  }
+  const seyierGalleryGap =
+    input.graphicV2.meta.seyierGalleryGap ||
+    results.EXPECTED_DETAIL_GAP_GALLERY > 0;
 
-  const mappings = input.legacy.items.map((item) =>
-    mapLegacyItem(item, input.publicPieces, input.allPieceRows),
+  // Sessions privacy
+  const sessionsPieces = v2Pieces.filter(
+    (p) =>
+      p.id === "sessions" ||
+      p.project?.id === "sessions" ||
+      p.id.startsWith("sessions-"),
   );
-
-  const mappingCounts = {
-    MATCH: 0,
-    REPLACED_BY_PROJECT_PIECE: 0,
-    DISCARDED: 0,
-    BLOCKED: 0,
-    NEEDS_DATA_DECISION: 0,
-    MISSING_V2: 0,
-  };
-  for (const m of mappings) mappingCounts[m.status] += 1;
-
-  const expected: string[] = [];
-  const unexpected: string[] = [];
-  for (const m of mappings) {
-    const line = `${m.status} ${m.legacyId} (${m.legacySection}): ${m.detail}`;
-    if (m.expected) expected.push(line);
-    else unexpected.push(line);
+  let sessionsClass: GraphicShadowReport["sessions"]["classification"] =
+    "ABSENT";
+  if (sessionsPieces.length) {
+    const leak = sessionsPieces.some((p) => {
+      const blob = `${p.id} ${p.project?.id ?? ""} ${p.entity?.id ?? ""}`.toLowerCase();
+      return FORBIDDEN.some(
+        (f) => f !== "sessions" && blob.includes(f),
+      );
+    });
+    const denied =
+      sessionsPieces.some(
+        (p) =>
+          p.entity?.role === "employer" ||
+          p.entity?.role === "intermediary",
+      ) || !sessionsPieces.every((p) => p.title.trim());
+    sessionsClass =
+      leak || denied ? "UNEXPECTED_PRIVACY" : "EXPECTED_PUBLIC";
   }
 
-  // Privacy: public piece ids/labels must not leak forbidden aliases
-  const forbiddenHits: string[] = [];
-  for (const p of input.publicPieces) {
-    const blob = `${p.id} ${p.slug} ${p.projectId ?? ""}`.toLowerCase();
-    for (const f of FORBIDDEN_GRAPHIC_ALIASES) {
-      if (blob.includes(f)) forbiddenHits.push(`${p.id}:${f}`);
-    }
-  }
-
-  const buhoprofePublic = input.publicPieces.some(
-    (p) => p.id === "buhoprofe" || p.id.startsWith("buhoprofe-"),
-  );
-
-  const unpublishedProjectPieceLeak = input.publicPieces
-    .filter((p) =>
-      ["microtime", "syllabi", "proxi"].some(
-        (f) =>
-          p.projectId === f ||
-          p.id === f ||
-          p.id.startsWith(`${f}-`),
-      ),
-    )
+  const discardedLeaks = v2Pieces
+    .filter((p) => GRAPHIC_NEVER_RETURN_IDS.has(p.id))
     .map((p) => p.id);
 
-  // sessions: flag separately if present — may be intentional publish; not auto-forbidden
-  const sessionsPublic = input.publicPieces.some(
-    (p) => p.id === "sessions" || p.projectId === "sessions",
-  );
+  const forbiddenHits = v2Pieces.flatMap((p) => {
+    const blob = `${p.id} ${p.project?.id ?? ""} ${p.entity?.id ?? ""}`.toLowerCase();
+    return FORBIDDEN.filter((f) => blob.includes(f)).map(
+      (f) => `${p.id}:${f}`,
+    );
+  });
 
-  const legacyMissingSrc = input.legacy.items
-    .filter((i) => !i.hasSrc)
-    .map((i) => i.key);
-  const v2MissingSrc = input.v2.pieces.filter((p) => !p.hasSrc).map((p) => p.key);
-  const legacyGalleryWithoutResources = mappings
-    .filter((m) => {
-      const leg = input.legacy.items.find((i) => i.key === m.legacyId);
-      if (!leg?.hasGallery) return false;
-      const pieces = input.v2.pieces.filter((p) => m.v2PieceIds.includes(p.key));
-      return pieces.length > 0 && pieces.every((p) => p.resourceCount === 0);
-    })
-    .map((m) => m.legacyId);
+  const expectedDiffCount =
+    results.EXPECTED_DISCARDED +
+    results.EXPECTED_PROJECT_CONTEXT_ADDED +
+    results.EXPECTED_DETAIL_GAP_GALLERY +
+    2; // manual gap + section taxonomy merges (counted as expected diffs)
+
+  const unexpectedDiffCount =
+    results.UNEXPECTED_MISSING +
+    results.UNEXPECTED_DUPLICATE +
+    results.UNEXPECTED_CONTENT_CHANGE +
+    (sessionsClass === "UNEXPECTED_PRIVACY" ? 1 : 0) +
+    discardedLeaks.length +
+    forbiddenHits.length;
 
   const shadowOk =
-    unexpected.length === 0 &&
+    surviving === 44 &&
+    results.EXPECTED_DISCARDED === 3 &&
+    unexpectedMissing === 0 &&
+    unexpectedDuplicate === 0 &&
+    results.UNEXPECTED_CONTENT_CHANGE === 0 &&
+    input.graphicV2.meta.counts.missingMainImage === 0 &&
+    discardedLeaks.length === 0 &&
     forbiddenHits.length === 0 &&
-    !buhoprofePublic &&
-    unpublishedProjectPieceLeak.length === 0 &&
-    mappingCounts.MISSING_V2 === 0 &&
-    mappingCounts.BLOCKED === 0 &&
-    mappingCounts.NEEDS_DATA_DECISION === 0;
+    sessionsClass !== "UNEXPECTED_PRIVACY" &&
+    input.legacy.items.length === 47 &&
+    input.graphicV2.pieces.length === 44;
+
+  // Manual is a first-class GraphicLayer section (index + /grafico/manuals)
+  const listingReady = shadowOk; // pieces listing OK
+  const detailReady = false; // manual section + seyier gallery + route mapping
+
+  const recommendation: "A" | "B" | "C" = "B";
+  const recommendationNote =
+    "OPCIÓN B: flag V2 for Piece-backed sections + keep brand_manuals from legacy shell until CITF manual has a V2 semantic home; Seyier detail can stay degraded or legacy-only until resources backfill.";
 
   return {
-    legacyCounts: {
+    locale,
+    legacy: {
       graphicItems: input.legacy.items.length,
-      bySection,
       manuals: input.legacy.manuals.length,
+      bySection,
     },
-    v2Counts: {
-      publicPieces: input.v2.pieces.length,
-      standalone: input.v2.pieces.filter((p) => p.standalone).length,
-      withProject: input.v2.pieces.filter((p) => !p.standalone).length,
-      withEntity: input.v2.pieces.filter((p) => p.entityCount > 0).length,
-      withTags: input.v2.pieces.filter((p) => p.tagCount > 0).length,
-      withResources: input.v2.pieces.filter((p) => p.resourceCount > 0).length,
-      withSrc: input.v2.pieces.filter((p) => p.hasSrc).length,
-      byCategory,
+    v2: {
+      pieces: input.graphicV2.pieces.length,
+      standalone: input.graphicV2.meta.counts.standalone,
+      projectLinked: input.graphicV2.meta.counts.projectLinked,
+      byCategory: input.graphicV2.meta.counts.byCategory,
+      missingMainImage: input.graphicV2.meta.counts.missingMainImage,
     },
-    mapping: mappingCounts,
-    mappings,
-    expected,
-    unexpected,
+    results,
+    rows,
+    surviving,
+    expectedDiscarded: results.EXPECTED_DISCARDED,
+    unexpectedMissing,
+    unexpectedDuplicate,
+    detailGaps: {
+      manualCitf: true,
+      seyierGallery: seyierGalleryGap,
+    },
+    taxonomy: buildTaxonomyRows(),
+    detailCapability: buildDetailCapabilityMatrix(),
+    sessions: {
+      classification: sessionsClass,
+      pieceIds: sessionsPieces.map((p) => p.id),
+    },
     privacy: {
       forbiddenHits,
-      buhoprofePublic,
-      unpublishedProjectPieceLeak,
-      sessionsPublic,
+      discardedLeaks,
     },
     assets: {
-      legacyMissingSrc,
-      v2MissingSrc,
-      legacyGalleryWithoutResources,
+      v2MissingMain: input.graphicV2.meta.counts.missingMainImage,
+      unexpectedSubstitutions: results.UNEXPECTED_CONTENT_CHANGE,
     },
+    order: {
+      classification: "EXPECTED_ORDER_CHANGE",
+      note: "V2 uses category sections + reader sort; legacy used per-section sortOrder/year — perceptible regrouping expected",
+    },
+    filterReadiness: {
+      category: { ...input.graphicV2.meta.counts.byCategory },
+      tagsSample: input.graphicV2.meta.counts.withTags,
+      withEntity: input.graphicV2.meta.counts.withEntity,
+      withProject: input.graphicV2.meta.counts.projectLinked,
+    },
+    expectedDiffCount,
+    unexpectedDiffCount,
     shadowOk,
+    readiness: {
+      listing: listingReady
+        ? "LISTING_READY_FOR_FLAG"
+        : "LISTING_NOT_READY",
+      detail: detailReady ? "DETAIL_READY" : "DETAIL_NOT_READY",
+      overall: !listingReady
+        ? "LISTING_NOT_READY"
+        : detailReady
+          ? "FULL_GRAPHIC_READY"
+          : "LISTING_READY_FOR_FLAG",
+    },
+    recommendation,
+    recommendationNote,
   };
 }
 
-/**
- * Proposed public Entity exposure for Graphic (NOT implemented).
- * Prefer piece_entities client/collaborator; never employer/intermediary/confidential.
- */
-export const GRAPHIC_ENTITY_CONTEXT_RULE_PROPOSAL = {
-  allowRoles: ["client", "collaborator", "other"] as const,
-  denyRoles: ["employer", "intermediary"] as const,
-  requireEntityVisible: true,
-  neverInventEntityPages: true,
-  preferPieceEntitiesOverProjectEntities: true,
-  note: "4D.0 proposal only — do not wire until Graphic adapter",
-};
+/** @deprecated 4D.0 alias — prefer normalizeLegacyGraphicSnapshot */
+export function normalizeLegacyGraphic(
+  content: Pick<
+    PortfolioContent,
+    | "covers"
+    | "logos"
+    | "personal"
+    | "illustration"
+    | "banners"
+    | "eventos"
+    | "brandManuals"
+  >,
+): ReturnType<typeof normalizeLegacyGraphicSnapshot> {
+  return normalizeLegacyGraphicSnapshot(content, "es");
+}
