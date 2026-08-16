@@ -208,20 +208,35 @@ export function GraphicLayer({ locale, dict, content }: Props) {
 
   const manuals = content.brandManuals as readonly BrandManual[];
   const drawings = content.illustration as readonly IllustrationItem[];
+  const isV2Presentation = content.graphicPresentation === "v2";
 
-  const jumps: { id: string; label: string; icon: IconType }[] = [
-    { id: "grafico-portadas", label: dict.grafico.covers, icon: Disc3 },
-    { id: "grafico-logos", label: dict.grafico.logos, icon: PenTool },
-    { id: "grafico-manuales", label: dict.grafico.brandManuals, icon: BookOpen },
-    {
-      id: "grafico-ilustracion",
-      label: dict.grafico.illustration,
-      icon: Palette,
-    },
-    { id: "grafico-eventos", label: dict.grafico.eventos, icon: Megaphone },
-    { id: "grafico-banners", label: dict.grafico.banners, icon: Printer },
-    { id: "grafico-personal", label: dict.grafico.personal, icon: Sparkles },
-  ];
+  const jumps = (
+    [
+      !isV2Presentation
+        ? { id: "grafico-portadas", label: dict.grafico.covers, icon: Disc3 }
+        : null,
+      { id: "grafico-logos", label: dict.grafico.logos, icon: PenTool },
+      {
+        id: "grafico-manuales",
+        label: dict.grafico.brandManuals,
+        icon: BookOpen,
+      },
+      {
+        id: "grafico-ilustracion",
+        label: dict.grafico.illustration,
+        icon: Palette,
+      },
+      { id: "grafico-eventos", label: dict.grafico.eventos, icon: Megaphone },
+      { id: "grafico-banners", label: dict.grafico.banners, icon: Printer },
+      !isV2Presentation
+        ? {
+            id: "grafico-personal",
+            label: dict.grafico.personal,
+            icon: Sparkles,
+          }
+        : null,
+    ] as Array<{ id: string; label: string; icon: IconType } | null>
+  ).filter((j): j is { id: string; label: string; icon: IconType } => j != null);
 
   const seeMoreProps = (section: string, total: number) =>
     total > limit
@@ -561,6 +576,8 @@ export function GraphicLayer({ locale, dict, content }: Props) {
 
         <p className="text-sm text-ink/60 md:text-base">{dict.grafico.expandHint}</p>
 
+        {!isV2Presentation ? (
+          <>
         <SectionTitle
           id="grafico-portadas"
           icon={Disc3}
@@ -594,6 +611,8 @@ export function GraphicLayer({ locale, dict, content }: Props) {
             className="object-contain"
           />
         </div>
+          </>
+        ) : null}
 
         <SectionTitle
           id="grafico-logos"
@@ -750,6 +769,8 @@ export function GraphicLayer({ locale, dict, content }: Props) {
           />
         )}
 
+        {!isV2Presentation ? (
+          <>
         <SectionTitle
           id="grafico-personal"
           icon={Sparkles}
@@ -774,6 +795,8 @@ export function GraphicLayer({ locale, dict, content }: Props) {
             {...seeMoreProps("personal", content.personal.length)}
           />
         </div>
+          </>
+        ) : null}
       </div>
     </main>
   );

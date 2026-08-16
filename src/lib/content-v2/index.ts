@@ -117,14 +117,33 @@ export type {
 export { getHomeContentSource } from "./home-source";
 export type { HomeContentSource } from "./home-source";
 
+export { getGraphicContentSource } from "./graphic-source";
+export type { GraphicContentSource } from "./graphic-source";
+
+export { mapGraphicContentV2ToCurrentUI } from "./graphic-ui";
+export type { GraphicUiLists } from "./graphic-ui";
+
+export {
+  loadGraphicDetailItemForLocale,
+  loadGraphicSectionForLocale,
+} from "./graphic-runtime";
+
 export { mapHomeContentV2ToCurrentUI, stableNumericId } from "./home-ui";
 export type { HomeUiLists } from "./home-ui";
 
 export {
   applyHomeV2PresentationLayout,
+  getLastGraphicLoadTrace,
   getLastHomeLoadTrace,
+  getLastPortfolioLoadTrace,
   HOME_V2_MARQUEE_SPEED_PX_S,
   loadPortfolioContentForLocale,
+  resetGraphicLoadTrace,
   resetHomeLoadTrace,
+  resetPortfolioLoadTrace,
 } from "./home-runtime";
-export type { HomeLoadTrace } from "./home-runtime";
+export type {
+  GraphicLoadTrace,
+  HomeLoadTrace,
+  PortfolioLoadTrace,
+} from "./home-runtime";

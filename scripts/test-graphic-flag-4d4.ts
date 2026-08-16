@@ -1,0 +1,136 @@
+/**
+ * Unit tests for Graphic feature flag + UI mapper (4D.4).
+ */
+import test from "node:test";
+import assert from "node:assert/strict";
+import { getGraphicContentSource } from "../src/lib/content-v2/graphic-source";
+import { mapGraphicContentV2ToCurrentUI } from "../src/lib/content-v2/graphic-ui";
+import { buildGraphicContentV2 } from "../src/lib/content-v2/graphic";
+import type { PublicPieceSummary } from "../src/lib/content-v2/types";
+
+test("getGraphicContentSource: undefined → legacy", () => {
+  assert.equal(getGraphicContentSource(undefined), "legacy");
+});
+
+test("getGraphicContentSource: legacy → legacy", () => {
+  assert.equal(getGraphicContentSource("legacy"), "legacy");
+  assert.equal(getGraphicContentSource("LEGACY"), "legacy");
+});
+
+test("getGraphicContentSource: v2 → v2", () => {
+  assert.equal(getGraphicContentSource("v2"), "v2");
+  assert.equal(getGraphicContentSource(" V2 "), "v2");
+});
+
+test("getGraphicContentSource: invalid → legacy", () => {
+  assert.equal(getGraphicContentSource("prod"), "legacy");
+  assert.equal(getGraphicContentSource("true"), "legacy");
+  assert.equal(getGraphicContentSource(""), "legacy");
+});
+
+function piece(
+  partial: Partial<PublicPieceSummary> & Pick<PublicPieceSummary, "id">,
+): PublicPieceSummary {
+  return {
+    slug: partial.slug ?? partial.id,
+    title: partial.title ?? { es: partial.id, en: partial.id },
+    alt: partial.alt ?? partial.id,
+    category: partial.category ?? "illustration-artwork",
+    origin: partial.origin ?? "personal",
+    srcUrl: partial.srcUrl ?? `/assets/${partial.id}.png`,
+    fit: partial.fit ?? "cover",
+    year: partial.year ?? "2024",
+    detail: partial.detail ?? null,
+    href: partial.href ?? null,
+    hrefLabel: partial.hrefLabel ?? null,
+    projectId: partial.projectId ?? null,
+    project: partial.project ?? null,
+    resources: partial.resources ?? [],
+    tags: partial.tags ?? [],
+    entities: partial.entities ?? [],
+    sortOrder: partial.sortOrder ?? 0,
+    ...partial,
+  };
+}
+
+test("UI mapper: categories → UI buckets; manual excluded from logos", () => {
+  const graphic = buildGraphicContentV2("es", [
+    piece({ id: "logo-a", category: "visual-identity" }),
+    piece({
+      id: "citf-manual-2025",
+      category: "visual-identity",
+      srcUrl: "/cover.png",
+      tags: [
+        {
+          slug: "manual",
+          labelEs: "Manual",
+          labelEn: "Manual",
+          isNsfw: false,
+        },
+      ],
+      resources: [
+        {
+          id: "pdf",
+          path: "/m.pdf",
+          url: "/m.pdf",
+          kind: "piece_resource",
+          label: null,
+          sortOrder: 0,
+        },
+      ],
+    }),
+    piece({ id: "art-b", category: "illustration-artwork" }),
+    piece({ id: "ev-c", category: "campaigns-communication" }),
+    piece({ id: "print-d", category: "print" }),
+  ]);
+
+  const ui = mapGraphicContentV2ToCurrentUI(graphic);
+  assert.equal(ui.graphicPresentation, "v2");
+  assert.equal(ui.covers.length, 0);
+  assert.equal(ui.personal.length, 0);
+  assert.equal(ui.logos.map((l) => l.id).join(","), "logo-a");
+  assert.equal(ui.illustration.map((l) => l.id).join(","), "art-b");
+  assert.equal(ui.eventos.map((l) => l.id).join(","), "ev-c");
+  assert.equal(ui.banners.map((l) => l.id).join(","), "print-d");
+  assert.equal(ui.brandManuals.length, 1);
+  assert.equal(ui.brandManuals[0]?.id, "citf-manual-2025");
+  assert.equal(ui.brandManuals[0]?.pdf, "/m.pdf");
+  assert.equal(ui.logos.some((l) => l.id === "citf-manual-2025"), false);
+});
+
+test("UI mapper: Seyier siblings are separate logos without gallery", () => {
+  const project = {
+    id: "seyier-visual-identity",
+    slug: "seyier",
+    title: { es: "Seyier", en: "Seyier" },
+  };
+  const graphic = buildGraphicContentV2("es", [
+    piece({
+      id: "seyier",
+      category: "visual-identity",
+      projectId: project.id,
+      project,
+    }),
+    piece({
+      id: "seyier-inicio",
+      category: "visual-identity",
+      projectId: project.id,
+      project,
+    }),
+    piece({
+      id: "seyier-portada",
+      category: "visual-identity",
+      projectId: project.id,
+      project,
+    }),
+    piece({
+      id: "seyier-overlay",
+      category: "visual-identity",
+      projectId: project.id,
+      project,
+    }),
+  ]);
+  const ui = mapGraphicContentV2ToCurrentUI(graphic);
+  assert.equal(ui.logos.length, 4);
+  assert.ok(ui.logos.every((l) => !l.gallery?.length));
+});

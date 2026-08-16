@@ -18,6 +18,7 @@ import {
   type NamedListItemRow,
   type SocialLinkRow,
   type TagRow,
+  type BrandManualRow,
 } from "@/db/entities";
 import { mediaUrl, mediaUrls } from "@/lib/media";
 import type { GraphicGalleryItem } from "@/lib/graphic-gallery";
@@ -161,6 +162,8 @@ export type SiteSettingsContent = {
 
 export type HomeProjectsPresentation = "legacy-split" | "featured";
 
+export type GraphicPresentationMode = "legacy" | "v2";
+
 export type PortfolioContent = {
   bio: BioContent;
   techIcons: TechIconContent[];
@@ -190,6 +193,12 @@ export type PortfolioContent = {
    * - featured: single "Featured Projects" section (Home V2 UI)
    */
   homeProjectsPresentation?: HomeProjectsPresentation;
+  /**
+   * How Graphic index sections are presented.
+   * - legacy: covers/logos/personal/illustration/… from graphic_items
+   * - v2: category buckets + manuals[] (covers/personal empty by design)
+   */
+  graphicPresentation?: GraphicPresentationMode;
 };
 
 function mapGraphic(
@@ -290,13 +299,20 @@ export type LoadPortfolioContentOptions = {
    * omit: skip those queries — Home fields filled by V2 mapper (4C.4).
    */
   homeLists?: "include" | "omit";
+  /**
+   * include (default): load graphic_items + brand_manuals.
+   * omit: skip those queries — Graphic fields filled by V2 mapper (4D.4).
+   */
+  graphicLists?: "include" | "omit";
 };
 
 export async function loadPortfolioContent(
   options: LoadPortfolioContentOptions = {},
 ): Promise<PortfolioContent> {
   const homeLists = options.homeLists ?? "include";
+  const graphicLists = options.graphicLists ?? "include";
   const omitHomeLists = homeLists === "omit";
+  const omitGraphicLists = graphicLists === "omit";
   const ds = await getDataSource();
 
   const [
@@ -324,12 +340,16 @@ export async function loadPortfolioContent(
       : ds.getRepository(TestimonialEntity).find({
           order: { sortOrder: "ASC", id: "ASC" },
         }),
-    ds.getRepository(GraphicItemEntity).find({
-      order: { sortOrder: "ASC", id: "ASC" },
-    }),
-    ds.getRepository(BrandManualEntity).find({
-      order: { sortOrder: "ASC", id: "ASC" },
-    }),
+    omitGraphicLists
+      ? Promise.resolve([] as GraphicItemRow[])
+      : ds.getRepository(GraphicItemEntity).find({
+          order: { sortOrder: "ASC", id: "ASC" },
+        }),
+    omitGraphicLists
+      ? Promise.resolve([] as BrandManualRow[])
+      : ds.getRepository(BrandManualEntity).find({
+          order: { sortOrder: "ASC", id: "ASC" },
+        }),
     ds.getRepository(UiProjectEntity).find({
       order: { sortOrder: "ASC", id: "ASC" },
     }),
@@ -445,24 +465,26 @@ export async function loadPortfolioContent(
               },
             };
           }),
-    covers: bySection(graphics, "covers"),
-    logos: bySection(graphics, "logos"),
-    personal: bySection(graphics, "personal"),
+    covers: omitGraphicLists ? [] : bySection(graphics, "covers"),
+    logos: omitGraphicLists ? [] : bySection(graphics, "logos"),
+    personal: omitGraphicLists ? [] : bySection(graphics, "personal"),
     pending: [],
-    illustration: bySection(graphics, "illustration"),
-    banners: bySection(graphics, "banners"),
-    eventos: bySection(graphics, "eventos"),
-    brandManuals: manuals
-      .filter((m) => m.published)
-      .map((m) => ({
-        id: m.id,
-        cover: mediaUrl(m.coverPath),
-        pdf: mediaUrl(m.pdfPath),
-        title: m.title,
-        ...(m.year ? { year: m.year } : {}),
-        ...(m.meta ? { meta: m.meta } : {}),
-        brandId: m.brandId ?? null,
-      })),
+    illustration: omitGraphicLists ? [] : bySection(graphics, "illustration"),
+    banners: omitGraphicLists ? [] : bySection(graphics, "banners"),
+    eventos: omitGraphicLists ? [] : bySection(graphics, "eventos"),
+    brandManuals: omitGraphicLists
+      ? []
+      : manuals
+          .filter((m) => m.published)
+          .map((m) => ({
+            id: m.id,
+            cover: mediaUrl(m.coverPath),
+            pdf: mediaUrl(m.pdfPath),
+            title: m.title,
+            ...(m.year ? { year: m.year } : {}),
+            ...(m.meta ? { meta: m.meta } : {}),
+            brandId: m.brandId ?? null,
+          })),
     uiProjects: uiProjects
       .filter((p) => p.published)
       .map((p) => ({
@@ -495,6 +517,7 @@ export async function loadPortfolioContent(
     socialLinks: socials.filter((s) => s.published).map(mapSocial),
     tags,
     brands,
+    graphicPresentation: omitGraphicLists ? undefined : "legacy",
   };
 }
 

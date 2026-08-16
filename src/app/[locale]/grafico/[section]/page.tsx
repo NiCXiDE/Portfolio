@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { getDictionary } from "@/i18n/dictionaries";
 import { isLocale, type Locale } from "@/i18n/config";
-import { loadPortfolioContent } from "@/lib/content";
+import { loadPortfolioContentForLocale } from "@/lib/content-v2/home-runtime";
 import { GraphicSectionView } from "@/components/layers/GraphicSectionView";
 import { buildPageMetadata, graphicSectionTitle } from "@/lib/seo";
 
@@ -60,7 +60,7 @@ export default async function GraphicSectionPage({
   if (!SECTIONS.includes(section as (typeof SECTIONS)[number])) notFound();
   const locale = raw as Locale;
   const dict = getDictionary(locale);
-  const content = await loadPortfolioContent();
+  const content = await loadPortfolioContentForLocale(locale);
 
   return (
     <GraphicSectionView
