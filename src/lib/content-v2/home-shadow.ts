@@ -861,24 +861,25 @@ export const HOME_UI_MAPPING_4C4 = [
   },
   {
     currentProp: "companies[].hubHref",
-    v2Source: "entities[].href",
+    v2Source: "entities[].href (read model)",
     mapping:
-      "external → <a>; null → plain chip; never invent /marcas or /entidades",
+      "4C.5B Home UI: hubHref forced null (no external nav); reversible later",
   },
   {
-    currentProp: "pastProjects / currentProjects",
-    v2Source: "pastProjects / currentProjects",
-    mapping: "already split by status in getHomeContentV2",
+    currentProp: "pastProjects (Featured)",
+    v2Source: "featuredProjects (homeOrder; completed+ongoing)",
+    mapping:
+      "4C.5B single section; currentProjects UI empty; Current section omitted",
   },
   {
     currentProp: "projects[].label",
     v2Source: "projects[].label|title",
-    mapping: "direct localized string",
+    mapping: "direct localized string; hubHref null until project pages exist",
   },
   {
     currentProp: "projects[].logo / hubHref",
     v2Source: "coverUrl / href",
-    mapping: "NOT_REQUIRED_FOR_CURRENT_HOME (text chips)",
+    mapping: "NOT_WIRED_ON_HOME (text chips; no invented routes)",
   },
   {
     currentProp: "testimonials[].image",

@@ -1,18 +1,27 @@
 /**
  * Presentation mapper: HomeContentV2 → current HomeLayer / marquee contract.
  * Does not recreate named_list_items as a domain model.
+ *
+ * 4C.5B: Home UI uses a single Featured Projects list (not status sections).
+ * Entity/project hrefs stay in the read model but are not wired as navigation.
  */
 import type {
+  HomeProjectsPresentation,
   NamedListItemContent,
   TestimonialContent,
 } from "@/lib/content";
 import type { HomeContentV2 } from "./home";
 
+export type { HomeProjectsPresentation };
+
 export type HomeUiLists = {
   companies: NamedListItemContent[];
+  /** Featured projects when presentation=featured; past-only when legacy-split. */
   pastProjects: NamedListItemContent[];
+  /** Empty when presentation=featured (Current section not rendered). */
   currentProjects: NamedListItemContent[];
   testimonials: TestimonialContent[];
+  homeProjectsPresentation: HomeProjectsPresentation;
 };
 
 /** Stable positive int for React keys / legacy NamedListItemContent.id. */
@@ -29,10 +38,23 @@ function toLocalizedBoth(value: string): { es: string; en: string } {
   return { es: value, en: value };
 }
 
+function mapProjectChip(
+  p: HomeContentV2["featuredProjects"][number],
+): NamedListItemContent {
+  return {
+    id: stableNumericId(`project:${p.id}`),
+    label: p.label,
+    logo: null,
+    brandId: null,
+    // Project detail routes do not exist yet — label only.
+    hubHref: null,
+  };
+}
+
 /**
  * Map V2 Home payload into the shapes InfiniteMarquee + HomeLayer expect.
  * - logoUrl → logo
- * - href → hubHref (external URL or null; never invent /entidades|/marcas)
+ * - Entity/project hrefs intentionally omitted from hubHref for Home (4C.5B)
  */
 export function mapHomeContentV2ToCurrentUI(
   home: HomeContentV2,
@@ -42,21 +64,22 @@ export function mapHomeContentV2ToCurrentUI(
     label: e.label,
     logo: e.logoUrl,
     brandId: e.id,
-    hubHref: e.href, // null or https?:// — InfiniteMarquee handles external
+    // Keep visitor on portfolio; external entity URLs stay in read model only.
+    hubHref: null,
   }));
 
-  const mapProject = (
-    p: HomeContentV2["pastProjects"][number],
-  ): NamedListItemContent => ({
-    id: stableNumericId(`project:${p.id}`),
-    label: p.label,
-    logo: null, // covers not required for current marquee chips
-    brandId: null,
-    hubHref: p.href,
-  });
+  const featuredSource =
+    home.featuredProjects.length > 0
+      ? home.featuredProjects
+      : [...home.pastProjects, ...home.currentProjects].sort((a, b) => {
+          const ao = a.homeOrder ?? Number.POSITIVE_INFINITY;
+          const bo = b.homeOrder ?? Number.POSITIVE_INFINITY;
+          if (ao !== bo) return ao - bo;
+          return a.id.localeCompare(b.id);
+        });
 
-  const pastProjects = home.pastProjects.map(mapProject);
-  const currentProjects = home.currentProjects.map(mapProject);
+  const pastProjects = featuredSource.map(mapProjectChip);
+  const currentProjects: NamedListItemContent[] = [];
 
   const testimonials: TestimonialContent[] = home.testimonials.map((row) => ({
     id: row.id,
@@ -79,5 +102,6 @@ export function mapHomeContentV2ToCurrentUI(
     pastProjects,
     currentProjects,
     testimonials,
+    homeProjectsPresentation: "featured",
   };
 }

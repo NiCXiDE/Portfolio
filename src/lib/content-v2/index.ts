@@ -43,6 +43,7 @@ export { getPublicPieceBySlugV2, getPublicPiecesV2 } from "./pieces";
 export { getPublicTestimonialsV2 } from "./testimonials";
 
 export {
+  buildFeaturedHomeProjectsV2,
   buildHomeContentV2,
   getHomeContentV2,
   publicExternalHref,
@@ -77,7 +78,9 @@ export { mapHomeContentV2ToCurrentUI, stableNumericId } from "./home-ui";
 export type { HomeUiLists } from "./home-ui";
 
 export {
+  applyHomeV2PresentationLayout,
   getLastHomeLoadTrace,
+  HOME_V2_MARQUEE_SPEED_PX_S,
   loadPortfolioContentForLocale,
   resetHomeLoadTrace,
 } from "./home-runtime";

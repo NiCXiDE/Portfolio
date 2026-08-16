@@ -80,7 +80,8 @@ function MarqueeItem({
     );
   }
 
-  return body;
+  // Non-clickable chips: default cursor (no grab — drag not implemented).
+  return <span className="marquee-item-wrap">{body}</span>;
 }
 
 function MarqueeTrack({
@@ -98,15 +99,23 @@ function MarqueeTrack({
 }) {
   const trackRef = useRef<HTMLDivElement>(null);
   const [duration, setDuration] = useState(40);
+  const [shiftPx, setShiftPx] = useState(0);
 
   useEffect(() => {
     const el = trackRef.current;
     if (!el) return;
 
     const measure = () => {
-      const half = el.scrollWidth / 2;
-      if (half <= 0) return;
-      setDuration(Math.max(8, half / Math.max(speed, 1)));
+      const kids = el.children;
+      const n = items.length;
+      if (n <= 0 || kids.length < n * 2) return;
+      const first = kids[0] as HTMLElement;
+      const mid = kids[n] as HTMLElement;
+      // Exact width of one sequence (includes trailing spacing into the copy).
+      const shift = mid.offsetLeft - first.offsetLeft;
+      if (shift <= 0) return;
+      setShiftPx(shift);
+      setDuration(Math.max(8, shift / Math.max(speed, 1)));
     };
 
     measure();
@@ -117,15 +126,17 @@ function MarqueeTrack({
 
   if (!items.length) return null;
 
+  // Presentational duplication only — domain lists stay unduplicated.
   const loop = [...items, ...items];
 
   return (
-    <div className="marquee-viewport cursor-grab" data-direction={direction}>
+    <div className="marquee-viewport" data-direction={direction}>
       <div
         ref={trackRef}
         className="marquee-track"
         style={{
           ["--marquee-duration" as string]: `${duration}s`,
+          ["--marquee-shift" as string]: shiftPx > 0 ? `${shiftPx}px` : "50%",
         }}
       >
         {loop.map((item, i) => (

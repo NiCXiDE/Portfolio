@@ -252,6 +252,17 @@ export function HomeLayer({ locale, dict, content }: Props) {
             );
           }
 
+          const projectsPresentation =
+            content.homeProjectsPresentation ?? "legacy-split";
+
+          // Featured mode: single projects marquee; Current section not rendered.
+          if (
+            projectsPresentation === "featured" &&
+            sectionId === "current_projects"
+          ) {
+            return null;
+          }
+
           const meta = {
             companies: {
               title: dict.home.companiesTitle,
@@ -259,7 +270,10 @@ export function HomeLayer({ locale, dict, content }: Props) {
               kind: "company" as const,
             },
             past_projects: {
-              title: dict.home.pastProjectsTitle,
+              title:
+                projectsPresentation === "featured"
+                  ? dict.home.featuredProjectsTitle
+                  : dict.home.pastProjectsTitle,
               items: content.pastProjects,
               kind: "past_project" as const,
             },

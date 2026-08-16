@@ -73,8 +73,15 @@ export type HomeTestimonialItemV2 = {
 export type HomeContentV2 = {
   locale: Locale;
   entities: HomeEntityItemV2[];
+  /** @deprecated Prefer featuredProjects for Home UI (4C.5B). Kept for shadow/compat. */
   pastProjects: HomeProjectItemV2[];
+  /** @deprecated Prefer featuredProjects for Home UI (4C.5B). Kept for shadow/compat. */
   currentProjects: HomeProjectItemV2[];
+  /**
+   * Single Home marquee list: published + showOnHome + not archived.
+   * Ordered by homeOrder only (not by status).
+   */
+  featuredProjects: HomeProjectItemV2[];
   testimonials: HomeTestimonialItemV2[];
 };
 
@@ -155,8 +162,27 @@ function compareHomeItems(
 }
 
 /**
+ * Featured Home projects: status does not define section.
+ * Includes completed + ongoing; excludes archived.
+ */
+export function buildFeaturedHomeProjectsV2(
+  projects: PublicProjectSummary[],
+  locale: Locale,
+): HomeProjectItemV2[] {
+  const featured: HomeProjectItemV2[] = [];
+  for (const project of projects) {
+    const item = mapProject(project, locale);
+    if (!item) continue;
+    featured.push(item);
+  }
+  featured.sort(compareHomeItems);
+  return featured;
+}
+
+/**
  * Pure split + map for Home projects (testable without DB).
  * Section from status only; order from homeOrder within section.
+ * Kept for shadow/compat — Home UI uses buildFeaturedHomeProjectsV2 (4C.5B).
  */
 export function splitHomeProjectsV2(
   projects: PublicProjectSummary[],
@@ -227,6 +253,10 @@ export function buildHomeContentV2(
     input.projects,
     locale,
   );
+  const featuredProjects = buildFeaturedHomeProjectsV2(
+    input.projects,
+    locale,
+  );
 
   const testimonials = [...input.testimonials]
     .sort((a, b) => {
@@ -240,6 +270,7 @@ export function buildHomeContentV2(
     entities,
     pastProjects,
     currentProjects,
+    featuredProjects,
     testimonials,
   };
 }

@@ -828,9 +828,20 @@ a.interactive-ink:hover {
   display: flex;
   width: max-content;
   align-items: center;
-  gap: 2.75rem;
+  /* Trailing margin (not flex gap): even spacing so a -sequence-width loop is seamless. */
+  gap: 0;
   animation: marquee-x var(--marquee-duration, 40s) linear infinite;
   will-change: transform;
+}
+
+.marquee-track > * {
+  margin-inline-end: 2.75rem;
+}
+
+.marquee-item-wrap {
+  display: inline-flex;
+  flex-shrink: 0;
+  cursor: default;
 }
 
 .marquee-viewport[data-direction="right"] .marquee-track {
@@ -903,7 +914,8 @@ a.interactive-ink:hover {
     transform: translateX(0);
   }
   to {
-    transform: translateX(-50%);
+    /* Pixel shift of one sequence (set by InfiniteMarquee); 50% fallback. */
+    transform: translateX(calc(-1 * var(--marquee-shift, 50%)));
   }
 }
 

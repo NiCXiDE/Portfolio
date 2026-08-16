@@ -341,6 +341,7 @@ function v2Home(partial?: Partial<HomeContentV2>): HomeContentV2 {
         href: null,
       },
     ],
+    featuredProjects: [],
     testimonials: [
       {
         id: "facundo",
@@ -400,7 +401,20 @@ function v2Home(partial?: Partial<HomeContentV2>): HomeContentV2 {
       },
     ],
   };
-  return { ...base, ...partial, locale: partial?.locale ?? base.locale };
+  base.featuredProjects = [...base.pastProjects, ...base.currentProjects].sort(
+    (a, b) => {
+      const ao = a.homeOrder ?? Number.POSITIVE_INFINITY;
+      const bo = b.homeOrder ?? Number.POSITIVE_INFINITY;
+      if (ao !== bo) return ao - bo;
+      return a.id.localeCompare(b.id);
+    },
+  );
+  return {
+    ...base,
+    ...partial,
+    locale: partial?.locale ?? base.locale,
+    featuredProjects: partial?.featuredProjects ?? base.featuredProjects,
+  };
 }
 
 test("Templeton maps to digital-transformation project key", () => {

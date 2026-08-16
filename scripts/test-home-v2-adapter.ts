@@ -4,6 +4,7 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 import {
+  buildFeaturedHomeProjectsV2,
   buildHomeContentV2,
   publicExternalHref,
   splitHomeProjectsV2,
@@ -202,4 +203,41 @@ test("project does not invent cover or route", () => {
   );
   assert.equal(pastProjects[0]?.coverUrl, null);
   assert.equal(pastProjects[0]?.href, null);
+});
+
+test("featuredProjects: completed + ongoing by homeOrder; archived excluded", () => {
+  const featured = buildFeaturedHomeProjectsV2(
+    [
+      project({ id: "ongoing-a", status: "ongoing", homeOrder: 1 }),
+      project({ id: "done-b", status: "completed", homeOrder: 0 }),
+      project({ id: "archived-c", status: "archived", homeOrder: 0 }),
+      project({ id: "done-d", status: "completed", homeOrder: 2 }),
+    ],
+    "es",
+  );
+  assert.deepEqual(
+    featured.map((p) => p.id),
+    ["done-b", "ongoing-a", "done-d"],
+  );
+  assert.equal(
+    featured.map((p) => p.id).includes("archived-c"),
+    false,
+  );
+});
+
+test("buildHomeContentV2 exposes featuredProjects without status banding", () => {
+  const home = buildHomeContentV2("es", {
+    entities: [],
+    projects: [
+      project({ id: "taily", status: "ongoing", homeOrder: 11 }),
+      project({ id: "adapto-pay", status: "completed", homeOrder: 0 }),
+    ],
+    testimonials: [],
+  });
+  assert.deepEqual(
+    home.featuredProjects.map((p) => p.id),
+    ["adapto-pay", "taily"],
+  );
+  assert.equal(home.currentProjects.map((p) => p.id).includes("taily"), true);
+  assert.equal(home.pastProjects.map((p) => p.id).includes("adapto-pay"), true);
 });

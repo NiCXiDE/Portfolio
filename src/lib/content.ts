@@ -159,6 +159,8 @@ export type SiteSettingsContent = {
   homeLayout: HomeLayoutConfig;
 };
 
+export type HomeProjectsPresentation = "legacy-split" | "featured";
+
 export type PortfolioContent = {
   bio: BioContent;
   techIcons: TechIconContent[];
@@ -182,6 +184,12 @@ export type PortfolioContent = {
   tags: TagRow[];
   /** Publicado; para @menciones y resolución de logos */
   brands: BrandRef[];
+  /**
+   * How Home project marquees are presented.
+   * - legacy-split: past + current sections (named_list / pre-4C.5B)
+   * - featured: single "Featured Projects" section (Home V2 UI)
+   */
+  homeProjectsPresentation?: HomeProjectsPresentation;
 };
 
 function mapGraphic(

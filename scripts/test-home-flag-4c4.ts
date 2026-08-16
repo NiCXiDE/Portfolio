@@ -1,5 +1,5 @@
 /**
- * Unit tests for Home feature flag + UI mapper (4C.4).
+ * Unit tests for Home feature flag + UI mapper (4C.4 / 4C.5B).
  */
 import test from "node:test";
 import assert from "node:assert/strict";
@@ -8,10 +8,22 @@ import {
   mapHomeContentV2ToCurrentUI,
   stableNumericId,
 } from "../src/lib/content-v2/home-ui";
+import {
+  applyHomeV2PresentationLayout,
+  HOME_V2_MARQUEE_SPEED_PX_S,
+} from "../src/lib/content-v2/home-runtime";
 import type { HomeContentV2 } from "../src/lib/content-v2/home";
+import { DEFAULT_HOME_LAYOUT } from "../src/lib/home-layout";
 
-test("getHomeContentSource: undefined → legacy", () => {
-  assert.equal(getHomeContentSource(undefined), "legacy");
+test("getHomeContentSource: unset env → legacy", () => {
+  const prev = process.env.HOME_CONTENT_SOURCE;
+  delete process.env.HOME_CONTENT_SOURCE;
+  try {
+    assert.equal(getHomeContentSource(), "legacy");
+  } finally {
+    if (prev === undefined) delete process.env.HOME_CONTENT_SOURCE;
+    else process.env.HOME_CONTENT_SOURCE = prev;
+  }
 });
 
 test("getHomeContentSource: legacy → legacy", () => {
@@ -63,7 +75,7 @@ function sampleHome(): HomeContentV2 {
         homeOrder: 0,
         clientLabel: null,
         coverUrl: "/cover.jpg",
-        href: null,
+        href: "https://adapto.example",
       },
     ],
     currentProjects: [
@@ -73,7 +85,31 @@ function sampleHome(): HomeContentV2 {
         label: "Taily",
         title: "Taily",
         status: "ongoing",
+        homeOrder: 11,
+        clientLabel: null,
+        coverUrl: null,
+        href: null,
+      },
+    ],
+    featuredProjects: [
+      {
+        id: "adapto-pay",
+        slug: "adapto-pay",
+        label: "Adapto Pay",
+        title: "Adapto Pay",
+        status: "completed",
         homeOrder: 0,
+        clientLabel: null,
+        coverUrl: "/cover.jpg",
+        href: "https://adapto.example",
+      },
+      {
+        id: "taily",
+        slug: "taily",
+        label: "Taily",
+        title: "Taily",
+        status: "ongoing",
+        homeOrder: 11,
         clientLabel: null,
         coverUrl: null,
         href: null,
@@ -98,28 +134,26 @@ function sampleHome(): HomeContentV2 {
   };
 }
 
-test("mapper: logoUrl→logo, href→hubHref, null href not invented", () => {
+test("mapper: logoUrl→logo; entity href NOT used as Home hubHref", () => {
   const ui = mapHomeContentV2ToCurrentUI(sampleHome());
   assert.equal(ui.companies[0]?.logo, "/a.svg");
-  assert.equal(ui.companies[0]?.hubHref, "https://aicore.example");
+  assert.equal(ui.companies[0]?.hubHref, null);
   assert.equal(ui.companies[1]?.hubHref, null);
-  assert.equal(
-    (ui.companies[0]?.hubHref ?? "").includes("/entidades"),
-    false,
-  );
-  assert.equal((ui.companies[0]?.hubHref ?? "").includes("/marcas"), false);
+  assert.equal(ui.homeProjectsPresentation, "featured");
 });
 
-test("mapper: past/current arrays and no fake covers on chips", () => {
+test("mapper: Featured list mixes completed+ongoing; Current UI empty", () => {
   const ui = mapHomeContentV2ToCurrentUI(sampleHome());
-  assert.equal(ui.pastProjects.length, 1);
-  assert.equal(ui.pastProjects[0]?.label, "Adapto Pay");
-  assert.equal(ui.pastProjects[0]?.logo, null);
-  assert.equal(ui.currentProjects.length, 1);
-  assert.equal(ui.currentProjects[0]?.label, "Taily");
+  assert.deepEqual(
+    ui.pastProjects.map((p) => p.label),
+    ["Adapto Pay", "Taily"],
+  );
+  assert.equal(ui.pastProjects.every((p) => p.hubHref === null), true);
+  assert.equal(ui.pastProjects.every((p) => p.logo === null), true);
+  assert.equal(ui.currentProjects.length, 0);
 });
 
-test("mapper: testimonials contract", () => {
+test("mapper: testimonials contract unchanged", () => {
   const ui = mapHomeContentV2ToCurrentUI(sampleHome());
   const t = ui.testimonials[0]!;
   assert.equal(t.id, "facundo");
@@ -133,4 +167,27 @@ test("mapper: testimonials contract", () => {
 test("stableNumericId is deterministic and positive", () => {
   assert.equal(stableNumericId("aicore"), stableNumericId("aicore"));
   assert.ok(stableNumericId("taily") > 0);
+});
+
+test("Home V2 layout drops Current section and sets 100px/s", () => {
+  const layout = applyHomeV2PresentationLayout({
+    ...DEFAULT_HOME_LAYOUT,
+    sectionOrder: [
+      "companies",
+      "past_projects",
+      "current_projects",
+      "testimonials",
+    ],
+  });
+  assert.equal(layout.sectionOrder.includes("current_projects"), false);
+  assert.equal(layout.sectionOrder.includes("past_projects"), true);
+  assert.equal(layout.marquees.company.speed, HOME_V2_MARQUEE_SPEED_PX_S);
+  assert.equal(layout.marquees.past_project.speed, HOME_V2_MARQUEE_SPEED_PX_S);
+  assert.equal(HOME_V2_MARQUEE_SPEED_PX_S, 100);
+});
+
+test("marquee duplication is presentational only (domain list stays single)", () => {
+  const ui = mapHomeContentV2ToCurrentUI(sampleHome());
+  // Mapper returns one chip per project — InfiniteMarquee duplicates for loop.
+  assert.equal(ui.pastProjects.length, sampleHome().featuredProjects.length);
 });
