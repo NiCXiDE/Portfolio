@@ -1,5 +1,5 @@
 /**
- * Unit tests for Home feature flag + UI mapper (4C.4 / 4C.5B).
+ * Unit tests for Home feature flag + UI mapper (4C.4 / 4C.5B / 4C.6).
  */
 import test from "node:test";
 import assert from "node:assert/strict";
@@ -15,11 +15,11 @@ import {
 import type { HomeContentV2 } from "../src/lib/content-v2/home";
 import { DEFAULT_HOME_LAYOUT } from "../src/lib/home-layout";
 
-test("getHomeContentSource: unset env → legacy", () => {
+test("getHomeContentSource: unset env → v2 (4C.6 default)", () => {
   const prev = process.env.HOME_CONTENT_SOURCE;
   delete process.env.HOME_CONTENT_SOURCE;
   try {
-    assert.equal(getHomeContentSource(), "legacy");
+    assert.equal(getHomeContentSource(), "v2");
   } finally {
     if (prev === undefined) delete process.env.HOME_CONTENT_SOURCE;
     else process.env.HOME_CONTENT_SOURCE = prev;

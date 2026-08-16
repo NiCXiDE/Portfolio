@@ -838,12 +838,12 @@ export function compareHomeShadows(
 export const HOME_CONTENT_SOURCE_FLAG_DESIGN = {
   envName: "HOME_CONTENT_SOURCE",
   values: ["legacy", "v2"] as const,
-  default: "legacy" as const,
+  default: "v2" as const,
   scope: "home-only",
   resolution: "server-side",
   notes: [
     "Do not expose via public query params",
-    "Default legacy until visual cutover approved",
+    "Default v2 after 4C.6 cutover; set HOME_CONTENT_SOURCE=legacy for rollback",
     "Bio/settings/brands may remain legacy even when marquees use V2",
   ],
 };

@@ -2,7 +2,8 @@
  * Isolated V2 public read model (Phase 4B) + Home adapter/runtime (4C.2–4C.4).
  *
  * Locale layout may use `loadPortfolioContentForLocale` when
- * HOME_CONTENT_SOURCE=v2. Default remains legacy. Graphic/Interfaces
+ * HOME_CONTENT_SOURCE resolves to v2 (default after 4C.6). Explicit
+ * HOME_CONTENT_SOURCE=legacy keeps Home on the legacy path. Graphic/Interfaces
  * still use legacy tables via the shell loader.
  */
 export type {

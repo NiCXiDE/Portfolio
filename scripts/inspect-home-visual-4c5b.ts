@@ -50,7 +50,7 @@ async function main() {
     );
   }
 
-  // Confirm default path still resolves legacy when unset
+  // Confirm default path resolves v2 when unset (4C.6)
   delete process.env.HOME_CONTENT_SOURCE;
   console.log("default_after_unset", getHomeContentSource());
 

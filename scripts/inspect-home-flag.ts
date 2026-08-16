@@ -74,6 +74,7 @@ async function runOnce(label: string, sourceEnv: string | undefined) {
       current: content.currentProjects.length,
       testimonials: content.testimonials.length,
     },
+    pastLabels: content.pastProjects.map((p) => p.label),
     currentLabels: content.currentProjects.map((p) => p.label),
     companyBrandIds: companyIds,
     inventedEntidades: content.companies.some((c) =>
@@ -117,16 +118,16 @@ async function main() {
         v2.trace?.loaders.includes("v2-home") === true &&
         v2.trace.loaders.includes("legacy-shell") === true &&
         !v2.trace.loaders.includes("legacy-full"),
-      unsetIsLegacy: unset.resolvedSource === "legacy",
+      unsetIsV2: unset.resolvedSource === "v2",
+      unsetLoadersMatchV2:
+        unset.trace?.loaders.join(",") === "legacy-shell,v2-home",
       invalidIsLegacy: invalid.resolvedSource === "legacy",
       v2CountsOk:
         v2.counts.companies === 6 &&
-        v2.counts.past === 11 &&
-        v2.counts.current === 1 &&
+        v2.counts.past === 12 &&
+        v2.counts.current === 0 &&
         v2.counts.testimonials === 4,
-      v2CurrentIsTaily:
-        v2.currentLabels.length === 1 &&
-        /taily/i.test(v2.currentLabels[0] ?? ""),
+      v2HasTaily: v2.pastLabels.some((l) => /taily/i.test(l)),
       noInventedEntidades: !v2.inventedEntidades,
       privacyHintsEmpty: v2.forbiddenProjectHints.length === 0,
     },

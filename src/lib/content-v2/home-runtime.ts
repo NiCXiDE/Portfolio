@@ -1,5 +1,6 @@
 /**
- * Locale portfolio loader with Home-only V2 branch (Phase 4C.4 / 4C.5B).
+ * Locale portfolio loader with Home-only V2 branch (Phase 4C.4 / 4C.5B / 4C.6).
+ * Default source is v2; HOME_CONTENT_SOURCE=legacy remains an explicit rollback.
  * Branches BEFORE querying Home lists — no legacy+V2 double-read for marquees.
  */
 import type { Locale } from "@/i18n/config";

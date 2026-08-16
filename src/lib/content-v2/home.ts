@@ -2,8 +2,8 @@
  * Home-specific V2 adapter (Phase 4C.2).
  *
  * Transforms 4B public readers into a Home-shaped payload.
- * NOT wired via feature flag by default — use HOME_CONTENT_SOURCE=v2
- * through `loadPortfolioContentForLocale` (Phase 4C.4). Default remains legacy.
+ * Wired as Home default via `loadPortfolioContentForLocale` (4C.6).
+ * Explicit HOME_CONTENT_SOURCE=legacy keeps the legacy Home path.
  */
 import type { Locale } from "@/i18n/config";
 import type { EntityType, ProjectStatus } from "@/db/entities-v2";

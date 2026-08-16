@@ -81,7 +81,7 @@ Orden Featured resultante (0→11): adapto-pay … templeton … **taily**.
 
 ### Flag / cutover
 
-- `.env` **no** define `HOME_CONTENT_SOURCE` → default **legacy**.
+- `.env` **no** define `HOME_CONTENT_SOURCE` → default **v2** (4C.6 cutover).
 - Validación local con session `HOME_CONTENT_SOURCE=v2` únicamente.
 - **No 4C.6.**
 
