@@ -1,0 +1,412 @@
+{
+  "database": "portfolio",
+  "projectCitf": 1,
+  "pieceManualExists": 0,
+  "brandManual": {
+    "id": "citf",
+    "cover_path": "/assets/grafico/brand-manuals/citf-manual-2025-cover.png",
+    "pdf_path": "/assets/grafico/brand-manuals/citf-manual-2025.pdf",
+    "title": {
+      "en": "Brand Manual 2025 CITF",
+      "es": "Manual de Marca 2025 CITF"
+    },
+    "year": "2025",
+    "meta": {
+      "en": "Formosa Technology Innovation Cluster",
+      "es": "Clúster de Innovación Tecnológica Formosa"
+    },
+    "brand_id": "citf",
+    "published": 1
+  },
+  "coverExists": true,
+  "pdfExists": true,
+  "projectSeyier": 1,
+  "pieceSeyier": {
+    "id": "seyier",
+    "title": {
+      "en": "Seyier",
+      "es": "Seyier"
+    },
+    "src_path": "/assets/grafico/logos/seyier.svg"
+  },
+  "gallery": {
+    "gallery_paths": [
+      {
+        "src": "/assets/grafico/logos/seyier/inicio.png",
+        "frame": "landscape",
+        "label": {
+          "en": "Starting screen",
+          "es": "Pantalla de inicio"
+        }
+      },
+      {
+        "src": "/assets/grafico/logos/seyier/portada-fondo.png",
+        "frame": "landscape",
+        "label": {
+          "en": "Stream cover",
+          "es": "Portada"
+        }
+      },
+      {
+        "src": "/assets/grafico/logos/seyier/overlay-ejemplo.png",
+        "frame": "landscape",
+        "label": {
+          "en": "Overlay example",
+          "es": "Overlay"
+        }
+      }
+    ]
+  },
+  "assets": {
+    "inicio": true,
+    "portada": true,
+    "overlay": true
+  },
+  "candidateNewIds": [],
+  "tagManual": [],
+  "tags": [
+    {
+      "slug": "nsfw",
+      "label_es": "NSFW",
+      "label_en": "NSFW",
+      "sort_order": 0
+    },
+    {
+      "slug": "pixel-art",
+      "label_es": "Pixel art",
+      "label_en": "Pixel art",
+      "sort_order": 1
+    },
+    {
+      "slug": "vector",
+      "label_es": "Vector",
+      "label_en": "Vector",
+      "sort_order": 2
+    },
+    {
+      "slug": "fan-art",
+      "label_es": "Fan art",
+      "label_en": "Fan art",
+      "sort_order": 3
+    },
+    {
+      "slug": "grime",
+      "label_es": "Grime",
+      "label_en": "Grime",
+      "sort_order": 4
+    },
+    {
+      "slug": "tattoo",
+      "label_es": "Tattoo",
+      "label_en": "Tattoo",
+      "sort_order": 5
+    },
+    {
+      "slug": "bass-series",
+      "label_es": "Bass series",
+      "label_en": "Bass series",
+      "sort_order": 6
+    },
+    {
+      "slug": "impreso",
+      "label_es": "Impreso",
+      "label_en": "Printed",
+      "sort_order": 7
+    },
+    {
+      "slug": "evento",
+      "label_es": "Evento",
+      "label_en": "Event",
+      "sort_order": 8
+    },
+    {
+      "slug": "tdt",
+      "label_es": "TDT",
+      "label_en": "TDT",
+      "sort_order": 100
+    },
+    {
+      "slug": "cover",
+      "label_es": "Portada / carátula",
+      "label_en": "Cover",
+      "sort_order": 101
+    }
+  ],
+  "pieceResKinds": [
+    {
+      "id": "19cae936-1ce6-4e01-af08-bd6c2efebd7e",
+      "piece_id": "expedicion-polo",
+      "path": "/assets/grafico/eventos/expedicion-polo/portada.png",
+      "kind": "piece_resource"
+    },
+    {
+      "id": "f8c8bd35-ebfb-45c4-a3a9-47cf239034df",
+      "piece_id": "juegos-provinciales",
+      "path": "/assets/grafico/eventos/juegos-provinciales/portada.png",
+      "kind": "piece_resource"
+    }
+  ],
+  "publicPieces": {
+    "c": "45"
+  },
+  "tagCount": {
+    "c": "11"
+  },
+  "seyierMaps": [
+    {
+      "source_table": "graphic_items",
+      "source_id": "seyier",
+      "target_type": "project",
+      "target_id": "seyier-visual-identity",
+      "notes": null
+    },
+    {
+      "source_table": "graphic_items",
+      "source_id": "seyier",
+      "target_type": "piece",
+      "target_id": "seyier",
+      "notes": "lane=MANUAL_DECISION_MIGRATED"
+    },
+    {
+      "source_table": "brands",
+      "source_id": "seyier",
+      "target_type": "entity",
+      "target_id": "seyier",
+      "notes": null
+    }
+  ],
+  "citfMaps": [
+    {
+      "source_table": "brand_manuals",
+      "source_id": "citf",
+      "target_type": "project",
+      "target_id": "citf-identity-2025",
+      "notes": null
+    },
+    {
+      "source_table": "graphic_items",
+      "source_id": "itf",
+      "target_type": "project",
+      "target_id": "citf-identity-2025",
+      "notes": null
+    },
+    {
+      "source_table": "graphic_items",
+      "source_id": "banner-cluster",
+      "target_type": "piece",
+      "target_id": "banner-cluster",
+      "notes": "lane=MANUAL_DECISION_MIGRATED"
+    },
+    {
+      "source_table": "brands",
+      "source_id": "citf",
+      "target_type": "entity",
+      "target_id": "citf",
+      "notes": null
+    },
+    {
+      "source_table": "graphic_items",
+      "source_id": "banner-cluster",
+      "target_type": "project",
+      "target_id": "citf-identity-2025",
+      "notes": null
+    },
+    {
+      "source_table": "graphic_items",
+      "source_id": "itf",
+      "target_type": "piece",
+      "target_id": "itf",
+      "notes": "lane=MANUAL_DECISION_MIGRATED"
+    }
+  ],
+  "pieceEntitiesSeyier": [
+    {
+      "piece_id": "seyier",
+      "entity_id": "seyier",
+      "relation_role": "brand-owner",
+      "sort_order": 0,
+      "is_primary": 1
+    }
+  ],
+  "pieceEntitiesCitf": [
+    {
+      "piece_id": "banner-cluster",
+      "entity_id": "citf",
+      "relation_role": "brand-owner",
+      "sort_order": 0,
+      "is_primary": 1
+    },
+    {
+      "piece_id": "itf",
+      "entity_id": "citf",
+      "relation_role": "brand-owner",
+      "sort_order": 0,
+      "is_primary": 1
+    }
+  ],
+  "samplePieceCols": [
+    {
+      "Field": "id",
+      "Type": "varchar(128)",
+      "Null": "NO",
+      "Key": "PRI",
+      "Default": null,
+      "Extra": ""
+    },
+    {
+      "Field": "slug",
+      "Type": "varchar(128)",
+      "Null": "YES",
+      "Key": "UNI",
+      "Default": null,
+      "Extra": ""
+    },
+    {
+      "Field": "title",
+      "Type": "json",
+      "Null": "YES",
+      "Key": "",
+      "Default": null,
+      "Extra": ""
+    },
+    {
+      "Field": "alt",
+      "Type": "varchar(512)",
+      "Null": "NO",
+      "Key": "",
+      "Default": null,
+      "Extra": ""
+    },
+    {
+      "Field": "category",
+      "Type": "varchar(32)",
+      "Null": "NO",
+      "Key": "MUL",
+      "Default": null,
+      "Extra": ""
+    },
+    {
+      "Field": "origin",
+      "Type": "varchar(32)",
+      "Null": "YES",
+      "Key": "",
+      "Default": null,
+      "Extra": ""
+    },
+    {
+      "Field": "src_path",
+      "Type": "varchar(512)",
+      "Null": "NO",
+      "Key": "",
+      "Default": null,
+      "Extra": ""
+    },
+    {
+      "Field": "src_asset_id",
+      "Type": "varchar(36)",
+      "Null": "YES",
+      "Key": "MUL",
+      "Default": null,
+      "Extra": ""
+    },
+    {
+      "Field": "fit",
+      "Type": "varchar(16)",
+      "Null": "YES",
+      "Key": "",
+      "Default": null,
+      "Extra": ""
+    },
+    {
+      "Field": "year",
+      "Type": "varchar(32)",
+      "Null": "YES",
+      "Key": "",
+      "Default": null,
+      "Extra": ""
+    },
+    {
+      "Field": "detail",
+      "Type": "json",
+      "Null": "YES",
+      "Key": "",
+      "Default": null,
+      "Extra": ""
+    },
+    {
+      "Field": "href",
+      "Type": "varchar(1024)",
+      "Null": "YES",
+      "Key": "",
+      "Default": null,
+      "Extra": ""
+    },
+    {
+      "Field": "href_label",
+      "Type": "json",
+      "Null": "YES",
+      "Key": "",
+      "Default": null,
+      "Extra": ""
+    },
+    {
+      "Field": "project_id",
+      "Type": "varchar(64)",
+      "Null": "YES",
+      "Key": "MUL",
+      "Default": null,
+      "Extra": ""
+    },
+    {
+      "Field": "published",
+      "Type": "tinyint(1)",
+      "Null": "NO",
+      "Key": "",
+      "Default": "0",
+      "Extra": ""
+    },
+    {
+      "Field": "sort_order",
+      "Type": "int",
+      "Null": "NO",
+      "Key": "",
+      "Default": "0",
+      "Extra": ""
+    },
+    {
+      "Field": "legacy_section",
+      "Type": "varchar(32)",
+      "Null": "YES",
+      "Key": "MUL",
+      "Default": null,
+      "Extra": ""
+    },
+    {
+      "Field": "legacy_gallery",
+      "Type": "json",
+      "Null": "YES",
+      "Key": "",
+      "Default": null,
+      "Extra": ""
+    },
+    {
+      "Field": "created_at",
+      "Type": "datetime(6)",
+      "Null": "NO",
+      "Key": "",
+      "Default": "CURRENT_TIMESTAMP(6)",
+      "Extra": "DEFAULT_GENERATED"
+    },
+    {
+      "Field": "updated_at",
+      "Type": "datetime(6)",
+      "Null": "NO",
+      "Key": "",
+      "Default": "CURRENT_TIMESTAMP(6)",
+      "Extra": "DEFAULT_GENERATED on update CURRENT_TIMESTAMP(6)"
+    }
+  ],
+  "abort": false,
+  "abortReasons": [],
+  "ok": true
+}

@@ -1,0 +1,83 @@
+{
+  "ok": true,
+  "pdfResourceId": "af54edd9-562a-472e-8935-adb1296918c0",
+  "mapIds": {
+    "manualPiece": "72a34f0d-f48b-4035-be17-a62beca7d5cd",
+    "manualResource": "984a9240-2f0e-4e74-b7d1-ad2fda4be9fe",
+    "seyierInicio": "e0082537-dd04-4a1f-a2a4-e92125bb0e9b",
+    "seyierPortada": "870b1e5a-8b74-401d-9521-560abcfa8166",
+    "seyierOverlay": "643a9b85-884c-4167-833f-fdb68f6dca84"
+  },
+  "counts": {
+    "pieces": {
+      "c": "52"
+    },
+    "published": {
+      "c": "49"
+    },
+    "tags": {
+      "c": "12"
+    },
+    "seyierPieces": [
+      {
+        "id": "seyier"
+      },
+      {
+        "id": "seyier-inicio"
+      },
+      {
+        "id": "seyier-portada"
+      },
+      {
+        "id": "seyier-overlay"
+      }
+    ],
+    "manualPiece": {
+      "id": "citf-manual-2025",
+      "category": "visual-identity",
+      "project_id": "citf-identity-2025",
+      "src_path": "/assets/grafico/brand-manuals/citf-manual-2025-cover.png"
+    },
+    "manualTag": {
+      "piece_id": "citf-manual-2025",
+      "tag_slug": "manual"
+    },
+    "manualPdf": {
+      "id": "af54edd9-562a-472e-8935-adb1296918c0",
+      "path": "/assets/grafico/brand-manuals/citf-manual-2025.pdf",
+      "kind": "piece_resource"
+    },
+    "mapsManual": [
+      {
+        "target_type": "piece",
+        "target_id": "citf-manual-2025"
+      },
+      {
+        "target_type": "project",
+        "target_id": "citf-identity-2025"
+      },
+      {
+        "target_type": "resource",
+        "target_id": "af54edd9-562a-472e-8935-adb1296918c0"
+      }
+    ],
+    "mapsSeyier": [
+      {
+        "target_type": "piece",
+        "target_id": "seyier"
+      },
+      {
+        "target_type": "piece",
+        "target_id": "seyier-inicio"
+      },
+      {
+        "target_type": "piece",
+        "target_id": "seyier-overlay"
+      },
+      {
+        "target_type": "piece",
+        "target_id": "seyier-portada"
+      }
+    ]
+  }
+}

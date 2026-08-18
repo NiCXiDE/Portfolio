@@ -1,0 +1,17 @@
+npm warn Unknown env config "devdir". This will stop working in the next major version of npm. See `npm help npmrc` for supported config options.
+▲ Next.js 16.2.12 (Turbopack)
+- Local:         http://localhost:3005
+- Network:       http://192.168.1.12:3005
+- Environments: .env
+✓ Ready in 2.2s
+⚠ The "middleware" file convention is deprecated. Please use "proxy" instead. Learn more: https://nextjs.org/docs/messages/middleware-to-proxy
+
+[home-load] source=v2 loaders=legacy-shell,v2-home
+ GET /es 200 in 10.6s (next.js: 5.2s, proxy.ts: 276ms, generate-params: 4.1s, application-code: 5.2s)
+[home-load] source=v2 loaders=legacy-shell,v2-home
+ GET /en 200 in 973ms (next.js: 52ms, proxy.ts: 19ms, generate-params: 18ms, application-code: 902ms)
+[home-load] source=v2 loaders=legacy-shell,v2-home
+ GET /es 200 in 859ms (next.js: 28ms, proxy.ts: 11ms, generate-params: 58µs, application-code: 821ms)
+[home-load] source=v2 loaders=legacy-shell,v2-home
+ GET /en 200 in 864ms (next.js: 35ms, proxy.ts: 13ms, generate-params: 119µs, application-code: 815ms)
+[?25h

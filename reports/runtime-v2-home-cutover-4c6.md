@@ -1,8 +1,8 @@
 # Home V2 Cutover — Phase 4C.6
 
-**Status:** COMPLETE  
+**Status:** COMPLETE — **`4C_HOME_CUTOVER_COMPLETE`**  
 **Date:** 2026-08-16  
-**Commit target:** `feat(content): cut over home to v2 by default`
+**Commit:** `b8d192b` — `feat(content): cut over home to v2 by default`
 
 ---
 
@@ -53,16 +53,34 @@ Pass: 10/10
 | no `legacy-full` | yes |
 | ok | **true** |
 
-## F. ES / EN (production-like)
+## F. ES / EN (production-like) — clean HTTP smoke
 
-`npm run build` + `next start --port 3012`, **sin** env flag:
+### Incidente previo (no regresión)
+
+Primer intento HTTP con **múltiples** `next` simultáneos (:3000/:3005/:3010/:3012) → `/es`/`/en` **500** por `ER_CON_COUNT_ERROR`. Causa: saturación del entorno local, no del cutover.
+
+### Clean smoke (post-cleanup)
+
+Cerrados solo procesos Next de este Portfolio:
+
+| Puerto | PID | Proceso |
+|--------|-----|---------|
+| 3000 | 27448 | `next` start-server (dev) |
+| 3005 | 13680 | `next start --port 3005` |
+| 3010 | 18668 | `next start --port 3010` |
+| 3012 | 30624 | `next start --port 3012` |
+
+Puertos confirmados **FREE**. Sin KILL MySQL / sin tocar Docker.
+
+**UNA** instancia: `next start --port 3010`, **sin** `HOME_CONTENT_SOURCE`:
 
 | Check | Result |
 |-------|--------|
-| Trace al primer request | `[home-load] source=v2 loaders=legacy-shell,v2-home` |
-| `/es` `/en` HTTP | **500** por `ER_CON_COUNT_ERROR` (MySQL local saturado: varios `next` en :3000/:3005/:3010/:3012) |
-
-**No es regresión de cutover:** el flag default resolvió V2 y el inspector in-process (misma rama de carga) pasó con `ok=true`. Re-smoke HTTP cuando se liberan conexiones MySQL.
+| source / loaders | **v2** · `legacy-shell,v2-home` |
+| `/es` cold | **200** |
+| `/es` warm | **200** |
+| `/en` cold | **200** |
+| `/en` warm | **200** |
 
 ## G. Home counts (default V2)
 
@@ -85,15 +103,14 @@ Marquee 100 px/s · hrefs marquee deshabilitados · current section ausente.
 
 ## I. Rollback legacy smoke
 
-In-process `HOME_CONTENT_SOURCE=legacy`:
+In-process + **clean HTTP** (`HOME_CONTENT_SOURCE=legacy`, una sola instancia :3010):
 
 | Check | Result |
 |-------|--------|
-| source | legacy |
-| loaders | `legacy-full` |
-| rama funcional | sí (counts legacy-split) |
-
-HTTP rollback no re-ejecutado en este entorno por el mismo `Too many connections`.
+| source | **legacy** |
+| loaders | **legacy-full** |
+| `/es` | **200** |
+| `/en` | **200** |
 
 ## J. Páginas / superficies todavía legacy
 
@@ -120,9 +137,11 @@ HTTP rollback no re-ejecutado en este entorno por el mismo `Too many connections
 - [x] sin env → Home V2  
 - [x] explicit legacy → Home legacy  
 - [x] no double-read  
-- [x] production-like default V2 trace = `legacy-shell,v2-home` (HTTP 200 bloqueado localmente por `ER_CON_COUNT_ERROR`)  
-- [x] rollback legacy in-process = `legacy-full`  
+- [x] production-like default V2 HTTP = **200** ES/EN (cold+warm) tras clean smoke  
+- [x] rollback legacy HTTP = **200** ES/EN · `legacy-full`  
 - [x] Home V2 = 6 / 12 / 4  
 - [x] privacy OK  
 - [x] DB / Admin / Gráfico / Interfaces intactos  
 - [x] legacy NO eliminado  
+
+**Clasificación final:** `4C_HOME_CUTOVER_COMPLETE`

@@ -1,0 +1,143 @@
+{
+  "database": "portfolio",
+  "checks": {
+    "manualCount1": true,
+    "manualParent": true,
+    "manualCategory": true,
+    "manualTag": true,
+    "coverResolvable": true,
+    "pdfResolvable": true,
+    "seyier4": true,
+    "seyierNew": true,
+    "seyierAssetsOk": true,
+    "tags12": true,
+    "tagManualExists": true,
+    "adapterRegular47": true,
+    "adapterManuals1": true,
+    "adapterConceptual48": true,
+    "manualNotInSections": true,
+    "missingMain0": true,
+    "orphans0": true,
+    "discarded0": true,
+    "forbidden0": true,
+    "legacyManualIntact": true,
+    "legacySeyierIntact": true,
+    "mapManualHasProject": true,
+    "mapManualHasPiece": true,
+    "mapManualHasResource": true,
+    "mapSeyierHasLogo": true,
+    "mapSeyierHasThree": true,
+    "manualStatusPresent": true,
+    "seyierGapClosed": true
+  },
+  "ok": true,
+  "manual": [
+    {
+      "id": "citf-manual-2025",
+      "category": "visual-identity",
+      "project_id": "citf-identity-2025",
+      "src_path": "/assets/grafico/brand-manuals/citf-manual-2025-cover.png",
+      "published": 1
+    }
+  ],
+  "manualTag": [
+    {
+      "piece_id": "citf-manual-2025",
+      "tag_slug": "manual"
+    }
+  ],
+  "manualPdf": [
+    {
+      "id": "af54edd9-562a-472e-8935-adb1296918c0",
+      "path": "/assets/grafico/brand-manuals/citf-manual-2025.pdf",
+      "kind": "piece_resource"
+    }
+  ],
+  "seyierPieces": [
+    {
+      "id": "seyier",
+      "src_path": "/assets/grafico/logos/seyier.svg"
+    },
+    {
+      "id": "seyier-inicio",
+      "src_path": "/assets/grafico/logos/seyier/inicio.png"
+    },
+    {
+      "id": "seyier-portada",
+      "src_path": "/assets/grafico/logos/seyier/portada-fondo.png"
+    },
+    {
+      "id": "seyier-overlay",
+      "src_path": "/assets/grafico/logos/seyier/overlay-ejemplo.png"
+    }
+  ],
+  "mapsManual": [
+    {
+      "source_table": "brand_manuals",
+      "source_id": "citf",
+      "target_type": "piece",
+      "target_id": "citf-manual-2025"
+    },
+    {
+      "source_table": "brand_manuals",
+      "source_id": "citf",
+      "target_type": "project",
+      "target_id": "citf-identity-2025"
+    },
+    {
+      "source_table": "brand_manuals",
+      "source_id": "citf",
+      "target_type": "resource",
+      "target_id": "af54edd9-562a-472e-8935-adb1296918c0"
+    }
+  ],
+  "mapsSeyier": [
+    {
+      "source_table": "graphic_items",
+      "source_id": "seyier",
+      "target_type": "piece",
+      "target_id": "seyier"
+    },
+    {
+      "source_table": "graphic_items",
+      "source_id": "seyier",
+      "target_type": "piece",
+      "target_id": "seyier-inicio"
+    },
+    {
+      "source_table": "graphic_items",
+      "source_id": "seyier",
+      "target_type": "piece",
+      "target_id": "seyier-overlay"
+    },
+    {
+      "source_table": "graphic_items",
+      "source_id": "seyier",
+      "target_type": "piece",
+      "target_id": "seyier-portada"
+    },
+    {
+      "source_table": "graphic_items",
+      "source_id": "seyier",
+      "target_type": "project",
+      "target_id": "seyier-visual-identity"
+    }
+  ],
+  "adapter": {
+    "pieces": 47,
+    "manuals": 1,
+    "conceptual": 48,
+    "manualStatus": "PRESENT",
+    "seyierGalleryGap": false
+  },
+  "orphans": {
+    "orphanTags": [],
+    "orphanResources": [],
+    "orphanEntities": []
+  },
+  "privacy": {
+    "discardedLeaks": [],
+    "forbiddenHits": []
+  },
+  "tags": "12"
+}

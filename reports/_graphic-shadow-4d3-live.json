@@ -1,0 +1,946 @@
+{
+  "summary": {
+    "database": "portfolio",
+    "LEGACY": {
+      "graphic_items": 47,
+      "manuals": 1,
+      "bySection": {
+        "covers": 12,
+        "logos": 15,
+        "personal": 10,
+        "illustration": 3,
+        "banners": 5,
+        "eventos": 2
+      }
+    },
+    "V2": {
+      "pieces": 47,
+      "manuals": 1,
+      "standalone": 27,
+      "projectLinked": 20,
+      "byCategory": {
+        "visual-identity": 15,
+        "illustration-artwork": 25,
+        "print": 4,
+        "campaigns-communication": 3
+      }
+    },
+    "MATCHED_SURVIVING": 44,
+    "EXPECTED_DISCARDED": 3,
+    "UNEXPECTED_MISSING": 0,
+    "UNEXPECTED_DUPLICATE": 0,
+    "DETAIL_GAPS": {
+      "CITF_manual": "RESOLVED",
+      "Seyier_gallery": "RESOLVED_SPLIT_INTO_PIECES"
+    },
+    "results": {
+      "MATCH": 27,
+      "EXPECTED_PROJECT_CONTEXT_ADDED": 16,
+      "EXPECTED_DISCARDED": 3,
+      "EXPECTED_DETAIL_GAP_GALLERY": 0,
+      "EXPECTED_SPLIT_INTO_PIECES": 1,
+      "UNEXPECTED_MISSING": 0,
+      "UNEXPECTED_DUPLICATE": 0,
+      "UNEXPECTED_CONTENT_CHANGE": 0
+    },
+    "sessions": {
+      "classification": "EXPECTED_PUBLIC",
+      "pieceIds": [
+        "sessions"
+      ]
+    },
+    "privacy": {
+      "forbiddenHits": [],
+      "discardedLeaks": []
+    },
+    "taxonomy": [
+      {
+        "legacySection": "logos",
+        "v2Category": "visual-identity",
+        "status": "RENAMED",
+        "note": "UI label still Logos/Wordmarks"
+      },
+      {
+        "legacySection": "covers",
+        "v2Category": "illustration-artwork",
+        "status": "MERGED",
+        "note": "Merged with illustration + personal into one category"
+      },
+      {
+        "legacySection": "illustration",
+        "v2Category": "illustration-artwork",
+        "status": "MERGED",
+        "note": "Same V2 category as covers/personal"
+      },
+      {
+        "legacySection": "personal",
+        "v2Category": "illustration-artwork",
+        "status": "EXPECTED_REMOVAL",
+        "note": "Not a V2 category — pieces survive via origin/tags"
+      },
+      {
+        "legacySection": "banners",
+        "v2Category": "print",
+        "status": "RENAMED",
+        "note": "print category"
+      },
+      {
+        "legacySection": "eventos",
+        "v2Category": "campaigns-communication",
+        "status": "RENAMED",
+        "note": "campaigns-communication"
+      },
+      {
+        "legacySection": "manuals",
+        "v2Category": "visual-identity",
+        "status": "RENAMED",
+        "note": "Piece category=visual-identity + tag=manual → manuals[] (not a category)"
+      }
+    ],
+    "detailCapability": [
+      {
+        "feature": "main image",
+        "legacy": "srcPath",
+        "v2": "imageUrl via src_path",
+        "status": "READY"
+      },
+      {
+        "feature": "title",
+        "legacy": "title|alt",
+        "v2": "localized title",
+        "status": "READY"
+      },
+      {
+        "feature": "description",
+        "legacy": "detail",
+        "v2": "detail localized",
+        "status": "READY"
+      },
+      {
+        "feature": "tags",
+        "legacy": "tags[]",
+        "v2": "piece_tags",
+        "status": "READY"
+      },
+      {
+        "feature": "gallery",
+        "legacy": "galleryPaths",
+        "v2": "sibling Pieces (Seyier split) or piece_resources",
+        "status": "READY"
+      },
+      {
+        "feature": "Project context",
+        "legacy": "n/a / implicit brand",
+        "v2": "project summary optional",
+        "status": "READY"
+      },
+      {
+        "feature": "Entity/brand context",
+        "legacy": "brandId → /marcas",
+        "v2": "safe entity context",
+        "status": "MAPPING_REQUIRED"
+      },
+      {
+        "feature": "manual",
+        "legacy": "brand_manuals section (CITF)",
+        "v2": "Piece tag=manual → manuals[] + PDF resource",
+        "status": "READY"
+      },
+      {
+        "feature": "detail identifier",
+        "legacy": "id routes",
+        "v2": "id|slug",
+        "status": "MAPPING_REQUIRED"
+      },
+      {
+        "feature": "localization",
+        "legacy": "t()",
+        "v2": "pickLocalized",
+        "status": "READY"
+      }
+    ],
+    "order": {
+      "classification": "EXPECTED_ORDER_CHANGE",
+      "note": "V2 uses category sections + reader sort; legacy used per-section sortOrder/year — perceptible regrouping expected"
+    },
+    "filterReadiness": {
+      "category": {
+        "visual-identity": 15,
+        "illustration-artwork": 25,
+        "print": 4,
+        "campaigns-communication": 3
+      },
+      "tagsSample": 47,
+      "withEntity": 18,
+      "withProject": 20
+    },
+    "expectedDiffCount": 21,
+    "unexpectedDiffCount": 0,
+    "readiness": {
+      "listing": "LISTING_READY_FOR_FLAG",
+      "detail": "DETAIL_READY",
+      "overall": "FULL_GRAPHIC_READY"
+    },
+    "recommendation": "A",
+    "recommendationNote": "FULL_GRAPHIC_READY: Manual Piece + Seyier split landed; 4D.4 can flag full Graphic cutover without legacy brand_manuals.",
+    "shadow_es_ok": true,
+    "shadow_en_ok": true,
+    "shadow_ok": true
+  },
+  "rowsEs": [
+    {
+      "legacyId": "kadaver-jez-ebel",
+      "legacySection": "covers",
+      "v2Id": "kadaver-jez-ebel",
+      "result": "MATCH",
+      "detail": "Standalone public Piece",
+      "expected": true
+    },
+    {
+      "legacyId": "ive-no-idea",
+      "legacySection": "covers",
+      "v2Id": "ive-no-idea",
+      "result": "MATCH",
+      "detail": "Standalone public Piece",
+      "expected": true
+    },
+    {
+      "legacyId": "barely-alive",
+      "legacySection": "covers",
+      "v2Id": "barely-alive",
+      "result": "MATCH",
+      "detail": "Standalone public Piece",
+      "expected": true
+    },
+    {
+      "legacyId": "speeditious",
+      "legacySection": "covers",
+      "v2Id": "speeditious",
+      "result": "MATCH",
+      "detail": "Standalone public Piece",
+      "expected": true
+    },
+    {
+      "legacyId": "rockcito",
+      "legacySection": "covers",
+      "v2Id": "rockcito",
+      "result": "MATCH",
+      "detail": "Standalone public Piece",
+      "expected": true
+    },
+    {
+      "legacyId": "cover-emoji",
+      "legacySection": "covers",
+      "v2Id": "cover-emoji",
+      "result": "MATCH",
+      "detail": "Standalone public Piece",
+      "expected": true
+    },
+    {
+      "legacyId": "bass2k24",
+      "legacySection": "covers",
+      "v2Id": "bass2k24",
+      "result": "EXPECTED_PROJECT_CONTEXT_ADDED",
+      "detail": "Same Piece with project context bass-series",
+      "expected": true
+    },
+    {
+      "legacyId": "bass2025",
+      "legacySection": "covers",
+      "v2Id": "bass2025",
+      "result": "EXPECTED_PROJECT_CONTEXT_ADDED",
+      "detail": "Same Piece with project context bass-series",
+      "expected": true
+    },
+    {
+      "legacyId": "twenty-twenty-two-spotify",
+      "legacySection": "covers",
+      "v2Id": "twenty-twenty-two-spotify",
+      "result": "EXPECTED_PROJECT_CONTEXT_ADDED",
+      "detail": "Same Piece with project context bass-series",
+      "expected": true
+    },
+    {
+      "legacyId": "twenty-twenty-3",
+      "legacySection": "covers",
+      "v2Id": "twenty-twenty-3",
+      "result": "EXPECTED_PROJECT_CONTEXT_ADDED",
+      "detail": "Same Piece with project context bass-series",
+      "expected": true
+    },
+    {
+      "legacyId": "bass2026",
+      "legacySection": "covers",
+      "v2Id": "bass2026",
+      "result": "EXPECTED_PROJECT_CONTEXT_ADDED",
+      "detail": "Same Piece with project context bass-series",
+      "expected": true
+    },
+    {
+      "legacyId": "reggaeton",
+      "legacySection": "covers",
+      "v2Id": "reggaeton",
+      "result": "MATCH",
+      "detail": "Standalone public Piece",
+      "expected": true
+    },
+    {
+      "legacyId": "buhoprofe",
+      "legacySection": "logos",
+      "v2Id": null,
+      "result": "EXPECTED_DISCARDED",
+      "detail": "Approved migration discard — not a public Graphic Piece",
+      "expected": true
+    },
+    {
+      "legacyId": "seyier",
+      "legacySection": "logos",
+      "v2Id": "seyier",
+      "result": "EXPECTED_SPLIT_INTO_PIECES",
+      "detail": "Legacy gallery split into 4 Pieces under seyier-visual-identity",
+      "expected": true
+    },
+    {
+      "legacyId": "summit-holding",
+      "legacySection": "logos",
+      "v2Id": "summit-holding",
+      "result": "MATCH",
+      "detail": "Standalone public Piece",
+      "expected": true
+    },
+    {
+      "legacyId": "push",
+      "legacySection": "logos",
+      "v2Id": "push",
+      "result": "EXPECTED_PROJECT_CONTEXT_ADDED",
+      "detail": "Same Piece with project context push-visual-identity",
+      "expected": true
+    },
+    {
+      "legacyId": "microtime",
+      "legacySection": "logos",
+      "v2Id": null,
+      "result": "EXPECTED_DISCARDED",
+      "detail": "Approved migration discard — not a public Graphic Piece",
+      "expected": true
+    },
+    {
+      "legacyId": "futulab",
+      "legacySection": "logos",
+      "v2Id": "futulab",
+      "result": "EXPECTED_PROJECT_CONTEXT_ADDED",
+      "detail": "Same Piece with project context futulab-visual-identity",
+      "expected": true
+    },
+    {
+      "legacyId": "fablab",
+      "legacySection": "logos",
+      "v2Id": "fablab",
+      "result": "MATCH",
+      "detail": "Standalone public Piece",
+      "expected": true
+    },
+    {
+      "legacyId": "labcom",
+      "legacySection": "logos",
+      "v2Id": null,
+      "result": "EXPECTED_DISCARDED",
+      "detail": "Approved migration discard — not a public Graphic Piece",
+      "expected": true
+    },
+    {
+      "legacyId": "sessions",
+      "legacySection": "logos",
+      "v2Id": "sessions",
+      "result": "EXPECTED_PROJECT_CONTEXT_ADDED",
+      "detail": "Same Piece with project context sessions",
+      "expected": true
+    },
+    {
+      "legacyId": "concitar",
+      "legacySection": "logos",
+      "v2Id": "concitar",
+      "result": "EXPECTED_PROJECT_CONTEXT_ADDED",
+      "detail": "Same Piece with project context concitar",
+      "expected": true
+    },
+    {
+      "legacyId": "apsmm",
+      "legacySection": "logos",
+      "v2Id": "apsmm",
+      "result": "EXPECTED_PROJECT_CONTEXT_ADDED",
+      "detail": "Same Piece with project context apsmm",
+      "expected": true
+    },
+    {
+      "legacyId": "itf",
+      "legacySection": "logos",
+      "v2Id": "itf",
+      "result": "EXPECTED_PROJECT_CONTEXT_ADDED",
+      "detail": "Same Piece with project context citf-identity-2025",
+      "expected": true
+    },
+    {
+      "legacyId": "taily",
+      "legacySection": "logos",
+      "v2Id": "taily",
+      "result": "EXPECTED_PROJECT_CONTEXT_ADDED",
+      "detail": "Same Piece with project context taily",
+      "expected": true
+    },
+    {
+      "legacyId": "tdt",
+      "legacySection": "logos",
+      "v2Id": "tdt",
+      "result": "MATCH",
+      "detail": "Standalone public Piece",
+      "expected": true
+    },
+    {
+      "legacyId": "magic-cell",
+      "legacySection": "logos",
+      "v2Id": "magic-cell",
+      "result": "MATCH",
+      "detail": "Standalone public Piece",
+      "expected": true
+    },
+    {
+      "legacyId": "mantis",
+      "legacySection": "personal",
+      "v2Id": "mantis",
+      "result": "MATCH",
+      "detail": "Standalone public Piece",
+      "expected": true
+    },
+    {
+      "legacyId": "marauda-type-logo-ayala",
+      "legacySection": "personal",
+      "v2Id": "marauda-type-logo-ayala",
+      "result": "MATCH",
+      "detail": "Standalone public Piece",
+      "expected": true
+    },
+    {
+      "legacyId": "banana-thinking",
+      "legacySection": "personal",
+      "v2Id": "banana-thinking",
+      "result": "MATCH",
+      "detail": "Standalone public Piece",
+      "expected": true
+    },
+    {
+      "legacyId": "demon-no-scape",
+      "legacySection": "personal",
+      "v2Id": "demon-no-scape",
+      "result": "MATCH",
+      "detail": "Standalone public Piece",
+      "expected": true
+    },
+    {
+      "legacyId": "grime-marauda",
+      "legacySection": "personal",
+      "v2Id": "grime-marauda",
+      "result": "MATCH",
+      "detail": "Standalone public Piece",
+      "expected": true
+    },
+    {
+      "legacyId": "grime-pawn",
+      "legacySection": "personal",
+      "v2Id": "grime-pawn",
+      "result": "MATCH",
+      "detail": "Standalone public Piece",
+      "expected": true
+    },
+    {
+      "legacyId": "nicoide-not-impostor",
+      "legacySection": "personal",
+      "v2Id": "nicoide-not-impostor",
+      "result": "MATCH",
+      "detail": "Standalone public Piece",
+      "expected": true
+    },
+    {
+      "legacyId": "nicoide-geometry-dash",
+      "legacySection": "personal",
+      "v2Id": "nicoide-geometry-dash",
+      "result": "MATCH",
+      "detail": "Standalone public Piece",
+      "expected": true
+    },
+    {
+      "legacyId": "we-are-barely-world",
+      "legacySection": "personal",
+      "v2Id": "we-are-barely-world",
+      "result": "MATCH",
+      "detail": "Standalone public Piece",
+      "expected": true
+    },
+    {
+      "legacyId": "sad-machine-makenix",
+      "legacySection": "personal",
+      "v2Id": "sad-machine-makenix",
+      "result": "MATCH",
+      "detail": "Standalone public Piece",
+      "expected": true
+    },
+    {
+      "legacyId": "odyssey-plant-head",
+      "legacySection": "illustration",
+      "v2Id": "odyssey-plant-head",
+      "result": "MATCH",
+      "detail": "Standalone public Piece",
+      "expected": true
+    },
+    {
+      "legacyId": "nick-tdt-beach",
+      "legacySection": "illustration",
+      "v2Id": "nick-tdt-beach",
+      "result": "MATCH",
+      "detail": "Standalone public Piece",
+      "expected": true
+    },
+    {
+      "legacyId": "penguin-knife",
+      "legacySection": "illustration",
+      "v2Id": "penguin-knife",
+      "result": "MATCH",
+      "detail": "Standalone public Piece",
+      "expected": true
+    },
+    {
+      "legacyId": "banner-push",
+      "legacySection": "banners",
+      "v2Id": "banner-push",
+      "result": "EXPECTED_PROJECT_CONTEXT_ADDED",
+      "detail": "Same Piece with project context push-visual-identity",
+      "expected": true
+    },
+    {
+      "legacyId": "banner-cluster",
+      "legacySection": "banners",
+      "v2Id": "banner-cluster",
+      "result": "EXPECTED_PROJECT_CONTEXT_ADDED",
+      "detail": "Same Piece with project context citf-identity-2025",
+      "expected": true
+    },
+    {
+      "legacyId": "banner-samsung",
+      "legacySection": "banners",
+      "v2Id": "banner-samsung",
+      "result": "MATCH",
+      "detail": "Standalone public Piece",
+      "expected": true
+    },
+    {
+      "legacyId": "banner-alfaj-metro",
+      "legacySection": "banners",
+      "v2Id": "banner-alfaj-metro",
+      "result": "MATCH",
+      "detail": "Standalone public Piece",
+      "expected": true
+    },
+    {
+      "legacyId": "brigado-crew",
+      "legacySection": "banners",
+      "v2Id": "brigado-crew",
+      "result": "MATCH",
+      "detail": "Standalone public Piece",
+      "expected": true
+    },
+    {
+      "legacyId": "juegos-provinciales",
+      "legacySection": "eventos",
+      "v2Id": "juegos-provinciales",
+      "result": "EXPECTED_PROJECT_CONTEXT_ADDED",
+      "detail": "Same Piece with project context juegos-provinciales",
+      "expected": true
+    },
+    {
+      "legacyId": "expedicion-polo",
+      "legacySection": "eventos",
+      "v2Id": "expedicion-polo",
+      "result": "EXPECTED_PROJECT_CONTEXT_ADDED",
+      "detail": "Same Piece with project context expedicion-polo",
+      "expected": true
+    }
+  ],
+  "rowsEn": [
+    {
+      "legacyId": "kadaver-jez-ebel",
+      "legacySection": "covers",
+      "v2Id": "kadaver-jez-ebel",
+      "result": "MATCH",
+      "detail": "Standalone public Piece",
+      "expected": true
+    },
+    {
+      "legacyId": "ive-no-idea",
+      "legacySection": "covers",
+      "v2Id": "ive-no-idea",
+      "result": "MATCH",
+      "detail": "Standalone public Piece",
+      "expected": true
+    },
+    {
+      "legacyId": "barely-alive",
+      "legacySection": "covers",
+      "v2Id": "barely-alive",
+      "result": "MATCH",
+      "detail": "Standalone public Piece",
+      "expected": true
+    },
+    {
+      "legacyId": "speeditious",
+      "legacySection": "covers",
+      "v2Id": "speeditious",
+      "result": "MATCH",
+      "detail": "Standalone public Piece",
+      "expected": true
+    },
+    {
+      "legacyId": "rockcito",
+      "legacySection": "covers",
+      "v2Id": "rockcito",
+      "result": "MATCH",
+      "detail": "Standalone public Piece",
+      "expected": true
+    },
+    {
+      "legacyId": "cover-emoji",
+      "legacySection": "covers",
+      "v2Id": "cover-emoji",
+      "result": "MATCH",
+      "detail": "Standalone public Piece",
+      "expected": true
+    },
+    {
+      "legacyId": "bass2k24",
+      "legacySection": "covers",
+      "v2Id": "bass2k24",
+      "result": "EXPECTED_PROJECT_CONTEXT_ADDED",
+      "detail": "Same Piece with project context bass-series",
+      "expected": true
+    },
+    {
+      "legacyId": "bass2025",
+      "legacySection": "covers",
+      "v2Id": "bass2025",
+      "result": "EXPECTED_PROJECT_CONTEXT_ADDED",
+      "detail": "Same Piece with project context bass-series",
+      "expected": true
+    },
+    {
+      "legacyId": "twenty-twenty-two-spotify",
+      "legacySection": "covers",
+      "v2Id": "twenty-twenty-two-spotify",
+      "result": "EXPECTED_PROJECT_CONTEXT_ADDED",
+      "detail": "Same Piece with project context bass-series",
+      "expected": true
+    },
+    {
+      "legacyId": "twenty-twenty-3",
+      "legacySection": "covers",
+      "v2Id": "twenty-twenty-3",
+      "result": "EXPECTED_PROJECT_CONTEXT_ADDED",
+      "detail": "Same Piece with project context bass-series",
+      "expected": true
+    },
+    {
+      "legacyId": "bass2026",
+      "legacySection": "covers",
+      "v2Id": "bass2026",
+      "result": "EXPECTED_PROJECT_CONTEXT_ADDED",
+      "detail": "Same Piece with project context bass-series",
+      "expected": true
+    },
+    {
+      "legacyId": "reggaeton",
+      "legacySection": "covers",
+      "v2Id": "reggaeton",
+      "result": "MATCH",
+      "detail": "Standalone public Piece",
+      "expected": true
+    },
+    {
+      "legacyId": "buhoprofe",
+      "legacySection": "logos",
+      "v2Id": null,
+      "result": "EXPECTED_DISCARDED",
+      "detail": "Approved migration discard — not a public Graphic Piece",
+      "expected": true
+    },
+    {
+      "legacyId": "seyier",
+      "legacySection": "logos",
+      "v2Id": "seyier",
+      "result": "EXPECTED_SPLIT_INTO_PIECES",
+      "detail": "Legacy gallery split into 4 Pieces under seyier-visual-identity",
+      "expected": true
+    },
+    {
+      "legacyId": "summit-holding",
+      "legacySection": "logos",
+      "v2Id": "summit-holding",
+      "result": "MATCH",
+      "detail": "Standalone public Piece",
+      "expected": true
+    },
+    {
+      "legacyId": "push",
+      "legacySection": "logos",
+      "v2Id": "push",
+      "result": "EXPECTED_PROJECT_CONTEXT_ADDED",
+      "detail": "Same Piece with project context push-visual-identity",
+      "expected": true
+    },
+    {
+      "legacyId": "microtime",
+      "legacySection": "logos",
+      "v2Id": null,
+      "result": "EXPECTED_DISCARDED",
+      "detail": "Approved migration discard — not a public Graphic Piece",
+      "expected": true
+    },
+    {
+      "legacyId": "futulab",
+      "legacySection": "logos",
+      "v2Id": "futulab",
+      "result": "EXPECTED_PROJECT_CONTEXT_ADDED",
+      "detail": "Same Piece with project context futulab-visual-identity",
+      "expected": true
+    },
+    {
+      "legacyId": "fablab",
+      "legacySection": "logos",
+      "v2Id": "fablab",
+      "result": "MATCH",
+      "detail": "Standalone public Piece",
+      "expected": true
+    },
+    {
+      "legacyId": "labcom",
+      "legacySection": "logos",
+      "v2Id": null,
+      "result": "EXPECTED_DISCARDED",
+      "detail": "Approved migration discard — not a public Graphic Piece",
+      "expected": true
+    },
+    {
+      "legacyId": "sessions",
+      "legacySection": "logos",
+      "v2Id": "sessions",
+      "result": "EXPECTED_PROJECT_CONTEXT_ADDED",
+      "detail": "Same Piece with project context sessions",
+      "expected": true
+    },
+    {
+      "legacyId": "concitar",
+      "legacySection": "logos",
+      "v2Id": "concitar",
+      "result": "EXPECTED_PROJECT_CONTEXT_ADDED",
+      "detail": "Same Piece with project context concitar",
+      "expected": true
+    },
+    {
+      "legacyId": "apsmm",
+      "legacySection": "logos",
+      "v2Id": "apsmm",
+      "result": "EXPECTED_PROJECT_CONTEXT_ADDED",
+      "detail": "Same Piece with project context apsmm",
+      "expected": true
+    },
+    {
+      "legacyId": "itf",
+      "legacySection": "logos",
+      "v2Id": "itf",
+      "result": "EXPECTED_PROJECT_CONTEXT_ADDED",
+      "detail": "Same Piece with project context citf-identity-2025",
+      "expected": true
+    },
+    {
+      "legacyId": "taily",
+      "legacySection": "logos",
+      "v2Id": "taily",
+      "result": "EXPECTED_PROJECT_CONTEXT_ADDED",
+      "detail": "Same Piece with project context taily",
+      "expected": true
+    },
+    {
+      "legacyId": "tdt",
+      "legacySection": "logos",
+      "v2Id": "tdt",
+      "result": "MATCH",
+      "detail": "Standalone public Piece",
+      "expected": true
+    },
+    {
+      "legacyId": "magic-cell",
+      "legacySection": "logos",
+      "v2Id": "magic-cell",
+      "result": "MATCH",
+      "detail": "Standalone public Piece",
+      "expected": true
+    },
+    {
+      "legacyId": "mantis",
+      "legacySection": "personal",
+      "v2Id": "mantis",
+      "result": "MATCH",
+      "detail": "Standalone public Piece",
+      "expected": true
+    },
+    {
+      "legacyId": "marauda-type-logo-ayala",
+      "legacySection": "personal",
+      "v2Id": "marauda-type-logo-ayala",
+      "result": "MATCH",
+      "detail": "Standalone public Piece",
+      "expected": true
+    },
+    {
+      "legacyId": "banana-thinking",
+      "legacySection": "personal",
+      "v2Id": "banana-thinking",
+      "result": "MATCH",
+      "detail": "Standalone public Piece",
+      "expected": true
+    },
+    {
+      "legacyId": "demon-no-scape",
+      "legacySection": "personal",
+      "v2Id": "demon-no-scape",
+      "result": "MATCH",
+      "detail": "Standalone public Piece",
+      "expected": true
+    },
+    {
+      "legacyId": "grime-marauda",
+      "legacySection": "personal",
+      "v2Id": "grime-marauda",
+      "result": "MATCH",
+      "detail": "Standalone public Piece",
+      "expected": true
+    },
+    {
+      "legacyId": "grime-pawn",
+      "legacySection": "personal",
+      "v2Id": "grime-pawn",
+      "result": "MATCH",
+      "detail": "Standalone public Piece",
+      "expected": true
+    },
+    {
+      "legacyId": "nicoide-not-impostor",
+      "legacySection": "personal",
+      "v2Id": "nicoide-not-impostor",
+      "result": "MATCH",
+      "detail": "Standalone public Piece",
+      "expected": true
+    },
+    {
+      "legacyId": "nicoide-geometry-dash",
+      "legacySection": "personal",
+      "v2Id": "nicoide-geometry-dash",
+      "result": "MATCH",
+      "detail": "Standalone public Piece",
+      "expected": true
+    },
+    {
+      "legacyId": "we-are-barely-world",
+      "legacySection": "personal",
+      "v2Id": "we-are-barely-world",
+      "result": "MATCH",
+      "detail": "Standalone public Piece",
+      "expected": true
+    },
+    {
+      "legacyId": "sad-machine-makenix",
+      "legacySection": "personal",
+      "v2Id": "sad-machine-makenix",
+      "result": "MATCH",
+      "detail": "Standalone public Piece",
+      "expected": true
+    },
+    {
+      "legacyId": "odyssey-plant-head",
+      "legacySection": "illustration",
+      "v2Id": "odyssey-plant-head",
+      "result": "MATCH",
+      "detail": "Standalone public Piece",
+      "expected": true
+    },
+    {
+      "legacyId": "nick-tdt-beach",
+      "legacySection": "illustration",
+      "v2Id": "nick-tdt-beach",
+      "result": "MATCH",
+      "detail": "Standalone public Piece",
+      "expected": true
+    },
+    {
+      "legacyId": "penguin-knife",
+      "legacySection": "illustration",
+      "v2Id": "penguin-knife",
+      "result": "MATCH",
+      "detail": "Standalone public Piece",
+      "expected": true
+    },
+    {
+      "legacyId": "banner-push",
+      "legacySection": "banners",
+      "v2Id": "banner-push",
+      "result": "EXPECTED_PROJECT_CONTEXT_ADDED",
+      "detail": "Same Piece with project context push-visual-identity",
+      "expected": true
+    },
+    {
+      "legacyId": "banner-cluster",
+      "legacySection": "banners",
+      "v2Id": "banner-cluster",
+      "result": "EXPECTED_PROJECT_CONTEXT_ADDED",
+      "detail": "Same Piece with project context citf-identity-2025",
+      "expected": true
+    },
+    {
+      "legacyId": "banner-samsung",
+      "legacySection": "banners",
+      "v2Id": "banner-samsung",
+      "result": "MATCH",
+      "detail": "Standalone public Piece",
+      "expected": true
+    },
+    {
+      "legacyId": "banner-alfaj-metro",
+      "legacySection": "banners",
+      "v2Id": "banner-alfaj-metro",
+      "result": "MATCH",
+      "detail": "Standalone public Piece",
+      "expected": true
+    },
+    {
+      "legacyId": "brigado-crew",
+      "legacySection": "banners",
+      "v2Id": "brigado-crew",
+      "result": "MATCH",
+      "detail": "Standalone public Piece",
+      "expected": true
+    },
+    {
+      "legacyId": "juegos-provinciales",
+      "legacySection": "eventos",
+      "v2Id": "juegos-provinciales",
+      "result": "EXPECTED_PROJECT_CONTEXT_ADDED",
+      "detail": "Same Piece with project context juegos-provinciales",
+      "expected": true
+    },
+    {
+      "legacyId": "expedicion-polo",
+      "legacySection": "eventos",
+      "v2Id": "expedicion-polo",
+      "result": "EXPECTED_PROJECT_CONTEXT_ADDED",
+      "detail": "Same Piece with project context expedicion-polo",
+      "expected": true
+    }
+  ]
+}
