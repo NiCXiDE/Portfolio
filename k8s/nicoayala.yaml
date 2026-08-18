@@ -1,0 +1,242 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: nicoayala
+  labels:
+    app.kubernetes.io/name: portfolio
+    app.kubernetes.io/part-of: nicoayala
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: portfolio
+  namespace: nicoayala
+  labels:
+    app: portfolio
+data:
+  NODE_ENV: "production"
+  HOSTNAME: "0.0.0.0"
+  PORT: "3000"
+  DATABASE_HOST: "127.0.0.1"
+  DATABASE_PORT: "3306"
+  DATABASE_USER: "portfolio"
+  DATABASE_NAME: "portfolio"
+  TYPEORM_SYNC: "1"
+  RUN_SEED: "1"
+  NEXT_PUBLIC_SITE_URL: "https://nicoayala.com.ar"
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: portfolio
+  namespace: nicoayala
+  labels:
+    app: portfolio
+type: Opaque
+stringData:
+  MYSQL_ROOT_PASSWORD: root
+  DATABASE_PASSWORD: portfolio
+  ADMIN_SESSION_SECRET: nicoayala-local-k8s-change-me
+  ADMIN_BOOTSTRAP_PASSWORD: PortfolioTemp2026!
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: portfolio-mysql
+  namespace: nicoayala
+  labels:
+    app: portfolio
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 2Gi
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: portfolio
+  namespace: nicoayala
+  labels:
+    app: portfolio
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app: portfolio
+  template:
+    metadata:
+      labels:
+        app: portfolio
+    spec:
+      enableServiceLinks: false
+      securityContext:
+        fsGroup: 999
+      containers:
+        - name: mysql
+          image: mysql:8.4
+          imagePullPolicy: IfNotPresent
+          args:
+            - --character-set-server=utf8mb4
+            - --collation-server=utf8mb4_unicode_ci
+          ports:
+            - name: mysql
+              containerPort: 3306
+          env:
+            - name: MYSQL_ROOT_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: portfolio
+                  key: MYSQL_ROOT_PASSWORD
+            - name: MYSQL_DATABASE
+              valueFrom:
+                configMapKeyRef:
+                  name: portfolio
+                  key: DATABASE_NAME
+            - name: MYSQL_USER
+              valueFrom:
+                configMapKeyRef:
+                  name: portfolio
+                  key: DATABASE_USER
+            - name: MYSQL_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: portfolio
+                  key: DATABASE_PASSWORD
+          volumeMounts:
+            - name: mysql-data
+              mountPath: /var/lib/mysql
+          resources:
+            requests:
+              cpu: 100m
+              memory: 512Mi
+            limits:
+              cpu: "1"
+              memory: 1Gi
+          startupProbe:
+            exec:
+              command:
+                - /bin/sh
+                - -c
+                - mysqladmin ping -h 127.0.0.1 -uroot -p"$MYSQL_ROOT_PASSWORD"
+            periodSeconds: 5
+            timeoutSeconds: 5
+            failureThreshold: 36
+          livenessProbe:
+            exec:
+              command:
+                - /bin/sh
+                - -c
+                - mysqladmin ping -h 127.0.0.1 -uroot -p"$MYSQL_ROOT_PASSWORD"
+            periodSeconds: 15
+            timeoutSeconds: 5
+            failureThreshold: 5
+        - name: web
+          image: pushsoftware/web-nico:v0.0.1
+          imagePullPolicy: IfNotPresent
+          ports:
+            - name: http
+              containerPort: 3000
+          envFrom:
+            - configMapRef:
+                name: portfolio
+          env:
+            - name: PORT
+              value: "3000"
+            - name: DATABASE_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: portfolio
+                  key: DATABASE_PASSWORD
+            - name: ADMIN_SESSION_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: portfolio
+                  key: ADMIN_SESSION_SECRET
+            - name: ADMIN_BOOTSTRAP_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: portfolio
+                  key: ADMIN_BOOTSTRAP_PASSWORD
+          resources:
+            requests:
+              cpu: 100m
+              memory: 256Mi
+            limits:
+              cpu: "1"
+              memory: 1Gi
+          startupProbe:
+            httpGet:
+              path: /es
+              port: http
+            periodSeconds: 5
+            timeoutSeconds: 5
+            failureThreshold: 36
+          livenessProbe:
+            httpGet:
+              path: /es
+              port: http
+            periodSeconds: 20
+            timeoutSeconds: 5
+            failureThreshold: 3
+          readinessProbe:
+            httpGet:
+              path: /es
+              port: http
+            periodSeconds: 10
+            timeoutSeconds: 5
+            failureThreshold: 3
+      volumes:
+        - name: mysql-data
+          persistentVolumeClaim:
+            claimName: portfolio-mysql
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: portfolio
+  namespace: nicoayala
+  labels:
+    app: portfolio
+spec:
+  type: ClusterIP
+  selector:
+    app: portfolio
+  ports:
+    - name: http
+      port: 80
+      targetPort: http
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: portfolio
+  namespace: nicoayala
+  labels:
+    app: portfolio
+spec:
+  ingressClassName: nginx
+  rules:
+    - host: nicoayala.com.ar
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: portfolio
+                port:
+                  name: http
+    - host: www.nicoayala.com.ar
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: portfolio
+                port:
+                  name: http

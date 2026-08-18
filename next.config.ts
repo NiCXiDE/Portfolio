@@ -3,6 +3,7 @@ import type { NextConfig } from "next";
 const mediaHostname = process.env.MEDIA_HOSTNAME?.trim();
 
 const nextConfig: NextConfig = {
+  output: "standalone",
   /* Oculta el indicador de desarrollo (ícono N) en local */
   devIndicators: false,
   images: {
