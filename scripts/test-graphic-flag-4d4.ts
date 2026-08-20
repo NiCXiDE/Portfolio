@@ -1,5 +1,5 @@
 /**
- * Unit tests for Graphic feature flag + UI mapper (4D.4).
+ * Unit tests for Graphic feature flag + UI mapper (4D.4 / 4D.6).
  */
 import test from "node:test";
 import assert from "node:assert/strict";
@@ -9,8 +9,19 @@ import { buildGraphicContentV2 } from "../src/lib/content-v2/graphic";
 import { logoDetailHref } from "../src/lib/graphic-constants";
 import type { PublicPieceSummary } from "../src/lib/content-v2/types";
 
-test("getGraphicContentSource: undefined → legacy", () => {
-  assert.equal(getGraphicContentSource(undefined), "legacy");
+test("getGraphicContentSource: unset env → v2 (4D.6 default)", () => {
+  const prev = process.env.GRAPHIC_CONTENT_SOURCE;
+  delete process.env.GRAPHIC_CONTENT_SOURCE;
+  try {
+    assert.equal(getGraphicContentSource(), "v2");
+  } finally {
+    if (prev === undefined) delete process.env.GRAPHIC_CONTENT_SOURCE;
+    else process.env.GRAPHIC_CONTENT_SOURCE = prev;
+  }
+});
+
+test("getGraphicContentSource: undefined param → v2", () => {
+  assert.equal(getGraphicContentSource(undefined), "v2");
 });
 
 test("getGraphicContentSource: legacy → legacy", () => {
@@ -140,4 +151,92 @@ test("logoDetailHref: only when gallery or resources exist", () => {
     logoDetailHref("en", { id: "seyier", resourceCount: 3 }),
     "/en/grafico/logos/seyier",
   );
+});
+
+test("loadPortfolioContentForLocale: unset graphic → v2-graphic only (no double-read)", async () => {
+  const { config: loadEnv } = await import("dotenv");
+  const { resolve } = await import("node:path");
+  loadEnv({ path: resolve(process.cwd(), ".env") });
+  delete process.env.DATABASE_NAME;
+
+  const prevGraphic = process.env.GRAPHIC_CONTENT_SOURCE;
+  const prevHome = process.env.HOME_CONTENT_SOURCE;
+  delete process.env.GRAPHIC_CONTENT_SOURCE;
+  delete process.env.HOME_CONTENT_SOURCE;
+
+  try {
+    const { getDataSource } = await import("../src/db/data-source");
+    const ds = await getDataSource();
+    const db = (
+      (await ds.query("SELECT DATABASE() AS db")) as Array<{ db: string }>
+    )[0]?.db;
+    if (db !== "portfolio") {
+      await ds.destroy();
+      return;
+    }
+
+    const {
+      loadPortfolioContentForLocale,
+      getLastGraphicLoadTrace,
+      resetPortfolioLoadTrace,
+    } = await import("../src/lib/content-v2/home-runtime");
+    const { getGraphicContentSource } = await import(
+      "../src/lib/content-v2/graphic-source"
+    );
+
+    resetPortfolioLoadTrace();
+    assert.equal(getGraphicContentSource(), "v2");
+    await loadPortfolioContentForLocale("es");
+    const trace = getLastGraphicLoadTrace();
+    assert.equal(trace?.source, "v2");
+    assert.deepEqual(trace?.loaders, ["v2-graphic"]);
+    assert.ok(!trace?.loaders.includes("legacy-graphic"));
+
+    await ds.destroy();
+  } finally {
+    if (prevGraphic === undefined) delete process.env.GRAPHIC_CONTENT_SOURCE;
+    else process.env.GRAPHIC_CONTENT_SOURCE = prevGraphic;
+    if (prevHome === undefined) delete process.env.HOME_CONTENT_SOURCE;
+    else process.env.HOME_CONTENT_SOURCE = prevHome;
+  }
+});
+
+test("loadPortfolioContentForLocale: explicit legacy → legacy-graphic only", async () => {
+  const { config: loadEnv } = await import("dotenv");
+  const { resolve } = await import("node:path");
+  loadEnv({ path: resolve(process.cwd(), ".env") });
+  delete process.env.DATABASE_NAME;
+
+  const prevGraphic = process.env.GRAPHIC_CONTENT_SOURCE;
+  process.env.GRAPHIC_CONTENT_SOURCE = "legacy";
+
+  try {
+    const { getDataSource } = await import("../src/db/data-source");
+    const ds = await getDataSource();
+    const db = (
+      (await ds.query("SELECT DATABASE() AS db")) as Array<{ db: string }>
+    )[0]?.db;
+    if (db !== "portfolio") {
+      await ds.destroy();
+      return;
+    }
+
+    const {
+      loadPortfolioContentForLocale,
+      getLastGraphicLoadTrace,
+      resetPortfolioLoadTrace,
+    } = await import("../src/lib/content-v2/home-runtime");
+
+    resetPortfolioLoadTrace();
+    await loadPortfolioContentForLocale("es");
+    const trace = getLastGraphicLoadTrace();
+    assert.equal(trace?.source, "legacy");
+    assert.deepEqual(trace?.loaders, ["legacy-graphic"]);
+    assert.ok(!trace?.loaders.includes("v2-graphic"));
+
+    await ds.destroy();
+  } finally {
+    if (prevGraphic === undefined) delete process.env.GRAPHIC_CONTENT_SOURCE;
+    else process.env.GRAPHIC_CONTENT_SOURCE = prevGraphic;
+  }
 });
