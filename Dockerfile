@@ -22,7 +22,7 @@ RUN npm run build
 FROM node:${NODE_VERSION} AS seed-tools
 WORKDIR /opt/seed-tools
 RUN npm init -y \
-  && npm install tsx@4 dotenv@17 --omit=dev --no-audit --no-fund
+  && npm install tsx@4 dotenv@17 mysql2@3 --omit=dev --no-audit --no-fund
 
 FROM node:${NODE_VERSION} AS runner
 WORKDIR /app

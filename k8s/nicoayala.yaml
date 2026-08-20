@@ -144,7 +144,7 @@ spec:
             timeoutSeconds: 5
             failureThreshold: 5
         - name: web
-          image: pushsoftware/web-nico:v0.0.5
+          image: pushsoftware/web-nico:v0.0.6
           imagePullPolicy: Always
           ports:
             - name: http

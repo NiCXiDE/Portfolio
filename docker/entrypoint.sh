@@ -23,7 +23,7 @@ echo "MySQL is reachable."
 
 if [ "${RUN_SEED:-0}" = "1" ]; then
   set +e
-  node /app/maybe-seed.cjs
+  NODE_PATH=/opt/seed-tools/node_modules node /app/maybe-seed.cjs
   seed_status=$?
   set -e
   if [ "$seed_status" -eq 2 ]; then
