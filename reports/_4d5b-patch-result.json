@@ -1,0 +1,76 @@
+{
+  "ok": true,
+  "transaction": "COMMIT",
+  "resources": [
+    {
+      "id": "4d5b1001-5e91-4001-8001-000000000001",
+      "path": "/assets/grafico/logos/seyier/inicio.png"
+    },
+    {
+      "id": "4d5b1001-5e91-4001-8001-000000000002",
+      "path": "/assets/grafico/logos/seyier/portada-fondo.png"
+    },
+    {
+      "id": "4d5b1001-5e91-4001-8001-000000000003",
+      "path": "/assets/grafico/logos/seyier/overlay-ejemplo.png"
+    }
+  ],
+  "counts": {
+    "pieces": {
+      "c": "49"
+    },
+    "published": {
+      "c": "46"
+    },
+    "seyierPieces": [
+      {
+        "id": "seyier"
+      }
+    ],
+    "seyierResources": [
+      {
+        "id": "4d5b1001-5e91-4001-8001-000000000001",
+        "path": "/assets/grafico/logos/seyier/inicio.png",
+        "kind": "piece_resource",
+        "sort_order": 0
+      },
+      {
+        "id": "4d5b1001-5e91-4001-8001-000000000002",
+        "path": "/assets/grafico/logos/seyier/portada-fondo.png",
+        "kind": "piece_resource",
+        "sort_order": 1
+      },
+      {
+        "id": "4d5b1001-5e91-4001-8001-000000000003",
+        "path": "/assets/grafico/logos/seyier/overlay-ejemplo.png",
+        "kind": "piece_resource",
+        "sort_order": 2
+      }
+    ],
+    "mapsSeyier": [
+      {
+        "target_type": "piece",
+        "target_id": "seyier"
+      },
+      {
+        "target_type": "project",
+        "target_id": "seyier-visual-identity"
+      },
+      {
+        "target_type": "resource",
+        "target_id": "4d5b1001-5e91-4001-8001-000000000001"
+      },
+      {
+        "target_type": "resource",
+        "target_id": "4d5b1001-5e91-4001-8001-000000000002"
+      },
+      {
+        "target_type": "resource",
+        "target_id": "4d5b1001-5e91-4001-8001-000000000003"
+      }
+    ],
+    "citfManual": {
+      "id": "citf-manual-2025"
+    }
+  }
+}

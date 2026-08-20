@@ -1,0 +1,184 @@
+{
+  "database": "portfolio",
+  "ok": true,
+  "abortReasons": [],
+  "seyier": {
+    "id": "seyier",
+    "slug": "seyier-logotipo",
+    "title": {
+      "en": "Seyier",
+      "es": "Seyier"
+    },
+    "alt": "Seyier",
+    "category": "visual-identity",
+    "origin": "other",
+    "src_path": "/assets/grafico/logos/seyier.svg",
+    "project_id": "seyier-visual-identity",
+    "published": 1,
+    "sort_order": 0,
+    "legacy_gallery": "[\"/assets/grafico/logos/seyier/inicio.png\", \"/assets/grafico/logos/seyier/portada-fondo.png\", \"/assets/grafico/logos/seyier/overlay-ejemplo.png\"]"
+  },
+  "siblings": [
+    {
+      "id": "seyier-inicio",
+      "slug": "seyier-pantalla-inicio",
+      "title": {
+        "en": "Starting screen",
+        "es": "Pantalla de inicio"
+      },
+      "alt": "Pantalla de inicio",
+      "category": "visual-identity",
+      "origin": "other",
+      "src_path": "/assets/grafico/logos/seyier/inicio.png",
+      "project_id": "seyier-visual-identity",
+      "published": 1,
+      "sort_order": 1
+    },
+    {
+      "id": "seyier-portada",
+      "slug": "seyier-portada",
+      "title": {
+        "en": "Stream cover",
+        "es": "Portada"
+      },
+      "alt": "Portada",
+      "category": "visual-identity",
+      "origin": "other",
+      "src_path": "/assets/grafico/logos/seyier/portada-fondo.png",
+      "project_id": "seyier-visual-identity",
+      "published": 1,
+      "sort_order": 2
+    },
+    {
+      "id": "seyier-overlay",
+      "slug": "seyier-overlay",
+      "title": {
+        "en": "Overlay example",
+        "es": "Overlay"
+      },
+      "alt": "Overlay",
+      "category": "visual-identity",
+      "origin": "other",
+      "src_path": "/assets/grafico/logos/seyier/overlay-ejemplo.png",
+      "project_id": "seyier-visual-identity",
+      "published": 1,
+      "sort_order": 3
+    }
+  ],
+  "seyierResources": [],
+  "pathHits": [],
+  "plannedIds": [],
+  "entities": [
+    {
+      "piece_id": "seyier",
+      "entity_id": "seyier",
+      "relation_role": "brand-owner",
+      "sort_order": 0,
+      "is_primary": 1
+    },
+    {
+      "piece_id": "seyier-inicio",
+      "entity_id": "seyier",
+      "relation_role": "brand-owner",
+      "sort_order": 0,
+      "is_primary": 1
+    },
+    {
+      "piece_id": "seyier-overlay",
+      "entity_id": "seyier",
+      "relation_role": "brand-owner",
+      "sort_order": 0,
+      "is_primary": 1
+    },
+    {
+      "piece_id": "seyier-portada",
+      "entity_id": "seyier",
+      "relation_role": "brand-owner",
+      "sort_order": 0,
+      "is_primary": 1
+    }
+  ],
+  "tags": [
+    {
+      "piece_id": "seyier",
+      "tag_slug": "vector"
+    }
+  ],
+  "maps": [
+    {
+      "id": "a2d5a6f9-5510-4d11-9ebb-38afcc830627",
+      "source_table": "graphic_items",
+      "source_id": "seyier",
+      "target_type": "piece",
+      "target_id": "seyier",
+      "notes": "lane=MANUAL_DECISION_MIGRATED"
+    },
+    {
+      "id": "e0082537-dd04-4a1f-a2a4-e92125bb0e9b",
+      "source_table": "graphic_items",
+      "source_id": "seyier",
+      "target_type": "piece",
+      "target_id": "seyier-inicio",
+      "notes": "4D.3C: gallery frame → Piece (EXPECTED_SPLIT_INTO_PIECES)"
+    },
+    {
+      "id": "643a9b85-884c-4167-833f-fdb68f6dca84",
+      "source_table": "graphic_items",
+      "source_id": "seyier",
+      "target_type": "piece",
+      "target_id": "seyier-overlay",
+      "notes": "4D.3C: gallery frame → Piece (EXPECTED_SPLIT_INTO_PIECES)"
+    },
+    {
+      "id": "870b1e5a-8b74-401d-9521-560abcfa8166",
+      "source_table": "graphic_items",
+      "source_id": "seyier",
+      "target_type": "piece",
+      "target_id": "seyier-portada",
+      "notes": "4D.3C: gallery frame → Piece (EXPECTED_SPLIT_INTO_PIECES)"
+    },
+    {
+      "id": "7d0ef8d1-6ece-4cb7-be44-16b8bf8ce63b",
+      "source_table": "graphic_items",
+      "source_id": "seyier",
+      "target_type": "project",
+      "target_id": "seyier-visual-identity",
+      "notes": null
+    }
+  ],
+  "citfManual": {
+    "id": "citf-manual-2025"
+  },
+  "citfPdf": [
+    {
+      "id": "af54edd9-562a-472e-8935-adb1296918c0",
+      "path": "/assets/grafico/brand-manuals/citf-manual-2025.pdf"
+    }
+  ],
+  "pieceIdTables": [
+    {
+      "t": "piece_entities",
+      "c": "piece_id"
+    },
+    {
+      "t": "piece_resources",
+      "c": "piece_id"
+    },
+    {
+      "t": "piece_tags",
+      "c": "piece_id"
+    }
+  ],
+  "assets": {
+    "inicio": true,
+    "portada": true,
+    "overlay": true,
+    "logo": true
+  },
+  "counts": {
+    "pieces": 52,
+    "published": 49,
+    "pieceResources": 3,
+    "maps": 130
+  }
+}

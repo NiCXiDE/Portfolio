@@ -14,12 +14,12 @@
       }
     },
     "V2": {
-      "pieces": 47,
+      "pieces": 44,
       "manuals": 1,
       "standalone": 27,
-      "projectLinked": 20,
+      "projectLinked": 17,
       "byCategory": {
-        "visual-identity": 15,
+        "visual-identity": 12,
         "illustration-artwork": 25,
         "print": 4,
         "campaigns-communication": 3
@@ -31,14 +31,15 @@
     "UNEXPECTED_DUPLICATE": 0,
     "DETAIL_GAPS": {
       "CITF_manual": "RESOLVED",
-      "Seyier_gallery": "RESOLVED_SPLIT_INTO_PIECES"
+      "Seyier_gallery": "RESOLVED_RESOURCE_COLLAPSE"
     },
     "results": {
       "MATCH": 27,
       "EXPECTED_PROJECT_CONTEXT_ADDED": 16,
       "EXPECTED_DISCARDED": 3,
       "EXPECTED_DETAIL_GAP_GALLERY": 0,
-      "EXPECTED_SPLIT_INTO_PIECES": 1,
+      "EXPECTED_SPLIT_INTO_PIECES": 0,
+      "EXPECTED_RESOURCE_COLLAPSE": 1,
       "UNEXPECTED_MISSING": 0,
       "UNEXPECTED_DUPLICATE": 0,
       "UNEXPECTED_CONTENT_CHANGE": 0
@@ -125,7 +126,7 @@
       {
         "feature": "gallery",
         "legacy": "galleryPaths",
-        "v2": "sibling Pieces (Seyier split) or piece_resources",
+        "v2": "piece_resources on principal Piece (Seyier collapse)",
         "status": "READY"
       },
       {
@@ -165,14 +166,14 @@
     },
     "filterReadiness": {
       "category": {
-        "visual-identity": 15,
+        "visual-identity": 12,
         "illustration-artwork": 25,
         "print": 4,
         "campaigns-communication": 3
       },
       "tagsSample": 47,
-      "withEntity": 18,
-      "withProject": 20
+      "withEntity": 15,
+      "withProject": 17
     },
     "expectedDiffCount": 21,
     "unexpectedDiffCount": 0,
@@ -182,7 +183,7 @@
       "overall": "FULL_GRAPHIC_READY"
     },
     "recommendation": "A",
-    "recommendationNote": "FULL_GRAPHIC_READY: Manual Piece + Seyier split landed; 4D.4 can flag full Graphic cutover without legacy brand_manuals.",
+    "recommendationNote": "FULL_GRAPHIC_READY: Manual Piece + Seyier gallery resources landed; 4D.4 can flag full Graphic cutover without legacy brand_manuals.",
     "shadow_es_ok": true,
     "shadow_en_ok": true,
     "shadow_ok": true
@@ -296,8 +297,8 @@
       "legacyId": "seyier",
       "legacySection": "logos",
       "v2Id": "seyier",
-      "result": "EXPECTED_SPLIT_INTO_PIECES",
-      "detail": "Legacy gallery split into 4 Pieces under seyier-visual-identity",
+      "result": "EXPECTED_RESOURCE_COLLAPSE",
+      "detail": "Legacy gallery collapsed into 3 piece_resources on seyier",
       "expected": true
     },
     {
@@ -674,8 +675,8 @@
       "legacyId": "seyier",
       "legacySection": "logos",
       "v2Id": "seyier",
-      "result": "EXPECTED_SPLIT_INTO_PIECES",
-      "detail": "Legacy gallery split into 4 Pieces under seyier-visual-identity",
+      "result": "EXPECTED_RESOURCE_COLLAPSE",
+      "detail": "Legacy gallery collapsed into 3 piece_resources on seyier",
       "expected": true
     },
     {
