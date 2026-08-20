@@ -28,8 +28,17 @@ if [ "${RUN_SEED:-0}" = "1" ]; then
   set -e
   if [ "$seed_status" -eq 2 ]; then
     echo "Empty database detected; running seed..."
+    set +e
     ALLOW_DESTRUCTIVE_DB="${ALLOW_DESTRUCTIVE_DB:-1}" \
+      RUN_SEED_CLI=1 \
       /opt/seed-tools/node_modules/.bin/tsx /app/scripts/seed.ts
+    seed_run=$?
+    set -e
+    if [ "$seed_run" -ne 0 ]; then
+      echo "Seed failed with status ${seed_run}."
+      exit 1
+    fi
+    echo "Seed finished OK."
   elif [ "$seed_status" -eq 0 ]; then
     echo "Database already seeded; skipping."
   else
@@ -38,4 +47,5 @@ if [ "${RUN_SEED:-0}" = "1" ]; then
   fi
 fi
 
+echo "Starting Next.js server..."
 exec node /app/server.js
