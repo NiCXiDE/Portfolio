@@ -67,9 +67,10 @@ docker-compose*.yml
 # Kubernetes manifests (applied outside the image)
 k8s/
 
-# Documentation
+# Documentation / local audit artifacts
 *.md
 docs/
+reports/
 
 # CI/CD configuration files
 .github/
