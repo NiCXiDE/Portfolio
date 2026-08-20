@@ -29,7 +29,7 @@ if [ "${RUN_SEED:-0}" = "1" ]; then
   if [ "$seed_status" -eq 2 ]; then
     echo "Empty database detected; running seed..."
     ALLOW_DESTRUCTIVE_DB="${ALLOW_DESTRUCTIVE_DB:-1}" \
-      /app/node_modules/.bin/tsx /app/scripts/seed.ts
+      /opt/seed-tools/node_modules/.bin/tsx /app/scripts/seed.ts
   elif [ "$seed_status" -eq 0 ]; then
     echo "Database already seeded; skipping."
   else

@@ -18,6 +18,12 @@ ENV NODE_ENV=production
 ENV NEXT_TELEMETRY_DISABLED=1
 RUN npm run build
 
+# Seed tooling in isolation — never `npm install` inside the Next standalone tree
+FROM node:${NODE_VERSION} AS seed-tools
+WORKDIR /opt/seed-tools
+RUN npm init -y \
+  && npm install tsx@4 dotenv@17 --omit=dev --no-audit --no-fund
+
 FROM node:${NODE_VERSION} AS runner
 WORKDIR /app
 ENV NODE_ENV=production
@@ -32,15 +38,15 @@ RUN apt-get update \
 COPY --from=builder --chown=node:node /app/public ./public
 COPY --from=builder --chown=node:node /app/.next/standalone ./
 COPY --from=builder --chown=node:node /app/.next/static ./.next/static
-COPY --from=builder --chown=node:node /app/scripts ./scripts
+# Solo lo necesario para seed/sync en el entrypoint
+COPY --from=builder --chown=node:node /app/scripts/seed.ts /app/scripts/sync-schema.ts /app/scripts/sync-content.ts /app/scripts/reset-admin-password.ts ./scripts/
 COPY --from=builder --chown=node:node /app/content ./content
 COPY --from=builder --chown=node:node /app/src ./src
 COPY --from=builder --chown=node:node /app/tsconfig.json ./tsconfig.json
+COPY --from=seed-tools --chown=node:node /opt/seed-tools /opt/seed-tools
 COPY --chown=node:node docker/entrypoint.sh docker/maybe-seed.cjs ./
 
-RUN npm install --save-prod tsx dotenv --no-audit --no-fund \
-  && test -x /app/node_modules/.bin/tsx \
-  && chmod +x /app/entrypoint.sh \
+RUN chmod +x /app/entrypoint.sh \
   && mkdir -p /app/.next \
   && chown -R node:node /app
 
