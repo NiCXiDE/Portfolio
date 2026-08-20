@@ -2,12 +2,23 @@
  * Sincroniza el schema TypeORM sin reseedea datos.
  * Uso: npx tsx scripts/sync-schema.ts
  */
-import { config as loadEnv } from "dotenv";
+import { createRequire } from "node:module";
 import { resolve } from "node:path";
 import { pathToFileURL } from "node:url";
 import { createDataSource, portfolioLegacyEntities } from "../src/db/data-source";
 
-loadEnv({ path: resolve(process.cwd(), ".env") });
+const require = createRequire(import.meta.url);
+
+function loadDotEnvOptional() {
+  try {
+    const { config } = require("dotenv") as typeof import("dotenv");
+    config({ path: resolve(process.cwd(), ".env") });
+  } catch {
+    // En contenedor las env ya vienen de K8s; dotenv es opcional.
+  }
+}
+
+loadDotEnvOptional();
 
 /** @see scripts/sync-schema.ts — shared DB safety helpers for destructive scripts */
 export function requireDestructiveDbApproval(scriptName: string): void {

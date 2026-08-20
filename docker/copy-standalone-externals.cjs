@@ -26,7 +26,13 @@ function copyPkg(name) {
   }
 }
 
-for (const name of ["mysql2", "typeorm", "reflect-metadata", "sharp"]) {
+for (const name of [
+  "mysql2",
+  "typeorm",
+  "reflect-metadata",
+  "sharp",
+  "bcryptjs",
+]) {
   copyPkg(name);
 }
 

@@ -31,6 +31,7 @@ if [ "${RUN_SEED:-0}" = "1" ]; then
     set +e
     ALLOW_DESTRUCTIVE_DB="${ALLOW_DESTRUCTIVE_DB:-1}" \
       RUN_SEED_CLI=1 \
+      NODE_PATH="/opt/seed-tools/node_modules:/app/node_modules${NODE_PATH:+:$NODE_PATH}" \
       /opt/seed-tools/node_modules/.bin/tsx /app/scripts/seed.ts
     seed_run=$?
     set -e

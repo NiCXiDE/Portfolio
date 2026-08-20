@@ -1,4 +1,3 @@
-import { config as loadEnv } from "dotenv";
 import { hashSync } from "bcryptjs";
 import { readFileSync } from "node:fs";
 import { resolve } from "node:path";
@@ -40,7 +39,7 @@ import { slugifyBrand } from "../src/lib/brands";
 import { normalizeUiSlides } from "../src/lib/ui-slides";
 import { requireDestructiveDbApproval, isDirectScriptRun } from "./sync-schema";
 
-loadEnv({ path: resolve(process.cwd(), ".env") });
+// dotenv se carga (si existe) desde sync-schema; en K8s las env ya vienen inyectadas.
 
 type Localized = LocalizedJson;
 
