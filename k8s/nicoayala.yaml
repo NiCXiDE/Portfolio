@@ -23,6 +23,10 @@ data:
   DATABASE_NAME: "portfolio"
   TYPEORM_SYNC: "1"
   RUN_SEED: "1"
+  ALLOW_DESTRUCTIVE_DB: "1"
+  # Seed + sync solo llenan tablas legacy; V2 requiere db:apply-v2 + migración.
+  HOME_CONTENT_SOURCE: "legacy"
+  GRAPHIC_CONTENT_SOURCE: "legacy"
   NEXT_PUBLIC_SITE_URL: "https://nicoayala.com.ar"
   R2_ACCOUNT_ID: "cbc6a8c2c1801929ffa0d8142db2dea9"
   R2_BUCKET: "nicoayala"
@@ -185,21 +189,21 @@ spec:
               memory: 1Gi
           startupProbe:
             httpGet:
-              path: /es
+              path: /api/health
               port: http
             periodSeconds: 5
             timeoutSeconds: 5
             failureThreshold: 36
           livenessProbe:
             httpGet:
-              path: /es
+              path: /api/health
               port: http
             periodSeconds: 20
             timeoutSeconds: 5
             failureThreshold: 3
           readinessProbe:
             httpGet:
-              path: /es
+              path: /api/health
               port: http
             periodSeconds: 10
             timeoutSeconds: 5
