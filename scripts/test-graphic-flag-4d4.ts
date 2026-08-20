@@ -98,7 +98,7 @@ test("UI mapper: categories → UI buckets; manual excluded from logos", () => {
   assert.equal(ui.logos.some((l) => l.id === "citf-manual-2025"), false);
 });
 
-test("UI mapper: Seyier siblings are separate logos without gallery", () => {
+test("UI mapper: Seyier is a single logo without inline gallery", () => {
   const project = {
     id: "seyier-visual-identity",
     slug: "seyier",
@@ -110,27 +110,20 @@ test("UI mapper: Seyier siblings are separate logos without gallery", () => {
       category: "visual-identity",
       projectId: project.id,
       project,
-    }),
-    piece({
-      id: "seyier-inicio",
-      category: "visual-identity",
-      projectId: project.id,
-      project,
-    }),
-    piece({
-      id: "seyier-portada",
-      category: "visual-identity",
-      projectId: project.id,
-      project,
-    }),
-    piece({
-      id: "seyier-overlay",
-      category: "visual-identity",
-      projectId: project.id,
-      project,
+      resources: [
+        {
+          id: "r1",
+          path: "/assets/grafico/logos/seyier/inicio.png",
+          url: "/assets/grafico/logos/seyier/inicio.png",
+          kind: "piece_resource",
+          label: null,
+          sortOrder: 0,
+        },
+      ],
     }),
   ]);
   const ui = mapGraphicContentV2ToCurrentUI(graphic);
-  assert.equal(ui.logos.length, 4);
-  assert.ok(ui.logos.every((l) => !l.gallery?.length));
+  assert.equal(ui.logos.length, 1);
+  assert.equal(ui.logos[0]?.id, "seyier");
+  assert.ok(!ui.logos[0]?.gallery?.length);
 });

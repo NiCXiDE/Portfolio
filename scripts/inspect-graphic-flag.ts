@@ -47,10 +47,7 @@ async function main() {
     content.banners.length +
     content.eventos.length;
   const manuals = content.brandManuals.length;
-  const seyierIds = ["seyier", "seyier-inicio", "seyier-portada", "seyier-overlay"];
-  const seyierCount = content.logos.filter((l) =>
-    seyierIds.includes(l.id),
-  ).length;
+  const seyierCount = content.logos.filter((l) => l.id === "seyier").length;
   const manual = content.brandManuals.find((m) => m.id === "citf-manual-2025");
 
   const doubleRead =
@@ -63,9 +60,9 @@ async function main() {
     noDoubleRead: !doubleRead,
     ...(source === "v2"
       ? {
-          regular47: regular === 47,
+          regular44: regular === 44,
           manuals1: manuals === 1,
-          seyier4: seyierCount === 4,
+          seyier1: seyierCount === 1,
           manualPdf: Boolean(manual?.pdf),
           manualCover: Boolean(manual?.cover),
           loadersV2Only: graphicTrace?.loaders.join(",") === "v2-graphic",

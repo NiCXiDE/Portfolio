@@ -58,20 +58,22 @@ async function main() {
   );
 
   const checks = {
-    pieces47: es.meta.counts.pieces === 47,
+    pieces44: es.meta.counts.pieces === 44,
     manuals1: es.meta.counts.manuals === 1 && es.manuals.length === 1,
     manualPresent: es.meta.manualStatus === "PRESENT",
     manualNotInSections: !es.sections
       .flatMap((s) => s.items)
       .some((i) => i.id === "citf-manual-2025"),
     manualPdf: Boolean(es.manuals[0]?.pdfUrl),
-    seyier4:
+    seyier1:
       es.pieces.filter(
         (p) =>
           p.id === "seyier" ||
           p.id.startsWith("seyier-") ||
           p.project?.id === "seyier-visual-identity",
-      ).length === 4,
+      ).length === 1,
+    seyierResources3:
+      es.pieces.find((p) => p.id === "seyier")?.resourceCount === 3,
     seyierGapClosed: es.meta.seyierGalleryGap === false,
     missingMain0: es.meta.counts.missingMainImage === 0,
     discarded0: discardedLeaks.length === 0,

@@ -314,7 +314,7 @@ test("manual tag routes Piece to manuals[] not sections; category stays visual-i
   assert.equal(content.meta.counts.pieces, 1);
 });
 
-test("Seyier 1→4 split closes gallery gap; siblings visible as Pieces", () => {
+test("Seyier gallery collapse closes gap; single Piece in listing", () => {
   const project = {
     id: "seyier-visual-identity",
     slug: "identidad-visual-seyier",
@@ -327,36 +327,39 @@ test("Seyier 1→4 split closes gallery gap; siblings visible as Pieces", () => 
       projectId: project.id,
       project,
       srcUrl: "/assets/grafico/logos/seyier.svg",
-    }),
-    piece({
-      id: "seyier-inicio",
-      category: "visual-identity",
-      projectId: project.id,
-      project,
-      srcUrl: "/assets/grafico/logos/seyier/inicio.png",
-      title: { es: "Pantalla de inicio", en: "Starting screen" },
-    }),
-    piece({
-      id: "seyier-portada",
-      category: "visual-identity",
-      projectId: project.id,
-      project,
-      srcUrl: "/assets/grafico/logos/seyier/portada-fondo.png",
-      title: { es: "Portada", en: "Stream cover" },
-    }),
-    piece({
-      id: "seyier-overlay",
-      category: "visual-identity",
-      projectId: project.id,
-      project,
-      srcUrl: "/assets/grafico/logos/seyier/overlay-ejemplo.png",
-      title: { es: "Overlay", en: "Overlay example" },
+      resources: [
+        {
+          id: "r1",
+          path: "/assets/grafico/logos/seyier/inicio.png",
+          url: "/assets/grafico/logos/seyier/inicio.png",
+          kind: "piece_resource",
+          label: { es: "Pantalla de inicio", en: "Starting screen" },
+          sortOrder: 0,
+        },
+        {
+          id: "r2",
+          path: "/assets/grafico/logos/seyier/portada-fondo.png",
+          url: "/assets/grafico/logos/seyier/portada-fondo.png",
+          kind: "piece_resource",
+          label: { es: "Portada", en: "Stream cover" },
+          sortOrder: 1,
+        },
+        {
+          id: "r3",
+          path: "/assets/grafico/logos/seyier/overlay-ejemplo.png",
+          url: "/assets/grafico/logos/seyier/overlay-ejemplo.png",
+          kind: "piece_resource",
+          label: { es: "Overlay", en: "Overlay example" },
+          sortOrder: 2,
+        },
+      ],
     }),
   ]);
   assert.equal(content.meta.seyierGalleryGap, false);
-  assert.equal(content.pieces.length, 4);
+  assert.equal(content.pieces.length, 1);
+  assert.equal(content.pieces[0]?.resourceCount, 3);
   assert.equal(
     content.sections.find((s) => s.id === "visual-identity")?.items.length,
-    4,
+    1,
   );
 });

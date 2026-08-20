@@ -63,7 +63,7 @@ async function main() {
         : "RESOLVED",
       Seyier_gallery: es.detailGaps.seyierGallery
         ? "EXPECTED_DETAIL_GAP_GALLERY"
-        : "RESOLVED_SPLIT_INTO_PIECES",
+        : "RESOLVED_RESOURCE_COLLAPSE",
     },
     results: es.results,
     sessions: es.sessions,

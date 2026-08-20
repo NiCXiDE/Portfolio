@@ -20,6 +20,7 @@ export type GraphicItemResult =
   | "EXPECTED_DISCARDED"
   | "EXPECTED_DETAIL_GAP_GALLERY"
   | "EXPECTED_SPLIT_INTO_PIECES"
+  | "EXPECTED_RESOURCE_COLLAPSE"
   | "UNEXPECTED_MISSING"
   | "UNEXPECTED_DUPLICATE"
   | "UNEXPECTED_CONTENT_CHANGE";
@@ -330,8 +331,20 @@ export function classifyLegacyItem(
   }
   seenV2Ids.add(v2.id);
 
-  // Seyier: 1 legacy item → 4 V2 Pieces (approved split; not gallery resources)
+  // Seyier: 1 legacy item → 1 Piece + 3 piece_resources (4D.5B resource collapse)
   if (legacy.key === "seyier") {
+    const seyierPiece = v2Pieces.find((p) => p.id === "seyier");
+    if (seyierPiece && seyierPiece.resourceCount >= 3) {
+      seenV2Ids.add("seyier");
+      return {
+        legacyId: legacy.key,
+        legacySection: legacy.section,
+        v2Id: seyierPiece.id,
+        result: "EXPECTED_RESOURCE_COLLAPSE",
+        detail: `Legacy gallery collapsed into ${seyierPiece.resourceCount} piece_resources on seyier`,
+        expected: true,
+      };
+    }
     const family = v2Pieces.filter(
       (p) =>
         p.id === "seyier" ||
@@ -471,7 +484,7 @@ export function buildDetailCapabilityMatrix(): GraphicShadowReport["detailCapabi
     {
       feature: "gallery",
       legacy: "galleryPaths",
-      v2: "sibling Pieces (Seyier split) or piece_resources",
+      v2: "piece_resources on principal Piece (Seyier collapse)",
       status: "READY",
     },
     {
@@ -524,6 +537,7 @@ export function compareGraphicContentShadows(input: {
     EXPECTED_DISCARDED: 0,
     EXPECTED_DETAIL_GAP_GALLERY: 0,
     EXPECTED_SPLIT_INTO_PIECES: 0,
+    EXPECTED_RESOURCE_COLLAPSE: 0,
     UNEXPECTED_MISSING: 0,
     UNEXPECTED_DUPLICATE: 0,
     UNEXPECTED_CONTENT_CHANGE: 0,
@@ -534,7 +548,8 @@ export function compareGraphicContentShadows(input: {
     results.MATCH +
     results.EXPECTED_PROJECT_CONTEXT_ADDED +
     results.EXPECTED_DETAIL_GAP_GALLERY +
-    results.EXPECTED_SPLIT_INTO_PIECES;
+    results.EXPECTED_SPLIT_INTO_PIECES +
+    results.EXPECTED_RESOURCE_COLLAPSE;
 
   const unexpectedMissing = results.UNEXPECTED_MISSING;
   const unexpectedDuplicate = results.UNEXPECTED_DUPLICATE;
@@ -594,7 +609,7 @@ export function compareGraphicContentShadows(input: {
     p.tags.some((t) => t.slug === "manual"),
   );
 
-  const expectedRegularPieces = 47;
+  const expectedRegularPieces = 44;
   const expectedManuals = 1;
 
   const expectedDiffCount =
@@ -602,6 +617,7 @@ export function compareGraphicContentShadows(input: {
     results.EXPECTED_PROJECT_CONTEXT_ADDED +
     results.EXPECTED_DETAIL_GAP_GALLERY +
     results.EXPECTED_SPLIT_INTO_PIECES +
+    results.EXPECTED_RESOURCE_COLLAPSE +
     (manualPresent ? 1 : 0);
 
   const unexpectedDiffCount =
@@ -639,8 +655,8 @@ export function compareGraphicContentShadows(input: {
 
   const recommendation: "A" | "B" | "C" = detailReady ? "A" : "C";
   const recommendationNote = detailReady
-    ? "FULL_GRAPHIC_READY: Manual Piece + Seyier split landed; 4D.4 can flag full Graphic cutover without legacy brand_manuals."
-    : "Gaps remain — do not start 4D.4 until manuals[] PRESENT and Seyier split verified.";
+    ? "FULL_GRAPHIC_READY: Manual Piece + Seyier gallery resources landed; 4D.4 can flag full Graphic cutover without legacy brand_manuals."
+    : "Gaps remain — do not start 4D.4 until manuals[] PRESENT and Seyier gallery resources verified.";
 
   return {
     locale,

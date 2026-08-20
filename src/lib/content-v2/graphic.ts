@@ -446,16 +446,13 @@ export function buildGraphicContentV2(
   // Drop empty "other" only; keep other sections even if empty? Prefer non-empty only.
   const nonEmptySections = sections.filter((s) => s.items.length > 0);
 
-  // Seyier gap closed when project has logo + 3 view Pieces (approved split).
-  const seyierFamily = publicPieces.filter(
-    (p) =>
-      p.id === "seyier" ||
-      p.id.startsWith("seyier-") ||
-      p.projectId === "seyier-visual-identity" ||
-      p.project?.id === "seyier-visual-identity",
+  // Seyier gap closed when principal Piece has 3 gallery piece_resources (4D.5B).
+  const seyierPiece = publicPieces.find((p) => p.id === "seyier");
+  const seyierGalleryResources = (seyierPiece?.resources ?? []).filter((r) =>
+    Boolean((r.path ?? r.url ?? "").trim()),
   );
   const seyierGalleryGap = Boolean(
-    publicPieces.some((p) => p.id === "seyier") && seyierFamily.length < 4,
+    seyierPiece && seyierGalleryResources.length < 3,
   );
 
   const { sessionsReview, sessionsPieceIds } = buildSessionsReview(items);
@@ -544,8 +541,8 @@ export const GRAPHIC_UI_CONTRACT_4D2 = [
     uiNeed: "gallery",
     legacyField: "galleryPaths",
     v2Source:
-      "piece_resources → detail.gallery OR split sibling Pieces (Seyier)",
-    transition: "MAPPING (Seyier = EXPECTED_SPLIT_INTO_PIECES)",
+      "piece_resources → detail.gallery (Seyier gallery collapsed on principal Piece)",
+    transition: "MAPPING (Seyier = EXPECTED_RESOURCE_COLLAPSE)",
   },
   {
     uiNeed: "brand / entity",

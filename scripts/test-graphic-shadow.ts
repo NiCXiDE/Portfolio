@@ -121,7 +121,7 @@ test("Seyier gallery gap expected when split incomplete", () => {
   assert.equal(row.result, "EXPECTED_DETAIL_GAP_GALLERY");
 });
 
-test("Seyier EXPECTED_SPLIT_INTO_PIECES when 4 Pieces present", () => {
+test("Seyier EXPECTED_RESOURCE_COLLAPSE when gallery is piece_resources", () => {
   const project = {
     id: "seyier-visual-identity",
     slug: "seyier",
@@ -134,24 +134,32 @@ test("Seyier EXPECTED_SPLIT_INTO_PIECES when 4 Pieces present", () => {
       category: "visual-identity",
       projectId: project.id,
       project,
-    }),
-    piece({
-      id: "seyier-inicio",
-      category: "visual-identity",
-      projectId: project.id,
-      project,
-    }),
-    piece({
-      id: "seyier-portada",
-      category: "visual-identity",
-      projectId: project.id,
-      project,
-    }),
-    piece({
-      id: "seyier-overlay",
-      category: "visual-identity",
-      projectId: project.id,
-      project,
+      resources: [
+        {
+          id: "r1",
+          path: "/assets/grafico/logos/seyier/inicio.png",
+          url: "/assets/grafico/logos/seyier/inicio.png",
+          kind: "piece_resource",
+          label: null,
+          sortOrder: 0,
+        },
+        {
+          id: "r2",
+          path: "/assets/grafico/logos/seyier/portada-fondo.png",
+          url: "/assets/grafico/logos/seyier/portada-fondo.png",
+          kind: "piece_resource",
+          label: null,
+          sortOrder: 1,
+        },
+        {
+          id: "r3",
+          path: "/assets/grafico/logos/seyier/overlay-ejemplo.png",
+          url: "/assets/grafico/logos/seyier/overlay-ejemplo.png",
+          kind: "piece_resource",
+          label: null,
+          sortOrder: 2,
+        },
+      ],
     }),
   ]).pieces;
   const row = classifyLegacyItem(
@@ -159,8 +167,8 @@ test("Seyier EXPECTED_SPLIT_INTO_PIECES when 4 Pieces present", () => {
     v2,
     seen,
   );
-  assert.equal(row.result, "EXPECTED_SPLIT_INTO_PIECES");
-  assert.equal(seen.size, 4);
+  assert.equal(row.result, "EXPECTED_RESOURCE_COLLAPSE");
+  assert.equal(seen.size, 1);
 });
 
 test("unexpected missing fails classification", () => {
