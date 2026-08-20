@@ -1,0 +1,154 @@
+{
+  "database": "portfolio",
+  "unset": {
+    "env": "(unset)",
+    "source": "v2",
+    "graphicTrace": {
+      "source": "v2",
+      "loaders": [
+        "v2-graphic"
+      ]
+    },
+    "homeTrace": {
+      "source": "v2",
+      "loaders": [
+        "legacy-shell",
+        "v2-home"
+      ]
+    },
+    "presentation": "v2",
+    "counts": {
+      "regular": 44,
+      "manuals": 1,
+      "seyierCount": 1,
+      "seyierResources": 3
+    },
+    "manual": {
+      "id": "citf-manual-2025",
+      "cover": "/assets/grafico/brand-manuals/citf-manual-2025-cover.png",
+      "pdf": "/assets/grafico/brand-manuals/citf-manual-2025.pdf",
+      "year": "2025"
+    },
+    "noDoubleRead": true,
+    "privacy": {
+      "discardedLeaks": [],
+      "forbiddenHits": [],
+      "manualInGrid": false
+    },
+    "sessionsReview": "CURRENT_PUBLIC_SAFE"
+  },
+  "explicitV2": {
+    "env": "v2",
+    "source": "v2",
+    "graphicTrace": {
+      "source": "v2",
+      "loaders": [
+        "v2-graphic"
+      ]
+    },
+    "homeTrace": {
+      "source": "v2",
+      "loaders": [
+        "legacy-shell",
+        "v2-home"
+      ]
+    },
+    "presentation": "v2",
+    "counts": {
+      "regular": 44,
+      "manuals": 1,
+      "seyierCount": 1,
+      "seyierResources": 3
+    },
+    "manual": {
+      "id": "citf-manual-2025",
+      "cover": "/assets/grafico/brand-manuals/citf-manual-2025-cover.png",
+      "pdf": "/assets/grafico/brand-manuals/citf-manual-2025.pdf",
+      "year": "2025"
+    },
+    "noDoubleRead": true,
+    "privacy": {
+      "discardedLeaks": [],
+      "forbiddenHits": [],
+      "manualInGrid": false
+    },
+    "sessionsReview": "CURRENT_PUBLIC_SAFE"
+  },
+  "legacy": {
+    "env": "legacy",
+    "source": "legacy",
+    "graphicTrace": {
+      "source": "legacy",
+      "loaders": [
+        "legacy-graphic"
+      ]
+    },
+    "homeTrace": {
+      "source": "v2",
+      "loaders": [
+        "legacy-shell",
+        "v2-home"
+      ]
+    },
+    "presentation": "legacy",
+    "counts": {
+      "regular": 47,
+      "manuals": 1,
+      "seyierCount": 1,
+      "seyierResources": null
+    },
+    "manual": null,
+    "noDoubleRead": true,
+    "privacy": {
+      "discardedLeaks": [],
+      "forbiddenHits": [],
+      "manualInGrid": false
+    },
+    "sessionsReview": null
+  },
+  "invalid": {
+    "env": "invalid",
+    "source": "legacy",
+    "graphicTrace": {
+      "source": "legacy",
+      "loaders": [
+        "legacy-graphic"
+      ]
+    },
+    "homeTrace": {
+      "source": "v2",
+      "loaders": [
+        "legacy-shell",
+        "v2-home"
+      ]
+    },
+    "presentation": "legacy",
+    "counts": {
+      "regular": 47,
+      "manuals": 1,
+      "seyierCount": 1,
+      "seyierResources": null
+    },
+    "manual": null,
+    "noDoubleRead": true,
+    "privacy": {
+      "discardedLeaks": [],
+      "forbiddenHits": [],
+      "manualInGrid": false
+    },
+    "sessionsReview": null
+  },
+  "checks": {
+    "unsetIsV2": true,
+    "unsetCanonical": true,
+    "explicitV2Same": true,
+    "legacyIsLegacy": true,
+    "legacyLoaders": true,
+    "legacyNoV2Loader": true,
+    "legacyNoDoubleRead": true,
+    "invalidIsLegacy": true,
+    "invalidLoaders": true,
+    "homeDefaultV2": true
+  },
+  "ok": true
+}
