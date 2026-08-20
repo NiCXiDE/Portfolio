@@ -48,12 +48,12 @@ function mapPieceToGraphicItem(
   if (piece.hrefLabel) item.hrefLabel = both(piece.hrefLabel);
   if (piece.fit) item.fit = piece.fit;
   if (piece.tags.length) item.tags = piece.tags.map((t) => t.slug);
+  if (piece.resourceCount > 0) item.resourceCount = piece.resourceCount;
 
   // No /marcas inventado — safe Entity context stays off brand hub until Entity pages.
   // brandId omitted on purpose (4D.4).
 
-  // Seyier split: no artificial gallery reconstruction from sibling Pieces.
-  // Detail pages only surface piece_resources when present on the Piece itself.
+  // Gallery stays off the listing tile (detail page loads piece_resources).
   return item;
 }
 

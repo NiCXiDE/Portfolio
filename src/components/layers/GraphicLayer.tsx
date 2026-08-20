@@ -289,6 +289,7 @@ export function GraphicLayer({ locale, dict, content }: Props) {
       gallery: logo.gallery?.length
         ? logo.gallery.map((g) => g.src)
         : undefined,
+      resourceCount: logo.resourceCount,
       fit: "contain" as const,
       brandHubHref: logo.brandId
         ? `/${locale}/marcas/${logo.brandId}`
@@ -636,7 +637,7 @@ export function GraphicLayer({ locale, dict, content }: Props) {
           containPadPercent={LOGO_SAFE_INSET_PERCENT}
           onTagClick={(tag) => setTag("logos", tag)}
           detailHref={(item) => logoDetailHref(locale, item)}
-          moreAboutLabel={dict.grafico.moreAbout}
+          moreAboutLabel={dict.grafico.viewDetails}
           brandHubLabel={dict.grafico.viewBrandWork}
           {...gridExtras}
           {...seeMoreProps("logos", content.logos.length)}
@@ -730,7 +731,7 @@ export function GraphicLayer({ locale, dict, content }: Props) {
             containPadPercent={0}
             onTagClick={(tag) => setTag("eventos", tag)}
             detailHref={(item) => `/${locale}/grafico/eventos/${item.id}`}
-            moreAboutLabel={dict.grafico.moreAbout}
+            moreAboutLabel={dict.grafico.viewDetails}
             brandHubLabel={dict.grafico.viewBrandWork}
             {...gridExtras}
             {...seeMoreProps("eventos", content.eventos.length)}

@@ -16,8 +16,14 @@ export function ensureVectorTag(tags: string) {
 
 export function logoDetailHref(
   locale: string,
-  item: { id: string; gallery?: readonly string[] | string[] },
+  item: {
+    id: string;
+    gallery?: readonly string[] | string[];
+    resourceCount?: number;
+  },
 ): string | null {
-  if (!item.gallery?.length) return null;
+  const hasLegacyGallery = Boolean(item.gallery?.length);
+  const hasResources = (item.resourceCount ?? 0) > 0;
+  if (!hasLegacyGallery && !hasResources) return null;
   return `/${locale}/grafico/logos/${item.id}`;
 }

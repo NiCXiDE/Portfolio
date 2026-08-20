@@ -45,6 +45,8 @@ export type ArtItem = {
   relatedLabel?: string;
   /** Extra pieces shown when expanded (grid still uses `src`). */
   gallery?: string[];
+  /** Count of PieceResources — used to expose logo detail without listing gallery. */
+  resourceCount?: number;
   /** Tags libres: nsfw, pixel-art, vector, fan-art, grime, … */
   tags?: string[];
   /** Hub de marca (empresa / proyecto) cuando hay piezas vinculadas. */
@@ -722,6 +724,18 @@ export function ExpandableArtGrid({
                           </button>
                         )}
                         <div className="mt-2 flex flex-wrap items-center gap-3">
+                          {itemDetailHref && moreAbout ? (
+                            <Link
+                              href={itemDetailHref}
+                              className="inline-flex items-center gap-1.5 text-sm font-medium text-ink underline decoration-ink/30 underline-offset-4 interactive-ink md:text-base cursor-nav"
+                            >
+                              {moreAbout}
+                              <ArrowRight
+                                className="size-3.5 shrink-0"
+                                strokeWidth={1.75}
+                              />
+                            </Link>
+                          ) : null}
                           {previewSrc && !nsfwLocked && (
                             previewKind === "pdf" ? (
                               <a
@@ -786,18 +800,6 @@ export function ExpandableArtGrid({
                               {item.downloadLabel || "Descargar"}
                             </a>
                           )}
-                          {itemDetailHref && moreAbout ? (
-                            <Link
-                              href={itemDetailHref}
-                              className="inline-flex items-center gap-1.5 text-sm font-medium text-ink underline decoration-ink/30 underline-offset-4 interactive-ink md:text-base cursor-nav"
-                            >
-                              {moreAbout}
-                              <ArrowRight
-                                className="size-3.5 shrink-0"
-                                strokeWidth={1.75}
-                              />
-                            </Link>
-                          ) : null}
                           {item.brandHubHref && brandHub ? (
                             <Link
                               href={item.brandHubHref}

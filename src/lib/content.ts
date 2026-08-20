@@ -95,6 +95,8 @@ export type GraphicItemContent = {
   relatedSrc?: string | null;
   gallery?: GraphicGalleryItem[];
   brandId?: string | null;
+  /** PieceResources count — listing signal for a public logo detail route. */
+  resourceCount?: number;
 };
 
 export type BrandManualContent = {

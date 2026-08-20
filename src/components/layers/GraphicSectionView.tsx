@@ -100,6 +100,7 @@ export function GraphicSectionView({
       fit: c.fit ?? "cover",
       relatedSrc: c.relatedSrc,
       gallery: c.gallery?.length ? c.gallery.map((g) => g.src) : undefined,
+      resourceCount: c.resourceCount,
     }));
 
     let list = mapped.map((item, index) => ({ item, index }));
@@ -227,7 +228,7 @@ export function GraphicSectionView({
         }
         moreAboutLabel={
           section === "eventos" || section === "logos"
-            ? dict.grafico.moreAbout
+            ? dict.grafico.viewDetails
             : undefined
         }
       />

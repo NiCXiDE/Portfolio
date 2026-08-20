@@ -6,6 +6,7 @@ import assert from "node:assert/strict";
 import { getGraphicContentSource } from "../src/lib/content-v2/graphic-source";
 import { mapGraphicContentV2ToCurrentUI } from "../src/lib/content-v2/graphic-ui";
 import { buildGraphicContentV2 } from "../src/lib/content-v2/graphic";
+import { logoDetailHref } from "../src/lib/graphic-constants";
 import type { PublicPieceSummary } from "../src/lib/content-v2/types";
 
 test("getGraphicContentSource: undefined → legacy", () => {
@@ -126,4 +127,17 @@ test("UI mapper: Seyier is a single logo without inline gallery", () => {
   assert.equal(ui.logos.length, 1);
   assert.equal(ui.logos[0]?.id, "seyier");
   assert.ok(!ui.logos[0]?.gallery?.length);
+  assert.equal(ui.logos[0]?.resourceCount, 1);
+});
+
+test("logoDetailHref: only when gallery or resources exist", () => {
+  assert.equal(logoDetailHref("es", { id: "plain" }), null);
+  assert.equal(
+    logoDetailHref("es", { id: "legacy", gallery: ["/a.png"] }),
+    "/es/grafico/logos/legacy",
+  );
+  assert.equal(
+    logoDetailHref("en", { id: "seyier", resourceCount: 3 }),
+    "/en/grafico/logos/seyier",
+  );
 });
