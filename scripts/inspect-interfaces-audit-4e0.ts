@@ -115,7 +115,6 @@ async function main() {
       | "REPLACED_BY_V2_PROJECT"
       | "EXPECTED_DISCARDED"
       | "MISSING_V2"
-      | "AMBIGUOUS"
       | "PRIVACY_EXCLUDED" = "MISSING_V2";
 
     if (v2Id && v2) {
@@ -251,8 +250,7 @@ async function main() {
         ).length,
         missing: mapping.filter((m) => m.classification === "MISSING_V2")
           .length,
-        ambiguous: mapping.filter((m) => m.classification === "AMBIGUOUS")
-          .length,
+        ambiguous: 0,
         privacyExcluded: mapping.filter(
           (m) => m.classification === "PRIVACY_EXCLUDED",
         ).length,

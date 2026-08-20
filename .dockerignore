@@ -72,6 +72,22 @@ k8s/
 docs/
 reports/
 
+# One-off migration/audit scripts (seed/sync stay; see allowlist below)
+scripts/inspect-*.ts
+scripts/test-*.ts
+scripts/patch-*.ts
+scripts/preflight-*.ts
+scripts/postcheck-*.ts
+scripts/audit-*.ts
+scripts/apply-*.ts
+scripts/generate-*.ts
+scripts/migrate-*.ts
+scripts/migrate-v2/
+scripts/repair-*.ts
+scripts/restore-*.ts
+scripts/db-reset.ts
+
+
 # CI/CD configuration files
 .github/
 .gitlab-ci.yml
