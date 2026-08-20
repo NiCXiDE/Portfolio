@@ -27,17 +27,26 @@ export default async function AdminMediaPage({
     <div>
       <h1 className="font-admin-title text-3xl">Archivos</h1>
       <p className="mt-2 text-sm text-ink/70">
-        Biblioteca central: cada subida se registra en{" "}
-        <code className="text-xs">media_assets</code> y se puede vincular desde
-        gráfico / marcas. También podés subir a{" "}
-        <code className="text-xs">public/assets/uploads</code>.
+        Toda subida va a Cloudflare R2. Las imágenes raster se comprimen a{" "}
+        <code className="text-xs">WebP</code>; SVG y PDF se suben sin
+        convertir. Cada archivo entra a{" "}
+        <code className="text-xs">media_assets</code>.
       </p>
+
+      {!configured ? (
+        <p className="mt-4 rounded bg-amber-50 px-3 py-2 text-sm text-amber-800">
+          R2 no configurado. Completá `R2_ACCOUNT_ID`, `R2_ACCESS_KEY_ID`,
+          `R2_SECRET_ACCESS_KEY`, `R2_BUCKET` y `R2_PUBLIC_URL` en `.env`.
+        </p>
+      ) : (
+        <p className="mt-4 text-sm text-green-700">R2 conectado.</p>
+      )}
 
       <div className="mt-8 max-w-md border border-ink/10 p-4">
         <ImageDropField
           label="Subir a assets/uploads"
           folder="assets/uploads"
-          hint="Se guarda en disco y entra a la biblioteca."
+          hint="Se comprime a WebP (si aplica) y se sube a R2."
         />
       </div>
 
@@ -82,15 +91,7 @@ export default async function AdminMediaPage({
         </ul>
       )}
 
-      <h2 className="mt-12 text-lg font-bold">Cloudflare R2 (opcional)</h2>
-      {!configured ? (
-        <p className="mt-2 rounded bg-amber-50 px-3 py-2 text-sm text-amber-800">
-          R2 no configurado. Completá las variables `R2_*` en `.env` cuando
-          quieras publicar assets en la nube.
-        </p>
-      ) : (
-        <p className="mt-2 text-sm text-green-700">R2 conectado.</p>
-      )}
+      <h2 className="mt-12 text-lg font-bold">Subida directa a R2</h2>
       {error === "r2" ? (
         <p className="mt-2 text-sm text-red-700">R2 no disponible.</p>
       ) : null}
@@ -125,7 +126,7 @@ export default async function AdminMediaPage({
           disabled={!configured}
           className="bg-ink px-4 py-2 text-sm text-sky-pale disabled:opacity-40"
         >
-          Subir a R2
+          Subir (WebP → R2)
         </button>
       </form>
 
@@ -133,11 +134,10 @@ export default async function AdminMediaPage({
         <p className="mt-6 text-sm text-red-700">{listError}</p>
       ) : null}
       {objects.length > 0 ? (
-        <ul className="mt-8 space-y-1 font-mono text-xs">
+        <ul className="mt-6 space-y-1 font-mono text-xs text-ink/70">
           {objects.map((o) => (
             <li key={o.key}>
-              {o.path}{" "}
-              <span className="text-ink/40">({o.size} B)</span>
+              {o.path} · {(o.size / 1024).toFixed(1)} KB
             </li>
           ))}
         </ul>

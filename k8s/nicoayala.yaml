@@ -24,6 +24,9 @@ data:
   TYPEORM_SYNC: "1"
   RUN_SEED: "1"
   NEXT_PUBLIC_SITE_URL: "https://nicoayala.com.ar"
+  R2_ACCOUNT_ID: "cbc6a8c2c1801929ffa0d8142db2dea9"
+  R2_BUCKET: "nicoayala"
+  R2_PUBLIC_URL: "https://pub-c83597a7707d47ccb3cb0221a016c5f7.r2.dev"
 ---
 apiVersion: v1
 kind: Secret
@@ -38,6 +41,8 @@ stringData:
   DATABASE_PASSWORD: portfolio
   ADMIN_SESSION_SECRET: nicoayala-local-k8s-change-me
   ADMIN_BOOTSTRAP_PASSWORD: PortfolioTemp2026!
+  R2_ACCESS_KEY_ID: "707f06896838ceddf41102c9af135491"
+  R2_SECRET_ACCESS_KEY: "1fc63ab20a5969d908146e258d09837c69ded94539221f504247631f30f633c2"
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
@@ -161,6 +166,16 @@ spec:
                 secretKeyRef:
                   name: portfolio
                   key: ADMIN_BOOTSTRAP_PASSWORD
+            - name: R2_ACCESS_KEY_ID
+              valueFrom:
+                secretKeyRef:
+                  name: portfolio
+                  key: R2_ACCESS_KEY_ID
+            - name: R2_SECRET_ACCESS_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: portfolio
+                  key: R2_SECRET_ACCESS_KEY
           resources:
             requests:
               cpu: 100m

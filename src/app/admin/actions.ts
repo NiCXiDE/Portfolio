@@ -23,7 +23,8 @@ import {
   type UiCtaKind,
 } from "@/db/entities";
 import { requireAdmin } from "@/lib/admin-auth";
-import { isR2Configured, uploadToR2 } from "@/lib/r2";
+import { isR2Configured } from "@/lib/r2";
+import { uploadFileToR2 } from "@/lib/media-upload";
 import {
   normalizeHomeLayout,
   type HomeLayoutConfig,
@@ -1019,18 +1020,14 @@ export async function uploadMedia(formData: FormData) {
   if (!(file instanceof File) || file.size === 0) {
     redirect("/admin/media?error=file");
   }
-  const buf = Buffer.from(await file.arrayBuffer());
-  const safeName = file.name.replace(/[^\w.\-]+/g, "_");
-  const key = `${keyPrefix.replace(/\/$/, "")}/${Date.now()}-${safeName}`;
-  const path = await uploadToR2({
-    key,
-    body: buf,
-    contentType: file.type || "application/octet-stream",
-  });
+  const result = await uploadFileToR2(file, keyPrefix);
+  if (!result.ok) {
+    redirect("/admin/media?error=r2");
+  }
   revalidatePath("/admin", "layout");
   redirect(
-    withToastQuery(`/admin/media?path=${encodeURIComponent(path)}`, {
-      message: "Archivo subido",
+    withToastQuery(`/admin/media?path=${encodeURIComponent(result.path)}`, {
+      message: "Archivo subido (WebP en R2)",
       undoable: false,
     }),
   );

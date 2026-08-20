@@ -20,7 +20,7 @@ type Props = {
   hint?: string;
   defaultValue?: string;
   defaultAssetId?: string;
-  /** Carpeta bajo public/, p.ej. assets/grafico/covers */
+  /** Carpeta / prefijo en R2, p.ej. assets/grafico/covers */
   folder: string;
   accept?: string;
   /** Si es PDF u otro no-imagen */

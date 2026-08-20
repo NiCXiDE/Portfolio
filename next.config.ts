@@ -1,6 +1,21 @@
 import type { NextConfig } from "next";
 
-const mediaHostname = process.env.MEDIA_HOSTNAME?.trim();
+function resolveMediaHostname(): string | undefined {
+  const explicit = process.env.MEDIA_HOSTNAME?.trim();
+  if (explicit) return explicit;
+
+  const base =
+    process.env.MEDIA_BASE_URL?.trim() || process.env.R2_PUBLIC_URL?.trim();
+  if (!base) return undefined;
+
+  try {
+    return new URL(base).hostname;
+  } catch {
+    return undefined;
+  }
+}
+
+const mediaHostname = resolveMediaHostname();
 
 const nextConfig: NextConfig = {
   output: "standalone",
@@ -16,7 +31,7 @@ const nextConfig: NextConfig = {
         ]
       : [],
   },
-  serverExternalPackages: ["typeorm", "mysql2"],
+  serverExternalPackages: ["typeorm", "mysql2", "sharp"],
 };
 
 export default nextConfig;
