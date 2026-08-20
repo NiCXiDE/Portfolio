@@ -1,0 +1,1244 @@
+﻿node.exe : npm warn Unknown env config "devdir". This will stop working in the next major version of npm. See `npm 
+help npmrc` for supported config options.
+En línea: 1 Carácter: 1
++ & "C:\Program Files\nodejs/node.exe" "C:\Program Files\nodejs/node_mo ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (npm warn Unknow...config options.:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+Ôùç injected env (8) from .env // tip: Ôîü auth for agents [www.vestauth.com]
+{
+  "database": "portfolio",
+  "privacyReconciled": [
+    {
+      "id": "aicore-inventariado",
+      "titleEs": "AICORE IT Specialists ÔÇö inventariado",
+      "titleEn": "AICORE IT Specialists ÔÇö inventariado",
+      "published": true,
+      "status": "completed",
+      "context": "presale",
+      "projectType": "custom-system",
+      "areas": [
+        "ux-ui"
+      ],
+      "entities": [
+        {
+          "id": "confidential-inventariado-client",
+          "role": "client",
+          "name": "Cliente confidencial Inventariado",
+          "visible": false
+        },
+        {
+          "id": "aicore",
+          "role": "employer",
+          "name": "AICORE IT Specialists",
+          "visible": true
+        }
+      ],
+      "decisionConfidential": true,
+      "decisionPublished": true,
+      "sensitiveTitle": true,
+      "inLegacyUiProject": true,
+      "legacyUiProjectPublished": true,
+      "inLegacyUiList": false,
+      "inHomeV2": false,
+      "coverPath": null,
+      "coverExists": false,
+      "resourceCount": 1,
+      "sortOrder": 0,
+      "reconcileBucket": "CONFIDENTIAL_PUBLISHED"
+    },
+    {
+      "id": "aml-casinos",
+      "titleEs": "An├ílisis contra el Lavado de Dinero en Casinos Digitales",
+      "titleEn": "An├ílisis contra el Lavado de Dinero en Casinos Digitales",
+      "published": true,
+      "status": "completed",
+      "context": "client-work",
+      "projectType": "custom-system",
+      "areas": [
+        "ux-ui"
+      ],
+      "entities": [
+        {
+          "id": "confidential-aml-client",
+          "role": "client",
+          "name": "Cliente confidencial AML",
+          "visible": false
+        },
+        {
+          "id": "aicore",
+          "role": "employer",
+          "name": "AICORE IT Specialists",
+          "visible": true
+        }
+      ],
+      "decisionConfidential": true,
+      "decisionPublished": true,
+      "sensitiveTitle": true,
+      "inLegacyUiProject": true,
+      "legacyUiProjectPublished": true,
+      "inLegacyUiList": false,
+      "inHomeV2": false,
+      "coverPath": null,
+      "coverExists": false,
+      "resourceCount": 1,
+      "sortOrder": 0,
+      "reconcileBucket": "CONFIDENTIAL_PUBLISHED"
+    },
+    {
+      "id": "aml-general",
+      "titleEs": "An├ílisis contra el Lavado de Dinero",
+      "titleEn": "An├ílisis contra el Lavado de Dinero",
+      "published": true,
+      "status": "completed",
+      "context": "client-work",
+      "projectType": "custom-system",
+      "areas": [
+        "ux-ui"
+      ],
+      "entities": [
+        {
+          "id": "confidential-aml-client",
+          "role": "client",
+          "name": "Cliente confidencial AML",
+          "visible": false
+        },
+        {
+          "id": "aicore",
+          "role": "employer",
+          "name": "AICORE IT Specialists",
+          "visible": true
+        }
+      ],
+      "decisionConfidential": true,
+      "decisionPublished": true,
+      "sensitiveTitle": true,
+      "inLegacyUiProject": true,
+      "legacyUiProjectPublished": true,
+      "inLegacyUiList": false,
+      "inHomeV2": false,
+      "coverPath": null,
+      "coverExists": false,
+      "resourceCount": 1,
+      "sortOrder": 0,
+      "reconcileBucket": "CONFIDENTIAL_PUBLISHED"
+    },
+    {
+      "id": "asesor-financiero",
+      "titleEs": "Asesor Financiero",
+      "titleEn": "Asesor Financiero",
+      "published": true,
+      "status": "completed",
+      "context": "presale",
+      "projectType": "mobile-app",
+      "areas": [
+        "ux-ui"
+      ],
+      "entities": [
+        {
+          "id": "confidential-asesor-client",
+          "role": "client",
+          "name": "Cliente privado Asesor Financiero",
+          "visible": false
+        }
+      ],
+      "decisionConfidential": true,
+      "decisionPublished": true,
+      "sensitiveTitle": true,
+      "inLegacyUiProject": true,
+      "legacyUiProjectPublished": true,
+      "inLegacyUiList": false,
+      "inHomeV2": false,
+      "coverPath": null,
+      "coverExists": false,
+      "resourceCount": 3,
+      "sortOrder": 0,
+      "reconcileBucket": "CONFIDENTIAL_PUBLISHED"
+    },
+    {
+      "id": "proxi",
+      "titleEs": "Plataforma integral de ventas y pedidos B2B - PROXI",
+      "titleEn": "Plataforma integral de ventas y pedidos B2B - PROXI",
+      "published": false,
+      "status": "completed",
+      "context": "presale",
+      "projectType": "custom-system",
+      "areas": [
+        "ux-ui"
+      ],
+      "entities": [
+        {
+          "id": "proxi",
+          "role": "client",
+          "name": "PROXI",
+          "visible": false
+        },
+        {
+          "id": "aicore",
+          "role": "employer",
+          "name": "AICORE IT Specialists",
+          "visible": true
+        }
+      ],
+      "decisionConfidential": false,
+      "decisionPublished": false,
+      "sensitiveTitle": false,
+      "inLegacyUiProject": true,
+      "legacyUiProjectPublished": true,
+      "inLegacyUiList": false,
+      "inHomeV2": false,
+      "coverPath": null,
+      "coverExists": false,
+      "resourceCount": 0,
+      "sortOrder": 0,
+      "reconcileBucket": "UNPUBLISHED_EXPECTED",
+      "reconcileNote": "4E.0 us├│ PRIVACY_EXCLUDED por mapping legacyÔåÆV2; en V2 published=false (deferred contractual). No es confidential flag ÔÇö es unpublished."
+    },
+    {
+      "id": "confidential-logistics-system",
+      "titleEs": "Sistema de log├¡stica (confidencial)",
+      "titleEn": "Sistema de log├¡stica (confidencial)",
+      "published": false,
+      "status": "completed",
+      "context": "client-work",
+      "projectType": "custom-system",
+      "areas": [
+        "ux-ui"
+      ],
+      "entities": [
+        {
+          "id": "confidential-logistics-client",
+          "role": "client",
+          "name": "Cliente confidencial Log├¡stica",
+          "visible": false
+        },
+        {
+          "id": "aicore",
+          "role": "employer",
+          "name": "AICORE IT Specialists",
+          "visible": true
+        }
+      ],
+      "decisionConfidential": true,
+      "decisionPublished": false,
+      "sensitiveTitle": true,
+      "inLegacyUiProject": false,
+      "legacyUiProjectPublished": null,
+      "inLegacyUiList": false,
+      "inHomeV2": false,
+      "coverPath": null,
+      "coverExists": false,
+      "resourceCount": 0,
+      "sortOrder": 0,
+      "reconcileBucket": "UNPUBLISHED_EXPECTED"
+    },
+    {
+      "id": "microtime",
+      "titleEs": "MICROTIME",
+      "titleEn": "MICROTIME",
+      "published": false,
+      "status": "ongoing",
+      "context": "internal-work",
+      "projectType": "custom-system",
+      "areas": [
+        "graphic",
+        "ux-ui"
+      ],
+      "entities": [
+        {
+          "id": "push",
+          "role": "employer",
+          "name": "PUSH Software",
+          "visible": true
+        }
+      ],
+      "decisionConfidential": false,
+      "decisionPublished": false,
+      "sensitiveTitle": false,
+      "inLegacyUiProject": false,
+      "legacyUiProjectPublished": null,
+      "inLegacyUiList": false,
+      "inHomeV2": false,
+      "coverPath": null,
+      "coverExists": false,
+      "resourceCount": 0,
+      "sortOrder": 0,
+      "reconcileBucket": "UNPUBLISHED_EXPECTED"
+    },
+    {
+      "id": "syllabi",
+      "titleEs": "Syllabi",
+      "titleEn": "Syllabi",
+      "published": false,
+      "status": "completed",
+      "context": "other",
+      "projectType": "web-app",
+      "areas": [
+        "ux-ui"
+      ],
+      "entities": [],
+      "decisionConfidential": false,
+      "decisionPublished": false,
+      "sensitiveTitle": false,
+      "inLegacyUiProject": false,
+      "legacyUiProjectPublished": null,
+      "inLegacyUiList": false,
+      "inHomeV2": false,
+      "coverPath": null,
+      "coverExists": false,
+      "resourceCount": 1,
+      "sortOrder": 0,
+      "reconcileBucket": "UNPUBLISHED_EXPECTED"
+    }
+  ],
+  "proxiClarification": "proxi: V2 published=false (UNPUBLISHED_EXPECTED). Clasificado PRIVACY_EXCLUDED en 4E.0 porque legacy ui_projects.proxi sigue published=true y el mapping legacyÔåÆV2 trata la fila como excluida del target Interfaces ÔÇö NO por flag confidential.",
+  "publicSafe15": [
+    {
+      "id": "adapto-pay",
+      "titleEs": "Billetera Digital - ADAPTO PAY",
+      "titleEn": "Billetera Digital - ADAPTO PAY",
+      "published": true,
+      "status": "completed",
+      "context": "presale",
+      "projectType": "mobile-app",
+      "areas": [
+        "ux-ui"
+      ],
+      "entities": [
+        {
+          "id": "adapto-pay",
+          "role": "client",
+          "name": "ADAPTO PAY",
+          "visible": true
+        },
+        {
+          "id": "aicore",
+          "role": "employer",
+          "name": "AICORE IT Specialists",
+          "visible": true
+        }
+      ],
+      "decisionConfidential": false,
+      "decisionPublished": true,
+      "sensitiveTitle": false,
+      "inLegacyUiProject": true,
+      "legacyUiProjectPublished": true,
+      "inLegacyUiList": false,
+      "inHomeV2": true,
+      "coverPath": null,
+      "coverExists": false,
+      "resourceCount": 3,
+      "sortOrder": 0,
+      "legacyUiProjectId": "adapto-pay",
+      "legacyUiListId": null,
+      "mainVisual": "/assets/interfaces/projects/preventas/adapto-pay/adapto-pay-01.png",
+      "mainVisualExists": true
+    },
+    {
+      "id": "apsmm",
+      "titleEs": "Sistema de gesti├│n ÔÇö APSMM",
+      "titleEn": "Sistema de gesti├│n ÔÇö APSMM",
+      "published": true,
+      "status": "completed",
+      "context": "presale",
+      "projectType": "custom-system",
+      "areas": [
+        "graphic",
+        "ux-ui"
+      ],
+      "entities": [
+        {
+          "id": "apsmm",
+          "role": "client",
+          "name": "APSMM",
+          "visible": true
+        },
+        {
+          "id": "push",
+          "role": "employer",
+          "name": "PUSH Software",
+          "visible": true
+        }
+      ],
+      "decisionConfidential": false,
+      "decisionPublished": true,
+      "sensitiveTitle": false,
+      "inLegacyUiProject": true,
+      "legacyUiProjectPublished": true,
+      "inLegacyUiList": false,
+      "inHomeV2": false,
+      "coverPath": null,
+      "coverExists": false,
+      "resourceCount": 3,
+      "sortOrder": 0,
+      "legacyUiProjectId": "apsmm",
+      "legacyUiListId": null,
+      "mainVisual": "/assets/interfaces/projects/sistemas-a-medida/apsmm/apsmm-01.png",
+      "mainVisualExists": true
+    },
+    {
+      "id": "casiba",
+      "titleEs": "Sistema de Gesti├│n de Unidades de Tratamiento de Aire - CASIBA",
+      "titleEn": "Sistema de Gesti├│n de Unidades de Tratamiento de Aire - CASIBA",
+      "published": true,
+      "status": "completed",
+      "context": "presale",
+      "projectType": "custom-system",
+      "areas": [
+        "ux-ui"
+      ],
+      "entities": [
+        {
+          "id": "casiba",
+          "role": "client",
+          "name": "CASIBA",
+          "visible": true
+        },
+        {
+          "id": "aicore",
+          "role": "employer",
+          "name": "AICORE IT Specialists",
+          "visible": true
+        }
+      ],
+      "decisionConfidential": false,
+      "decisionPublished": true,
+      "sensitiveTitle": false,
+      "inLegacyUiProject": true,
+      "legacyUiProjectPublished": true,
+      "inLegacyUiList": false,
+      "inHomeV2": true,
+      "coverPath": null,
+      "coverExists": false,
+      "resourceCount": 1,
+      "sortOrder": 0,
+      "legacyUiProjectId": "casiba",
+      "legacyUiListId": null,
+      "mainVisual": "/assets/interfaces/projects/sistemas-a-medida/casiba/casiba-01.png",
+      "mainVisualExists": true
+    },
+    {
+      "id": "clearwater",
+      "titleEs": "Generaci├│n de Informes para compra e inversi├│n - CLEARWATER",
+      "titleEn": "Generaci├│n de Informes para compra e inversi├│n - CLEARWATER",
+      "published": true,
+      "status": "completed",
+      "context": "presale",
+      "projectType": "custom-system",
+      "areas": [
+        "ux-ui"
+      ],
+      "entities": [
+        {
+          "id": "clearwater",
+          "role": "client",
+          "name": "CLEARWATER",
+          "visible": true
+        },
+        {
+          "id": "aicore",
+          "role": "employer",
+          "name": "AICORE IT Specialists",
+          "visible": true
+        }
+      ],
+      "decisionConfidential": false,
+      "decisionPublished": true,
+      "sensitiveTitle": false,
+      "inLegacyUiProject": true,
+      "legacyUiProjectPublished": true,
+      "inLegacyUiList": false,
+      "inHomeV2": true,
+      "coverPath": null,
+      "coverExists": false,
+      "resourceCount": 1,
+      "sortOrder": 0,
+      "legacyUiProjectId": "clearwater",
+      "legacyUiListId": null,
+      "mainVisual": "/assets/interfaces/projects/sistemas-a-medida/clearwater/clearwater-01.png",
+      "mainVisualExists": true
+    },
+    {
+      "id": "cloronor-trading",
+      "titleEs": "Cloronor ÔÇö Plataforma de inversi├│n",
+      "titleEn": "Cloronor ÔÇö Plataforma de inversi├│n",
+      "published": true,
+      "status": "completed",
+      "context": "presale",
+      "projectType": "web-app",
+      "areas": [
+        "ux-ui"
+      ],
+      "entities": [
+        {
+          "id": "cloronor",
+          "role": "client",
+          "name": "Cloronor",
+          "visible": true
+        },
+        {
+          "id": "aicore",
+          "role": "intermediary",
+          "name": "AICORE IT Specialists",
+          "visible": true
+        }
+      ],
+      "decisionConfidential": false,
+      "decisionPublished": true,
+      "sensitiveTitle": false,
+      "inLegacyUiProject": false,
+      "legacyUiProjectPublished": null,
+      "inLegacyUiList": true,
+      "inHomeV2": true,
+      "coverPath": null,
+      "coverExists": false,
+      "resourceCount": 0,
+      "sortOrder": 0,
+      "legacyUiProjectId": null,
+      "legacyUiListId": "cloronor-trading",
+      "mainVisual": null,
+      "mainVisualExists": false
+    },
+    {
+      "id": "cms-portfolio",
+      "titleEs": "Sistema de gesti├│n de contenido del portfolio",
+      "titleEn": "Sistema de gesti├│n de contenido del portfolio",
+      "published": true,
+      "status": "ongoing",
+      "context": "personal",
+      "projectType": "custom-system",
+      "areas": [
+        "ux-ui"
+      ],
+      "entities": [],
+      "decisionConfidential": false,
+      "decisionPublished": true,
+      "sensitiveTitle": false,
+      "inLegacyUiProject": true,
+      "legacyUiProjectPublished": true,
+      "inLegacyUiList": false,
+      "inHomeV2": false,
+      "coverPath": null,
+      "coverExists": false,
+      "resourceCount": 1,
+      "sortOrder": 0,
+      "legacyUiProjectId": "cms-portfolio",
+      "legacyUiListId": null,
+      "mainVisual": "/assets/interfaces/projects/proyectos-personales/cms-portfolio/cms-portfolio-01.png",
+      "mainVisualExists": true
+    },
+    {
+      "id": "concitar",
+      "titleEs": "Concitar",
+      "titleEn": "Concitar",
+      "published": true,
+      "status": "completed",
+      "context": "internal-work",
+      "projectType": "web-app",
+      "areas": [
+        "graphic",
+        "ux-ui"
+      ],
+      "entities": [
+        {
+          "id": "push",
+          "role": "employer",
+          "name": "PUSH Software",
+          "visible": true
+        }
+      ],
+      "decisionConfidential": false,
+      "decisionPublished": true,
+      "sensitiveTitle": false,
+      "inLegacyUiProject": false,
+      "legacyUiProjectPublished": null,
+      "inLegacyUiList": false,
+      "inHomeV2": true,
+      "coverPath": null,
+      "coverExists": false,
+      "resourceCount": 0,
+      "sortOrder": 0,
+      "legacyUiProjectId": null,
+      "legacyUiListId": null,
+      "mainVisual": null,
+      "mainVisualExists": false
+    },
+    {
+      "id": "mental-training-tech-24-5",
+      "titleEs": "Mental Training Tech 24.5",
+      "titleEn": "Mental Training Tech 24.5",
+      "published": true,
+      "status": "completed",
+      "context": "presale",
+      "projectType": "mobile-app",
+      "areas": [
+        "ux-ui"
+      ],
+      "entities": [
+        {
+          "id": "aicore",
+          "role": "employer",
+          "name": "AICORE IT Specialists",
+          "visible": true
+        }
+      ],
+      "decisionConfidential": false,
+      "decisionPublished": true,
+      "sensitiveTitle": false,
+      "inLegacyUiProject": false,
+      "legacyUiProjectPublished": null,
+      "inLegacyUiList": false,
+      "inHomeV2": true,
+      "coverPath": null,
+      "coverExists": false,
+      "resourceCount": 0,
+      "sortOrder": 0,
+      "legacyUiProjectId": null,
+      "legacyUiListId": null,
+      "mainVisual": null,
+      "mainVisualExists": false
+    },
+    {
+      "id": "mikrobiol",
+      "titleEs": "Tienda de Insumos Medicinales - MIKROBIOL",
+      "titleEn": "Tienda de Insumos Medicinales - MIKROBIOL",
+      "published": true,
+      "status": "completed",
+      "context": "presale",
+      "projectType": "web-app",
+      "areas": [
+        "ux-ui"
+      ],
+      "entities": [
+        {
+          "id": "mikrobiol",
+          "role": "client",
+          "name": "MIKROBIOL",
+          "visible": true
+        },
+        {
+          "id": "aicore",
+          "role": "employer",
+          "name": "AICORE IT Specialists",
+          "visible": true
+        }
+      ],
+      "decisionConfidential": false,
+      "decisionPublished": true,
+      "sensitiveTitle": false,
+      "inLegacyUiProject": true,
+      "legacyUiProjectPublished": true,
+      "inLegacyUiList": false,
+      "inHomeV2": false,
+      "coverPath": null,
+      "coverExists": false,
+      "resourceCount": 1,
+      "sortOrder": 0,
+      "legacyUiProjectId": "mikrobiol",
+      "legacyUiListId": null,
+      "mainVisual": "/assets/interfaces/projects/sistemas-a-medida/mikrobiol/mikrobiol-01.png",
+      "mainVisualExists": true
+    },
+    {
+      "id": "omnigroup",
+      "titleEs": "Omnigroup ÔÇö backoffice y t├│tem",
+      "titleEn": "Omnigroup ÔÇö backoffice y t├│tem",
+      "published": true,
+      "status": "completed",
+      "context": "presale",
+      "projectType": "custom-system",
+      "areas": [
+        "ux-ui"
+      ],
+      "entities": [
+        {
+          "id": "omnigroup",
+          "role": "client",
+          "name": "Omnigroup",
+          "visible": true
+        },
+        {
+          "id": "aicore",
+          "role": "employer",
+          "name": "AICORE IT Specialists",
+          "visible": true
+        }
+      ],
+      "decisionConfidential": false,
+      "decisionPublished": true,
+      "sensitiveTitle": false,
+      "inLegacyUiProject": true,
+      "legacyUiProjectPublished": true,
+      "inLegacyUiList": false,
+      "inHomeV2": true,
+      "coverPath": null,
+      "coverExists": false,
+      "resourceCount": 6,
+      "sortOrder": 0,
+      "legacyUiProjectId": "omnigroup",
+      "legacyUiListId": null,
+      "mainVisual": "/assets/interfaces/projects/preventas/omnigroup/web-admin.png",
+      "mainVisualExists": true
+    },
+    {
+      "id": "repuestos-carlitos",
+      "titleEs": "Landing & Tienda - Repuestos Carlitos",
+      "titleEn": "Landing & Tienda - Repuestos Carlitos",
+      "published": true,
+      "status": "completed",
+      "context": "client-work",
+      "projectType": "web-app",
+      "areas": [
+        "graphic",
+        "ux-ui"
+      ],
+      "entities": [
+        {
+          "id": "repuestos-carlitos",
+          "role": "client",
+          "name": "Repuestos Carlitos",
+          "visible": true
+        },
+        {
+          "id": "push",
+          "role": "employer",
+          "name": "PUSH Software",
+          "visible": true
+        }
+      ],
+      "decisionConfidential": false,
+      "decisionPublished": true,
+      "sensitiveTitle": false,
+      "inLegacyUiProject": false,
+      "legacyUiProjectPublished": null,
+      "inLegacyUiList": false,
+      "inHomeV2": true,
+      "coverPath": null,
+      "coverExists": false,
+      "resourceCount": 0,
+      "sortOrder": 0,
+      "legacyUiProjectId": null,
+      "legacyUiListId": "carlitos",
+      "mainVisual": null,
+      "mainVisualExists": false
+    },
+    {
+      "id": "savil",
+      "titleEs": "Savil",
+      "titleEn": "Savil",
+      "published": true,
+      "status": "completed",
+      "context": "presale",
+      "projectType": "mobile-app",
+      "areas": [
+        "ux-ui"
+      ],
+      "entities": [
+        {
+          "id": "savil",
+          "role": "client",
+          "name": "Savil",
+          "visible": true
+        }
+      ],
+      "decisionConfidential": false,
+      "decisionPublished": true,
+      "sensitiveTitle": false,
+      "inLegacyUiProject": true,
+      "legacyUiProjectPublished": true,
+      "inLegacyUiList": false,
+      "inHomeV2": false,
+      "coverPath": null,
+      "coverExists": false,
+      "resourceCount": 3,
+      "sortOrder": 0,
+      "legacyUiProjectId": "savil",
+      "legacyUiListId": null,
+      "mainVisual": "/assets/interfaces/projects/apps-mobile/savil/app-login.png",
+      "mainVisualExists": true
+    },
+    {
+      "id": "simaas-marketplace",
+      "titleEs": "Marketplace de Frutas y Verduras",
+      "titleEn": "Marketplace de Frutas y Verduras",
+      "published": true,
+      "status": "completed",
+      "context": "presale",
+      "projectType": "web-app",
+      "areas": [
+        "ux-ui"
+      ],
+      "entities": [
+        {
+          "id": "orbita-l-b",
+          "role": "intermediary",
+          "name": "├ôrbita L╬öB",
+          "visible": true
+        }
+      ],
+      "decisionConfidential": false,
+      "decisionPublished": true,
+      "sensitiveTitle": false,
+      "inLegacyUiProject": false,
+      "legacyUiProjectPublished": null,
+      "inLegacyUiList": false,
+      "inHomeV2": false,
+      "coverPath": null,
+      "coverExists": false,
+      "resourceCount": 0,
+      "sortOrder": 0,
+      "legacyUiProjectId": null,
+      "legacyUiListId": "simaas",
+      "mainVisual": null,
+      "mainVisualExists": false
+    },
+    {
+      "id": "taily",
+      "titleEs": "Taily",
+      "titleEn": "Taily",
+      "published": true,
+      "status": "ongoing",
+      "context": "internal-work",
+      "projectType": "mobile-app",
+      "areas": [
+        "graphic",
+        "ux-ui"
+      ],
+      "entities": [
+        {
+          "id": "push",
+          "role": "employer",
+          "name": "PUSH Software",
+          "visible": true
+        }
+      ],
+      "decisionConfidential": false,
+      "decisionPublished": true,
+      "sensitiveTitle": false,
+      "inLegacyUiProject": false,
+      "legacyUiProjectPublished": null,
+      "inLegacyUiList": false,
+      "inHomeV2": true,
+      "coverPath": null,
+      "coverExists": false,
+      "resourceCount": 0,
+      "sortOrder": 0,
+      "legacyUiProjectId": null,
+      "legacyUiListId": null,
+      "mainVisual": null,
+      "mainVisualExists": false
+    },
+    {
+      "id": "templeton-digital-transformation-assessment",
+      "titleEs": "Sistema de Autodiagn├│stico Transformaci├│n Digital",
+      "titleEn": "Sistema de Autodiagn├│stico Transformaci├│n Digital",
+      "published": true,
+      "status": "completed",
+      "context": "presale",
+      "projectType": "custom-system",
+      "areas": [
+        "ux-ui"
+      ],
+      "entities": [
+        {
+          "id": "templeton-mathews",
+          "role": "client",
+          "name": "Templeton & Mathews",
+          "visible": true
+        },
+        {
+          "id": "aicore",
+          "role": "intermediary",
+          "name": "AICORE IT Specialists",
+          "visible": true
+        }
+      ],
+      "decisionConfidential": false,
+      "decisionPublished": true,
+      "sensitiveTitle": false,
+      "inLegacyUiProject": false,
+      "legacyUiProjectPublished": null,
+      "inLegacyUiList": false,
+      "inHomeV2": true,
+      "coverPath": null,
+      "coverExists": false,
+      "resourceCount": 0,
+      "sortOrder": 0,
+      "legacyUiProjectId": null,
+      "legacyUiListId": "templeton",
+      "mainVisual": null,
+      "mainVisualExists": false
+    }
+  ],
+  "noResources8": [
+    {
+      "id": "cloronor-trading",
+      "titleEs": "Cloronor ÔÇö Plataforma de inversi├│n",
+      "legacyUiProject": null,
+      "legacyUiList": {
+        "id": "cloronor-trading",
+        "logo": "/assets/interfaces/projects/logclor-2019-logo.png",
+        "wordmark": null
+      },
+      "v2Cover": null,
+      "v2CoverExists": false,
+      "diskCandidates": [],
+      "diskCandidateCount": 0,
+      "classification": "COVER_ONLY_AVAILABLE"
+    },
+    {
+      "id": "concitar",
+      "titleEs": "Concitar",
+      "legacyUiProject": null,
+      "legacyUiList": null,
+      "v2Cover": null,
+      "v2CoverExists": false,
+      "diskCandidates": [],
+      "diskCandidateCount": 0,
+      "classification": "NO_VISUAL_RESOURCE"
+    },
+    {
+      "id": "mental-training-tech-24-5",
+      "titleEs": "Mental Training Tech 24.5",
+      "legacyUiProject": null,
+      "legacyUiList": null,
+      "v2Cover": null,
+      "v2CoverExists": false,
+      "diskCandidates": [],
+      "diskCandidateCount": 0,
+      "classification": "NO_VISUAL_RESOURCE"
+    },
+    {
+      "id": "repuestos-carlitos",
+      "titleEs": "Landing & Tienda - Repuestos Carlitos",
+      "legacyUiProject": null,
+      "legacyUiList": {
+        "id": "carlitos",
+        "logo": null,
+        "wordmark": null
+      },
+      "v2Cover": null,
+      "v2CoverExists": false,
+      "diskCandidates": [],
+      "diskCandidateCount": 0,
+      "classification": "NO_VISUAL_RESOURCE"
+    },
+    {
+      "id": "simaas-marketplace",
+      "titleEs": "Marketplace de Frutas y Verduras",
+      "legacyUiProject": null,
+      "legacyUiList": {
+        "id": "simaas",
+        "logo": "/assets/interfaces/brand/vector-2.svg",
+        "wordmark": null
+      },
+      "v2Cover": null,
+      "v2CoverExists": false,
+      "diskCandidates": [],
+      "diskCandidateCount": 0,
+      "classification": "COVER_ONLY_AVAILABLE"
+    },
+    {
+      "id": "taily",
+      "titleEs": "Taily",
+      "legacyUiProject": null,
+      "legacyUiList": null,
+      "v2Cover": null,
+      "v2CoverExists": false,
+      "diskCandidates": [],
+      "diskCandidateCount": 0,
+      "classification": "NO_VISUAL_RESOURCE"
+    },
+    {
+      "id": "templeton-digital-transformation-assessment",
+      "titleEs": "Sistema de Autodiagn├│stico Transformaci├│n Digital",
+      "legacyUiProject": null,
+      "legacyUiList": {
+        "id": "templeton",
+        "logo": null,
+        "wordmark": "Templeton & Mathews"
+      },
+      "v2Cover": null,
+      "v2CoverExists": false,
+      "diskCandidates": [],
+      "diskCandidateCount": 0,
+      "classification": "NO_VISUAL_RESOURCE"
+    }
+  ],
+  "detailReadiness": [
+    {
+      "id": "adapto-pay",
+      "titleEs": "Billetera Digital - ADAPTO PAY",
+      "resourceCount": 3,
+      "readiness": "DETAIL_READY",
+      "reason": "3 project_resources ÔÇö carousel viable"
+    },
+    {
+      "id": "apsmm",
+      "titleEs": "Sistema de gesti├│n ÔÇö APSMM",
+      "resourceCount": 3,
+      "readiness": "DETAIL_READY",
+      "reason": "3 project_resources ÔÇö carousel viable"
+    },
+    {
+      "id": "casiba",
+      "titleEs": "Sistema de Gesti├│n de Unidades de Tratamiento de Aire - CASIBA",
+      "resourceCount": 1,
+      "readiness": "LISTING_ONLY_RECOMMENDED",
+      "reason": "1 resource ÔÇö modal aporta poco vs listing+click"
+    },
+    {
+      "id": "clearwater",
+      "titleEs": "Generaci├│n de Informes para compra e inversi├│n - CLEARWATER",
+      "resourceCount": 1,
+      "readiness": "LISTING_ONLY_RECOMMENDED",
+      "reason": "1 resource ÔÇö modal aporta poco vs listing+click"
+    },
+    {
+      "id": "cloronor-trading",
+      "titleEs": "Cloronor ÔÇö Plataforma de inversi├│n",
+      "resourceCount": 0,
+      "readiness": "NO_PUBLIC_DETAIL",
+      "reason": "sin visual suficiente"
+    },
+    {
+      "id": "cms-portfolio",
+      "titleEs": "Sistema de gesti├│n de contenido del portfolio",
+      "resourceCount": 1,
+      "readiness": "LISTING_ONLY_RECOMMENDED",
+      "reason": "1 resource ÔÇö modal aporta poco vs listing+click"
+    },
+    {
+      "id": "concitar",
+      "titleEs": "Concitar",
+      "resourceCount": 0,
+      "readiness": "NO_PUBLIC_DETAIL",
+      "reason": "sin visual suficiente"
+    },
+    {
+      "id": "mental-training-tech-24-5",
+      "titleEs": "Mental Training Tech 24.5",
+      "resourceCount": 0,
+      "readiness": "NO_PUBLIC_DETAIL",
+      "reason": "sin visual suficiente"
+    },
+    {
+      "id": "mikrobiol",
+      "titleEs": "Tienda de Insumos Medicinales - MIKROBIOL",
+      "resourceCount": 1,
+      "readiness": "LISTING_ONLY_RECOMMENDED",
+      "reason": "1 resource ÔÇö modal aporta poco vs listing+click"
+    },
+    {
+      "id": "omnigroup",
+      "titleEs": "Omnigroup ÔÇö backoffice y t├│tem",
+      "resourceCount": 6,
+      "readiness": "DETAIL_READY",
+      "reason": "6 project_resources ÔÇö carousel viable"
+    },
+    {
+      "id": "repuestos-carlitos",
+      "titleEs": "Landing & Tienda - Repuestos Carlitos",
+      "resourceCount": 0,
+      "readiness": "NO_PUBLIC_DETAIL",
+      "reason": "sin visual suficiente"
+    },
+    {
+      "id": "savil",
+      "titleEs": "Savil",
+      "resourceCount": 3,
+      "readiness": "DETAIL_READY",
+      "reason": "3 project_resources ÔÇö carousel viable"
+    },
+    {
+      "id": "simaas-marketplace",
+      "titleEs": "Marketplace de Frutas y Verduras",
+      "resourceCount": 0,
+      "readiness": "NO_PUBLIC_DETAIL",
+      "reason": "sin visual suficiente"
+    },
+    {
+      "id": "taily",
+      "titleEs": "Taily",
+      "resourceCount": 0,
+      "readiness": "NO_PUBLIC_DETAIL",
+      "reason": "sin visual suficiente"
+    },
+    {
+      "id": "templeton-digital-transformation-assessment",
+      "titleEs": "Sistema de Autodiagn├│stico Transformaci├│n Digital",
+      "resourceCount": 0,
+      "readiness": "NO_PUBLIC_DETAIL",
+      "reason": "sin visual suficiente"
+    }
+  ],
+  "uiListItemsMapping": [
+    {
+      "legacyId": "push-landing",
+      "titleEs": "Landing - PUSH Software",
+      "titleEn": "Landing - PUSH Software",
+      "v2ProjectId": null,
+      "mapping": "EXPECTED_DISCARDED",
+      "discardReason": "Landing promocional ÔÇö deprecated list surface; Home/Entity flags en su lugar",
+      "inPublicSafe15": false
+    },
+    {
+      "legacyId": "orbita-landing",
+      "titleEs": "Landing - ├ôrbita L╬öB",
+      "titleEn": "Landing - ├ôrbita L╬öB",
+      "v2ProjectId": null,
+      "mapping": "EXPECTED_DISCARDED",
+      "discardReason": "Landing promocional ÔÇö deprecated list surface; Home/Entity flags en su lugar",
+      "inPublicSafe15": false
+    },
+    {
+      "legacyId": "ludica-landing",
+      "titleEs": "Landing - L├║dica Tech",
+      "titleEn": "Landing - L├║dica Tech",
+      "v2ProjectId": null,
+      "mapping": "EXPECTED_DISCARDED",
+      "discardReason": "Landing promocional ÔÇö deprecated list surface; Home/Entity flags en su lugar",
+      "inPublicSafe15": false
+    },
+    {
+      "legacyId": "carlitos",
+      "titleEs": "Landing & Tienda - Repuestos Carlitos",
+      "titleEn": "Landing & Store - Repuestos Carlitos",
+      "v2ProjectId": "repuestos-carlitos",
+      "mapping": "REPLACED_BY_V2_PROJECT",
+      "discardReason": null,
+      "inPublicSafe15": true
+    },
+    {
+      "legacyId": "simaas",
+      "titleEs": "Marketplace de Frutas y Verduras",
+      "titleEn": "Fruit & Vegetable Marketplace",
+      "v2ProjectId": "simaas-marketplace",
+      "mapping": "REPLACED_BY_V2_PROJECT",
+      "discardReason": null,
+      "inPublicSafe15": true
+    },
+    {
+      "legacyId": "b2b",
+      "titleEs": "Plataforma integral de ventas y pedidos B2B",
+      "titleEn": "Integrated B2B sales & orders platform",
+      "v2ProjectId": null,
+      "mapping": "EXPECTED_DISCARDED",
+      "discardReason": "Duplica concepto PROXI (ui_projects.proxi); superficie list deprecated",
+      "inPublicSafe15": false
+    },
+    {
+      "legacyId": "templeton",
+      "titleEs": "Sistema de Autodiagn├│stico Transformaci├│n Digital",
+      "titleEn": "Digital Transformation Self-Assessment System",
+      "v2ProjectId": "templeton-digital-transformation-assessment",
+      "mapping": "REPLACED_BY_V2_PROJECT",
+      "discardReason": null,
+      "inPublicSafe15": true
+    },
+    {
+      "legacyId": "cloronor-trading",
+      "titleEs": "Sistema de trading criptomonedas para CLORONOR",
+      "titleEn": "Cryptocurrency trading system for CLORONOR",
+      "v2ProjectId": "cloronor-trading",
+      "mapping": "REPLACED_BY_V2_PROJECT",
+      "discardReason": null,
+      "inPublicSafe15": true
+    }
+  ],
+  "homeOverlap": [
+    {
+      "id": "adapto-pay",
+      "titleEs": "Billetera Digital - ADAPTO PAY",
+      "homeOrder": 0,
+      "sameCanonicalId": true
+    },
+    {
+      "id": "casiba",
+      "titleEs": "Sistema de Gesti├│n de Unidades de Tratamiento de Aire - CASIBA",
+      "homeOrder": 1,
+      "sameCanonicalId": true
+    },
+    {
+      "id": "clearwater",
+      "titleEs": "Generaci├│n de Informes para compra e inversi├│n - CLEARWATER",
+      "homeOrder": 2,
+      "sameCanonicalId": true
+    },
+    {
+      "id": "cloronor-trading",
+      "titleEs": "Cloronor ÔÇö Plataforma de inversi├│n",
+      "homeOrder": 3,
+      "sameCanonicalId": true
+    },
+    {
+      "id": "concitar",
+      "titleEs": "Concitar",
+      "homeOrder": 8,
+      "sameCanonicalId": true
+    },
+    {
+      "id": "mental-training-tech-24-5",
+      "titleEs": "Mental Training Tech 24.5",
+      "homeOrder": 6,
+      "sameCanonicalId": true
+    },
+    {
+      "id": "omnigroup",
+      "titleEs": "Omnigroup ÔÇö backoffice y t├│tem",
+      "homeOrder": 7,
+      "sameCanonicalId": true
+    },
+    {
+      "id": "repuestos-carlitos",
+      "titleEs": "Landing & Tienda - Repuestos Carlitos",
+      "homeOrder": 9,
+      "sameCanonicalId": true
+    },
+    {
+      "id": "taily",
+      "titleEs": "Taily",
+      "homeOrder": 11,
+      "sameCanonicalId": true
+    },
+    {
+      "id": "templeton-digital-transformation-assessment",
+      "titleEs": "Sistema de Autodiagn├│stico Transformaci├│n Digital",
+      "homeOrder": 10,
+      "sameCanonicalId": true
+    }
+  ],
+  "privacyBlockedOnHome": [
+    {
+      "id": "sessions",
+      "inHomeV2": false,
+      "published": true,
+      "confidential": true
+    },
+    {
+      "id": "aicore-inventariado",
+      "inHomeV2": false,
+      "published": true,
+      "confidential": true
+    },
+    {
+      "id": "aml-casinos",
+      "inHomeV2": false,
+      "published": true,
+      "confidential": true
+    },
+    {
+      "id": "aml-general",
+      "inHomeV2": false,
+      "published": true,
+      "confidential": true
+    },
+    {
+      "id": "asesor-financiero",
+      "inHomeV2": false,
+      "published": true,
+      "confidential": true
+    }
+  ]
+}

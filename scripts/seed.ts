@@ -2,7 +2,7 @@ import { config as loadEnv } from "dotenv";
 import { hashSync } from "bcryptjs";
 import { readFileSync } from "node:fs";
 import { resolve } from "node:path";
-import { createDataSource } from "../src/db/data-source";
+import { createDataSource, portfolioLegacyEntities } from "../src/db/data-source";
 import {
   AdminUserEntity,
   AdminAuditLogEntity,
@@ -38,6 +38,7 @@ import {
 } from "../src/db/entities";
 import { slugifyBrand } from "../src/lib/brands";
 import { normalizeUiSlides } from "../src/lib/ui-slides";
+import { requireDestructiveDbApproval, isDirectScriptRun } from "./sync-schema";
 
 loadEnv({ path: resolve(process.cwd(), ".env") });
 
@@ -141,14 +142,17 @@ function seedGraphics(
         .filter(Boolean);
       return items.length ? items : null;
     })(),
+    brandId: raw.brandId ? String(raw.brandId) : null,
     sortOrder,
     // pending stays in DB but unpublished from public grids via section filter
     published: section !== "pending" ? true : false,
   }));
 }
 
-async function main() {
-  const ds = createDataSource(true);
+export async function main() {
+  requireDestructiveDbApproval("seed");
+
+  const ds = createDataSource(true, portfolioLegacyEntities);
   await ds.initialize();
 
   console.log("Connected. Synchronizing schema & seeding…");
@@ -171,8 +175,8 @@ async function main() {
     noteEn: "smoke signals or yelling at me on the street also works",
     poweredBy: "POWERED BY PUSH",
     carouselIntervalMs: 2000,
-    graphicPreviewLimit: 7,
-    interfacesPreviewLimit: 7,
+    graphicPreviewLimit: 5,
+    interfacesPreviewLimit: 3,
     homeLayout: null,
   };
   await ds.getRepository(SiteSettingsEntity).save(settings);
@@ -317,6 +321,8 @@ async function main() {
     "lúdica tech": "ludica",
     "órbita lΔb": "orbita",
     "orbita lab": "orbita",
+    "clúster de innovación tecnológica formosa": "citf",
+    "cluster de innovacion tecnologica formosa": "citf",
   };
   for (const item of testimonials) {
     const key = item.company.name.toLowerCase();
@@ -334,6 +340,49 @@ async function main() {
       createdAt: new Date(),
     });
   }
+
+  const portfolioBrands: Array<{
+    id: string;
+    name: string;
+    logoPath: string | null;
+    href: string | null;
+  }> = [
+    {
+      id: "apsmm",
+      name: "APSMM",
+      logoPath: "/assets/grafico/logos/apsmm.png",
+      href: null,
+    },
+    {
+      id: "seyier",
+      name: "Seyier",
+      logoPath: "/assets/grafico/logos/seyier.svg",
+      href: null,
+    },
+    {
+      id: "citf",
+      name: "Clúster de Innovación Tecnológica Formosa",
+      logoPath: "/assets/grafico/logos/vector-52.svg",
+      href: null,
+    },
+  ];
+  for (const b of portfolioBrands) {
+    if (brandRows.some((r) => r.id === b.id)) continue;
+    brandRows.push({
+      id: b.id,
+      name: b.name,
+      logoPath: b.logoPath,
+      logoAssetId: null,
+      href: b.href,
+      sortOrder: brandRows.length,
+      published: true,
+      createdAt: new Date(),
+    });
+  }
+  brandByName.set(
+    "clúster de innovación tecnológica formosa",
+    "citf",
+  );
   await ds.getRepository(BrandEntity).save(brandRows);
 
   await ds.getRepository(NamedListItemEntity).save([
@@ -354,6 +403,7 @@ async function main() {
       companyHref: item.company.href,
       companyBrandId:
         brandByName.get(item.company.name.toLowerCase()) ?? null,
+      entityId: null,
       linkLabel: null,
       hidden: Boolean(item.hidden),
       sortOrder,
@@ -384,6 +434,7 @@ async function main() {
       title: Localized;
       year?: string;
       meta?: Localized;
+      brandId?: string | null;
     }>
   >("content/grafico/brand-manuals.json");
 
@@ -394,6 +445,7 @@ async function main() {
     title: item.title,
     year: item.year ?? null,
     meta: item.meta ?? null,
+    brandId: item.brandId ? String(item.brandId) : null,
     sortOrder,
     published: true,
   }));
@@ -412,6 +464,7 @@ async function main() {
       period?: Localized | null;
       duration?: Localized | null;
       ctaKind?: UiProjectRow["ctaKind"];
+      brandId?: string | null;
     }>
   >("content/interfaces/projects.json");
 
@@ -427,6 +480,7 @@ async function main() {
     period: item.period ?? null,
     duration: item.duration ?? null,
     ctaKind: item.ctaKind ?? null,
+    brandId: item.brandId ? String(item.brandId) : null,
     sortOrder,
     published: true,
   }));
@@ -479,7 +533,9 @@ async function main() {
   await ds.destroy();
 }
 
-main().catch((err) => {
-  console.error(err);
-  process.exit(1);
-});
+if (isDirectScriptRun(["seed.ts"], import.meta.url)) {
+  main().catch((err) => {
+    console.error(err);
+    process.exit(1);
+  });
+}

@@ -1,25 +1,30 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import Link from "next/link";
 import type {
   MarqueeDisplayMode,
   MarqueeDirection,
   MarqueeSectionConfig,
 } from "@/lib/home-layout";
 import type { NamedListItemContent } from "@/lib/content";
+import type { Locale } from "@/i18n/config";
 
 type Props = {
   items: NamedListItemContent[];
   config: MarqueeSectionConfig;
+  locale: Locale;
   className?: string;
 };
 
 function MarqueeItem({
   item,
   displayMode,
+  locale,
 }: {
   item: NamedListItemContent;
   displayMode: MarqueeDisplayMode;
+  locale: Locale;
 }) {
   const showLogo =
     (displayMode === "logo" || displayMode === "both") && Boolean(item.logo);
@@ -28,8 +33,8 @@ function MarqueeItem({
     displayMode === "both" ||
     (displayMode === "logo" && !item.logo);
 
-  if (displayMode === "both" && showLogo) {
-    return (
+  const body =
+    displayMode === "both" && showLogo ? (
       <span className="marquee-item marquee-item--stack">
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img src={item.logo!} alt="" className="marquee-logo" />
@@ -37,22 +42,46 @@ function MarqueeItem({
           <span className="marquee-label">{item.label}</span>
         ) : null}
       </span>
+    ) : (
+      <span className="marquee-item">
+        {showLogo ? (
+          // eslint-disable-next-line @next/next/no-img-element
+          <img
+            src={item.logo!}
+            alt={showName ? "" : item.label}
+            className="marquee-logo"
+          />
+        ) : null}
+        {showName ? <span className="marquee-label">{item.label}</span> : null}
+      </span>
+    );
+
+  if (item.hubHref) {
+    const external = /^https?:\/\//i.test(item.hubHref);
+    if (external) {
+      return (
+        <a
+          href={item.hubHref}
+          target="_blank"
+          rel="noreferrer"
+          className="marquee-link cursor-nav interactive-ink"
+        >
+          {body}
+        </a>
+      );
+    }
+    return (
+      <Link
+        href={`/${locale}${item.hubHref}`}
+        className="marquee-link cursor-nav interactive-ink"
+      >
+        {body}
+      </Link>
     );
   }
 
-  return (
-    <span className="marquee-item">
-      {showLogo ? (
-        // eslint-disable-next-line @next/next/no-img-element
-        <img
-          src={item.logo!}
-          alt={showName ? "" : item.label}
-          className="marquee-logo"
-        />
-      ) : null}
-      {showName ? <span className="marquee-label">{item.label}</span> : null}
-    </span>
-  );
+  // Non-clickable chips: default cursor (no grab — drag not implemented).
+  return <span className="marquee-item-wrap">{body}</span>;
 }
 
 function MarqueeTrack({
@@ -60,23 +89,33 @@ function MarqueeTrack({
   displayMode,
   direction,
   speed,
+  locale,
 }: {
   items: NamedListItemContent[];
   displayMode: MarqueeDisplayMode;
   direction: MarqueeDirection;
   speed: number;
+  locale: Locale;
 }) {
   const trackRef = useRef<HTMLDivElement>(null);
   const [duration, setDuration] = useState(40);
+  const [shiftPx, setShiftPx] = useState(0);
 
   useEffect(() => {
     const el = trackRef.current;
     if (!el) return;
 
     const measure = () => {
-      const half = el.scrollWidth / 2;
-      if (half <= 0) return;
-      setDuration(Math.max(8, half / Math.max(speed, 1)));
+      const kids = el.children;
+      const n = items.length;
+      if (n <= 0 || kids.length < n * 2) return;
+      const first = kids[0] as HTMLElement;
+      const mid = kids[n] as HTMLElement;
+      // Exact width of one sequence (includes trailing spacing into the copy).
+      const shift = mid.offsetLeft - first.offsetLeft;
+      if (shift <= 0) return;
+      setShiftPx(shift);
+      setDuration(Math.max(8, shift / Math.max(speed, 1)));
     };
 
     measure();
@@ -87,6 +126,7 @@ function MarqueeTrack({
 
   if (!items.length) return null;
 
+  // Presentational duplication only — domain lists stay unduplicated.
   const loop = [...items, ...items];
 
   return (
@@ -96,6 +136,7 @@ function MarqueeTrack({
         className="marquee-track"
         style={{
           ["--marquee-duration" as string]: `${duration}s`,
+          ["--marquee-shift" as string]: shiftPx > 0 ? `${shiftPx}px` : "50%",
         }}
       >
         {loop.map((item, i) => (
@@ -103,6 +144,7 @@ function MarqueeTrack({
             key={`${item.id}-${i}`}
             item={item}
             displayMode={displayMode}
+            locale={locale}
           />
         ))}
       </div>
@@ -120,7 +162,12 @@ function splitLines(items: NamedListItemContent[], lines: number) {
   return buckets;
 }
 
-export function InfiniteMarquee({ items, config, className = "" }: Props) {
+export function InfiniteMarquee({
+  items,
+  config,
+  locale,
+  className = "",
+}: Props) {
   if (!items.length) return null;
 
   const lines = splitLines(items, config.lines);
@@ -134,6 +181,7 @@ export function InfiniteMarquee({ items, config, className = "" }: Props) {
           displayMode={config.displayMode}
           direction={config.direction}
           speed={config.speed}
+          locale={locale}
         />
       ))}
     </div>

@@ -208,20 +208,35 @@ export function GraphicLayer({ locale, dict, content }: Props) {
 
   const manuals = content.brandManuals as readonly BrandManual[];
   const drawings = content.illustration as readonly IllustrationItem[];
+  const isV2Presentation = content.graphicPresentation === "v2";
 
-  const jumps: { id: string; label: string; icon: IconType }[] = [
-    { id: "grafico-portadas", label: dict.grafico.covers, icon: Disc3 },
-    { id: "grafico-logos", label: dict.grafico.logos, icon: PenTool },
-    { id: "grafico-manuales", label: dict.grafico.brandManuals, icon: BookOpen },
-    {
-      id: "grafico-ilustracion",
-      label: dict.grafico.illustration,
-      icon: Palette,
-    },
-    { id: "grafico-eventos", label: dict.grafico.eventos, icon: Megaphone },
-    { id: "grafico-banners", label: dict.grafico.banners, icon: Printer },
-    { id: "grafico-personal", label: dict.grafico.personal, icon: Sparkles },
-  ];
+  const jumps = (
+    [
+      !isV2Presentation
+        ? { id: "grafico-portadas", label: dict.grafico.covers, icon: Disc3 }
+        : null,
+      { id: "grafico-logos", label: dict.grafico.logos, icon: PenTool },
+      {
+        id: "grafico-manuales",
+        label: dict.grafico.brandManuals,
+        icon: BookOpen,
+      },
+      {
+        id: "grafico-ilustracion",
+        label: dict.grafico.illustration,
+        icon: Palette,
+      },
+      { id: "grafico-eventos", label: dict.grafico.eventos, icon: Megaphone },
+      { id: "grafico-banners", label: dict.grafico.banners, icon: Printer },
+      !isV2Presentation
+        ? {
+            id: "grafico-personal",
+            label: dict.grafico.personal,
+            icon: Sparkles,
+          }
+        : null,
+    ] as Array<{ id: string; label: string; icon: IconType } | null>
+  ).filter((j): j is { id: string; label: string; icon: IconType } => j != null);
 
   const seeMoreProps = (section: string, total: number) =>
     total > limit
@@ -274,14 +289,18 @@ export function GraphicLayer({ locale, dict, content }: Props) {
       gallery: logo.gallery?.length
         ? logo.gallery.map((g) => g.src)
         : undefined,
+      resourceCount: logo.resourceCount,
       fit: "contain" as const,
+      brandHubHref: logo.brandId
+        ? `/${locale}/marcas/${logo.brandId}`
+        : null,
     }));
     return sortItems(
       applyTagFilter(mapped, tagFilter.logos ?? null),
       sorts.logos,
       locale,
     );
-  }, [sorts.logos, locale, tagFilter.logos]);
+  }, [sorts.logos, locale, tagFilter.logos, content.logos, limit]);
 
   const manualItems = useMemo(
     () =>
@@ -362,8 +381,12 @@ export function GraphicLayer({ locale, dict, content }: Props) {
       relatedSrc: b.relatedSrc ?? undefined,
       relatedLabel: b.relatedSrc ? dict.grafico.relatedPrint : undefined,
       gallery: b.gallery?.length ? b.gallery.map((g) => g.src) : undefined,
-      fit: "contain" as const,
+      fit:
+        "fit" in b && (b.fit === "contain" || b.fit === "cover")
+          ? b.fit
+          : ("contain" as const),
       frame: "banner" as const,
+      brandHubHref: b.brandId ? `/${locale}/marcas/${b.brandId}` : null,
     }));
     return sortItems(
       applyTagFilter(mapped, tagFilter.banners ?? null),
@@ -375,6 +398,8 @@ export function GraphicLayer({ locale, dict, content }: Props) {
     locale,
     tagFilter.banners,
     dict.grafico.relatedPrint,
+    content.banners,
+    limit,
   ]);
 
   const eventoItems = useMemo(() => {
@@ -390,6 +415,7 @@ export function GraphicLayer({ locale, dict, content }: Props) {
       gallery: e.gallery?.length ? e.gallery.map((g) => g.src) : undefined,
       fit: "cover" as const,
       frame: "square" as const,
+      brandHubHref: e.brandId ? `/${locale}/marcas/${e.brandId}` : null,
     }));
     return sortItems(
       applyTagFilter(mapped, tagFilter.eventos ?? null),
@@ -494,7 +520,7 @@ export function GraphicLayer({ locale, dict, content }: Props) {
 
   return (
     <main className="flex w-full flex-col items-center overflow-x-clip">
-      <div className="flex w-full max-w-6xl flex-col items-start gap-6 px-4 py-8 sm:gap-8 sm:px-6 md:px-8">
+      <div className="flex w-full max-w-6xl flex-col items-start gap-6 px-4 py-8 sm:gap-8 sm:px-6 md:px-8 lg:px-10">
         <div className="flex w-full flex-col items-center gap-3 sm:flex-row sm:items-center sm:gap-4">
           <div className="relative h-12 w-12 shrink-0 sm:h-16 sm:w-16">
             <Image
@@ -551,6 +577,8 @@ export function GraphicLayer({ locale, dict, content }: Props) {
 
         <p className="text-sm text-ink/60 md:text-base">{dict.grafico.expandHint}</p>
 
+        {!isV2Presentation ? (
+          <>
         <SectionTitle
           id="grafico-portadas"
           icon={Disc3}
@@ -584,6 +612,8 @@ export function GraphicLayer({ locale, dict, content }: Props) {
             className="object-contain"
           />
         </div>
+          </>
+        ) : null}
 
         <SectionTitle
           id="grafico-logos"
@@ -606,7 +636,9 @@ export function GraphicLayer({ locale, dict, content }: Props) {
           cellClassName="bg-sky-pale"
           containPadPercent={LOGO_SAFE_INSET_PERCENT}
           onTagClick={(tag) => setTag("logos", tag)}
-          itemHref={(item) => logoDetailHref(locale, item)}
+          detailHref={(item) => logoDetailHref(locale, item)}
+          moreAboutLabel={dict.grafico.viewDetails}
+          brandHubLabel={dict.grafico.viewBrandWork}
           {...gridExtras}
           {...seeMoreProps("logos", content.logos.length)}
         />
@@ -698,7 +730,9 @@ export function GraphicLayer({ locale, dict, content }: Props) {
             cellClassName="bg-sky-pale"
             containPadPercent={0}
             onTagClick={(tag) => setTag("eventos", tag)}
-            itemHref={(item) => `/${locale}/grafico/eventos/${item.id}`}
+            detailHref={(item) => `/${locale}/grafico/eventos/${item.id}`}
+            moreAboutLabel={dict.grafico.viewDetails}
+            brandHubLabel={dict.grafico.viewBrandWork}
             {...gridExtras}
             {...seeMoreProps("eventos", content.eventos.length)}
           />
@@ -730,11 +764,14 @@ export function GraphicLayer({ locale, dict, content }: Props) {
             cellClassName="bg-transparent"
             containPadPercent={0}
             onTagClick={(tag) => setTag("banners", tag)}
+            brandHubLabel={dict.grafico.viewBrandWork}
             {...gridExtras}
             {...seeMoreProps("banners", content.banners.length)}
           />
         )}
 
+        {!isV2Presentation ? (
+          <>
         <SectionTitle
           id="grafico-personal"
           icon={Sparkles}
@@ -759,6 +796,8 @@ export function GraphicLayer({ locale, dict, content }: Props) {
             {...seeMoreProps("personal", content.personal.length)}
           />
         </div>
+          </>
+        ) : null}
       </div>
     </main>
   );

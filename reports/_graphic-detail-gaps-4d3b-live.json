@@ -1,0 +1,259 @@
+{
+  "database": "portfolio",
+  "auditedAt": "2026-08-16T06:03:24.125Z",
+  "assetsPhysical": {
+    "manualCover": {
+      "path": "/assets/grafico/brand-manuals/citf-manual-2025-cover.png",
+      "exists": true
+    },
+    "manualPdf": {
+      "path": "/assets/grafico/brand-manuals/citf-manual-2025.pdf",
+      "exists": true
+    },
+    "seyierMain": {
+      "path": "/assets/grafico/logos/seyier.svg",
+      "exists": true
+    },
+    "seyierGallery": [
+      {
+        "path": "/assets/grafico/logos/seyier/inicio.png",
+        "exists": true
+      },
+      {
+        "path": "/assets/grafico/logos/seyier/portada-fondo.png",
+        "exists": true
+      },
+      {
+        "path": "/assets/grafico/logos/seyier/overlay-ejemplo.png",
+        "exists": true
+      }
+    ]
+  },
+  "manual": {
+    "legacy": [
+      {
+        "id": "citf",
+        "cover_path": "/assets/grafico/brand-manuals/citf-manual-2025-cover.png",
+        "pdf_path": "/assets/grafico/brand-manuals/citf-manual-2025.pdf",
+        "title": {
+          "en": "Brand Manual 2025 CITF",
+          "es": "Manual de Marca 2025 CITF"
+        },
+        "year": "2025",
+        "brand_id": "citf",
+        "published": 1,
+        "sort_order": 0
+      }
+    ],
+    "project": [
+      {
+        "id": "citf-identity-2025",
+        "slug": "identidad-visual-citf-2025",
+        "title": {
+          "en": "Identidad visual CITF 2025",
+          "es": "Identidad visual CITF 2025"
+        },
+        "type": "branding",
+        "context": "client-work",
+        "status": "completed",
+        "published": 1
+      }
+    ],
+    "piecesOnProject": [
+      {
+        "id": "banner-cluster",
+        "slug": "banner-cluster",
+        "title": {
+          "en": "Cluster banner",
+          "es": "Banner Cluster"
+        },
+        "category": "print",
+        "origin": "client",
+        "project_id": "citf-identity-2025",
+        "src_path": "/assets/grafico/banners/banner-cluster.jpg",
+        "published": 1,
+        "legacy_section": null,
+        "legacy_gallery": null
+      },
+      {
+        "id": "itf",
+        "slug": "itf-cluster",
+        "title": {
+          "en": "CITF / ITF Cluster",
+          "es": "CITF / ITF Cluster"
+        },
+        "category": "visual-identity",
+        "origin": "client",
+        "project_id": "citf-identity-2025",
+        "src_path": "/assets/grafico/logos/vector-52.svg",
+        "published": 1,
+        "legacy_section": null,
+        "legacy_gallery": null
+      }
+    ],
+    "projectResources": [],
+    "pieceResources": [],
+    "migrationMap": [
+      {
+        "source_table": "brand_manuals",
+        "source_id": "citf",
+        "target_type": "project",
+        "target_id": "citf-identity-2025",
+        "notes": null
+      },
+      {
+        "source_table": "brands",
+        "source_id": "citf",
+        "target_type": "entity",
+        "target_id": "citf",
+        "notes": null
+      },
+      {
+        "source_table": "graphic_items",
+        "source_id": "banner-cluster",
+        "target_type": "piece",
+        "target_id": "banner-cluster",
+        "notes": "lane=MANUAL_DECISION_MIGRATED"
+      },
+      {
+        "source_table": "graphic_items",
+        "source_id": "banner-cluster",
+        "target_type": "project",
+        "target_id": "citf-identity-2025",
+        "notes": null
+      },
+      {
+        "source_table": "graphic_items",
+        "source_id": "itf",
+        "target_type": "piece",
+        "target_id": "itf",
+        "notes": "lane=MANUAL_DECISION_MIGRATED"
+      },
+      {
+        "source_table": "graphic_items",
+        "source_id": "itf",
+        "target_type": "project",
+        "target_id": "citf-identity-2025",
+        "notes": null
+      }
+    ],
+    "manualishPieces": [],
+    "pieceForManualExists": false
+  },
+  "seyier": {
+    "legacyGraphicItem": [
+      {
+        "id": "seyier",
+        "src_path": "/assets/grafico/logos/seyier.svg",
+        "gallery_paths": [
+          {
+            "src": "/assets/grafico/logos/seyier/inicio.png",
+            "frame": "landscape",
+            "label": {
+              "en": "Starting screen",
+              "es": "Pantalla de inicio"
+            }
+          },
+          {
+            "src": "/assets/grafico/logos/seyier/portada-fondo.png",
+            "frame": "landscape",
+            "label": {
+              "en": "Stream cover",
+              "es": "Portada"
+            }
+          },
+          {
+            "src": "/assets/grafico/logos/seyier/overlay-ejemplo.png",
+            "frame": "landscape",
+            "label": {
+              "en": "Overlay example",
+              "es": "Overlay"
+            }
+          }
+        ],
+        "related_src_path": null,
+        "brand_id": "seyier",
+        "published": 1,
+        "section": "logos"
+      }
+    ],
+    "project": [
+      {
+        "id": "seyier-visual-identity",
+        "slug": "identidad-visual-seyier",
+        "title": {
+          "en": "Identidad visual Seyier",
+          "es": "Identidad visual Seyier"
+        },
+        "type": "branding",
+        "context": "other",
+        "status": "completed",
+        "published": 1
+      }
+    ],
+    "pieces": [
+      {
+        "id": "seyier",
+        "slug": "seyier-logotipo",
+        "title": {
+          "en": "Seyier",
+          "es": "Seyier"
+        },
+        "category": "visual-identity",
+        "origin": "other",
+        "project_id": "seyier-visual-identity",
+        "src_path": "/assets/grafico/logos/seyier.svg",
+        "published": 1,
+        "legacy_section": null,
+        "legacy_gallery": [
+          "/assets/grafico/logos/seyier/inicio.png",
+          "/assets/grafico/logos/seyier/portada-fondo.png",
+          "/assets/grafico/logos/seyier/overlay-ejemplo.png"
+        ]
+      }
+    ],
+    "projectResources": [],
+    "pieceResources": [],
+    "migrationMap": [
+      {
+        "source_table": "brands",
+        "source_id": "seyier",
+        "target_type": "entity",
+        "target_id": "seyier",
+        "notes": null
+      },
+      {
+        "source_table": "graphic_items",
+        "source_id": "seyier",
+        "target_type": "piece",
+        "target_id": "seyier",
+        "notes": "lane=MANUAL_DECISION_MIGRATED"
+      },
+      {
+        "source_table": "graphic_items",
+        "source_id": "seyier",
+        "target_type": "project",
+        "target_id": "seyier-visual-identity",
+        "notes": null
+      }
+    ]
+  },
+  "counts": [
+    {
+      "t": "piece_resources",
+      "c": "2"
+    },
+    {
+      "t": "project_resources",
+      "c": "26"
+    },
+    {
+      "t": "pieces",
+      "c": "48"
+    },
+    {
+      "t": "brand_manuals",
+      "c": "1"
+    }
+  ]
+}

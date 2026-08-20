@@ -1,0 +1,936 @@
+﻿node.exe : npm warn Unknown env config "devdir". This will stop working in the next major version of npm. See `npm 
+help npmrc` for supported config options.
+En línea: 1 Carácter: 1
++ & "C:\Program Files\nodejs/node.exe" "C:\Program Files\nodejs/node_mo ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (npm warn Unknow...config options.:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+Ôùç injected env (8) from .env // tip: Ôîü auth for agents [www.vestauth.com]
+{
+  "database": "portfolio",
+  "counts": {
+    "legacyUiProjectsTotal": 13,
+    "legacyUiProjectsPublic": 13,
+    "legacyUiListTotal": 8,
+    "legacyUiListPublic": 8,
+    "v2UxUiCandidates": 24,
+    "v2PublicSafe": 20,
+    "v2MixedAreaPublic": 5,
+    "v2ResourcesTotal": 26,
+    "v2ResourcesProjects": 13
+  },
+  "mapping": {
+    "uiProjects": [
+      {
+        "legacyId": "apsmm",
+        "legacyPublished": true,
+        "legacyCategory": "sistemas-a-medida",
+        "v2Id": "apsmm",
+        "v2Published": 1,
+        "classification": "MATCH"
+      },
+      {
+        "legacyId": "aml-casinos",
+        "legacyPublished": true,
+        "legacyCategory": "sistemas-a-medida",
+        "v2Id": "aml-casinos",
+        "v2Published": 1,
+        "classification": "PRIVACY_EXCLUDED"
+      },
+      {
+        "legacyId": "aml-general",
+        "legacyPublished": true,
+        "legacyCategory": "sistemas-a-medida",
+        "v2Id": "aml-general",
+        "v2Published": 1,
+        "classification": "PRIVACY_EXCLUDED"
+      },
+      {
+        "legacyId": "adapto-pay",
+        "legacyPublished": true,
+        "legacyCategory": "preventas",
+        "v2Id": "adapto-pay",
+        "v2Published": 1,
+        "classification": "MATCH"
+      },
+      {
+        "legacyId": "clearwater",
+        "legacyPublished": true,
+        "legacyCategory": "sistemas-a-medida",
+        "v2Id": "clearwater",
+        "v2Published": 1,
+        "classification": "MATCH"
+      },
+      {
+        "legacyId": "mikrobiol",
+        "legacyPublished": true,
+        "legacyCategory": "sistemas-a-medida",
+        "v2Id": "mikrobiol",
+        "v2Published": 1,
+        "classification": "MATCH"
+      },
+      {
+        "legacyId": "casiba",
+        "legacyPublished": true,
+        "legacyCategory": "sistemas-a-medida",
+        "v2Id": "casiba",
+        "v2Published": 1,
+        "classification": "MATCH"
+      },
+      {
+        "legacyId": "proxi",
+        "legacyPublished": true,
+        "legacyCategory": "sistemas-a-medida",
+        "v2Id": "proxi",
+        "v2Published": 0,
+        "classification": "PRIVACY_EXCLUDED"
+      },
+      {
+        "legacyId": "cms-portfolio",
+        "legacyPublished": true,
+        "legacyCategory": "proyectos-personales",
+        "v2Id": "cms-portfolio",
+        "v2Published": 1,
+        "classification": "MATCH"
+      },
+      {
+        "legacyId": "omnigroup",
+        "legacyPublished": true,
+        "legacyCategory": "preventas",
+        "v2Id": "omnigroup",
+        "v2Published": 1,
+        "classification": "MATCH"
+      },
+      {
+        "legacyId": "savil",
+        "legacyPublished": true,
+        "legacyCategory": "apps-mobile",
+        "v2Id": "savil",
+        "v2Published": 1,
+        "classification": "MATCH"
+      },
+      {
+        "legacyId": "asesor-financiero",
+        "legacyPublished": true,
+        "legacyCategory": "apps-mobile",
+        "v2Id": "asesor-financiero",
+        "v2Published": 1,
+        "classification": "PRIVACY_EXCLUDED"
+      },
+      {
+        "legacyId": "aicore-inventariado",
+        "legacyPublished": true,
+        "legacyCategory": "preventas",
+        "v2Id": "aicore-inventariado",
+        "v2Published": 1,
+        "classification": "PRIVACY_EXCLUDED"
+      }
+    ],
+    "uiListItems": [
+      {
+        "legacyId": "push-landing",
+        "legacyPublished": true,
+        "v2Id": null,
+        "classification": "MISSING_V2"
+      },
+      {
+        "legacyId": "orbita-landing",
+        "legacyPublished": true,
+        "v2Id": null,
+        "classification": "MISSING_V2"
+      },
+      {
+        "legacyId": "ludica-landing",
+        "legacyPublished": true,
+        "v2Id": null,
+        "classification": "MISSING_V2"
+      },
+      {
+        "legacyId": "carlitos",
+        "legacyPublished": true,
+        "v2Id": "repuestos-carlitos",
+        "classification": "REPLACED_BY_V2_PROJECT"
+      },
+      {
+        "legacyId": "simaas",
+        "legacyPublished": true,
+        "v2Id": "simaas-marketplace",
+        "classification": "REPLACED_BY_V2_PROJECT"
+      },
+      {
+        "legacyId": "b2b",
+        "legacyPublished": true,
+        "v2Id": null,
+        "classification": "MISSING_V2"
+      },
+      {
+        "legacyId": "templeton",
+        "legacyPublished": true,
+        "v2Id": "templeton-digital-transformation-assessment",
+        "classification": "REPLACED_BY_V2_PROJECT"
+      },
+      {
+        "legacyId": "cloronor-trading",
+        "legacyPublished": true,
+        "v2Id": "cloronor-trading",
+        "classification": "REPLACED_BY_V2_PROJECT"
+      }
+    ],
+    "summary": {
+      "match": 8,
+      "replaced": 0,
+      "discarded": 0,
+      "missing": 0,
+      "ambiguous": 0,
+      "privacyExcluded": 5
+    }
+  },
+  "privacy": [
+    {
+      "id": "adapto-pay",
+      "published": true,
+      "status": "completed",
+      "confidential": false,
+      "bucket": "PUBLIC_SAFE"
+    },
+    {
+      "id": "aicore-inventariado",
+      "published": true,
+      "status": "completed",
+      "confidential": true,
+      "bucket": "PRIVACY_BLOCKED"
+    },
+    {
+      "id": "aml-casinos",
+      "published": true,
+      "status": "completed",
+      "confidential": true,
+      "bucket": "PRIVACY_BLOCKED"
+    },
+    {
+      "id": "aml-general",
+      "published": true,
+      "status": "completed",
+      "confidential": true,
+      "bucket": "PRIVACY_BLOCKED"
+    },
+    {
+      "id": "apsmm",
+      "published": true,
+      "status": "completed",
+      "confidential": false,
+      "bucket": "PUBLIC_SAFE"
+    },
+    {
+      "id": "asesor-financiero",
+      "published": true,
+      "status": "completed",
+      "confidential": true,
+      "bucket": "PRIVACY_BLOCKED"
+    },
+    {
+      "id": "casiba",
+      "published": true,
+      "status": "completed",
+      "confidential": false,
+      "bucket": "PUBLIC_SAFE"
+    },
+    {
+      "id": "clearwater",
+      "published": true,
+      "status": "completed",
+      "confidential": false,
+      "bucket": "PUBLIC_SAFE"
+    },
+    {
+      "id": "cloronor-trading",
+      "published": true,
+      "status": "completed",
+      "confidential": false,
+      "bucket": "PUBLIC_SAFE"
+    },
+    {
+      "id": "cms-portfolio",
+      "published": true,
+      "status": "ongoing",
+      "confidential": false,
+      "bucket": "PUBLIC_SAFE"
+    },
+    {
+      "id": "concitar",
+      "published": true,
+      "status": "completed",
+      "confidential": false,
+      "bucket": "PUBLIC_SAFE"
+    },
+    {
+      "id": "confidential-logistics-system",
+      "published": false,
+      "status": "completed",
+      "confidential": true,
+      "bucket": "UNPUBLISHED_EXPECTED"
+    },
+    {
+      "id": "mental-training-tech-24-5",
+      "published": true,
+      "status": "completed",
+      "confidential": false,
+      "bucket": "PUBLIC_SAFE"
+    },
+    {
+      "id": "microtime",
+      "published": false,
+      "status": "ongoing",
+      "confidential": false,
+      "bucket": "UNPUBLISHED_EXPECTED"
+    },
+    {
+      "id": "mikrobiol",
+      "published": true,
+      "status": "completed",
+      "confidential": false,
+      "bucket": "PUBLIC_SAFE"
+    },
+    {
+      "id": "omnigroup",
+      "published": true,
+      "status": "completed",
+      "confidential": false,
+      "bucket": "PUBLIC_SAFE"
+    },
+    {
+      "id": "proxi",
+      "published": false,
+      "status": "completed",
+      "confidential": false,
+      "bucket": "UNPUBLISHED_EXPECTED"
+    },
+    {
+      "id": "repuestos-carlitos",
+      "published": true,
+      "status": "completed",
+      "confidential": false,
+      "bucket": "PUBLIC_SAFE"
+    },
+    {
+      "id": "savil",
+      "published": true,
+      "status": "completed",
+      "confidential": false,
+      "bucket": "PUBLIC_SAFE"
+    },
+    {
+      "id": "sessions",
+      "published": true,
+      "status": "completed",
+      "confidential": true,
+      "bucket": "PRIVACY_BLOCKED"
+    },
+    {
+      "id": "simaas-marketplace",
+      "published": true,
+      "status": "completed",
+      "confidential": false,
+      "bucket": "PUBLIC_SAFE"
+    },
+    {
+      "id": "syllabi",
+      "published": false,
+      "status": "completed",
+      "confidential": false,
+      "bucket": "UNPUBLISHED_EXPECTED"
+    },
+    {
+      "id": "taily",
+      "published": true,
+      "status": "ongoing",
+      "confidential": false,
+      "bucket": "PUBLIC_SAFE"
+    },
+    {
+      "id": "templeton-digital-transformation-assessment",
+      "published": true,
+      "status": "completed",
+      "confidential": false,
+      "bucket": "PUBLIC_SAFE"
+    }
+  ],
+  "mixedAreaProjects": [
+    {
+      "id": "apsmm",
+      "areas": "graphic,ux-ui"
+    },
+    {
+      "id": "concitar",
+      "areas": "graphic,ux-ui"
+    },
+    {
+      "id": "repuestos-carlitos",
+      "areas": "graphic,ux-ui"
+    },
+    {
+      "id": "sessions",
+      "areas": "graphic,ux-ui"
+    },
+    {
+      "id": "taily",
+      "areas": "graphic,ux-ui"
+    }
+  ],
+  "homeUxUiOverlap": [
+    {
+      "id": "adapto-pay",
+      "showOnHome": true,
+      "homeOrder": 0
+    },
+    {
+      "id": "casiba",
+      "showOnHome": true,
+      "homeOrder": 1
+    },
+    {
+      "id": "clearwater",
+      "showOnHome": true,
+      "homeOrder": 2
+    },
+    {
+      "id": "cloronor-trading",
+      "showOnHome": true,
+      "homeOrder": 3
+    },
+    {
+      "id": "concitar",
+      "showOnHome": true,
+      "homeOrder": 8
+    },
+    {
+      "id": "mental-training-tech-24-5",
+      "showOnHome": true,
+      "homeOrder": 6
+    },
+    {
+      "id": "omnigroup",
+      "showOnHome": true,
+      "homeOrder": 7
+    },
+    {
+      "id": "repuestos-carlitos",
+      "showOnHome": true,
+      "homeOrder": 9
+    },
+    {
+      "id": "taily",
+      "showOnHome": true,
+      "homeOrder": 11
+    },
+    {
+      "id": "templeton-digital-transformation-assessment",
+      "showOnHome": true,
+      "homeOrder": 10
+    }
+  ],
+  "resourcesByProject": {
+    "adapto-pay": {
+      "count": 3,
+      "paths": [
+        "/assets/interfaces/projects/preventas/adapto-pay/adapto-pay-01.png",
+        "/assets/interfaces/projects/preventas/adapto-pay/web-link-pago.png",
+        "/assets/interfaces/projects/preventas/adapto-pay/web-actividad.png"
+      ],
+      "frames": [
+        null,
+        null,
+        null
+      ]
+    },
+    "aicore-inventariado": {
+      "count": 1,
+      "paths": [
+        "/assets/interfaces/projects/preventas/aicore-inventariado/dashboard.png"
+      ],
+      "frames": [
+        null
+      ]
+    },
+    "aml-casinos": {
+      "count": 1,
+      "paths": [
+        "/assets/interfaces/projects/sistemas-a-medida/aml-casinos/aml-casinos-01.png"
+      ],
+      "frames": [
+        null
+      ]
+    },
+    "aml-general": {
+      "count": 1,
+      "paths": [
+        "/assets/interfaces/projects/sistemas-a-medida/aml-general/aml-general-01.png"
+      ],
+      "frames": [
+        null
+      ]
+    },
+    "apsmm": {
+      "count": 3,
+      "paths": [
+        "/assets/interfaces/projects/sistemas-a-medida/apsmm/apsmm-01.png",
+        "/assets/interfaces/projects/sistemas-a-medida/apsmm/apsmm-02.png",
+        "/assets/interfaces/projects/sistemas-a-medida/apsmm/apsmm-03.png"
+      ],
+      "frames": [
+        null,
+        null,
+        null
+      ]
+    },
+    "asesor-financiero": {
+      "count": 3,
+      "paths": [
+        "/assets/interfaces/projects/apps-mobile/asesor-financiero/perfil.png",
+        "/assets/interfaces/projects/apps-mobile/asesor-financiero/categorias.png",
+        "/assets/interfaces/projects/apps-mobile/asesor-financiero/home.png"
+      ],
+      "frames": [
+        null,
+        null,
+        null
+      ]
+    },
+    "casiba": {
+      "count": 1,
+      "paths": [
+        "/assets/interfaces/projects/sistemas-a-medida/casiba/casiba-01.png"
+      ],
+      "frames": [
+        null
+      ]
+    },
+    "clearwater": {
+      "count": 1,
+      "paths": [
+        "/assets/interfaces/projects/sistemas-a-medida/clearwater/clearwater-01.png"
+      ],
+      "frames": [
+        null
+      ]
+    },
+    "cms-portfolio": {
+      "count": 1,
+      "paths": [
+        "/assets/interfaces/projects/proyectos-personales/cms-portfolio/cms-portfolio-01.png"
+      ],
+      "frames": [
+        null
+      ]
+    },
+    "mikrobiol": {
+      "count": 1,
+      "paths": [
+        "/assets/interfaces/projects/sistemas-a-medida/mikrobiol/mikrobiol-01.png"
+      ],
+      "frames": [
+        null
+      ]
+    },
+    "omnigroup": {
+      "count": 6,
+      "paths": [
+        "/assets/interfaces/projects/preventas/omnigroup/web-admin.png",
+        "/assets/interfaces/projects/preventas/omnigroup/web-totems.png",
+        "/assets/interfaces/projects/preventas/omnigroup/web-puntos.png",
+        "/assets/interfaces/projects/preventas/omnigroup/totem-1.png",
+        "/assets/interfaces/projects/preventas/omnigroup/totem-2.png",
+        "/assets/interfaces/projects/preventas/omnigroup/totem-inactivo.png"
+      ],
+      "frames": [
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ]
+    },
+    "savil": {
+      "count": 3,
+      "paths": [
+        "/assets/interfaces/projects/apps-mobile/savil/app-login.png",
+        "/assets/interfaces/projects/apps-mobile/savil/app-home.png",
+        "/assets/interfaces/projects/apps-mobile/savil/app-detalle.png"
+      ],
+      "frames": [
+        null,
+        null,
+        null
+      ]
+    },
+    "syllabi": {
+      "count": 1,
+      "paths": [
+        "/assets/grafico/logos/buhoprofe-1.svg"
+      ],
+      "frames": [
+        null
+      ]
+    }
+  },
+  "missingAssets": [],
+  "rolesByProject": {
+    "adapto-pay": [
+      "ui",
+      "ux"
+    ],
+    "aicore-inventariado": [
+      "ui",
+      "ux",
+      "visual-direction"
+    ],
+    "aml-casinos": [
+      "ui",
+      "ux"
+    ],
+    "aml-general": [
+      "ui",
+      "ux"
+    ],
+    "apsmm": [
+      "graphic-design",
+      "ui",
+      "ux"
+    ],
+    "asesor-financiero": [
+      "ui",
+      "ux"
+    ],
+    "casiba": [
+      "ui",
+      "ux"
+    ],
+    "clearwater": [
+      "ui",
+      "ux"
+    ],
+    "cloronor-trading": [
+      "ui",
+      "ux"
+    ],
+    "cms-portfolio": [
+      "ui",
+      "ux"
+    ],
+    "concitar": [
+      "graphic-design",
+      "ui",
+      "ux"
+    ],
+    "microtime": [
+      "graphic-design",
+      "ui"
+    ],
+    "mikrobiol": [
+      "ui",
+      "ux"
+    ],
+    "omnigroup": [
+      "ui",
+      "ux"
+    ],
+    "proxi": [
+      "ui",
+      "ux"
+    ],
+    "repuestos-carlitos": [
+      "graphic-design",
+      "ui",
+      "ux"
+    ],
+    "savil": [
+      "ui",
+      "ux"
+    ],
+    "sessions": [
+      "graphic-design",
+      "ui",
+      "ux"
+    ],
+    "simaas-marketplace": [
+      "ui",
+      "ux"
+    ],
+    "syllabi": [
+      "ui",
+      "ux"
+    ],
+    "taily": [
+      "graphic-design",
+      "ui",
+      "ux"
+    ],
+    "templeton-digital-transformation-assessment": [
+      "ui",
+      "ux"
+    ]
+  },
+  "entitiesByProject": [
+    {
+      "project_id": "adapto-pay",
+      "entity_id": "adapto-pay",
+      "relation_role": "client",
+      "visible": 1,
+      "name": "ADAPTO PAY"
+    },
+    {
+      "project_id": "adapto-pay",
+      "entity_id": "aicore",
+      "relation_role": "employer",
+      "visible": 1,
+      "name": "AICORE IT Specialists"
+    },
+    {
+      "project_id": "aicore-inventariado",
+      "entity_id": "confidential-inventariado-client",
+      "relation_role": "client",
+      "visible": 0,
+      "name": "Cliente confidencial Inventariado"
+    },
+    {
+      "project_id": "aicore-inventariado",
+      "entity_id": "aicore",
+      "relation_role": "employer",
+      "visible": 1,
+      "name": "AICORE IT Specialists"
+    },
+    {
+      "project_id": "aml-casinos",
+      "entity_id": "confidential-aml-client",
+      "relation_role": "client",
+      "visible": 0,
+      "name": "Cliente confidencial AML"
+    },
+    {
+      "project_id": "aml-casinos",
+      "entity_id": "aicore",
+      "relation_role": "employer",
+      "visible": 1,
+      "name": "AICORE IT Specialists"
+    },
+    {
+      "project_id": "aml-general",
+      "entity_id": "confidential-aml-client",
+      "relation_role": "client",
+      "visible": 0,
+      "name": "Cliente confidencial AML"
+    },
+    {
+      "project_id": "aml-general",
+      "entity_id": "aicore",
+      "relation_role": "employer",
+      "visible": 1,
+      "name": "AICORE IT Specialists"
+    },
+    {
+      "project_id": "apsmm",
+      "entity_id": "apsmm",
+      "relation_role": "client",
+      "visible": 1,
+      "name": "APSMM"
+    },
+    {
+      "project_id": "apsmm",
+      "entity_id": "push",
+      "relation_role": "employer",
+      "visible": 1,
+      "name": "PUSH Software"
+    },
+    {
+      "project_id": "asesor-financiero",
+      "entity_id": "confidential-asesor-client",
+      "relation_role": "client",
+      "visible": 0,
+      "name": "Cliente privado Asesor Financiero"
+    },
+    {
+      "project_id": "casiba",
+      "entity_id": "casiba",
+      "relation_role": "client",
+      "visible": 1,
+      "name": "CASIBA"
+    },
+    {
+      "project_id": "casiba",
+      "entity_id": "aicore",
+      "relation_role": "employer",
+      "visible": 1,
+      "name": "AICORE IT Specialists"
+    },
+    {
+      "project_id": "clearwater",
+      "entity_id": "clearwater",
+      "relation_role": "client",
+      "visible": 1,
+      "name": "CLEARWATER"
+    },
+    {
+      "project_id": "clearwater",
+      "entity_id": "aicore",
+      "relation_role": "employer",
+      "visible": 1,
+      "name": "AICORE IT Specialists"
+    },
+    {
+      "project_id": "cloronor-trading",
+      "entity_id": "cloronor",
+      "relation_role": "client",
+      "visible": 1,
+      "name": "Cloronor"
+    },
+    {
+      "project_id": "cloronor-trading",
+      "entity_id": "aicore",
+      "relation_role": "intermediary",
+      "visible": 1,
+      "name": "AICORE IT Specialists"
+    },
+    {
+      "project_id": "concitar",
+      "entity_id": "push",
+      "relation_role": "employer",
+      "visible": 1,
+      "name": "PUSH Software"
+    },
+    {
+      "project_id": "confidential-logistics-system",
+      "entity_id": "confidential-logistics-client",
+      "relation_role": "client",
+      "visible": 0,
+      "name": "Cliente confidencial Log├¡stica"
+    },
+    {
+      "project_id": "confidential-logistics-system",
+      "entity_id": "aicore",
+      "relation_role": "employer",
+      "visible": 1,
+      "name": "AICORE IT Specialists"
+    },
+    {
+      "project_id": "mental-training-tech-24-5",
+      "entity_id": "aicore",
+      "relation_role": "employer",
+      "visible": 1,
+      "name": "AICORE IT Specialists"
+    },
+    {
+      "project_id": "microtime",
+      "entity_id": "push",
+      "relation_role": "employer",
+      "visible": 1,
+      "name": "PUSH Software"
+    },
+    {
+      "project_id": "mikrobiol",
+      "entity_id": "mikrobiol",
+      "relation_role": "client",
+      "visible": 1,
+      "name": "MIKROBIOL"
+    },
+    {
+      "project_id": "mikrobiol",
+      "entity_id": "aicore",
+      "relation_role": "employer",
+      "visible": 1,
+      "name": "AICORE IT Specialists"
+    },
+    {
+      "project_id": "omnigroup",
+      "entity_id": "omnigroup",
+      "relation_role": "client",
+      "visible": 1,
+      "name": "Omnigroup"
+    },
+    {
+      "project_id": "omnigroup",
+      "entity_id": "aicore",
+      "relation_role": "employer",
+      "visible": 1,
+      "name": "AICORE IT Specialists"
+    },
+    {
+      "project_id": "proxi",
+      "entity_id": "proxi",
+      "relation_role": "client",
+      "visible": 0,
+      "name": "PROXI"
+    },
+    {
+      "project_id": "proxi",
+      "entity_id": "aicore",
+      "relation_role": "employer",
+      "visible": 1,
+      "name": "AICORE IT Specialists"
+    },
+    {
+      "project_id": "repuestos-carlitos",
+      "entity_id": "repuestos-carlitos",
+      "relation_role": "client",
+      "visible": 1,
+      "name": "Repuestos Carlitos"
+    },
+    {
+      "project_id": "repuestos-carlitos",
+      "entity_id": "push",
+      "relation_role": "employer",
+      "visible": 1,
+      "name": "PUSH Software"
+    },
+    {
+      "project_id": "savil",
+      "entity_id": "savil",
+      "relation_role": "client",
+      "visible": 1,
+      "name": "Savil"
+    },
+    {
+      "project_id": "sessions",
+      "entity_id": "confidential-sessions-client",
+      "relation_role": "client",
+      "visible": 0,
+      "name": "Cliente privado Sessions"
+    },
+    {
+      "project_id": "sessions",
+      "entity_id": "push",
+      "relation_role": "employer",
+      "visible": 1,
+      "name": "PUSH Software"
+    },
+    {
+      "project_id": "simaas-marketplace",
+      "entity_id": "orbita-l-b",
+      "relation_role": "intermediary",
+      "visible": 1,
+      "name": "├ôrbita L╬öB"
+    },
+    {
+      "project_id": "taily",
+      "entity_id": "push",
+      "relation_role": "employer",
+      "visible": 1,
+      "name": "PUSH Software"
+    },
+    {
+      "project_id": "templeton-digital-transformation-assessment",
+      "entity_id": "templeton-mathews",
+      "relation_role": "client",
+      "visible": 1,
+      "name": "Templeton & Mathews"
+    },
+    {
+      "project_id": "templeton-digital-transformation-assessment",
+      "entity_id": "aicore",
+      "relation_role": "intermediary",
+      "visible": 1,
+      "name": "AICORE IT Specialists"
+    }
+  ]
+}

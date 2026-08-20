@@ -1,0 +1,96 @@
+{
+  "ok": true,
+  "checks": {
+    "seyierPiece1": true,
+    "seyierId": true,
+    "siblingsGone": true,
+    "resources3": true,
+    "resourceIds": true,
+    "resourcePaths": true,
+    "assetsOk": true,
+    "mapKeepsPieceSeyier": true,
+    "mapKeepsProject": true,
+    "mapNoSiblingPieces": true,
+    "mapThreeResources": true,
+    "citfUntouched": true,
+    "citfPdfOk": true,
+    "adapterRegular44": true,
+    "adapterManuals1": true,
+    "adapterSeyier1": true,
+    "manualNotInGrid": true
+  },
+  "seyierPieces": [
+    {
+      "id": "seyier"
+    }
+  ],
+  "resources": [
+    {
+      "id": "4d5b1001-5e91-4001-8001-000000000001",
+      "path": "/assets/grafico/logos/seyier/inicio.png",
+      "kind": "piece_resource",
+      "sort_order": 0,
+      "label": "{\"en\": \"Starting screen\", \"es\": \"Pantalla de inicio\"}"
+    },
+    {
+      "id": "4d5b1001-5e91-4001-8001-000000000002",
+      "path": "/assets/grafico/logos/seyier/portada-fondo.png",
+      "kind": "piece_resource",
+      "sort_order": 1,
+      "label": "{\"en\": \"Stream cover\", \"es\": \"Portada\"}"
+    },
+    {
+      "id": "4d5b1001-5e91-4001-8001-000000000003",
+      "path": "/assets/grafico/logos/seyier/overlay-ejemplo.png",
+      "kind": "piece_resource",
+      "sort_order": 2,
+      "label": "{\"en\": \"Overlay example\", \"es\": \"Overlay\"}"
+    }
+  ],
+  "maps": [
+    {
+      "target_type": "piece",
+      "target_id": "seyier"
+    },
+    {
+      "target_type": "project",
+      "target_id": "seyier-visual-identity"
+    },
+    {
+      "target_type": "resource",
+      "target_id": "4d5b1001-5e91-4001-8001-000000000001"
+    },
+    {
+      "target_type": "resource",
+      "target_id": "4d5b1001-5e91-4001-8001-000000000002"
+    },
+    {
+      "target_type": "resource",
+      "target_id": "4d5b1001-5e91-4001-8001-000000000003"
+    }
+  ],
+  "adapter": {
+    "counts": {
+      "pieces": 44,
+      "manuals": 1,
+      "standalone": 27,
+      "projectLinked": 17,
+      "missingMainImage": 0,
+      "withTags": 34,
+      "withEntity": 15,
+      "withResources": 3,
+      "byCategory": {
+        "visual-identity": 12,
+        "illustration-artwork": 25,
+        "print": 4,
+        "campaigns-communication": 3
+      }
+    },
+    "manualStatus": "PRESENT",
+    "seyierGalleryGap": true,
+    "sessionsReview": "CURRENT_PUBLIC_SAFE",
+    "sessionsPieceIds": [
+      "sessions"
+    ]
+  }
+}

@@ -1,0 +1,42 @@
+{
+  "database": "portfolio",
+  "GRAPHIC_CONTENT_SOURCE": "v2",
+  "source": "v2",
+  "graphicTrace": {
+    "source": "v2",
+    "loaders": [
+      "v2-graphic"
+    ]
+  },
+  "homeTrace": {
+    "source": "v2",
+    "loaders": [
+      "legacy-shell",
+      "v2-home"
+    ]
+  },
+  "counts": {
+    "regular": 47,
+    "manuals": 1,
+    "seyierCount": 4
+  },
+  "manual": {
+    "id": "citf-manual-2025",
+    "cover": "/assets/grafico/brand-manuals/citf-manual-2025-cover.png",
+    "pdf": "/assets/grafico/brand-manuals/citf-manual-2025.pdf",
+    "year": "2025"
+  },
+  "checks": {
+    "sourceMatchesEnv": true,
+    "presentation": true,
+    "noDoubleRead": true,
+    "regular47": true,
+    "manuals1": true,
+    "seyier4": true,
+    "manualPdf": true,
+    "manualCover": true,
+    "loadersV2Only": true,
+    "homeStillDefault": true
+  },
+  "ok": true
+}

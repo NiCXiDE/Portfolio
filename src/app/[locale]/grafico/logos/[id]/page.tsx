@@ -5,12 +5,16 @@ import { join } from "node:path";
 import Link from "next/link";
 import { getDictionary } from "@/i18n/dictionaries";
 import { isLocale, type Locale } from "@/i18n/config";
-import { loadGraphicSection, t } from "@/lib/content";
+import { t } from "@/lib/content";
+import { loadGraphicDetailItemForLocale } from "@/lib/content-v2/graphic-runtime";
+import { getGraphicContentSource } from "@/lib/content-v2/graphic-source";
 import { buildPageMetadata, graphicLogoTitle } from "@/lib/seo";
 import { pathForLayer } from "@/lib/layers";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
 import { LogoResourceGallery } from "@/components/LogoResourceGallery";
 import { LogoDetailHero } from "@/components/LogoDetailHero";
+import { BrandRelatedSection } from "@/components/BrandRelatedSection";
+import { relatedByBrand } from "@/lib/content";
 
 function logoDetailIdsFromJson(): string[] {
   const raw = JSON.parse(
@@ -19,9 +23,7 @@ function logoDetailIdsFromJson(): string[] {
   return raw.filter((e) => (e.gallery?.length ?? 0) > 0).map((e) => e.id);
 }
 
-// Labels de recursos vienen desde DB/JSON (`gallery[].label`).
-// Si no existe, mostramos solo el índice (1..N).
-
+/** Keep legacy static params for default=legacy builds. V2 uses dynamic resolution. */
 export function generateStaticParams() {
   return logoDetailIdsFromJson().map((id) => ({ id }));
 }
@@ -34,16 +36,20 @@ export async function generateMetadata({
   const { locale: raw, id } = await params;
   if (!isLocale(raw)) return {};
   const locale = raw as Locale;
-  const items = await loadGraphicSection("logos");
-  const logo = items.find((e) => e.id === id);
-  if (!logo) return {};
+  const resolved = await loadGraphicDetailItemForLocale(locale, {
+    section: "logos",
+    id,
+  });
+  if (!resolved) return {};
   const dict = getDictionary(locale);
-  const title = logo.title ? t(logo.title, locale) : logo.alt;
+  const title = resolved.item.title
+    ? t(resolved.item.title, locale)
+    : resolved.item.alt;
   return buildPageMetadata({
     locale,
     title: graphicLogoTitle(locale, title),
-    description: logo.detail
-      ? t(logo.detail, locale)
+    description: resolved.item.detail
+      ? t(resolved.item.detail, locale)
       : dict.meta.graphicDescription,
     pathAfterLocale: `/grafico/logos/${id}`,
   });
@@ -58,17 +64,25 @@ export default async function GraphicLogoDetailPage({
   if (!isLocale(raw)) notFound();
   const locale = raw as Locale;
   const dict = getDictionary(locale);
-  const items = await loadGraphicSection("logos");
-  const logo = items.find((e) => e.id === id);
-  if (!logo || !(logo.gallery?.length ?? 0)) notFound();
+  const resolved = await loadGraphicDetailItemForLocale(locale, {
+    section: "logos",
+    id,
+  });
+  // Legacy required gallery; V2 Seyier split means logo detail only when resources exist.
+  if (!resolved || resolved.gallery.length === 0) notFound();
 
+  const logo = resolved.item;
   const title = logo.title ? t(logo.title, locale) : logo.alt;
   const detail = logo.detail ? t(logo.detail, locale) : "";
   const tags = logo.tags ?? [];
 
-  const resourceItems = (logo.gallery ?? []).map((g, index) => {
-    const src = g.src;
-    const frame = g.frame;
+  // relatedByBrand reads legacy tables — only when Graphic source is legacy.
+  const related =
+    getGraphicContentSource() === "legacy" && logo.brandId
+      ? await relatedByBrand(logo.brandId, { excludeGraphicId: logo.id })
+      : null;
+
+  const resourceItems = resolved.gallery.map((g, index) => {
     const fromLabel =
       g.label && typeof g.label === "object"
         ? locale === "en"
@@ -76,10 +90,10 @@ export default async function GraphicLogoDetailPage({
           : g.label.es
         : undefined;
     return {
-      src,
+      src: g.src,
       alt: `${title} — ${fromLabel ?? index + 1}`,
       label: fromLabel,
-      frame,
+      frame: g.frame,
     };
   });
 
@@ -149,6 +163,15 @@ export default async function GraphicLogoDetailPage({
               </p>
             )}
           </section>
+
+          {related ? (
+            <BrandRelatedSection
+              locale={locale}
+              heading={dict.grafico.alsoInProject}
+              related={related}
+              viewUiLabel={dict.grafico.viewUiProject}
+            />
+          ) : null}
         </div>
       </div>
     </main>

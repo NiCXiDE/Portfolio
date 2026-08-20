@@ -1,0 +1,1162 @@
+[
+  {
+    "sourceTable": "graphic_items",
+    "sourceId": "banner-push",
+    "lane": "MANUAL_DECISION_MIGRATED",
+    "targets": [
+      "project:push-visual-identity",
+      "piece:banner-push"
+    ],
+    "reason": "Migrated to project:push-visual-identity, piece:banner-push",
+    "projectKind": "composite"
+  },
+  {
+    "sourceTable": "graphic_items",
+    "sourceId": "odyssey-plant-head",
+    "lane": "MANUAL_DECISION_MIGRATED",
+    "targets": [
+      "piece:odyssey-plant-head"
+    ],
+    "reason": "Migrated to piece:odyssey-plant-head"
+  },
+  {
+    "sourceTable": "graphic_items",
+    "sourceId": "mantis",
+    "lane": "MANUAL_DECISION_MIGRATED",
+    "targets": [
+      "piece:mantis"
+    ],
+    "reason": "Migrated to piece:mantis"
+  },
+  {
+    "sourceTable": "graphic_items",
+    "sourceId": "kadaver-jez-ebel",
+    "lane": "MANUAL_DECISION_MIGRATED",
+    "targets": [
+      "piece:kadaver-jez-ebel"
+    ],
+    "reason": "Migrated to piece:kadaver-jez-ebel"
+  },
+  {
+    "sourceTable": "graphic_items",
+    "sourceId": "buhoprofe",
+    "lane": "DISCARDED",
+    "targets": [
+      "resource:buhoprofe-project-resource"
+    ],
+    "reason": "Piece discarded (authorship); ProjectResource → syllabi"
+  },
+  {
+    "sourceTable": "graphic_items",
+    "sourceId": "juegos-provinciales",
+    "lane": "MANUAL_DECISION_MIGRATED",
+    "targets": [
+      "project:juegos-provinciales",
+      "piece:juegos-provinciales"
+    ],
+    "reason": "Migrated to project:juegos-provinciales, piece:juegos-provinciales",
+    "projectKind": "source-backed-1:1"
+  },
+  {
+    "sourceTable": "graphic_items",
+    "sourceId": "seyier",
+    "lane": "MANUAL_DECISION_MIGRATED",
+    "targets": [
+      "project:seyier-visual-identity",
+      "piece:seyier"
+    ],
+    "reason": "Migrated to project:seyier-visual-identity, piece:seyier",
+    "projectKind": "source-backed-1:1"
+  },
+  {
+    "sourceTable": "graphic_items",
+    "sourceId": "banner-cluster",
+    "lane": "MANUAL_DECISION_MIGRATED",
+    "targets": [
+      "project:citf-identity-2025",
+      "piece:banner-cluster"
+    ],
+    "reason": "Migrated to project:citf-identity-2025, piece:banner-cluster",
+    "projectKind": "composite"
+  },
+  {
+    "sourceTable": "graphic_items",
+    "sourceId": "nick-tdt-beach",
+    "lane": "MANUAL_DECISION_MIGRATED",
+    "targets": [
+      "piece:nick-tdt-beach"
+    ],
+    "reason": "Migrated to piece:nick-tdt-beach"
+  },
+  {
+    "sourceTable": "graphic_items",
+    "sourceId": "marauda-type-logo-ayala",
+    "lane": "MANUAL_DECISION_MIGRATED",
+    "targets": [
+      "piece:marauda-type-logo-ayala"
+    ],
+    "reason": "Migrated to piece:marauda-type-logo-ayala"
+  },
+  {
+    "sourceTable": "graphic_items",
+    "sourceId": "ive-no-idea",
+    "lane": "MANUAL_DECISION_MIGRATED",
+    "targets": [
+      "piece:ive-no-idea"
+    ],
+    "reason": "Migrated to piece:ive-no-idea"
+  },
+  {
+    "sourceTable": "graphic_items",
+    "sourceId": "expedicion-polo",
+    "lane": "MANUAL_DECISION_MIGRATED",
+    "targets": [
+      "project:expedicion-polo",
+      "piece:expedicion-polo"
+    ],
+    "reason": "Migrated to project:expedicion-polo, piece:expedicion-polo",
+    "projectKind": "source-backed-1:1"
+  },
+  {
+    "sourceTable": "graphic_items",
+    "sourceId": "banana-thinking",
+    "lane": "MANUAL_DECISION_MIGRATED",
+    "targets": [
+      "piece:banana-thinking"
+    ],
+    "reason": "Migrated to piece:banana-thinking"
+  },
+  {
+    "sourceTable": "graphic_items",
+    "sourceId": "summit-holding",
+    "lane": "MANUAL_DECISION_MIGRATED",
+    "targets": [
+      "piece:summit-holding"
+    ],
+    "reason": "Migrated to piece:summit-holding"
+  },
+  {
+    "sourceTable": "graphic_items",
+    "sourceId": "penguin-knife",
+    "lane": "MANUAL_DECISION_MIGRATED",
+    "targets": [
+      "piece:penguin-knife"
+    ],
+    "reason": "Migrated to piece:penguin-knife"
+  },
+  {
+    "sourceTable": "graphic_items",
+    "sourceId": "banner-samsung",
+    "lane": "MANUAL_DECISION_MIGRATED",
+    "targets": [
+      "piece:banner-samsung"
+    ],
+    "reason": "Migrated to piece:banner-samsung"
+  },
+  {
+    "sourceTable": "graphic_items",
+    "sourceId": "barely-alive",
+    "lane": "MANUAL_DECISION_MIGRATED",
+    "targets": [
+      "piece:barely-alive"
+    ],
+    "reason": "Migrated to piece:barely-alive"
+  },
+  {
+    "sourceTable": "graphic_items",
+    "sourceId": "demon-no-scape",
+    "lane": "MANUAL_DECISION_MIGRATED",
+    "targets": [
+      "piece:demon-no-scape"
+    ],
+    "reason": "Migrated to piece:demon-no-scape"
+  },
+  {
+    "sourceTable": "graphic_items",
+    "sourceId": "speeditious",
+    "lane": "MANUAL_DECISION_MIGRATED",
+    "targets": [
+      "piece:speeditious"
+    ],
+    "reason": "Migrated to piece:speeditious"
+  },
+  {
+    "sourceTable": "graphic_items",
+    "sourceId": "banner-alfaj-metro",
+    "lane": "MANUAL_DECISION_MIGRATED",
+    "targets": [
+      "piece:banner-alfaj-metro"
+    ],
+    "reason": "Migrated to piece:banner-alfaj-metro"
+  },
+  {
+    "sourceTable": "graphic_items",
+    "sourceId": "push",
+    "lane": "MANUAL_DECISION_MIGRATED",
+    "targets": [
+      "project:push-visual-identity",
+      "piece:push"
+    ],
+    "reason": "Migrated to project:push-visual-identity, piece:push",
+    "projectKind": "composite"
+  },
+  {
+    "sourceTable": "graphic_items",
+    "sourceId": "grime-marauda",
+    "lane": "MANUAL_DECISION_MIGRATED",
+    "targets": [
+      "piece:grime-marauda"
+    ],
+    "reason": "Migrated to piece:grime-marauda"
+  },
+  {
+    "sourceTable": "graphic_items",
+    "sourceId": "brigado-crew",
+    "lane": "MANUAL_DECISION_MIGRATED",
+    "targets": [
+      "piece:brigado-crew"
+    ],
+    "reason": "Migrated to piece:brigado-crew"
+  },
+  {
+    "sourceTable": "graphic_items",
+    "sourceId": "rockcito",
+    "lane": "MANUAL_DECISION_MIGRATED",
+    "targets": [
+      "piece:rockcito"
+    ],
+    "reason": "Migrated to piece:rockcito"
+  },
+  {
+    "sourceTable": "graphic_items",
+    "sourceId": "microtime",
+    "lane": "MANUAL_DECISION_MIGRATED",
+    "targets": [
+      "project:microtime",
+      "piece:microtime"
+    ],
+    "reason": "Migrated to project:microtime, piece:microtime",
+    "projectKind": "composite"
+  },
+  {
+    "sourceTable": "graphic_items",
+    "sourceId": "futulab",
+    "lane": "MANUAL_DECISION_MIGRATED",
+    "targets": [
+      "project:futulab-visual-identity",
+      "piece:futulab"
+    ],
+    "reason": "Migrated to project:futulab-visual-identity, piece:futulab",
+    "projectKind": "source-backed-1:1"
+  },
+  {
+    "sourceTable": "graphic_items",
+    "sourceId": "grime-pawn",
+    "lane": "MANUAL_DECISION_MIGRATED",
+    "targets": [
+      "piece:grime-pawn"
+    ],
+    "reason": "Migrated to piece:grime-pawn"
+  },
+  {
+    "sourceTable": "graphic_items",
+    "sourceId": "cover-emoji",
+    "lane": "MANUAL_DECISION_MIGRATED",
+    "targets": [
+      "piece:cover-emoji"
+    ],
+    "reason": "Migrated to piece:cover-emoji"
+  },
+  {
+    "sourceTable": "graphic_items",
+    "sourceId": "fablab",
+    "lane": "MANUAL_DECISION_MIGRATED",
+    "targets": [
+      "piece:fablab"
+    ],
+    "reason": "Migrated to piece:fablab"
+  },
+  {
+    "sourceTable": "graphic_items",
+    "sourceId": "nicoide-not-impostor",
+    "lane": "MANUAL_DECISION_MIGRATED",
+    "targets": [
+      "piece:nicoide-not-impostor"
+    ],
+    "reason": "Migrated to piece:nicoide-not-impostor"
+  },
+  {
+    "sourceTable": "graphic_items",
+    "sourceId": "bass2k24",
+    "lane": "MANUAL_DECISION_MIGRATED",
+    "targets": [
+      "project:bass-series",
+      "piece:bass2k24"
+    ],
+    "reason": "Migrated to project:bass-series, piece:bass2k24",
+    "projectKind": "composite"
+  },
+  {
+    "sourceTable": "graphic_items",
+    "sourceId": "bass2025",
+    "lane": "MANUAL_DECISION_MIGRATED",
+    "targets": [
+      "project:bass-series",
+      "piece:bass2025"
+    ],
+    "reason": "Migrated to project:bass-series, piece:bass2025",
+    "projectKind": "composite"
+  },
+  {
+    "sourceTable": "graphic_items",
+    "sourceId": "nicoide-geometry-dash",
+    "lane": "MANUAL_DECISION_MIGRATED",
+    "targets": [
+      "piece:nicoide-geometry-dash"
+    ],
+    "reason": "Migrated to piece:nicoide-geometry-dash"
+  },
+  {
+    "sourceTable": "graphic_items",
+    "sourceId": "labcom",
+    "lane": "MANUAL_DECISION_MIGRATED",
+    "targets": [
+      "piece:labcom"
+    ],
+    "reason": "Migrated to piece:labcom"
+  },
+  {
+    "sourceTable": "graphic_items",
+    "sourceId": "we-are-barely-world",
+    "lane": "MANUAL_DECISION_MIGRATED",
+    "targets": [
+      "piece:we-are-barely-world"
+    ],
+    "reason": "Migrated to piece:we-are-barely-world"
+  },
+  {
+    "sourceTable": "graphic_items",
+    "sourceId": "twenty-twenty-two-spotify",
+    "lane": "MANUAL_DECISION_MIGRATED",
+    "targets": [
+      "project:bass-series",
+      "piece:twenty-twenty-two-spotify"
+    ],
+    "reason": "Migrated to project:bass-series, piece:twenty-twenty-two-spotify",
+    "projectKind": "composite"
+  },
+  {
+    "sourceTable": "graphic_items",
+    "sourceId": "sessions",
+    "lane": "MANUAL_DECISION_MIGRATED",
+    "targets": [
+      "project:sessions",
+      "piece:sessions"
+    ],
+    "reason": "Migrated to project:sessions, piece:sessions",
+    "projectKind": "composite"
+  },
+  {
+    "sourceTable": "graphic_items",
+    "sourceId": "sad-machine-makenix",
+    "lane": "MANUAL_DECISION_MIGRATED",
+    "targets": [
+      "piece:sad-machine-makenix"
+    ],
+    "reason": "Migrated to piece:sad-machine-makenix"
+  },
+  {
+    "sourceTable": "graphic_items",
+    "sourceId": "concitar",
+    "lane": "MANUAL_DECISION_MIGRATED",
+    "targets": [
+      "project:concitar",
+      "piece:concitar"
+    ],
+    "reason": "Migrated to project:concitar, piece:concitar",
+    "projectKind": "composite"
+  },
+  {
+    "sourceTable": "graphic_items",
+    "sourceId": "twenty-twenty-3",
+    "lane": "MANUAL_DECISION_MIGRATED",
+    "targets": [
+      "project:bass-series",
+      "piece:twenty-twenty-3"
+    ],
+    "reason": "Migrated to project:bass-series, piece:twenty-twenty-3",
+    "projectKind": "composite"
+  },
+  {
+    "sourceTable": "graphic_items",
+    "sourceId": "apsmm",
+    "lane": "MANUAL_DECISION_MIGRATED",
+    "targets": [
+      "project:apsmm",
+      "piece:apsmm"
+    ],
+    "reason": "Migrated to project:apsmm, piece:apsmm",
+    "projectKind": "composite"
+  },
+  {
+    "sourceTable": "graphic_items",
+    "sourceId": "bass2026",
+    "lane": "MANUAL_DECISION_MIGRATED",
+    "targets": [
+      "project:bass-series",
+      "piece:bass2026"
+    ],
+    "reason": "Migrated to project:bass-series, piece:bass2026",
+    "projectKind": "composite"
+  },
+  {
+    "sourceTable": "graphic_items",
+    "sourceId": "reggaeton",
+    "lane": "MANUAL_DECISION_MIGRATED",
+    "targets": [
+      "piece:reggaeton"
+    ],
+    "reason": "Migrated to piece:reggaeton"
+  },
+  {
+    "sourceTable": "graphic_items",
+    "sourceId": "itf",
+    "lane": "MANUAL_DECISION_MIGRATED",
+    "targets": [
+      "project:citf-identity-2025",
+      "piece:itf"
+    ],
+    "reason": "Migrated to project:citf-identity-2025, piece:itf",
+    "projectKind": "composite"
+  },
+  {
+    "sourceTable": "graphic_items",
+    "sourceId": "taily",
+    "lane": "MANUAL_DECISION_MIGRATED",
+    "targets": [
+      "project:taily",
+      "piece:taily"
+    ],
+    "reason": "Migrated to project:taily, piece:taily",
+    "projectKind": "composite"
+  },
+  {
+    "sourceTable": "graphic_items",
+    "sourceId": "tdt",
+    "lane": "MANUAL_DECISION_MIGRATED",
+    "targets": [
+      "piece:tdt"
+    ],
+    "reason": "Migrated to piece:tdt"
+  },
+  {
+    "sourceTable": "graphic_items",
+    "sourceId": "magic-cell",
+    "lane": "MANUAL_DECISION_MIGRATED",
+    "targets": [
+      "piece:magic-cell"
+    ],
+    "reason": "Migrated to piece:magic-cell"
+  },
+  {
+    "sourceTable": "ui_projects",
+    "sourceId": "apsmm",
+    "lane": "MANUAL_DECISION_MIGRATED",
+    "targets": [
+      "project:apsmm"
+    ],
+    "reason": "Migrated to project apsmm",
+    "projectKind": "composite"
+  },
+  {
+    "sourceTable": "ui_projects",
+    "sourceId": "aml-casinos",
+    "lane": "MANUAL_DECISION_MIGRATED",
+    "targets": [
+      "project:aml-casinos"
+    ],
+    "reason": "Migrated to project aml-casinos",
+    "projectKind": "source-backed-1:1"
+  },
+  {
+    "sourceTable": "ui_projects",
+    "sourceId": "aml-general",
+    "lane": "MANUAL_DECISION_MIGRATED",
+    "targets": [
+      "project:aml-general"
+    ],
+    "reason": "Migrated to project aml-general",
+    "projectKind": "source-backed-1:1"
+  },
+  {
+    "sourceTable": "ui_projects",
+    "sourceId": "adapto-pay",
+    "lane": "MANUAL_DECISION_MIGRATED",
+    "targets": [
+      "project:adapto-pay"
+    ],
+    "reason": "Migrated to project adapto-pay",
+    "projectKind": "source-backed-1:1"
+  },
+  {
+    "sourceTable": "ui_projects",
+    "sourceId": "clearwater",
+    "lane": "MANUAL_DECISION_MIGRATED",
+    "targets": [
+      "project:clearwater"
+    ],
+    "reason": "Migrated to project clearwater",
+    "projectKind": "source-backed-1:1"
+  },
+  {
+    "sourceTable": "ui_projects",
+    "sourceId": "mikrobiol",
+    "lane": "MANUAL_DECISION_MIGRATED",
+    "targets": [
+      "project:mikrobiol"
+    ],
+    "reason": "Migrated to project mikrobiol",
+    "projectKind": "source-backed-1:1"
+  },
+  {
+    "sourceTable": "ui_projects",
+    "sourceId": "casiba",
+    "lane": "MANUAL_DECISION_MIGRATED",
+    "targets": [
+      "project:casiba"
+    ],
+    "reason": "Migrated to project casiba",
+    "projectKind": "source-backed-1:1"
+  },
+  {
+    "sourceTable": "ui_projects",
+    "sourceId": "proxi",
+    "lane": "MANUAL_DECISION_MIGRATED",
+    "targets": [
+      "project:proxi"
+    ],
+    "reason": "Migrated to project proxi",
+    "projectKind": "source-backed-1:1"
+  },
+  {
+    "sourceTable": "ui_projects",
+    "sourceId": "cms-portfolio",
+    "lane": "MANUAL_DECISION_MIGRATED",
+    "targets": [
+      "project:cms-portfolio"
+    ],
+    "reason": "Migrated to project cms-portfolio",
+    "projectKind": "source-backed-1:1"
+  },
+  {
+    "sourceTable": "ui_projects",
+    "sourceId": "omnigroup",
+    "lane": "MANUAL_DECISION_MIGRATED",
+    "targets": [
+      "project:omnigroup"
+    ],
+    "reason": "Migrated to project omnigroup",
+    "projectKind": "source-backed-1:1"
+  },
+  {
+    "sourceTable": "ui_projects",
+    "sourceId": "savil",
+    "lane": "MANUAL_DECISION_MIGRATED",
+    "targets": [
+      "project:savil"
+    ],
+    "reason": "Migrated to project savil",
+    "projectKind": "source-backed-1:1"
+  },
+  {
+    "sourceTable": "ui_projects",
+    "sourceId": "sha256:904f5aa089bb1e02e8400f56db2437ef53d331dee115a391d144839aa77c202e",
+    "lane": "MANUAL_DECISION_MIGRATED",
+    "targets": [
+      "project:asesor-financiero"
+    ],
+    "reason": "Migrated to project asesor-financiero",
+    "projectKind": "source-backed-1:1"
+  },
+  {
+    "sourceTable": "ui_projects",
+    "sourceId": "sha256:ab7c1f3f5c8db8e3760f874bceaef8e76980f030240c973880b6616ef85a9846",
+    "lane": "MANUAL_DECISION_MIGRATED",
+    "targets": [
+      "project:aicore-inventariado"
+    ],
+    "reason": "Migrated to project aicore-inventariado",
+    "projectKind": "source-backed-1:1"
+  },
+  {
+    "sourceTable": "brands",
+    "sourceId": "push",
+    "lane": "MANUAL_DECISION_MIGRATED",
+    "targets": [
+      "entity:push"
+    ],
+    "reason": "Entity push (PUSH Software)"
+  },
+  {
+    "sourceTable": "brands",
+    "sourceId": "aicore",
+    "lane": "MANUAL_DECISION_MIGRATED",
+    "targets": [
+      "entity:aicore"
+    ],
+    "reason": "Entity aicore (AICORE IT Specialists)"
+  },
+  {
+    "sourceTable": "brands",
+    "sourceId": "ludica",
+    "lane": "MANUAL_DECISION_MIGRATED",
+    "targets": [
+      "entity:ludica"
+    ],
+    "reason": "Entity ludica (Lúdica Tech)"
+  },
+  {
+    "sourceTable": "brands",
+    "sourceId": "orbita-l-b",
+    "lane": "MANUAL_DECISION_MIGRATED",
+    "targets": [
+      "entity:orbita-l-b"
+    ],
+    "reason": "Entity orbita-l-b (Órbita LΔB)"
+  },
+  {
+    "sourceTable": "brands",
+    "sourceId": "apsmm",
+    "lane": "MANUAL_DECISION_MIGRATED",
+    "targets": [
+      "entity:apsmm"
+    ],
+    "reason": "Entity apsmm (APSMM)"
+  },
+  {
+    "sourceTable": "brands",
+    "sourceId": "citf",
+    "lane": "MANUAL_DECISION_MIGRATED",
+    "targets": [
+      "entity:citf"
+    ],
+    "reason": "Entity citf (Clúster de Innovación Tecnológica Formosa)"
+  },
+  {
+    "sourceTable": "brands",
+    "sourceId": "seyier",
+    "lane": "MANUAL_DECISION_MIGRATED",
+    "targets": [
+      "entity:seyier"
+    ],
+    "reason": "Entity seyier (Seyier)"
+  },
+  {
+    "sourceTable": "brand_manuals",
+    "sourceId": "citf",
+    "lane": "MANUAL_DECISION_MIGRATED",
+    "targets": [
+      "project:citf-identity-2025"
+    ],
+    "reason": "Manual source for project citf-identity-2025",
+    "projectKind": "composite"
+  },
+  {
+    "sourceTable": "testimonials",
+    "sourceId": "facundo",
+    "lane": "MANUAL_DECISION_MIGRATED",
+    "targets": [
+      "entity:push"
+    ],
+    "reason": "Testimonial → entity push (apply UPDATEs testimonials.entity_id)"
+  },
+  {
+    "sourceTable": "testimonials",
+    "sourceId": "yas",
+    "lane": "DEFERRED",
+    "targets": [],
+    "reason": "Nuevo testimonial post-freeze (yas); entity mapping pendiente de decisión humana — no inventar link"
+  },
+  {
+    "sourceTable": "testimonials",
+    "sourceId": "ezequiel",
+    "lane": "MANUAL_DECISION_MIGRATED",
+    "targets": [
+      "entity:aicore"
+    ],
+    "reason": "Testimonial → entity aicore (apply UPDATEs testimonials.entity_id)"
+  },
+  {
+    "sourceTable": "testimonials",
+    "sourceId": "joaquin",
+    "lane": "MANUAL_DECISION_MIGRATED",
+    "targets": [
+      "entity:ludica"
+    ],
+    "reason": "Testimonial → entity ludica (apply UPDATEs testimonials.entity_id)"
+  },
+  {
+    "sourceTable": "testimonials",
+    "sourceId": "matias",
+    "lane": "MANUAL_DECISION_MIGRATED",
+    "targets": [
+      "entity:orbita-l-b"
+    ],
+    "reason": "Testimonial → entity orbita-l-b (apply UPDATEs testimonials.entity_id)"
+  },
+  {
+    "sourceTable": "named_list_items",
+    "sourceId": "35",
+    "lane": "DISCARDED",
+    "targets": [],
+    "reason": "named_list_items DEPRECATED post-cutover; not a runtime source. Home = Entity/Project.showOnHome + published + status."
+  },
+  {
+    "sourceTable": "named_list_items",
+    "sourceId": "1",
+    "lane": "DISCARDED",
+    "targets": [],
+    "reason": "named_list_items DEPRECATED post-cutover; not a runtime source. Home = Entity/Project.showOnHome + published + status."
+  },
+  {
+    "sourceTable": "named_list_items",
+    "sourceId": "19",
+    "lane": "DISCARDED",
+    "targets": [],
+    "reason": "named_list_items DEPRECATED post-cutover; not a runtime source. Home = Entity/Project.showOnHome + published + status."
+  },
+  {
+    "sourceTable": "named_list_items",
+    "sourceId": "2",
+    "lane": "DISCARDED",
+    "targets": [],
+    "reason": "named_list_items DEPRECATED post-cutover; not a runtime source. Home = Entity/Project.showOnHome + published + status."
+  },
+  {
+    "sourceTable": "named_list_items",
+    "sourceId": "36",
+    "lane": "DISCARDED",
+    "targets": [],
+    "reason": "named_list_items DEPRECATED post-cutover; not a runtime source. Home = Entity/Project.showOnHome + published + status."
+  },
+  {
+    "sourceTable": "named_list_items",
+    "sourceId": "20",
+    "lane": "DISCARDED",
+    "targets": [],
+    "reason": "named_list_items DEPRECATED post-cutover; not a runtime source. Home = Entity/Project.showOnHome + published + status."
+  },
+  {
+    "sourceTable": "named_list_items",
+    "sourceId": "21",
+    "lane": "DISCARDED",
+    "targets": [],
+    "reason": "named_list_items DEPRECATED post-cutover; not a runtime source. Home = Entity/Project.showOnHome + published + status."
+  },
+  {
+    "sourceTable": "named_list_items",
+    "sourceId": "37",
+    "lane": "DISCARDED",
+    "targets": [],
+    "reason": "named_list_items DEPRECATED post-cutover; not a runtime source. Home = Entity/Project.showOnHome + published + status."
+  },
+  {
+    "sourceTable": "named_list_items",
+    "sourceId": "3",
+    "lane": "DISCARDED",
+    "targets": [],
+    "reason": "named_list_items DEPRECATED post-cutover; not a runtime source. Home = Entity/Project.showOnHome + published + status."
+  },
+  {
+    "sourceTable": "named_list_items",
+    "sourceId": "38",
+    "lane": "DISCARDED",
+    "targets": [],
+    "reason": "named_list_items DEPRECATED post-cutover; not a runtime source. Home = Entity/Project.showOnHome + published + status."
+  },
+  {
+    "sourceTable": "named_list_items",
+    "sourceId": "4",
+    "lane": "DISCARDED",
+    "targets": [],
+    "reason": "named_list_items DEPRECATED post-cutover; not a runtime source. Home = Entity/Project.showOnHome + published + status."
+  },
+  {
+    "sourceTable": "named_list_items",
+    "sourceId": "22",
+    "lane": "DISCARDED",
+    "targets": [],
+    "reason": "named_list_items DEPRECATED post-cutover; not a runtime source. Home = Entity/Project.showOnHome + published + status."
+  },
+  {
+    "sourceTable": "named_list_items",
+    "sourceId": "39",
+    "lane": "DISCARDED",
+    "targets": [],
+    "reason": "named_list_items DEPRECATED post-cutover; not a runtime source. Home = Entity/Project.showOnHome + published + status."
+  },
+  {
+    "sourceTable": "named_list_items",
+    "sourceId": "5",
+    "lane": "DISCARDED",
+    "targets": [],
+    "reason": "named_list_items DEPRECATED post-cutover; not a runtime source. Home = Entity/Project.showOnHome + published + status."
+  },
+  {
+    "sourceTable": "named_list_items",
+    "sourceId": "23",
+    "lane": "DISCARDED",
+    "targets": [],
+    "reason": "named_list_items DEPRECATED post-cutover; not a runtime source. Home = Entity/Project.showOnHome + published + status."
+  },
+  {
+    "sourceTable": "named_list_items",
+    "sourceId": "40",
+    "lane": "DISCARDED",
+    "targets": [],
+    "reason": "named_list_items DEPRECATED post-cutover; not a runtime source. Home = Entity/Project.showOnHome + published + status."
+  },
+  {
+    "sourceTable": "named_list_items",
+    "sourceId": "24",
+    "lane": "DISCARDED",
+    "targets": [],
+    "reason": "named_list_items DEPRECATED post-cutover; not a runtime source. Home = Entity/Project.showOnHome + published + status."
+  },
+  {
+    "sourceTable": "named_list_items",
+    "sourceId": "6",
+    "lane": "DISCARDED",
+    "targets": [],
+    "reason": "named_list_items DEPRECATED post-cutover; not a runtime source. Home = Entity/Project.showOnHome + published + status."
+  },
+  {
+    "sourceTable": "named_list_items",
+    "sourceId": "25",
+    "lane": "DISCARDED",
+    "targets": [],
+    "reason": "named_list_items DEPRECATED post-cutover; not a runtime source. Home = Entity/Project.showOnHome + published + status."
+  },
+  {
+    "sourceTable": "named_list_items",
+    "sourceId": "7",
+    "lane": "DISCARDED",
+    "targets": [],
+    "reason": "named_list_items DEPRECATED post-cutover; not a runtime source. Home = Entity/Project.showOnHome + published + status."
+  },
+  {
+    "sourceTable": "named_list_items",
+    "sourceId": "8",
+    "lane": "DISCARDED",
+    "targets": [],
+    "reason": "named_list_items DEPRECATED post-cutover; not a runtime source. Home = Entity/Project.showOnHome + published + status."
+  },
+  {
+    "sourceTable": "named_list_items",
+    "sourceId": "26",
+    "lane": "DISCARDED",
+    "targets": [],
+    "reason": "named_list_items DEPRECATED post-cutover; not a runtime source. Home = Entity/Project.showOnHome + published + status."
+  },
+  {
+    "sourceTable": "named_list_items",
+    "sourceId": "27",
+    "lane": "DISCARDED",
+    "targets": [],
+    "reason": "named_list_items DEPRECATED post-cutover; not a runtime source. Home = Entity/Project.showOnHome + published + status."
+  },
+  {
+    "sourceTable": "named_list_items",
+    "sourceId": "9",
+    "lane": "DISCARDED",
+    "targets": [],
+    "reason": "named_list_items DEPRECATED post-cutover; not a runtime source. Home = Entity/Project.showOnHome + published + status."
+  },
+  {
+    "sourceTable": "named_list_items",
+    "sourceId": "10",
+    "lane": "DISCARDED",
+    "targets": [],
+    "reason": "named_list_items DEPRECATED post-cutover; not a runtime source. Home = Entity/Project.showOnHome + published + status."
+  },
+  {
+    "sourceTable": "named_list_items",
+    "sourceId": "28",
+    "lane": "DISCARDED",
+    "targets": [],
+    "reason": "named_list_items DEPRECATED post-cutover; not a runtime source. Home = Entity/Project.showOnHome + published + status."
+  },
+  {
+    "sourceTable": "named_list_items",
+    "sourceId": "29",
+    "lane": "DISCARDED",
+    "targets": [],
+    "reason": "named_list_items DEPRECATED post-cutover; not a runtime source. Home = Entity/Project.showOnHome + published + status."
+  },
+  {
+    "sourceTable": "named_list_items",
+    "sourceId": "11",
+    "lane": "DISCARDED",
+    "targets": [],
+    "reason": "named_list_items DEPRECATED post-cutover; not a runtime source. Home = Entity/Project.showOnHome + published + status."
+  },
+  {
+    "sourceTable": "named_list_items",
+    "sourceId": "30",
+    "lane": "DISCARDED",
+    "targets": [],
+    "reason": "named_list_items DEPRECATED post-cutover; not a runtime source. Home = Entity/Project.showOnHome + published + status."
+  },
+  {
+    "sourceTable": "named_list_items",
+    "sourceId": "12",
+    "lane": "DISCARDED",
+    "targets": [],
+    "reason": "named_list_items DEPRECATED post-cutover; not a runtime source. Home = Entity/Project.showOnHome + published + status."
+  },
+  {
+    "sourceTable": "named_list_items",
+    "sourceId": "31",
+    "lane": "DISCARDED",
+    "targets": [],
+    "reason": "named_list_items DEPRECATED post-cutover; not a runtime source. Home = Entity/Project.showOnHome + published + status."
+  },
+  {
+    "sourceTable": "named_list_items",
+    "sourceId": "13",
+    "lane": "DISCARDED",
+    "targets": [],
+    "reason": "named_list_items DEPRECATED post-cutover; not a runtime source. Home = Entity/Project.showOnHome + published + status."
+  },
+  {
+    "sourceTable": "named_list_items",
+    "sourceId": "32",
+    "lane": "DISCARDED",
+    "targets": [],
+    "reason": "named_list_items DEPRECATED post-cutover; not a runtime source. Home = Entity/Project.showOnHome + published + status."
+  },
+  {
+    "sourceTable": "named_list_items",
+    "sourceId": "14",
+    "lane": "DISCARDED",
+    "targets": [],
+    "reason": "named_list_items DEPRECATED post-cutover; not a runtime source. Home = Entity/Project.showOnHome + published + status."
+  },
+  {
+    "sourceTable": "named_list_items",
+    "sourceId": "33",
+    "lane": "DISCARDED",
+    "targets": [],
+    "reason": "named_list_items DEPRECATED post-cutover; not a runtime source. Home = Entity/Project.showOnHome + published + status."
+  },
+  {
+    "sourceTable": "named_list_items",
+    "sourceId": "15",
+    "lane": "DISCARDED",
+    "targets": [],
+    "reason": "named_list_items DEPRECATED post-cutover; not a runtime source. Home = Entity/Project.showOnHome + published + status."
+  },
+  {
+    "sourceTable": "named_list_items",
+    "sourceId": "16",
+    "lane": "DISCARDED",
+    "targets": [],
+    "reason": "named_list_items DEPRECATED post-cutover; not a runtime source. Home = Entity/Project.showOnHome + published + status."
+  },
+  {
+    "sourceTable": "named_list_items",
+    "sourceId": "34",
+    "lane": "DISCARDED",
+    "targets": [],
+    "reason": "named_list_items DEPRECATED post-cutover; not a runtime source. Home = Entity/Project.showOnHome + published + status."
+  },
+  {
+    "sourceTable": "named_list_items",
+    "sourceId": "17",
+    "lane": "DISCARDED",
+    "targets": [],
+    "reason": "named_list_items DEPRECATED post-cutover; not a runtime source. Home = Entity/Project.showOnHome + published + status."
+  },
+  {
+    "sourceTable": "named_list_items",
+    "sourceId": "18",
+    "lane": "DISCARDED",
+    "targets": [],
+    "reason": "named_list_items DEPRECATED post-cutover; not a runtime source. Home = Entity/Project.showOnHome + published + status."
+  },
+  {
+    "sourceTable": "tags",
+    "sourceId": "nsfw",
+    "lane": "AUTO_MIGRATED",
+    "targets": [
+      "piece:odyssey-plant-head"
+    ],
+    "reason": "Catalog preserved; 1 piece_tags reference(s)"
+  },
+  {
+    "sourceTable": "tags",
+    "sourceId": "pixel-art",
+    "lane": "AUTO_MIGRATED",
+    "targets": [
+      "piece:nick-tdt-beach",
+      "piece:nicoide-not-impostor"
+    ],
+    "reason": "Catalog preserved; 2 piece_tags reference(s)"
+  },
+  {
+    "sourceTable": "tags",
+    "sourceId": "vector",
+    "lane": "AUTO_MIGRATED",
+    "targets": [
+      "piece:summit-holding",
+      "piece:magic-cell",
+      "piece:tdt",
+      "piece:marauda-type-logo-ayala",
+      "piece:penguin-knife",
+      "piece:futulab",
+      "piece:seyier",
+      "piece:microtime"
+    ],
+    "reason": "Catalog preserved; 8 piece_tags reference(s)"
+  },
+  {
+    "sourceTable": "tags",
+    "sourceId": "fan-art",
+    "lane": "AUTO_MIGRATED",
+    "targets": [
+      "piece:marauda-type-logo-ayala",
+      "piece:nicoide-not-impostor",
+      "piece:nicoide-geometry-dash",
+      "piece:we-are-barely-world",
+      "piece:sad-machine-makenix",
+      "piece:kadaver-jez-ebel",
+      "piece:ive-no-idea",
+      "piece:barely-alive",
+      "piece:maxi-boo"
+    ],
+    "reason": "Catalog preserved; 9 piece_tags reference(s)"
+  },
+  {
+    "sourceTable": "tags",
+    "sourceId": "grime",
+    "lane": "AUTO_MIGRATED",
+    "targets": [
+      "piece:grime-marauda",
+      "piece:grime-pawn"
+    ],
+    "reason": "Catalog preserved; 2 piece_tags reference(s)"
+  },
+  {
+    "sourceTable": "tags",
+    "sourceId": "tattoo",
+    "lane": "AUTO_MIGRATED",
+    "targets": [
+      "piece:penguin-knife"
+    ],
+    "reason": "Catalog preserved; 1 piece_tags reference(s)"
+  },
+  {
+    "sourceTable": "tags",
+    "sourceId": "bass-series",
+    "lane": "AUTO_MIGRATED",
+    "targets": [
+      "piece:twenty-twenty-two-spotify",
+      "piece:twenty-twenty-3",
+      "piece:bass2k24",
+      "piece:bass2025",
+      "piece:bass2026"
+    ],
+    "reason": "Catalog preserved; 5 piece_tags reference(s)"
+  },
+  {
+    "sourceTable": "tags",
+    "sourceId": "impreso",
+    "lane": "AUTO_MIGRATED",
+    "targets": [
+      "piece:brigado-crew",
+      "piece:banner-samsung",
+      "piece:banner-alfaj-metro",
+      "piece:banner-cluster",
+      "piece:banner-push"
+    ],
+    "reason": "Catalog preserved; 5 piece_tags reference(s)"
+  },
+  {
+    "sourceTable": "tags",
+    "sourceId": "evento",
+    "lane": "AUTO_MIGRATED",
+    "targets": [
+      "piece:expedicion-polo",
+      "piece:juegos-provinciales"
+    ],
+    "reason": "Catalog preserved; 2 piece_tags reference(s)"
+  },
+  {
+    "sourceTable": "ui_list_items",
+    "sourceId": "push-landing",
+    "lane": "DISCARDED",
+    "targets": [],
+    "reason": "ui_list_item not used as project source — deprecated list surface (Home via Entity/Project flags)"
+  },
+  {
+    "sourceTable": "ui_list_items",
+    "sourceId": "orbita-landing",
+    "lane": "DISCARDED",
+    "targets": [],
+    "reason": "ui_list_item not used as project source — deprecated list surface (Home via Entity/Project flags)"
+  },
+  {
+    "sourceTable": "ui_list_items",
+    "sourceId": "ludica-landing",
+    "lane": "DISCARDED",
+    "targets": [],
+    "reason": "ui_list_item not used as project source — deprecated list surface (Home via Entity/Project flags)"
+  },
+  {
+    "sourceTable": "ui_list_items",
+    "sourceId": "carlitos",
+    "lane": "MANUAL_DECISION_MIGRATED",
+    "targets": [
+      "project:repuestos-carlitos"
+    ],
+    "reason": "ui_list_item source for project repuestos-carlitos (Landing & Tienda - Repuestos Carlitos)",
+    "projectKind": "source-backed-1:1"
+  },
+  {
+    "sourceTable": "ui_list_items",
+    "sourceId": "simaas",
+    "lane": "MANUAL_DECISION_MIGRATED",
+    "targets": [
+      "project:simaas-marketplace"
+    ],
+    "reason": "ui_list_item source for project simaas-marketplace (Marketplace de Frutas y Verduras)",
+    "projectKind": "source-backed-1:1"
+  },
+  {
+    "sourceTable": "ui_list_items",
+    "sourceId": "b2b",
+    "lane": "DISCARDED",
+    "targets": [],
+    "reason": "ui_list_item not used as project source — deprecated list surface (Home via Entity/Project flags)"
+  },
+  {
+    "sourceTable": "ui_list_items",
+    "sourceId": "templeton",
+    "lane": "MANUAL_DECISION_MIGRATED",
+    "targets": [
+      "project:templeton-digital-transformation-assessment"
+    ],
+    "reason": "ui_list_item source for project templeton-digital-transformation-assessment (Sistema de Autodiagn??stico Transformaci??n Digital)",
+    "projectKind": "source-backed-1:1"
+  },
+  {
+    "sourceTable": "ui_list_items",
+    "sourceId": "cloronor-trading",
+    "lane": "MANUAL_DECISION_MIGRATED",
+    "targets": [
+      "project:cloronor-trading"
+    ],
+    "reason": "ui_list_item source for project cloronor-trading (Sistema de trading criptomonedas para CLORONOR)",
+    "projectKind": "source-backed-1:1"
+  }
+]

@@ -1,0 +1,23 @@
+npm warn Unknown env config "devdir". This will stop working in the next major version of npm. See `npm help npmrc` for supported config options.
+▲ Next.js 16.2.12 (Turbopack)
+- Local:         http://localhost:3005
+- Network:       http://192.168.1.12:3005
+- Environments: .env
+✓ Ready in 1608ms
+⚠ The "middleware" file convention is deprecated. Please use "proxy" instead. Learn more: https://nextjs.org/docs/messages/middleware-to-proxy
+
+⨯ SyntaxError: Unexpected end of JSON input
+    at JSON.parse (<anonymous>) {
+  page: '/es'
+}
+○ Compiling /_error ...
+ GET /es 500 in 11.6s (next.js: 10.7s, proxy.ts: 345ms, application-code: 551ms)
+[home-load] source=v2 loaders=legacy-shell,v2-home
+[home-load] source=v2 loaders=legacy-shell,v2-home
+ GET /en 200 in 1770ms (next.js: 168ms, proxy.ts: 534ms, generate-params: 27ms, application-code: 1068ms)
+ GET /es 200 in 14.1s (next.js: 7.3s, proxy.ts: 37ms, generate-params: 3.6s, application-code: 6.7s)
+[home-load] source=v2 loaders=legacy-shell,v2-home
+ GET /es 200 in 1209ms (next.js: 226ms, proxy.ts: 31ms, generate-params: 161µs, application-code: 952ms)
+[home-load] source=v2 loaders=legacy-shell,v2-home
+ GET /en 200 in 937ms (next.js: 31ms, proxy.ts: 7ms, generate-params: 102µs, application-code: 900ms)
+[?25h

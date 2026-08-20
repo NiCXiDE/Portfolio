@@ -17,8 +17,10 @@ import {
   UiListItemEntity,
   UiProjectEntity,
 } from "./entities";
+import { portfolioV2Entities } from "./entities-v2";
 
-export const portfolioEntities = [
+/** Legacy tables only — safe for TypeORM synchronize (seed / sync-schema). */
+export const portfolioLegacyEntities = [
   BioEntity,
   MediaAssetEntity,
   InboxItemEntity,
@@ -35,6 +37,11 @@ export const portfolioEntities = [
   SiteSettingsEntity,
   SocialLinkEntity,
   AdminAuditLogEntity,
+];
+
+export const portfolioEntities = [
+  ...portfolioLegacyEntities,
+  ...portfolioV2Entities,
 ];
 
 function parseDatabaseUrl(url: string) {
@@ -67,12 +74,19 @@ declare global {
   var __portfolioDataSource: DataSource | undefined;
 }
 
-export function createDataSource(synchronize = false) {
+export function createDataSource(
+  synchronize = false,
+  entities: typeof portfolioEntities = portfolioEntities,
+  overrides?: { database?: string },
+) {
   const conn = connectionOptions();
+  if (overrides?.database) {
+    conn.database = overrides.database;
+  }
   return new DataSource({
     type: "mysql",
     ...conn,
-    entities: portfolioEntities,
+    entities,
     synchronize,
     logging: process.env.TYPEORM_LOGGING === "1",
     charset: "utf8mb4",
@@ -93,9 +107,9 @@ export async function getDataSource(): Promise<DataSource> {
     }
   }
 
+  // Runtime never synchronizes schema — V2 DDL is applied via npm run db:apply-v2
   const ds =
-    globalThis.__portfolioDataSource ??
-    createDataSource(process.env.TYPEORM_SYNC === "1");
+    globalThis.__portfolioDataSource ?? createDataSource(false, portfolioEntities);
 
   if (!ds.isInitialized) {
     await ds.initialize();

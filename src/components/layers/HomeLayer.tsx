@@ -32,7 +32,7 @@ export function HomeLayer({ locale, dict, content }: Props) {
       <div className="name-row flex w-full min-w-0 max-w-full items-center justify-center overflow-x-hidden px-4 py-2 sm:px-6 md:px-8">
         <div className="name-hero-group relative flex w-max max-w-full items-end">
           <h1 className="name-hero-text shrink-0 border border-transparent px-1.5 pb-1.5 pt-1 font-bold text-ink sm:px-2.5 sm:pb-2 sm:pt-1.5">
-            Nicolas
+            Nico
           </h1>
           <FigmaGap className="mx-0.5 shrink-0 self-stretch sm:mx-1 md:mx-2" />
           <EditableSurname />
@@ -59,36 +59,45 @@ export function HomeLayer({ locale, dict, content }: Props) {
             </div>
           </div>
 
-          {/* Misma composición que desktop; en mobile solo más chico */}
+          {/* Misma composición simétrica: garabato + flecha + texto */}
           <div
             id="hero-layer-links"
             className="hero-split mt-2 grid w-full grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] items-center gap-1 sm:mt-3 sm:gap-3 md:mt-5 md:gap-6 lg:gap-8"
           >
             <Link
               href={pathForLayer(locale, "grafico")}
-              className="hero-nudge-left relative h-11 w-full max-w-[8.5rem] justify-self-end transition-opacity hover:opacity-80 sm:h-16 sm:max-w-[14rem] md:h-[5.5rem] md:max-w-none md:w-[min(100%,26rem)]"
+              className="hero-nudge-left flex flex-row items-center gap-1 justify-self-end transition-[filter] hover:saturate-125 sm:gap-1.5 md:gap-2 cursor-nav interactive-ink"
               aria-label={dict.footer.graphic}
             >
-              <ThemeSwapImage
-                lightSrc="/assets/inicio/brand/hero-grafico.svg"
-                darkSrc="/assets/inicio/brand/hero-grafico-dark.svg"
-                alt=""
-                fill
-                className="object-contain object-right"
-                priority
-                sizes="(max-width: 768px) 40vw, 26rem"
+              <span className="relative size-7 shrink-0 sm:size-10 md:size-16 lg:size-[4.5rem]">
+                <ThemeSwapImage
+                  lightSrc="/assets/inicio/brand/scribble-mouse.svg"
+                  darkSrc="/assets/inicio/brand/scribble-mouse-dark.svg"
+                  alt=""
+                  fill
+                  className="object-contain"
+                  priority
+                  sizes="(max-width: 768px) 40px, 72px"
+                />
+              </span>
+              <BrandVectorMask
+                src="/assets/inicio/brand/arrow-right.svg"
+                className="size-4 shrink-0 -scale-x-100 sm:size-6 md:size-8"
               />
+              <span className="text-[clamp(0.8rem,2.7vw,2.15rem)] font-normal leading-none whitespace-nowrap text-ink">
+                {dict.home.graphic}
+              </span>
             </Link>
 
-            <div className="hero-drift flex size-7 shrink-0 items-center justify-center bg-sky-pale sm:size-10 md:size-11">
-              <span className="text-base font-bold leading-none text-ink-deep sm:text-2xl md:text-3xl">
+            <div className="hero-drift flex shrink-0 items-center justify-center px-0.5 sm:px-1">
+              <span className="text-base font-normal leading-none text-ink sm:text-2xl md:text-3xl">
                 &
               </span>
             </div>
 
             <Link
               href={pathForLayer(locale, "interfaces")}
-              className="hero-nudge-right flex flex-row items-center gap-1 justify-self-start transition-opacity hover:opacity-80 sm:gap-1.5 md:gap-2"
+              className="hero-nudge-right flex flex-row items-center gap-1 justify-self-start transition-[filter] hover:saturate-125 sm:gap-1.5 md:gap-2 cursor-nav interactive-ink"
               aria-label={dict.footer.interfaces}
             >
               <span className="text-[clamp(0.8rem,2.7vw,2.15rem)] font-normal leading-none whitespace-nowrap text-ink">
@@ -243,6 +252,17 @@ export function HomeLayer({ locale, dict, content }: Props) {
             );
           }
 
+          const projectsPresentation =
+            content.homeProjectsPresentation ?? "legacy-split";
+
+          // Featured mode: single projects marquee; Current section not rendered.
+          if (
+            projectsPresentation === "featured" &&
+            sectionId === "current_projects"
+          ) {
+            return null;
+          }
+
           const meta = {
             companies: {
               title: dict.home.companiesTitle,
@@ -250,7 +270,10 @@ export function HomeLayer({ locale, dict, content }: Props) {
               kind: "company" as const,
             },
             past_projects: {
-              title: dict.home.pastProjectsTitle,
+              title:
+                projectsPresentation === "featured"
+                  ? dict.home.featuredProjectsTitle
+                  : dict.home.pastProjectsTitle,
               items: content.pastProjects,
               kind: "past_project" as const,
             },
@@ -274,6 +297,7 @@ export function HomeLayer({ locale, dict, content }: Props) {
               <InfiniteMarquee
                 items={meta.items}
                 config={content.settings.homeLayout.marquees[meta.kind]}
+                locale={locale}
               />
             </section>
           );

@@ -100,6 +100,14 @@ export default async function InterfacesCategoryPage({
         dict={dict}
         projects={projects}
         brands={content.brands}
+        relatedGraphicsBySection={{
+          logos: content.logos,
+          banners: content.banners,
+          eventos: content.eventos,
+          covers: content.covers,
+          illustration: content.illustration,
+          personal: content.personal,
+        }}
       />
     </main>
   );

@@ -1,0 +1,1478 @@
+{
+  "generatedAt": "2026-08-13T21:41:22.836Z",
+  "tables": [
+    {
+      "table": "brands",
+      "mysqlCount": 7,
+      "fixturesCount": 7,
+      "identicalCount": 2,
+      "onlyInMysql": [],
+      "onlyInFixtures": [],
+      "fieldDiffs": [
+        {
+          "id": "apsmm",
+          "changedFields": [
+            "sortOrder"
+          ],
+          "details": {
+            "sortOrder": {
+              "mysql": 999,
+              "fixtures": 4
+            }
+          }
+        },
+        {
+          "id": "citf",
+          "changedFields": [
+            "name",
+            "sortOrder"
+          ],
+          "details": {
+            "name": {
+              "mysql": "Cl??ster de Innovaci??n Tecnol??gica Formosa",
+              "fixtures": "Clúster de Innovación Tecnológica Formosa"
+            },
+            "sortOrder": {
+              "mysql": 999,
+              "fixtures": 6
+            }
+          }
+        },
+        {
+          "id": "ludica",
+          "changedFields": [
+            "name"
+          ],
+          "details": {
+            "name": {
+              "mysql": "L??dica Tech",
+              "fixtures": "Lúdica Tech"
+            }
+          }
+        },
+        {
+          "id": "orbita-l-b",
+          "changedFields": [
+            "name"
+          ],
+          "details": {
+            "name": {
+              "mysql": "??rbita L??B",
+              "fixtures": "Órbita LΔB"
+            }
+          }
+        },
+        {
+          "id": "seyier",
+          "changedFields": [
+            "sortOrder"
+          ],
+          "details": {
+            "sortOrder": {
+              "mysql": 999,
+              "fixtures": 5
+            }
+          }
+        }
+      ]
+    },
+    {
+      "table": "graphicItems",
+      "mysqlCount": 47,
+      "fixturesCount": 47,
+      "identicalCount": 13,
+      "onlyInMysql": [],
+      "onlyInFixtures": [],
+      "fieldDiffs": [
+        {
+          "id": "apsmm",
+          "changedFields": [
+            "alt",
+            "detail"
+          ],
+          "details": {
+            "alt": {
+              "mysql": "Asociaci??n de Profesionales de Salud de la Marina Mercante",
+              "fixtures": "Asociación de Profesionales de Salud de la Marina Mercante"
+            },
+            "detail": {
+              "mysql": {
+                "en": "Merchant Navy Health Professionals Association",
+                "es": "Asociaci??n de Profesionales de Salud de la Marina Mercante"
+              },
+              "fixtures": {
+                "en": "Merchant Navy Health Professionals Association",
+                "es": "Asociación de Profesionales de Salud de la Marina Mercante"
+              }
+            }
+          }
+        },
+        {
+          "id": "banana-thinking",
+          "changedFields": [
+            "detail",
+            "hrefLabel"
+          ],
+          "details": {
+            "detail": {
+              "mysql": {
+                "en": "Personal design",
+                "es": "Dise??o personal"
+              },
+              "fixtures": {
+                "en": "Personal design",
+                "es": "Diseño personal"
+              }
+            },
+            "hrefLabel": {
+              "mysql": {
+                "en": "See more",
+                "es": "Ver m??s"
+              },
+              "fixtures": {
+                "en": "See more",
+                "es": "Ver más"
+              }
+            }
+          }
+        },
+        {
+          "id": "banner-alfaj-metro",
+          "changedFields": [
+            "detail"
+          ],
+          "details": {
+            "detail": {
+              "mysql": {
+                "en": "Printed piece ?? IRL photo TBD",
+                "es": "Pieza impresa ?? foto IRL pendiente"
+              },
+              "fixtures": {
+                "en": "Printed piece · IRL photo TBD",
+                "es": "Pieza impresa · foto IRL pendiente"
+              }
+            }
+          }
+        },
+        {
+          "id": "banner-cluster",
+          "changedFields": [
+            "detail"
+          ],
+          "details": {
+            "detail": {
+              "mysql": {
+                "en": "Printed piece ?? IRL photo TBD",
+                "es": "Pieza impresa ?? foto IRL pendiente"
+              },
+              "fixtures": {
+                "en": "Printed piece · IRL photo TBD",
+                "es": "Pieza impresa · foto IRL pendiente"
+              }
+            }
+          }
+        },
+        {
+          "id": "banner-push",
+          "changedFields": [
+            "detail"
+          ],
+          "details": {
+            "detail": {
+              "mysql": {
+                "en": "Printed piece ?? IRL photo TBD",
+                "es": "Pieza impresa ?? foto IRL pendiente"
+              },
+              "fixtures": {
+                "en": "Printed piece · IRL photo TBD",
+                "es": "Pieza impresa · foto IRL pendiente"
+              }
+            }
+          }
+        },
+        {
+          "id": "banner-samsung",
+          "changedFields": [
+            "detail"
+          ],
+          "details": {
+            "detail": {
+              "mysql": {
+                "en": "Printed piece ?? IRL photo TBD",
+                "es": "Pieza impresa ?? foto IRL pendiente"
+              },
+              "fixtures": {
+                "en": "Printed piece · IRL photo TBD",
+                "es": "Pieza impresa · foto IRL pendiente"
+              }
+            }
+          }
+        },
+        {
+          "id": "barely-alive",
+          "changedFields": [
+            "detail"
+          ],
+          "details": {
+            "detail": {
+              "mysql": {
+                "en": "Playlist cover ?? own artwork",
+                "es": "Portada de playlist ?? artwork propio"
+              },
+              "fixtures": {
+                "en": "Playlist cover · own artwork",
+                "es": "Portada de playlist · artwork propio"
+              }
+            }
+          }
+        },
+        {
+          "id": "bass2025",
+          "changedFields": [
+            "detail"
+          ],
+          "details": {
+            "detail": {
+              "mysql": {
+                "en": "Playlist cover ??? Bass series",
+                "es": "Portada de playlist ??? Bass series"
+              },
+              "fixtures": {
+                "en": "Playlist cover — Bass series",
+                "es": "Portada de playlist — Bass series"
+              }
+            }
+          }
+        },
+        {
+          "id": "bass2026",
+          "changedFields": [
+            "detail"
+          ],
+          "details": {
+            "detail": {
+              "mysql": {
+                "en": "Playlist cover ??? Bass series ?? NICXIDE",
+                "es": "Portada de playlist ??? Bass series ?? NICXIDE"
+              },
+              "fixtures": {
+                "en": "Playlist cover — Bass series · NICXIDE",
+                "es": "Portada de playlist — Bass series · NICXIDE"
+              }
+            }
+          }
+        },
+        {
+          "id": "bass2k24",
+          "changedFields": [
+            "detail"
+          ],
+          "details": {
+            "detail": {
+              "mysql": {
+                "en": "Playlist cover ??? Bass series",
+                "es": "Portada de playlist ??? Bass series"
+              },
+              "fixtures": {
+                "en": "Playlist cover — Bass series",
+                "es": "Portada de playlist — Bass series"
+              }
+            }
+          }
+        },
+        {
+          "id": "brigado-crew",
+          "changedFields": [
+            "detail"
+          ],
+          "details": {
+            "detail": {
+              "mysql": {
+                "en": "Promotional piece for Brigado Crew / JBC.",
+                "es": "Pieza de difusi??n para Brigado Crew / JBC."
+              },
+              "fixtures": {
+                "en": "Promotional piece for Brigado Crew / JBC.",
+                "es": "Pieza de difusión para Brigado Crew / JBC."
+              }
+            }
+          }
+        },
+        {
+          "id": "demon-no-scape",
+          "changedFields": [
+            "alt",
+            "detail",
+            "hrefLabel"
+          ],
+          "details": {
+            "alt": {
+              "mysql": "Demon illustration ??? No Scape",
+              "fixtures": "Demon illustration — No Scape"
+            },
+            "detail": {
+              "mysql": {
+                "en": "Personal design",
+                "es": "Dise??o personal"
+              },
+              "fixtures": {
+                "en": "Personal design",
+                "es": "Diseño personal"
+              }
+            },
+            "hrefLabel": {
+              "mysql": {
+                "en": "See more",
+                "es": "Ver m??s"
+              },
+              "fixtures": {
+                "en": "See more",
+                "es": "Ver más"
+              }
+            }
+          }
+        },
+        {
+          "id": "expedicion-polo",
+          "changedFields": [
+            "title",
+            "alt",
+            "detail"
+          ],
+          "details": {
+            "title": {
+              "mysql": {
+                "en": "EXPEDICI??N POLO",
+                "es": "EXPEDICI??N POLO"
+              },
+              "fixtures": {
+                "en": "EXPEDICIÓN POLO",
+                "es": "EXPEDICIÓN POLO"
+              }
+            },
+            "alt": {
+              "mysql": "EXPEDICI??N POLO",
+              "fixtures": "EXPEDICIÓN POLO"
+            },
+            "detail": {
+              "mysql": {
+                "en": "Event at the Science, Technology and Innovation Hub (PCT&I) showcasing the work and activities carried out at the hub.",
+                "es": "Evento en el Polo Cient??fico, Tecnol??gico y de Innovaci??n (PCT&I) para exhibir el trabajo y las actividades que se desarrollan en el polo."
+              },
+              "fixtures": {
+                "en": "Event at the Science, Technology and Innovation Hub (PCT&I) showcasing the work and activities carried out at the hub.",
+                "es": "Evento en el Polo Científico, Tecnológico y de Innovación (PCT&I) para exhibir el trabajo y las actividades que se desarrollan en el polo."
+              }
+            }
+          }
+        },
+        {
+          "id": "futulab",
+          "changedFields": [
+            "title",
+            "alt"
+          ],
+          "details": {
+            "title": {
+              "mysql": {
+                "en": "futul??b",
+                "es": "futul??b"
+              },
+              "fixtures": {
+                "en": "futulΔb",
+                "es": "futulΔb"
+              }
+            },
+            "alt": {
+              "mysql": "futul??b",
+              "fixtures": "futulΔb"
+            }
+          }
+        },
+        {
+          "id": "grime-marauda",
+          "changedFields": [
+            "title",
+            "alt",
+            "detail",
+            "hrefLabel"
+          ],
+          "details": {
+            "title": {
+              "mysql": {
+                "en": "Grime ??? Marauda",
+                "es": "Grime ??? Marauda"
+              },
+              "fixtures": {
+                "en": "Grime — Marauda",
+                "es": "Grime — Marauda"
+              }
+            },
+            "alt": {
+              "mysql": "Grime ??? Marauda",
+              "fixtures": "Grime — Marauda"
+            },
+            "detail": {
+              "mysql": {
+                "en": "Personal design",
+                "es": "Dise??o personal"
+              },
+              "fixtures": {
+                "en": "Personal design",
+                "es": "Diseño personal"
+              }
+            },
+            "hrefLabel": {
+              "mysql": {
+                "en": "See more",
+                "es": "Ver m??s"
+              },
+              "fixtures": {
+                "en": "See more",
+                "es": "Ver más"
+              }
+            }
+          }
+        },
+        {
+          "id": "grime-pawn",
+          "changedFields": [
+            "alt",
+            "detail",
+            "hrefLabel"
+          ],
+          "details": {
+            "alt": {
+              "mysql": "Grime pawn ??? Ayala",
+              "fixtures": "Grime pawn — Ayala"
+            },
+            "detail": {
+              "mysql": {
+                "en": "Personal design",
+                "es": "Dise??o personal"
+              },
+              "fixtures": {
+                "en": "Personal design",
+                "es": "Diseño personal"
+              }
+            },
+            "hrefLabel": {
+              "mysql": {
+                "en": "See more",
+                "es": "Ver m??s"
+              },
+              "fixtures": {
+                "en": "See more",
+                "es": "Ver más"
+              }
+            }
+          }
+        },
+        {
+          "id": "ive-no-idea",
+          "changedFields": [
+            "detail"
+          ],
+          "details": {
+            "detail": {
+              "mysql": {
+                "en": "Playlist cover ?? own artwork",
+                "es": "Portada de playlist ?? artwork propio"
+              },
+              "fixtures": {
+                "en": "Playlist cover · own artwork",
+                "es": "Portada de playlist · artwork propio"
+              }
+            }
+          }
+        },
+        {
+          "id": "juegos-provinciales",
+          "changedFields": [
+            "galleryPaths",
+            "title",
+            "alt",
+            "detail"
+          ],
+          "details": {
+            "galleryPaths": {
+              "mysql": [
+                {
+                  "src": "/assets/grafico/eventos/juegos-provinciales/flyer-musica.png"
+                },
+                {
+                  "src": "/assets/grafico/eventos/juegos-provinciales/flyer-robotica.png"
+                },
+                {
+                  "src": "/assets/grafico/eventos/juegos-provinciales/flyer-gaming.png"
+                },
+                {
+                  "src": "/assets/grafico/eventos/juegos-provinciales/flyer-espacios.png"
+                },
+                {
+                  "src": "/assets/grafico/eventos/juegos-provinciales/mapa.png"
+                },
+                {
+                  "src": "/assets/grafico/eventos/juegos-provinciales/mapa-story.png"
+                },
+                {
+                  "src": "/assets/grafico/eventos/juegos-provinciales/afiche.png"
+                },
+                {
+                  "src": "/assets/grafico/eventos/juegos-provinciales/flyer-identidad.png"
+                },
+                {
+                  "src": "/assets/grafico/eventos/juegos-provinciales/flyer-gonzalito.png"
+                },
+                {
+                  "src": "/assets/grafico/eventos/juegos-provinciales/flyer-axel.png"
+                },
+                {
+                  "src": "/assets/grafico/eventos/juegos-provinciales/flyer-lucas-sub21.png"
+                }
+              ],
+              "fixtures": [
+                "/assets/grafico/eventos/juegos-provinciales/flyer-musica.png",
+                "/assets/grafico/eventos/juegos-provinciales/flyer-robotica.png",
+                "/assets/grafico/eventos/juegos-provinciales/flyer-gaming.png",
+                "/assets/grafico/eventos/juegos-provinciales/flyer-espacios.png",
+                "/assets/grafico/eventos/juegos-provinciales/mapa.png",
+                "/assets/grafico/eventos/juegos-provinciales/mapa-story.png",
+                "/assets/grafico/eventos/juegos-provinciales/afiche.png",
+                "/assets/grafico/eventos/juegos-provinciales/flyer-identidad.png",
+                "/assets/grafico/eventos/juegos-provinciales/flyer-gonzalito.png",
+                "/assets/grafico/eventos/juegos-provinciales/flyer-axel.png",
+                "/assets/grafico/eventos/juegos-provinciales/flyer-lucas-sub21.png"
+              ]
+            },
+            "title": {
+              "mysql": {
+                "en": "Provincial Technology Games",
+                "es": "Juegos Provinciales Tecnol??gicos"
+              },
+              "fixtures": {
+                "en": "Provincial Technology Games",
+                "es": "Juegos Provinciales Tecnológicos"
+              }
+            },
+            "alt": {
+              "mysql": "Juegos Provinciales Tecnol??gicos",
+              "fixtures": "Juegos Provinciales Tecnológicos"
+            },
+            "detail": {
+              "mysql": {
+                "en": "Promo campaign for the Government of Formosa: gaming, robotics, and live music. Science, Technology and Innovation Hub ?? 21 June.",
+                "es": "Campa??a de difusi??n para el Gobierno de Formosa: gaming, rob??tica y m??sica en vivo. Polo Cient??fico, Tecnol??gico y de Innovaci??n ?? 21 de junio."
+              },
+              "fixtures": {
+                "en": "Promo campaign for the Government of Formosa: gaming, robotics, and live music. Science, Technology and Innovation Hub · 21 June.",
+                "es": "Campaña de difusión para el Gobierno de Formosa: gaming, robótica y música en vivo. Polo Científico, Tecnológico y de Innovación · 21 de junio."
+              }
+            }
+          }
+        },
+        {
+          "id": "kadaver-jez-ebel",
+          "changedFields": [
+            "detail"
+          ],
+          "details": {
+            "detail": {
+              "mysql": {
+                "en": "SoundCloud cover ??? KADAVER ?? Jez_ebel bootleg",
+                "es": "Portada en SoundCloud ??? KADAVER ?? Jez_ebel bootleg"
+              },
+              "fixtures": {
+                "en": "SoundCloud cover — KADAVER · Jez_ebel bootleg",
+                "es": "Portada en SoundCloud — KADAVER · Jez_ebel bootleg"
+              }
+            }
+          }
+        },
+        {
+          "id": "magic-cell",
+          "changedFields": [
+            "detail"
+          ],
+          "details": {
+            "detail": {
+              "mysql": {
+                "en": "Phone-case venture ?? wordmark",
+                "es": "Emprendimiento de fundas ?? logotipo"
+              },
+              "fixtures": {
+                "en": "Phone-case venture · wordmark",
+                "es": "Emprendimiento de fundas · logotipo"
+              }
+            }
+          }
+        },
+        {
+          "id": "mantis",
+          "changedFields": [
+            "hrefLabel"
+          ],
+          "details": {
+            "hrefLabel": {
+              "mysql": {
+                "en": "See more",
+                "es": "Ver m??s"
+              },
+              "fixtures": {
+                "en": "See more",
+                "es": "Ver más"
+              }
+            }
+          }
+        },
+        {
+          "id": "marauda-type-logo-ayala",
+          "changedFields": [
+            "alt",
+            "detail",
+            "hrefLabel"
+          ],
+          "details": {
+            "alt": {
+              "mysql": "Marauda type logo ??? Ayala",
+              "fixtures": "Marauda type logo — Ayala"
+            },
+            "detail": {
+              "mysql": {
+                "en": "Personal take inspired by Marauda (~2020)",
+                "es": "Interpretaci??n propia inspirada en Marauda (~2020)"
+              },
+              "fixtures": {
+                "en": "Personal take inspired by Marauda (~2020)",
+                "es": "Interpretación propia inspirada en Marauda (~2020)"
+              }
+            },
+            "hrefLabel": {
+              "mysql": {
+                "en": "See more",
+                "es": "Ver m??s"
+              },
+              "fixtures": {
+                "en": "See more",
+                "es": "Ver más"
+              }
+            }
+          }
+        },
+        {
+          "id": "nick-tdt-beach",
+          "changedFields": [
+            "detail"
+          ],
+          "details": {
+            "detail": {
+              "mysql": {
+                "en": "Pixel art illustration ?? no background",
+                "es": "Ilustraci??n pixel art ?? sin fondo"
+              },
+              "fixtures": {
+                "en": "Pixel art illustration · no background",
+                "es": "Ilustración pixel art · sin fondo"
+              }
+            }
+          }
+        },
+        {
+          "id": "nicoide-geometry-dash",
+          "changedFields": [
+            "alt",
+            "detail",
+            "hrefLabel"
+          ],
+          "details": {
+            "alt": {
+              "mysql": "NICOIDE ??? Geometry Dash wordmark",
+              "fixtures": "NICOIDE — Geometry Dash wordmark"
+            },
+            "detail": {
+              "mysql": {
+                "en": "Origin of the brand N ?? built in Geometry Dash, later vectorized",
+                "es": "Origen de la N de marca ?? armado en Geometry Dash, luego vectorizado"
+              },
+              "fixtures": {
+                "en": "Origin of the brand N · built in Geometry Dash, later vectorized",
+                "es": "Origen de la N de marca · armado en Geometry Dash, luego vectorizado"
+              }
+            },
+            "hrefLabel": {
+              "mysql": {
+                "en": "See more",
+                "es": "Ver m??s"
+              },
+              "fixtures": {
+                "en": "See more",
+                "es": "Ver más"
+              }
+            }
+          }
+        },
+        {
+          "id": "nicoide-not-impostor",
+          "changedFields": [
+            "detail",
+            "hrefLabel"
+          ],
+          "details": {
+            "detail": {
+              "mysql": {
+                "en": "Personal design",
+                "es": "Dise??o personal"
+              },
+              "fixtures": {
+                "en": "Personal design",
+                "es": "Diseño personal"
+              }
+            },
+            "hrefLabel": {
+              "mysql": {
+                "en": "See more",
+                "es": "Ver m??s"
+              },
+              "fixtures": {
+                "en": "See more",
+                "es": "Ver más"
+              }
+            }
+          }
+        },
+        {
+          "id": "odyssey-plant-head",
+          "changedFields": [
+            "alt",
+            "detail"
+          ],
+          "details": {
+            "alt": {
+              "mysql": "Odyssey ??? plant head figure",
+              "fixtures": "Odyssey — plant head figure"
+            },
+            "detail": {
+              "mysql": {
+                "en": "Digital illustration",
+                "es": "Ilustraci??n digital"
+              },
+              "fixtures": {
+                "en": "Digital illustration",
+                "es": "Ilustración digital"
+              }
+            }
+          }
+        },
+        {
+          "id": "penguin-knife",
+          "changedFields": [
+            "title"
+          ],
+          "details": {
+            "title": {
+              "mysql": {
+                "en": "Penguin",
+                "es": "Ping??ino"
+              },
+              "fixtures": {
+                "en": "Penguin",
+                "es": "Pingüino"
+              }
+            }
+          }
+        },
+        {
+          "id": "push",
+          "changedFields": [
+            "detail"
+          ],
+          "details": {
+            "detail": {
+              "mysql": {
+                "en": "Software factory ?? brand identity",
+                "es": "Software factory ?? identidad de marca"
+              },
+              "fixtures": {
+                "en": "Software factory · brand identity",
+                "es": "Software factory · identidad de marca"
+              }
+            }
+          }
+        },
+        {
+          "id": "sad-machine-makenix",
+          "changedFields": [
+            "title",
+            "detail",
+            "hrefLabel"
+          ],
+          "details": {
+            "title": {
+              "mysql": {
+                "en": "Sad Machine ??? Makenix Remix",
+                "es": "Sad Machine ??? Makenix Remix"
+              },
+              "fixtures": {
+                "en": "Sad Machine — Makenix Remix",
+                "es": "Sad Machine — Makenix Remix"
+              }
+            },
+            "detail": {
+              "mysql": {
+                "en": "Fan art ?? not an official cover ?? Makenix remix",
+                "es": "Fan art ?? no es portada oficial ?? remix de Makenix"
+              },
+              "fixtures": {
+                "en": "Fan art · not an official cover · Makenix remix",
+                "es": "Fan art · no es portada oficial · remix de Makenix"
+              }
+            },
+            "hrefLabel": {
+              "mysql": {
+                "en": "See more",
+                "es": "Ver m??s"
+              },
+              "fixtures": {
+                "en": "See more",
+                "es": "Ver más"
+              }
+            }
+          }
+        },
+        {
+          "id": "summit-holding",
+          "changedFields": [
+            "detail"
+          ],
+          "details": {
+            "detail": {
+              "mysql": {
+                "en": "Vector identity for a commission ?? holding / financial entity (investments, portfolios).",
+                "es": "Identidad vectorial para encargo ?? entidad tipo holding / financiera (inversiones, carteras)."
+              },
+              "fixtures": {
+                "en": "Vector identity for a commission · holding / financial entity (investments, portfolios).",
+                "es": "Identidad vectorial para encargo · entidad tipo holding / financiera (inversiones, carteras)."
+              }
+            }
+          }
+        },
+        {
+          "id": "tdt",
+          "changedFields": [
+            "alt",
+            "detail"
+          ],
+          "details": {
+            "alt": {
+              "mysql": "TDT ??? The Dream Team",
+              "fixtures": "TDT — The Dream Team"
+            },
+            "detail": {
+              "mysql": {
+                "en": "The Dream Team ?? isotype",
+                "es": "The Dream Team ?? isotipo"
+              },
+              "fixtures": {
+                "en": "The Dream Team · isotype",
+                "es": "The Dream Team · isotipo"
+              }
+            }
+          }
+        },
+        {
+          "id": "twenty-twenty-3",
+          "changedFields": [
+            "detail"
+          ],
+          "details": {
+            "detail": {
+              "mysql": {
+                "en": "Playlist cover ??? Bass series",
+                "es": "Portada de playlist ??? Bass series"
+              },
+              "fixtures": {
+                "en": "Playlist cover — Bass series",
+                "es": "Portada de playlist — Bass series"
+              }
+            }
+          }
+        },
+        {
+          "id": "twenty-twenty-two-spotify",
+          "changedFields": [
+            "detail"
+          ],
+          "details": {
+            "detail": {
+              "mysql": {
+                "en": "Playlist cover ??? Bass series",
+                "es": "Portada de playlist ??? Bass series"
+              },
+              "fixtures": {
+                "en": "Playlist cover — Bass series",
+                "es": "Portada de playlist — Bass series"
+              }
+            }
+          }
+        },
+        {
+          "id": "we-are-barely-world",
+          "changedFields": [
+            "alt"
+          ],
+          "details": {
+            "alt": {
+              "mysql": "We Are Barely Alive ??? Mario world parody",
+              "fixtures": "We Are Barely Alive — Mario world parody"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "table": "uiProjects",
+      "mysqlCount": 13,
+      "fixturesCount": 13,
+      "identicalCount": 1,
+      "onlyInMysql": [],
+      "onlyInFixtures": [],
+      "fieldDiffs": [
+        {
+          "id": "adapto-pay",
+          "changedFields": [
+            "meta"
+          ],
+          "details": {
+            "meta": {
+              "mysql": {
+                "en": "Collaboration with @aicore - November 2024",
+                "es": "Colaboraci??n con @aicore - noviembre 2024"
+              },
+              "fixtures": {
+                "en": "Collaboration with @aicore - November 2024",
+                "es": "Colaboración con @aicore - noviembre 2024"
+              }
+            }
+          }
+        },
+        {
+          "id": "aicore-inventariado",
+          "changedFields": [
+            "title",
+            "meta"
+          ],
+          "details": {
+            "title": {
+              "mysql": {
+                "en": "AICORE IT Specialists ??? inventory",
+                "es": "AICORE IT Specialists ??? inventariado"
+              },
+              "fixtures": {
+                "en": "AICORE IT Specialists — inventory",
+                "es": "AICORE IT Specialists — inventariado"
+              }
+            },
+            "meta": {
+              "mysql": {
+                "en": "Pre-sales ?? commercial management backoffice",
+                "es": "Preventa ?? backoffice de gesti??n comercial"
+              },
+              "fixtures": {
+                "en": "Pre-sales · commercial management backoffice",
+                "es": "Preventa · backoffice de gestión comercial"
+              }
+            }
+          }
+        },
+        {
+          "id": "aml-casinos",
+          "changedFields": [
+            "title",
+            "meta"
+          ],
+          "details": {
+            "title": {
+              "mysql": {
+                "en": "Anti-Money Laundering Analysis for Digital Casinos",
+                "es": "An??lisis contra el Lavado de Dinero en Casinos Digitales"
+              },
+              "fixtures": {
+                "en": "Anti-Money Laundering Analysis for Digital Casinos",
+                "es": "Análisis contra el Lavado de Dinero en Casinos Digitales"
+              }
+            },
+            "meta": {
+              "mysql": {
+                "en": "Collaboration with @aicore - September 2024",
+                "es": "Colaboraci??n con @aicore - septiembre 2024"
+              },
+              "fixtures": {
+                "en": "Collaboration with @aicore - September 2024",
+                "es": "Colaboración con @aicore - septiembre 2024"
+              }
+            }
+          }
+        },
+        {
+          "id": "aml-general",
+          "changedFields": [
+            "title",
+            "meta"
+          ],
+          "details": {
+            "title": {
+              "mysql": {
+                "en": "Anti-Money Laundering Analysis",
+                "es": "An??lisis contra el Lavado de Dinero"
+              },
+              "fixtures": {
+                "en": "Anti-Money Laundering Analysis",
+                "es": "Análisis contra el Lavado de Dinero"
+              }
+            },
+            "meta": {
+              "mysql": {
+                "en": "Collaboration with @aicore - October 2024",
+                "es": "Colaboraci??n con @aicore - octubre 2024"
+              },
+              "fixtures": {
+                "en": "Collaboration with @aicore - October 2024",
+                "es": "Colaboración con @aicore - octubre 2024"
+              }
+            }
+          }
+        },
+        {
+          "id": "apsmm",
+          "changedFields": [
+            "title",
+            "meta"
+          ],
+          "details": {
+            "title": {
+              "mysql": {
+                "en": "Management system ??? APSMM",
+                "es": "Sistema de gesti??n ??? APSMM"
+              },
+              "fixtures": {
+                "en": "Management system — APSMM",
+                "es": "Sistema de gestión — APSMM"
+              }
+            },
+            "meta": {
+              "mysql": {
+                "en": "Merchant Navy Health Professionals Association ?? UI interface",
+                "es": "Asociaci??n de Profesionales de Salud de la Marina Mercante ?? interfaz UI"
+              },
+              "fixtures": {
+                "en": "Merchant Navy Health Professionals Association · UI interface",
+                "es": "Asociación de Profesionales de Salud de la Marina Mercante · interfaz UI"
+              }
+            }
+          }
+        },
+        {
+          "id": "asesor-financiero",
+          "changedFields": [
+            "meta",
+            "summary"
+          ],
+          "details": {
+            "meta": {
+              "mysql": {
+                "en": "Mobile app ?? demo",
+                "es": "App mobile ?? demo"
+              },
+              "fixtures": {
+                "en": "Mobile app · demo",
+                "es": "App mobile · demo"
+              }
+            },
+            "summary": {
+              "mysql": {
+                "en": "Demo app for investment portfolio recommendations based on risk profile and preferences.",
+                "es": "Demo de app para recomendaci??n de carteras de inversi??n seg??n perfil y preferencias."
+              },
+              "fixtures": {
+                "en": "Demo app for investment portfolio recommendations based on risk profile and preferences.",
+                "es": "Demo de app para recomendación de carteras de inversión según perfil y preferencias."
+              }
+            }
+          }
+        },
+        {
+          "id": "casiba",
+          "changedFields": [
+            "title",
+            "meta"
+          ],
+          "details": {
+            "title": {
+              "mysql": {
+                "en": "Air Treatment Units Management System - CASIBA",
+                "es": "Sistema de Gesti??n de Unidades de Tratamiento de Aire - CASIBA"
+              },
+              "fixtures": {
+                "en": "Air Treatment Units Management System - CASIBA",
+                "es": "Sistema de Gestión de Unidades de Tratamiento de Aire - CASIBA"
+              }
+            },
+            "meta": {
+              "mysql": {
+                "en": "Collaboration with @aicore - September 2024",
+                "es": "Colaboraci??n con @aicore - septiembre 2024"
+              },
+              "fixtures": {
+                "en": "Collaboration with @aicore - September 2024",
+                "es": "Colaboración con @aicore - septiembre 2024"
+              }
+            }
+          }
+        },
+        {
+          "id": "clearwater",
+          "changedFields": [
+            "title",
+            "meta"
+          ],
+          "details": {
+            "title": {
+              "mysql": {
+                "en": "Purchase & Investment Report Generation - CLEARWATER",
+                "es": "Generaci??n de Informes para compra e inversi??n - CLEARWATER"
+              },
+              "fixtures": {
+                "en": "Purchase & Investment Report Generation - CLEARWATER",
+                "es": "Generación de Informes para compra e inversión - CLEARWATER"
+              }
+            },
+            "meta": {
+              "mysql": {
+                "en": "Collaboration with @aicore - January 2024",
+                "es": "Colaboraci??n con @aicore - enero 2024"
+              },
+              "fixtures": {
+                "en": "Collaboration with @aicore - January 2024",
+                "es": "Colaboración con @aicore - enero 2024"
+              }
+            }
+          }
+        },
+        {
+          "id": "cms-portfolio",
+          "changedFields": [
+            "title",
+            "meta",
+            "summary",
+            "duration"
+          ],
+          "details": {
+            "title": {
+              "mysql": {
+                "en": "Portfolio content management system",
+                "es": "Sistema de gesti??n de contenido del portfolio"
+              },
+              "fixtures": {
+                "en": "Portfolio content management system",
+                "es": "Sistema de gestión de contenido del portfolio"
+              }
+            },
+            "meta": {
+              "mysql": {
+                "en": "Custom CMS ?? this site's admin panel",
+                "es": "CMS propio ?? panel de administraci??n de este sitio"
+              },
+              "fixtures": {
+                "en": "Custom CMS · this site's admin panel",
+                "es": "CMS propio · panel de administración de este sitio"
+              }
+            },
+            "summary": {
+              "mysql": {
+                "en": "Custom admin panel for this portfolio: type, graphic/interfaces layers, inbox, brands, testimonials and media. Built so content can ship without code changes. Explore it in read-only visitor mode.",
+                "es": "Panel de administraci??n hecho a medida para este portfolio: tipograf??as, capas gr??fico/interfaces, bandeja de pendientes, marcas, testimonios y media. Pensado para publicar sin tocar c??digo. Pod??s recorrerlo en modo visitante (solo lectura)."
+              },
+              "fixtures": {
+                "en": "Custom admin panel for this portfolio: type, graphic/interfaces layers, inbox, brands, testimonials and media. Built so content can ship without code changes. Explore it in read-only visitor mode.",
+                "es": "Panel de administración hecho a medida para este portfolio: tipografías, capas gráfico/interfaces, bandeja de pendientes, marcas, testimonios y media. Pensado para publicar sin tocar código. Podés recorrerlo en modo visitante (solo lectura)."
+              }
+            },
+            "duration": {
+              "mysql": {
+                "en": "ongoing",
+                "es": "en evoluci??n continua"
+              },
+              "fixtures": {
+                "en": "ongoing",
+                "es": "en evolución continua"
+              }
+            }
+          }
+        },
+        {
+          "id": "mikrobiol",
+          "changedFields": [
+            "meta"
+          ],
+          "details": {
+            "meta": {
+              "mysql": {
+                "en": "Collaboration with @aicore - October 2024",
+                "es": "Colaboraci??n con @aicore - octubre 2024"
+              },
+              "fixtures": {
+                "en": "Collaboration with @aicore - October 2024",
+                "es": "Colaboración con @aicore - octubre 2024"
+              }
+            }
+          }
+        },
+        {
+          "id": "omnigroup",
+          "changedFields": [
+            "title",
+            "meta",
+            "summary"
+          ],
+          "details": {
+            "title": {
+              "mysql": {
+                "en": "Omnigroup ??? backoffice and totem",
+                "es": "Omnigroup ??? backoffice y t??tem"
+              },
+              "fixtures": {
+                "en": "Omnigroup — backoffice and totem",
+                "es": "Omnigroup — backoffice y tótem"
+              }
+            },
+            "meta": {
+              "mysql": {
+                "en": "Pre-sales ?? web + self-service totem",
+                "es": "Preventa ?? web + t??tem de autoservicio"
+              },
+              "fixtures": {
+                "en": "Pre-sales · web + self-service totem",
+                "es": "Preventa · web + tótem de autoservicio"
+              }
+            },
+            "summary": {
+              "mysql": {
+                "en": "Web backoffice for merchants and a self-service totem: points of interest, totem management, and a vertical device flow.",
+                "es": "Backoffice web para comercios y t??tem de autoservicio: puntos de inter??s, gesti??n de t??tems y flujo en dispositivo vertical."
+              },
+              "fixtures": {
+                "en": "Web backoffice for merchants and a self-service totem: points of interest, totem management, and a vertical device flow.",
+                "es": "Backoffice web para comercios y tótem de autoservicio: puntos de interés, gestión de tótems y flujo en dispositivo vertical."
+              }
+            }
+          }
+        },
+        {
+          "id": "proxi",
+          "changedFields": [
+            "meta"
+          ],
+          "details": {
+            "meta": {
+              "mysql": {
+                "en": "Collaboration with @aicore - January 2024",
+                "es": "Colaboraci??n con @aicore - enero 2024"
+              },
+              "fixtures": {
+                "en": "Collaboration with @aicore - January 2024",
+                "es": "Colaboración con @aicore - enero 2024"
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "table": "brandManuals",
+      "mysqlCount": 1,
+      "fixturesCount": 1,
+      "identicalCount": 0,
+      "onlyInMysql": [],
+      "onlyInFixtures": [],
+      "fieldDiffs": [
+        {
+          "id": "citf",
+          "changedFields": [
+            "meta"
+          ],
+          "details": {
+            "meta": {
+              "mysql": {
+                "en": "Formosa Technology Innovation Cluster",
+                "es": "Cl??ster de Innovaci??n Tecnol??gica Formosa"
+              },
+              "fixtures": {
+                "en": "Formosa Technology Innovation Cluster",
+                "es": "Clúster de Innovación Tecnológica Formosa"
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "table": "testimonials",
+      "mysqlCount": 4,
+      "fixturesCount": 4,
+      "identicalCount": 0,
+      "onlyInMysql": [],
+      "onlyInFixtures": [],
+      "fieldDiffs": [
+        {
+          "id": "ezequiel",
+          "changedFields": [
+            "quote"
+          ],
+          "details": {
+            "quote": {
+              "mysql": {
+                "en": "While we worked together, Nico showed great responsibility and professionalism. His proposals always added value to the product and the user experience, achieving visible results aligned with project goals.",
+                "es": "Durante el tiempo que trabajamos juntos, Nico demostr?? gran responsabilidad y profesionalismo. Sus propuestas siempre aportaron valor al producto y a la experiencia del usuario, logrando resultados visibles y alineados con los objetivos del proyecto."
+              },
+              "fixtures": {
+                "en": "While we worked together, Nico showed great responsibility and professionalism. His proposals always added value to the product and the user experience, achieving visible results aligned with project goals.",
+                "es": "Durante el tiempo que trabajamos juntos, Nico demostró gran responsabilidad y profesionalismo. Sus propuestas siempre aportaron valor al producto y a la experiencia del usuario, logrando resultados visibles y alineados con los objetivos del proyecto."
+              }
+            }
+          }
+        },
+        {
+          "id": "facundo",
+          "changedFields": [
+            "quote"
+          ],
+          "details": {
+            "quote": {
+              "mysql": {
+                "en": "Nico is more than an exceptional professional ??? he's a great person. His programming knowledge lets him communicate effectively with developers, and his passion for projects leads him to take on extra roles. He's a valuable and standout member of any team.",
+                "es": "Nico es m??s que un profesional excepcional, es una gran persona. Su conocimiento en programaci??n le permite comunicarse de manera efectiva con los desarrolladores, y su pasi??n por los proyectos lo lleva a involucrarse al punto de asumir roles adicionales. Sin duda, es un miembro valioso y distinguido en cualquier equipo."
+              },
+              "fixtures": {
+                "en": "Nico is more than an exceptional professional — he's a great person. His programming knowledge lets him communicate effectively with developers, and his passion for projects leads him to take on extra roles. He's a valuable and standout member of any team.",
+                "es": "Nico es más que un profesional excepcional, es una gran persona. Su conocimiento en programación le permite comunicarse de manera efectiva con los desarrolladores, y su pasión por los proyectos lo lleva a involucrarse al punto de asumir roles adicionales. Sin duda, es un miembro valioso y distinguido en cualquier equipo."
+              }
+            }
+          }
+        },
+        {
+          "id": "joaquin",
+          "changedFields": [
+            "name",
+            "quote",
+            "role",
+            "companyName"
+          ],
+          "details": {
+            "name": {
+              "mysql": "Amarilla Joaqu??n",
+              "fixtures": "Amarilla Joaquín"
+            },
+            "quote": {
+              "mysql": {
+                "en": "Great creativity and solid understanding of project needs.",
+                "es": "Gran creatividad y buena compresi??n para las necesidades de los proyectos."
+              },
+              "fixtures": {
+                "en": "Great creativity and solid understanding of project needs.",
+                "es": "Gran creatividad y buena compresión para las necesidades de los proyectos."
+              }
+            },
+            "role": {
+              "mysql": {
+                "en": "CEO of L??dica Tech",
+                "es": "CEO de L??dica Tech"
+              },
+              "fixtures": {
+                "en": "CEO of Lúdica Tech",
+                "es": "CEO de Lúdica Tech"
+              }
+            },
+            "companyName": {
+              "mysql": "L??dica Tech",
+              "fixtures": "Lúdica Tech"
+            }
+          }
+        },
+        {
+          "id": "matias",
+          "changedFields": [
+            "hidden",
+            "name",
+            "role",
+            "companyName"
+          ],
+          "details": {
+            "hidden": {
+              "mysql": false,
+              "fixtures": true
+            },
+            "name": {
+              "mysql": "Mendoza Mat??as",
+              "fixtures": "Mendoza Matías"
+            },
+            "role": {
+              "mysql": {
+                "en": "CEO of ??rbita L??B",
+                "es": "CEO de ??rbita L??B"
+              },
+              "fixtures": {
+                "en": "CEO of Órbita LΔB",
+                "es": "CEO de Órbita LΔB"
+              }
+            },
+            "companyName": {
+              "mysql": "??rbita L??B",
+              "fixtures": "Órbita LΔB"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "table": "namedListItems",
+      "mysqlCount": 40,
+      "fixturesCount": 40,
+      "identicalCount": 30,
+      "onlyInMysql": [
+        "company|??rbita L??B|13",
+        "company|Asociaci??n de Profesionales de Salud de la Marina Mercante|1",
+        "company|Cl??ster de Innovaci??n Tecnol??gica Formosa|4",
+        "company|Empresa Provincial de Innovaci??n y Conocimiento Abierto|5",
+        "company|L??dica Tech|11",
+        "company|Secretar??a de Ciencia y Tecnolog??a de Formosa|16",
+        "company|Subsecretar??a de Empleo de Formosa|17",
+        "past_project|EXPEDICI??N POLO|6",
+        "past_project|Juegos Provinciales Tecnol??gicos|9",
+        "past_project|La Estaci??n|10"
+      ],
+      "onlyInFixtures": [
+        "company|Asociación de Profesionales de Salud de la Marina Mercante|1",
+        "company|Clúster de Innovación Tecnológica Formosa|4",
+        "company|Empresa Provincial de Innovación y Conocimiento Abierto|5",
+        "company|Lúdica Tech|11",
+        "company|Secretaría de Ciencia y Tecnología de Formosa|16",
+        "company|Subsecretaría de Empleo de Formosa|17",
+        "company|Órbita LΔB|13",
+        "past_project|EXPEDICIÓN POLO|6",
+        "past_project|Juegos Provinciales Tecnológicos|9",
+        "past_project|La Estación|10"
+      ],
+      "fieldDiffs": []
+    },
+    {
+      "table": "tags",
+      "mysqlCount": 9,
+      "fixturesCount": 9,
+      "identicalCount": 9,
+      "onlyInMysql": [],
+      "onlyInFixtures": [],
+      "fieldDiffs": []
+    }
+  ]
+}

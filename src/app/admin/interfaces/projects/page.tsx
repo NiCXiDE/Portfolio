@@ -45,6 +45,7 @@ export default async function AdminInterfacesProjectsPage({
         period: p.period,
         duration: p.duration,
         ctaKind: p.ctaKind,
+        brandId: p.brandId ?? null,
         sortOrder: p.sortOrder,
         published: p.published,
       }))}

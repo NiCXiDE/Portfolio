@@ -440,7 +440,7 @@ export function SettingsContactPreview({
       </p>
       <p className="text-[0.65rem] text-ink/50">
         carousel {draftStr(draft, "carouselIntervalMs") || "2000"}ms · preview{" "}
-        {draftStr(draft, "graphicPreviewLimit") || "7"}
+        {draftStr(draft, "graphicPreviewLimit") || "5"}
       </p>
     </div>
   );

@@ -1,0 +1,83 @@
+{
+  "phase": "3C.3",
+  "status": "APPROVED_AND_CLOSED",
+  "frozenAt": "2026-08-15T06:57:00-03:00",
+  "confidentialPlaintext": false,
+  "firstApply": {
+    "exit": 0,
+    "database": "portfolio_v2_apply_test",
+    "mode": "rehearsal-apply",
+    "liveApplyExecuted": false
+  },
+  "tempActual": {
+    "entities": 33,
+    "projects": 31,
+    "pieces": 48,
+    "project_resources": 26,
+    "piece_resources": 2,
+    "piece_src_mappings": 60,
+    "project_entities": 43,
+    "piece_entities": 17,
+    "project_areas": 37,
+    "project_roles": 67,
+    "piece_tags": 49,
+    "migration_map": 125,
+    "tags": 11
+  },
+  "integrity": {
+    "orphans": 0,
+    "canonicalTestimonials": {
+      "matched": 4,
+      "expected": 4,
+      "mappings": [
+        { "id": "facundo", "entityId": "push" },
+        { "id": "ezequiel", "entityId": "aicore" },
+        { "id": "joaquin", "entityId": "ludica" },
+        { "id": "matias", "entityId": "orbita-l-b" }
+      ]
+    },
+    "confidentialityOk": true,
+    "syllabiPublished": false,
+    "buhoprofeAsPiece": false,
+    "buhoprofeAsSyllabiProjectResource": true,
+    "tagAdditions": ["tdt", "cover"],
+    "tagsPre": 9,
+    "tagsPost": 11,
+    "coverPieceTags": 12,
+    "tdtPieceTags": 2,
+    "semanticsValid": true
+  },
+  "legacyTemp": {
+    "graphic_items": 47,
+    "ui_projects": 13,
+    "brands": 7,
+    "brand_manuals": 1,
+    "named_list_items": 40,
+    "ui_list_items": 8,
+    "tags": 11
+  },
+  "idempotency": {
+    "rerunExit": 1,
+    "abortGuard": "assertV2Empty",
+    "abortMessage": "[safety] V2 table \"entities\" must be empty before dry-run (found 33).",
+    "writes": false,
+    "duplicates": false
+  },
+  "live": {
+    "v2Empty": true,
+    "applyLiveExecuted": false
+  },
+  "pending": {
+    "fk_testimonials_entity": true,
+    "note": "Column testimonials.entity_id and index named fk_testimonials_entity exist; FOREIGN KEY constraint is absent on LIVE and TEMP."
+  },
+  "phase3c4": {
+    "status": "PREPARED_PENDING_APPROVAL",
+    "executed": {
+      "fkTemp": false,
+      "finalBackup": false,
+      "applyLive": false,
+      "schemaLive": false
+    }
+  }
+}

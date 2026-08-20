@@ -21,6 +21,7 @@ import {
   isSvgAsset,
   isVectorMaskPng,
 } from "@/components/BrandVector";
+import { MOTION_EASE } from "@/lib/motion";
 
 export type ArtItem = {
   id: string;
@@ -44,8 +45,12 @@ export type ArtItem = {
   relatedLabel?: string;
   /** Extra pieces shown when expanded (grid still uses `src`). */
   gallery?: string[];
+  /** Count of PieceResources — used to expose logo detail without listing gallery. */
+  resourceCount?: number;
   /** Tags libres: nsfw, pixel-art, vector, fan-art, grime, … */
   tags?: string[];
+  /** Hub de marca (empresa / proyecto) cuando hay piezas vinculadas. */
+  brandHubHref?: string | null;
 };
 
 type Props = {
@@ -68,6 +73,12 @@ type Props = {
   seeMoreLabel?: string;
   /** If it returns a href, the tile navigates instead of expanding. */
   itemHref?: (item: ArtItem) => string | null | undefined;
+  /** Dedicated detail page — shown as CTA in the expand panel (tile still expands). */
+  detailHref?: (item: ArtItem) => string | null | undefined;
+  /** Template with `{name}` for the detail CTA, e.g. "Ver más sobre {name}". */
+  moreAboutLabel?: string;
+  /** Template with `{name}` for brand hub CTA. */
+  brandHubLabel?: string;
 };
 
 function loc(
@@ -104,7 +115,7 @@ function ArtTileFrame({
 }) {
   if (href) {
     return (
-      <Link href={href} aria-label={label} className={className}>
+      <Link href={href} aria-label={label} className={`${className} cursor-nav`}>
         {children}
       </Link>
     );
@@ -121,7 +132,7 @@ function ArtTileFrame({
       }
       whileTap={reduceMotion || nsfwLocked ? undefined : { scale: 0.98 }}
       transition={{ layout: layoutSpring }}
-      className={className}
+      className={`${className} ${nsfwLocked ? "cursor-blocked" : "cursor-expand interactive-media"}`}
     >
       {children}
     </motion.button>
@@ -141,12 +152,12 @@ function resolveGallery(item: ArtItem): string[] {
   return out;
 }
 
-const ease = [0.32, 0.72, 0, 1] as const;
+const ease = MOTION_EASE;
 const layoutSpring = {
   type: "spring" as const,
-  stiffness: 340,
-  damping: 34,
-  mass: 0.9,
+  stiffness: 280,
+  damping: 28,
+  mass: 0.85,
 };
 
 export function ExpandableArtGrid({
@@ -166,6 +177,9 @@ export function ExpandableArtGrid({
   seeMoreHref,
   seeMoreLabel = "Ver más",
   itemHref,
+  detailHref,
+  moreAboutLabel,
+  brandHubLabel,
 }: Props) {
   const reduceMotion = useReducedMotion();
   const nsfwSet = useMemo(
@@ -187,10 +201,20 @@ export function ExpandableArtGrid({
     kind: "image" | "pdf";
   } | null>(null);
   const [galleryIndex, setGalleryIndex] = useState(0);
+  const pressTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  const clearPressTimer = useCallback(() => {
+    if (pressTimer.current) {
+      clearTimeout(pressTimer.current);
+      pressTimer.current = null;
+    }
+  }, []);
 
   useEffect(() => {
     setGalleryIndex(0);
   }, [openId]);
+
+  useEffect(() => () => clearPressTimer(), [clearPressTimer]);
 
   const close = useCallback(() => {
     pendingOpenId.current = null;
@@ -289,7 +313,7 @@ export function ExpandableArtGrid({
     <>
       <div
         ref={gridRef}
-        className="grid w-full grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-4 md:grid-cols-4 md:gap-5"
+        className="grid w-full grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-4 md:gap-5"
       >
         <AnimatePresence initial={false} mode="popLayout">
           {items.map((item) => {
@@ -315,15 +339,33 @@ export function ExpandableArtGrid({
             const tags = item.tags ?? [];
             const isNsfw = tags.some((tag) => nsfwSet.has(tag));
             const nsfwLocked = isNsfw && !revealedNsfw.has(item.id);
+            // Gallery screens/photos must not inherit logo vector recolor.
+            const isGalleryResource =
+              Boolean(item.gallery?.length) &&
+              displaySrc !== item.src;
             const useVectorMask =
-              isSvgAsset(displaySrc) ||
-              (tags.includes("vector") && isVectorMaskPng(displaySrc));
+              !isGalleryResource &&
+              (isSvgAsset(displaySrc) ||
+                (tags.includes("vector") && isVectorMaskPng(displaySrc)));
             const vectorLuminance =
               useVectorMask &&
               !isSvgAsset(displaySrc) &&
               isVectorMaskPng(displaySrc);
             const navHref = !nsfwLocked ? itemHref?.(item) ?? null : null;
-            const tileClassName = `group relative shrink-0 overflow-hidden focus-visible:ring-2 focus-visible:ring-ink/40 ${cellClassName} ${
+            const itemDetailHref = !nsfwLocked
+              ? detailHref?.(item) ?? null
+              : null;
+            const moreAbout =
+              moreAboutLabel && title
+                ? moreAboutLabel.replace(/\{name\}/g, title)
+                : null;
+            const brandHub =
+              brandHubLabel && title && item.brandHubHref
+                ? brandHubLabel.replace(/\{name\}/g, title)
+                : item.brandHubHref
+                  ? title
+                  : null;
+            const tileClassName = `group relative shrink-0 overflow-hidden surface-glow focus-visible:ring-2 focus-visible:ring-ink/40 ${cellClassName} ${
               isOpen
                 ? frame === "banner"
                   ? "aspect-[1/2] w-full max-w-[11rem] sm:w-[10rem] md:w-[11rem]"
@@ -592,7 +634,22 @@ export function ExpandableArtGrid({
                               {locale === "en" ? "Resources" : "Recursos"}
                             </p>
                             <div className="flex flex-wrap gap-1.5">
-                            {galleryImgs.map((src, i) => (
+                            {galleryImgs.map((src, i) => {
+                              const selected =
+                                i ===
+                                Math.min(
+                                  galleryIndex,
+                                  galleryImgs.length - 1,
+                                );
+                              const openThumbLightbox = () => {
+                                setGalleryIndex(i);
+                                setLightbox({
+                                  src,
+                                  alt: item.alt,
+                                  kind: "image",
+                                });
+                              };
+                              return (
                               <button
                                 key={src}
                                 type="button"
@@ -600,15 +657,28 @@ export function ExpandableArtGrid({
                                   e.stopPropagation();
                                   setGalleryIndex(i);
                                 }}
+                                onDoubleClick={(e) => {
+                                  e.stopPropagation();
+                                  e.preventDefault();
+                                  openThumbLightbox();
+                                }}
+                                onPointerDown={(e) => {
+                                  if (e.button !== 0) return;
+                                  clearPressTimer();
+                                  pressTimer.current = setTimeout(() => {
+                                    pressTimer.current = null;
+                                    openThumbLightbox();
+                                  }, 450);
+                                }}
+                                onPointerUp={clearPressTimer}
+                                onPointerLeave={clearPressTimer}
+                                onPointerCancel={clearPressTimer}
                                 aria-label={`${title} ${i + 1}`}
+                                aria-pressed={selected}
                                 className={`relative size-14 shrink-0 overflow-hidden bg-sky-pale ${
-                                  i ===
-                                  Math.min(
-                                    galleryIndex,
-                                    galleryImgs.length - 1,
-                                  )
+                                  selected
                                     ? "outline outline-2 outline-ink"
-                                    : "opacity-70 hover:opacity-100"
+                                    : ""
                                 }`}
                               >
                                 <Image
@@ -616,11 +686,13 @@ export function ExpandableArtGrid({
                                   alt=""
                                   fill
                                   unoptimized={src.startsWith("/assets")}
-                                  className="object-cover"
+                                  className="object-contain object-center"
                                   sizes="56px"
+                                  draggable={false}
                                 />
                               </button>
-                            ))}
+                              );
+                            })}
                             </div>
                           </div>
                         )}
@@ -652,13 +724,25 @@ export function ExpandableArtGrid({
                           </button>
                         )}
                         <div className="mt-2 flex flex-wrap items-center gap-3">
+                          {itemDetailHref && moreAbout ? (
+                            <Link
+                              href={itemDetailHref}
+                              className="inline-flex items-center gap-1.5 text-sm font-medium text-ink underline decoration-ink/30 underline-offset-4 interactive-ink md:text-base cursor-nav"
+                            >
+                              {moreAbout}
+                              <ArrowRight
+                                className="size-3.5 shrink-0"
+                                strokeWidth={1.75}
+                              />
+                            </Link>
+                          ) : null}
                           {previewSrc && !nsfwLocked && (
                             previewKind === "pdf" ? (
                               <a
                                 href={previewSrc}
                                 target="_blank"
                                 rel="noreferrer"
-                                className="inline-flex items-center gap-1.5 text-sm font-medium text-ink underline decoration-ink/30 underline-offset-4 hover:opacity-70 md:text-base"
+                                className="inline-flex items-center gap-1.5 text-sm font-medium text-ink underline decoration-ink/30 underline-offset-4 interactive-ink md:text-base"
                               >
                                 <BookOpen
                                   className="size-3.5 shrink-0"
@@ -677,7 +761,7 @@ export function ExpandableArtGrid({
                                     kind: "image",
                                   });
                                 }}
-                                className="inline-flex items-center gap-1.5 text-sm font-medium text-ink underline decoration-ink/30 underline-offset-4 hover:opacity-70 md:text-base"
+                                className="inline-flex items-center gap-1.5 text-sm font-medium text-ink underline decoration-ink/30 underline-offset-4 interactive-ink md:text-base"
                               >
                                 <Maximize2
                                   className="size-3.5 shrink-0"
@@ -692,7 +776,7 @@ export function ExpandableArtGrid({
                               href={item.href}
                               target="_blank"
                               rel="noreferrer"
-                              className="inline-flex items-center gap-1.5 text-sm font-medium text-ink underline decoration-ink/30 underline-offset-4 hover:opacity-70 md:text-base"
+                              className="inline-flex items-center gap-1.5 text-sm font-medium text-ink underline decoration-ink/30 underline-offset-4 interactive-ink md:text-base"
                             >
                               <ExternalLink
                                 className="size-3.5 shrink-0"
@@ -707,7 +791,7 @@ export function ExpandableArtGrid({
                               download
                               target="_blank"
                               rel="noreferrer"
-                              className="inline-flex items-center gap-1.5 text-sm font-medium text-ink underline decoration-ink/30 underline-offset-4 hover:opacity-70 md:text-base"
+                              className="inline-flex items-center gap-1.5 text-sm font-medium text-ink underline decoration-ink/30 underline-offset-4 interactive-ink md:text-base"
                             >
                               <Download
                                 className="size-3.5 shrink-0"
@@ -716,6 +800,18 @@ export function ExpandableArtGrid({
                               {item.downloadLabel || "Descargar"}
                             </a>
                           )}
+                          {item.brandHubHref && brandHub ? (
+                            <Link
+                              href={item.brandHubHref}
+                              className="inline-flex items-center gap-1.5 text-sm font-medium text-ink underline decoration-ink/30 underline-offset-4 interactive-ink md:text-base cursor-nav"
+                            >
+                              {brandHub}
+                              <ArrowRight
+                                className="size-3.5 shrink-0"
+                                strokeWidth={1.75}
+                              />
+                            </Link>
+                          ) : null}
                         </div>
                       </motion.div>
                     )}
@@ -728,7 +824,7 @@ export function ExpandableArtGrid({
         {seeMoreHref && !openId ? (
           <Link
             href={seeMoreHref}
-            className="group relative flex aspect-square w-full flex-col items-center justify-center gap-2 overflow-hidden bg-sky-pale shadow-none drop-shadow-none transition-opacity hover:opacity-80 focus-visible:ring-2 focus-visible:ring-ink/40"
+            className="group relative flex aspect-square w-full flex-col items-center justify-center gap-2 overflow-hidden bg-sky-pale shadow-none drop-shadow-none transition-[filter] hover:saturate-125 focus-visible:ring-2 focus-visible:ring-ink/40 cursor-nav interactive-ink"
           >
             <ArrowRight
               className="size-12 text-ink sm:size-14 md:size-16"

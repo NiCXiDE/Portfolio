@@ -71,6 +71,8 @@ export type TestimonialRow = {
   companyLogoPath: string | null;
   companyHref: string | null;
   companyBrandId: string | null;
+  /** V2: optional link to entities.id */
+  entityId: string | null;
   linkLabel: LocalizedJson | null;
   hidden: boolean;
   sortOrder: number;
@@ -102,6 +104,8 @@ export type GraphicItemRow = {
   relatedAssetId: string | null;
   /** Extra images shown when the piece is expanded (cover stays `srcPath`). */
   galleryPaths: unknown[] | null;
+  /** Optional link to brands.id (empresa / proyecto). */
+  brandId: string | null;
   sortOrder: number;
   published: boolean;
 };
@@ -113,6 +117,7 @@ export type BrandManualRow = {
   title: LocalizedJson;
   year: string | null;
   meta: LocalizedJson | null;
+  brandId: string | null;
   sortOrder: number;
   published: boolean;
 };
@@ -148,6 +153,8 @@ export type UiProjectRow = {
   duration: LocalizedJson | null;
   /** Cómo rotular el CTA externo / live. */
   ctaKind: UiCtaKind | null;
+  /** Optional link to brands.id (empresa / proyecto). */
+  brandId: string | null;
   sortOrder: number;
   published: boolean;
 };
@@ -390,6 +397,12 @@ export const TestimonialEntity = new EntitySchema<TestimonialRow>({
       length: 64,
       nullable: true,
     },
+    entityId: {
+      name: "entity_id",
+      type: String,
+      length: 64,
+      nullable: true,
+    },
     linkLabel: { name: "link_label", type: "json", nullable: true },
     hidden: { type: Boolean, default: false },
     sortOrder: { name: "sort_order", type: Number },
@@ -434,6 +447,12 @@ export const GraphicItemEntity = new EntitySchema<GraphicItemRow>({
       type: "json",
       nullable: true,
     },
+    brandId: {
+      name: "brand_id",
+      type: String,
+      length: 64,
+      nullable: true,
+    },
     sortOrder: { name: "sort_order", type: Number },
     published: { type: Boolean, default: true },
   },
@@ -450,6 +469,12 @@ export const BrandManualEntity = new EntitySchema<BrandManualRow>({
     title: { type: "json" },
     year: { type: String, length: 32, nullable: true },
     meta: { type: "json", nullable: true },
+    brandId: {
+      name: "brand_id",
+      type: String,
+      length: 64,
+      nullable: true,
+    },
     sortOrder: { name: "sort_order", type: Number },
     published: { type: Boolean, default: true },
   },
@@ -478,6 +503,12 @@ export const UiProjectEntity = new EntitySchema<UiProjectRow>({
       name: "cta_kind",
       type: String,
       length: 32,
+      nullable: true,
+    },
+    brandId: {
+      name: "brand_id",
+      type: String,
+      length: 64,
       nullable: true,
     },
     sortOrder: { name: "sort_order", type: Number },

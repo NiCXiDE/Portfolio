@@ -17,6 +17,7 @@
     ],
     "prototypeUrl": null,
     "client": "APSMM",
+    "brandId": "apsmm",
     "period": { "es": "2024", "en": "2024" },
     "duration": null,
     "summary": null,

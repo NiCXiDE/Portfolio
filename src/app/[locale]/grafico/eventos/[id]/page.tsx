@@ -6,7 +6,9 @@ import Image from "next/image";
 import Link from "next/link";
 import { getDictionary } from "@/i18n/dictionaries";
 import { isLocale, type Locale } from "@/i18n/config";
-import { loadGraphicSection, t } from "@/lib/content";
+import { relatedByBrand, t } from "@/lib/content";
+import { loadGraphicDetailItemForLocale } from "@/lib/content-v2/graphic-runtime";
+import { getGraphicContentSource } from "@/lib/content-v2/graphic-source";
 import { buildPageMetadata, graphicEventTitle } from "@/lib/seo";
 import { pathForLayer } from "@/lib/layers";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
@@ -14,6 +16,7 @@ import {
   ExpandableArtGrid,
   type ArtItem,
 } from "@/components/ExpandableArtGrid";
+import { BrandRelatedSection } from "@/components/BrandRelatedSection";
 
 function eventIdsFromJson(): string[] {
   const raw = JSON.parse(
@@ -22,6 +25,7 @@ function eventIdsFromJson(): string[] {
   return raw.map((e) => e.id);
 }
 
+/** Keep legacy static params for default=legacy builds. */
 export function generateStaticParams() {
   return eventIdsFromJson().map((id) => ({ id }));
 }
@@ -34,16 +38,20 @@ export async function generateMetadata({
   const { locale: raw, id } = await params;
   if (!isLocale(raw)) return {};
   const locale = raw as Locale;
-  const items = await loadGraphicSection("eventos");
-  const event = items.find((e) => e.id === id);
-  if (!event) return {};
+  const resolved = await loadGraphicDetailItemForLocale(locale, {
+    section: "eventos",
+    id,
+  });
+  if (!resolved) return {};
   const dict = getDictionary(locale);
-  const title = event.title ? t(event.title, locale) : event.alt;
+  const title = resolved.item.title
+    ? t(resolved.item.title, locale)
+    : resolved.item.alt;
   return buildPageMetadata({
     locale,
     title: graphicEventTitle(locale, title),
-    description: event.detail
-      ? t(event.detail, locale)
+    description: resolved.item.detail
+      ? t(resolved.item.detail, locale)
       : dict.meta.graphicDescription,
     pathAfterLocale: `/grafico/eventos/${id}`,
   });
@@ -58,15 +66,22 @@ export default async function GraphicEventPage({
   if (!isLocale(raw)) notFound();
   const locale = raw as Locale;
   const dict = getDictionary(locale);
-  const items = await loadGraphicSection("eventos");
-  const event = items.find((e) => e.id === id);
-  if (!event) notFound();
+  const resolved = await loadGraphicDetailItemForLocale(locale, {
+    section: "eventos",
+    id,
+  });
+  if (!resolved) notFound();
 
+  const event = resolved.item;
   const title = event.title ? t(event.title, locale) : event.alt;
   const detail = event.detail ? t(event.detail, locale) : "";
-  const resourceItems: ArtItem[] = (event.gallery ?? []).map((g, index) => ({
+  const related =
+    getGraphicContentSource() === "legacy" && event.brandId
+      ? await relatedByBrand(event.brandId, { excludeGraphicId: event.id })
+      : null;
+  const resourceItems: ArtItem[] = resolved.gallery.map((g, index) => ({
     id: `${event.id}-res-${index}`,
-    src: (g as { src: string }).src ?? (g as unknown as string),
+    src: g.src,
     alt: `${title} ${index + 1}`,
     title: `${title} ${index + 1}`,
     fit: "contain" as const,
@@ -144,6 +159,15 @@ export default async function GraphicEventPage({
           {dict.grafico.emptyEventResources}
         </p>
       )}
+
+      {related ? (
+        <BrandRelatedSection
+          locale={locale}
+          heading={dict.grafico.alsoInProject}
+          related={related}
+          viewUiLabel={dict.grafico.viewUiProject}
+        />
+      ) : null}
     </main>
   );
 }
