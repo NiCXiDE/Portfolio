@@ -17,6 +17,8 @@ ENV R2_PUBLIC_URL=$R2_PUBLIC_URL
 ENV NODE_ENV=production
 ENV NEXT_TELEMETRY_DISABLED=1
 RUN npm run build
+# serverExternalPackages (mysql2/typeorm/sharp) no siempre quedan en standalone
+RUN node docker/copy-standalone-externals.cjs
 
 # Seed tooling in isolation — never `npm install` inside the Next standalone tree
 FROM node:${NODE_VERSION} AS seed-tools
@@ -48,7 +50,8 @@ COPY --chown=node:node docker/entrypoint.sh docker/maybe-seed.cjs ./
 
 RUN chmod +x /app/entrypoint.sh \
   && mkdir -p /app/.next \
-  && chown -R node:node /app
+  && chown -R node:node /app \
+  && test -d /app/node_modules/mysql2
 
 USER node
 EXPOSE 3000

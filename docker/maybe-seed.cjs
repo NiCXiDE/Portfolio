@@ -1,3 +1,22 @@
+const Module = require("module");
+const path = require("path");
+
+// Prefer /app/node_modules (Next standalone); fallback to seed-tools.
+const extra = [
+  path.join(__dirname, "node_modules"),
+  "/opt/seed-tools/node_modules",
+].filter((dir) => {
+  try {
+    return require("fs").existsSync(dir);
+  } catch {
+    return false;
+  }
+});
+process.env.NODE_PATH = [...extra, process.env.NODE_PATH]
+  .filter(Boolean)
+  .join(path.delimiter);
+Module._initPaths();
+
 const mysql = require("mysql2/promise");
 
 async function main() {
