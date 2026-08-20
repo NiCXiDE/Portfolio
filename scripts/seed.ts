@@ -151,7 +151,10 @@ function seedGraphics(
 export async function main() {
   requireDestructiveDbApproval("seed");
 
-  const ds = createDataSource(true, portfolioLegacyEntities);
+  // Si un seed anterior dejó tablas vacías, dropSchema evita ER_TABLE_EXISTS.
+  const ds = createDataSource(true, portfolioLegacyEntities, {
+    dropSchema: process.env.ALLOW_DESTRUCTIVE_DB === "1",
+  });
   await ds.initialize();
 
   console.log("Connected. Synchronizing schema & seeding…");

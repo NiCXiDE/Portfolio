@@ -77,7 +77,7 @@ declare global {
 export function createDataSource(
   synchronize = false,
   entities: typeof portfolioEntities = portfolioEntities,
-  overrides?: { database?: string },
+  overrides?: { database?: string; dropSchema?: boolean },
 ) {
   const conn = connectionOptions();
   if (overrides?.database) {
@@ -88,6 +88,7 @@ export function createDataSource(
     ...conn,
     entities,
     synchronize,
+    dropSchema: Boolean(overrides?.dropSchema),
     logging: process.env.TYPEORM_LOGGING === "1",
     charset: "utf8mb4",
   });
