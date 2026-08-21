@@ -85,7 +85,7 @@ export function DashboardInbox({
         router.refresh();
       }
     } catch {
-      setError("No se pudo subir.");
+      setError("Ocurrió un error al subir el archivo.");
     } finally {
       setBusy(false);
     }

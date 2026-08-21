@@ -2,6 +2,7 @@
 
 import { ExternalLink } from "lucide-react";
 import type { Locale } from "@/i18n/config";
+import { useMediaBase } from "@/components/admin/AdminMediaProvider";
 import { draftBool, draftLoc, draftStr, mediaSrc, type Draft } from "@/components/admin/draft";
 import { parseUiSlidesForm, slideSrcs } from "@/lib/ui-slides";
 import { PreviewImageCarousel } from "@/components/admin/ImageGalleryField";
@@ -47,8 +48,9 @@ export function GraphicItemPreview({
   draft: Draft;
   locale: Locale;
 }) {
-  const src = mediaSrc(draftStr(draft, "srcPath"));
-  const related = mediaSrc(draftStr(draft, "relatedSrcPath"));
+  const mediaBase = useMediaBase();
+  const src = mediaSrc(draftStr(draft, "srcPath"), mediaBase);
+  const related = mediaSrc(draftStr(draft, "relatedSrcPath"), mediaBase);
   const title =
     draftLoc(draft, "titleEs", "titleEn", locale) ||
     draftStr(draft, "alt") ||
@@ -130,8 +132,9 @@ export function TestimonialPreview({
   draft: Draft;
   locale: Locale;
 }) {
-  const image = mediaSrc(draftStr(draft, "imagePath"));
-  const logo = mediaSrc(draftStr(draft, "companyLogoPath"));
+  const mediaBase = useMediaBase();
+  const image = mediaSrc(draftStr(draft, "imagePath"), mediaBase);
+  const logo = mediaSrc(draftStr(draft, "companyLogoPath"), mediaBase);
   const href = draftStr(draft, "companyHref");
   const name = draftStr(draft, "name") || "Nombre";
   const quote = draftLoc(draft, "quoteEs", "quoteEn", locale) || "…";
@@ -195,11 +198,14 @@ export function BioPreview({
   draft: Draft;
   locale: Locale;
 }) {
-  const photo = mediaSrc(draftStr(draft, "photoPath"));
-  const signature = mediaSrc(draftStr(draft, "signaturePath"));
+  const mediaBase = useMediaBase();
+  const photo = mediaSrc(draftStr(draft, "photoPath"), mediaBase);
+  const signature = mediaSrc(draftStr(draft, "signaturePath"), mediaBase);
   const text = draftLoc(draft, "textEs", "textEn", locale);
   const cv = draftStr(draft, "cvPath");
   const cvEn = draftStr(draft, "cvPathEn");
+  const cvUrl = mediaSrc(cv, mediaBase);
+  const cvEnUrl = mediaSrc(cvEn, mediaBase);
 
   return (
     <div className="space-y-3 bg-white p-3">
@@ -214,10 +220,36 @@ export function BioPreview({
         {text || "Texto de bio…"}
       </p>
       {cv ? (
-        <p className="text-[0.65rem] text-ink/60 underline">CV ES: {cv}</p>
+        <p className="text-[0.65rem] text-ink/60">
+          {cvUrl ? (
+            <a
+              href={cvUrl}
+              target="_blank"
+              rel="noreferrer"
+              className="underline"
+            >
+              CV ES: {cv}
+            </a>
+          ) : (
+            <>CV ES: {cv}</>
+          )}
+        </p>
       ) : null}
       {cvEn ? (
-        <p className="text-[0.65rem] text-ink/60 underline">Résumé EN: {cvEn}</p>
+        <p className="text-[0.65rem] text-ink/60">
+          {cvEnUrl ? (
+            <a
+              href={cvEnUrl}
+              target="_blank"
+              rel="noreferrer"
+              className="underline"
+            >
+              Résumé EN: {cvEn}
+            </a>
+          ) : (
+            <>Résumé EN: {cvEn}</>
+          )}
+        </p>
       ) : null}
       {signature ? (
         // eslint-disable-next-line @next/next/no-img-element
@@ -234,12 +266,14 @@ export function ManualPreview({
   draft: Draft;
   locale: Locale;
 }) {
-  const cover = mediaSrc(draftStr(draft, "coverPath"));
+  const mediaBase = useMediaBase();
+  const cover = mediaSrc(draftStr(draft, "coverPath"), mediaBase);
   const title =
     draftLoc(draft, "titleEs", "titleEn", locale) || "Manual sin título";
   const meta = draftLoc(draft, "metaEs", "metaEn", locale);
   const year = draftStr(draft, "year");
   const pdf = draftStr(draft, "pdfPath");
+  const pdfUrl = mediaSrc(pdf, mediaBase);
   const published = draftBool(draft, "published");
 
   return (
@@ -258,7 +292,18 @@ export function ManualPreview({
           {year ? <p className="text-xs text-ink/70">{year}</p> : null}
           {meta ? <p className="text-xs text-ink/85">{meta}</p> : null}
           {pdf ? (
-            <p className="text-xs underline underline-offset-2">Descargar PDF</p>
+            pdfUrl ? (
+              <a
+                href={pdfUrl}
+                target="_blank"
+                rel="noreferrer"
+                className="text-xs underline underline-offset-2"
+              >
+                Descargar PDF
+              </a>
+            ) : (
+              <p className="text-xs underline underline-offset-2">Descargar PDF</p>
+            )
           ) : null}
         </div>
       </div>
@@ -275,8 +320,9 @@ export function UiProjectPreview({
   locale: Locale;
   brands?: BrandRef[];
 }) {
+  const mediaBase = useMediaBase();
   const images = slideSrcs(parseUiSlidesForm(draftStr(draft, "images"))).map(
-    (src) => mediaSrc(src) || src,
+    (src) => mediaSrc(src, mediaBase) || src,
   );
   const title =
     draftLoc(draft, "titleEs", "titleEn", locale) || "Proyecto";
@@ -317,7 +363,8 @@ export function UiListPreview({
   draft: Draft;
   locale: Locale;
 }) {
-  const logo = mediaSrc(draftStr(draft, "logoPath"));
+  const mediaBase = useMediaBase();
+  const logo = mediaSrc(draftStr(draft, "logoPath"), mediaBase);
   const title = draftLoc(draft, "titleEs", "titleEn", locale) || "Ítem";
   const wordmark = draftStr(draft, "wordmark");
   const caption = draftStr(draft, "caption");
@@ -389,7 +436,8 @@ export function TagPreview({
 }
 
 export function SocialPreview({ draft }: { draft: Draft }) {
-  const icon = mediaSrc(draftStr(draft, "iconPath"));
+  const mediaBase = useMediaBase();
+  const icon = mediaSrc(draftStr(draft, "iconPath"), mediaBase);
   const label = draftStr(draft, "label") || "@handle";
   const href = draftStr(draft, "href");
   const published = draftBool(draft, "published");

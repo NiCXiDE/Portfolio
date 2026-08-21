@@ -10,6 +10,7 @@ import {
   Trash2,
 } from "lucide-react";
 import { uploadLocalAsset } from "@/app/admin/upload-local";
+import { useAdminMediaUrl } from "@/components/admin/AdminMediaProvider";
 import { FieldLabel } from "@/components/admin/FieldLabel";
 
 type Props = {
@@ -60,7 +61,7 @@ export function ImageGalleryField({
       }
       onChange(next);
     } catch {
-      setError("No se pudo subir.");
+      setError("Ocurrió un error al subir el archivo.");
     } finally {
       setBusy(false);
     }
@@ -130,51 +131,75 @@ export function ImageGalleryField({
       {value.length ? (
         <ul className="grid grid-cols-2 gap-2 sm:grid-cols-3">
           {value.map((src, index) => (
-            <li
+            <GalleryThumb
               key={`${src}-${index}`}
-              draggable
-              onDragStart={() => setDragIndex(index)}
-              onDragOver={(e) => e.preventDefault()}
-              onDrop={() => {
-                if (dragIndex == null || dragIndex === index) return;
-                const copy = [...value];
-                const [row] = copy.splice(dragIndex, 1);
-                copy.splice(index, 0, row);
-                onChange(copy);
-                setDragIndex(null);
-              }}
-              onDragEnd={() => setDragIndex(null)}
-              className={`group relative aspect-[4/3] overflow-hidden border border-ink/10 bg-sky-pale/40 ${
-                dragIndex === index ? "opacity-50" : ""
-              }`}
-            >
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
-                src={src}
-                alt=""
-                className="size-full object-cover"
-              />
-              <span className="absolute left-1 top-1 bg-ink/80 px-1.5 py-0.5 text-[10px] text-sky-pale">
-                {index === 0 ? "Card" : index + 1}
-              </span>
-              <span className="absolute bottom-1 left-1 text-white/80 opacity-0 transition-opacity group-hover:opacity-100">
-                <GripVertical className="size-3.5 drop-shadow" />
-              </span>
-              <button
-                type="button"
-                aria-label="Quitar imagen"
-                onClick={() => onChange(value.filter((_, i) => i !== index))}
-                className="absolute right-1 top-1 flex size-6 items-center justify-center bg-white/90 text-ink opacity-0 transition-opacity group-hover:opacity-100"
-              >
-                <Trash2 className="size-3.5" strokeWidth={1.75} />
-              </button>
-            </li>
+              src={src}
+              index={index}
+              dragIndex={dragIndex}
+              setDragIndex={setDragIndex}
+              value={value}
+              onChange={onChange}
+            />
           ))}
         </ul>
       ) : null}
 
       {error ? <p className="text-xs text-red-700">{error}</p> : null}
     </div>
+  );
+}
+
+function GalleryThumb({
+  src,
+  index,
+  dragIndex,
+  setDragIndex,
+  value,
+  onChange,
+}: {
+  src: string;
+  index: number;
+  dragIndex: number | null;
+  setDragIndex: (i: number | null) => void;
+  value: string[];
+  onChange: (paths: string[]) => void;
+}) {
+  const previewUrl = useAdminMediaUrl(src);
+  return (
+    <li
+      draggable
+      onDragStart={() => setDragIndex(index)}
+      onDragOver={(e) => e.preventDefault()}
+      onDrop={() => {
+        if (dragIndex == null || dragIndex === index) return;
+        const copy = [...value];
+        const [row] = copy.splice(dragIndex, 1);
+        copy.splice(index, 0, row);
+        onChange(copy);
+        setDragIndex(null);
+      }}
+      onDragEnd={() => setDragIndex(null)}
+      className={`group relative aspect-[4/3] overflow-hidden border border-ink/10 bg-sky-pale/40 ${
+        dragIndex === index ? "opacity-50" : ""
+      }`}
+    >
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img src={previewUrl} alt="" className="size-full object-cover" />
+      <span className="absolute left-1 top-1 bg-ink/80 px-1.5 py-0.5 text-[10px] text-sky-pale">
+        {index === 0 ? "Card" : index + 1}
+      </span>
+      <span className="absolute bottom-1 left-1 text-white/80 opacity-0 transition-opacity group-hover:opacity-100">
+        <GripVertical className="size-3.5 drop-shadow" />
+      </span>
+      <button
+        type="button"
+        aria-label="Quitar imagen"
+        onClick={() => onChange(value.filter((_, i) => i !== index))}
+        className="absolute right-1 top-1 flex size-6 items-center justify-center bg-white/90 text-ink opacity-0 transition-opacity group-hover:opacity-100"
+      >
+        <Trash2 className="size-3.5" strokeWidth={1.75} />
+      </button>
+    </li>
   );
 }
 

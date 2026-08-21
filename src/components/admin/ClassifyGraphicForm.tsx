@@ -22,6 +22,8 @@ const SECTION_LABELS: Record<Exclude<GraphicSection, "pending">, string> = {
 type Props = {
   itemId: string;
   srcPath: string;
+  /** URL resuelta para medir dimensiones / preview */
+  previewUrl?: string;
   originalName?: string | null;
   mime?: string | null;
   width?: number | null;
@@ -31,6 +33,7 @@ type Props = {
 export function ClassifyGraphicForm({
   itemId,
   srcPath,
+  previewUrl,
   originalName,
   mime,
   width: widthProp,
@@ -38,6 +41,7 @@ export function ClassifyGraphicForm({
 }: Props) {
   const [width, setWidth] = useState<number | null>(widthProp ?? null);
   const [height, setHeight] = useState<number | null>(heightProp ?? null);
+  const resolvedSrc = previewUrl || srcPath;
 
   useEffect(() => {
     if (widthProp && heightProp) return;
@@ -47,8 +51,8 @@ export function ClassifyGraphicForm({
       setWidth(img.naturalWidth);
       setHeight(img.naturalHeight);
     };
-    img.src = srcPath;
-  }, [srcPath, widthProp, heightProp]);
+    img.src = resolvedSrc;
+  }, [srcPath, resolvedSrc, widthProp, heightProp]);
 
   const suggestion = useMemo(
     () =>

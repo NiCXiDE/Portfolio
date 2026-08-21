@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import { useTheme } from "@/components/ThemeProvider";
+import { toSameOriginAssetPath } from "@/lib/brand-assets";
 export { isSvgAsset, isVectorMaskPng } from "@/lib/brand-assets";
 
 /** Monochrome SVG or white-on-dark PNG tinted with --brand-vector (ink → celeste in dark). */
@@ -20,6 +21,9 @@ export function BrandVectorMask({
   /** Use luminance mask for white-on-black PNG exports. */
   luminance?: boolean;
 }) {
+  // Same-origin path so mask-image is not blocked by R2 CORS.
+  const maskSrc = toSameOriginAssetPath(src);
+
   return (
     <span
       role={label ? "img" : undefined}
@@ -27,8 +31,8 @@ export function BrandVectorMask({
       aria-hidden={label ? undefined : true}
       className={`inline-block bg-brand-vector ${className}`}
       style={{
-        maskImage: `url(${src})`,
-        WebkitMaskImage: `url(${src})`,
+        maskImage: `url(${maskSrc})`,
+        WebkitMaskImage: `url(${maskSrc})`,
         maskSize: "contain",
         WebkitMaskSize: "contain",
         maskRepeat: "no-repeat",

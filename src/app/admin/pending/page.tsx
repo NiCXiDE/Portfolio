@@ -59,6 +59,7 @@ export default async function AdminPendingPage() {
       items={items.map((item) => ({
         id: item.id,
         path: item.path,
+        previewUrl: mediaUrl(item.path),
         originalName: item.originalName,
         mime: item.mime,
         width: item.width,

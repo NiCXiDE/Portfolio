@@ -8,6 +8,7 @@ import {
   Trash2,
 } from "lucide-react";
 import { uploadLocalAsset } from "@/app/admin/upload-local";
+import { useAdminMediaUrl } from "@/components/admin/AdminMediaProvider";
 import { FieldLabel } from "@/components/admin/FieldLabel";
 import type { UiSlide, UiSlideAspect } from "@/lib/ui-slides";
 
@@ -55,7 +56,7 @@ export function UiSlideGalleryField({
       }
       onChange(next);
     } catch {
-      setError("No se pudo subir.");
+      setError("Ocurrió un error al subir el archivo.");
     } finally {
       setBusy(false);
     }
@@ -133,68 +134,99 @@ export function UiSlideGalleryField({
       {value.length ? (
         <ul className="grid grid-cols-1 gap-2 sm:grid-cols-2">
           {value.map((slide, index) => (
-            <li
+            <UiSlideThumb
               key={`${slide.src}-${index}`}
-              draggable
-              onDragStart={() => setDragIndex(index)}
-              onDragOver={(e) => e.preventDefault()}
-              onDrop={() => {
-                if (dragIndex == null || dragIndex === index) return;
-                const copy = [...value];
-                const [row] = copy.splice(dragIndex, 1);
-                copy.splice(index, 0, row);
-                onChange(copy);
-                setDragIndex(null);
-              }}
-              onDragEnd={() => setDragIndex(null)}
-              className={`group relative overflow-hidden border border-ink/10 bg-sky-pale/40 ${
-                dragIndex === index ? "opacity-50" : ""
-              }`}
-            >
-              <div
-                className={`relative mx-auto w-full overflow-hidden bg-ink/5 ${
-                  slide.aspect === "portrait"
-                    ? "aspect-[9/16] max-h-48"
-                    : "aspect-video"
-                }`}
-              >
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
-                  src={slide.src}
-                  alt=""
-                  className="size-full object-contain"
-                />
-              </div>
-              <div className="flex items-center justify-between gap-2 border-t border-ink/10 px-2 py-1.5">
-                <span className="inline-flex items-center gap-1 text-[10px] text-ink/50">
-                  <GripVertical className="size-3" />
-                  {index + 1}
-                </span>
-                <select
-                  value={slide.aspect}
-                  onChange={(e) =>
-                    setAspect(index, e.target.value as UiSlideAspect)
-                  }
-                  className="rounded border border-ink/15 bg-white px-1.5 py-0.5 text-[11px]"
-                >
-                  <option value="landscape">Landscape</option>
-                  <option value="portrait">Portrait</option>
-                </select>
-                <button
-                  type="button"
-                  aria-label="Quitar imagen"
-                  onClick={() => onChange(value.filter((_, i) => i !== index))}
-                  className="flex size-6 items-center justify-center text-ink/70 hover:text-ink"
-                >
-                  <Trash2 className="size-3.5" strokeWidth={1.75} />
-                </button>
-              </div>
-            </li>
+              slide={slide}
+              index={index}
+              dragIndex={dragIndex}
+              setDragIndex={setDragIndex}
+              value={value}
+              onChange={onChange}
+              setAspect={setAspect}
+            />
           ))}
         </ul>
       ) : null}
 
       {error ? <p className="text-xs text-red-700">{error}</p> : null}
     </div>
+  );
+}
+
+function UiSlideThumb({
+  slide,
+  index,
+  dragIndex,
+  setDragIndex,
+  value,
+  onChange,
+  setAspect,
+}: {
+  slide: UiSlide;
+  index: number;
+  dragIndex: number | null;
+  setDragIndex: (i: number | null) => void;
+  value: UiSlide[];
+  onChange: (slides: UiSlide[]) => void;
+  setAspect: (index: number, aspect: UiSlideAspect) => void;
+}) {
+  const previewUrl = useAdminMediaUrl(slide.src);
+  return (
+    <li
+      draggable
+      onDragStart={() => setDragIndex(index)}
+      onDragOver={(e) => e.preventDefault()}
+      onDrop={() => {
+        if (dragIndex == null || dragIndex === index) return;
+        const copy = [...value];
+        const [row] = copy.splice(dragIndex, 1);
+        copy.splice(index, 0, row);
+        onChange(copy);
+        setDragIndex(null);
+      }}
+      onDragEnd={() => setDragIndex(null)}
+      className={`group relative overflow-hidden border border-ink/10 bg-sky-pale/40 ${
+        dragIndex === index ? "opacity-50" : ""
+      }`}
+    >
+      <div
+        className={`relative mx-auto w-full overflow-hidden bg-ink/5 ${
+          slide.aspect === "portrait"
+            ? "aspect-[9/16] max-h-48"
+            : "aspect-video"
+        }`}
+      >
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src={previewUrl}
+          alt=""
+          className="size-full object-contain"
+        />
+      </div>
+      <div className="flex items-center justify-between gap-2 border-t border-ink/10 px-2 py-1.5">
+        <span className="inline-flex items-center gap-1 text-[10px] text-ink/50">
+          <GripVertical className="size-3" />
+          {index + 1}
+        </span>
+        <select
+          value={slide.aspect}
+          onChange={(e) =>
+            setAspect(index, e.target.value as UiSlideAspect)
+          }
+          className="rounded border border-ink/15 bg-white px-1.5 py-0.5 text-[11px]"
+        >
+          <option value="landscape">Landscape</option>
+          <option value="portrait">Portrait</option>
+        </select>
+        <button
+          type="button"
+          aria-label="Quitar imagen"
+          onClick={() => onChange(value.filter((_, i) => i !== index))}
+          className="flex size-6 items-center justify-center text-ink/70 hover:text-ink"
+        >
+          <Trash2 className="size-3.5" strokeWidth={1.75} />
+        </button>
+      </div>
+    </li>
   );
 }

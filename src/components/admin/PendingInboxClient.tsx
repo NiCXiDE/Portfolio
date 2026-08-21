@@ -26,7 +26,10 @@ const SECTION_LABELS: Record<Exclude<GraphicSection, "pending">, string> = {
 
 export type InboxDTO = {
   id: string;
+  /** Storage path `/assets/...` */
   path: string;
+  /** URL resuelta con `mediaUrl(path)` para preview */
+  previewUrl: string;
   originalName: string | null;
   mime: string | null;
   width: number | null;
@@ -59,8 +62,8 @@ function InboxClassifyCard({ item }: { item: InboxDTO }) {
       setWidth(img.naturalWidth);
       setHeight(img.naturalHeight);
     };
-    img.src = item.path;
-  }, [item.path, width, height]);
+    img.src = item.previewUrl || item.path;
+  }, [item.path, item.previewUrl, width, height]);
 
   const graphicSuggestion = useMemo(
     () =>
@@ -85,7 +88,7 @@ function InboxClassifyCard({ item }: { item: InboxDTO }) {
         <div className="relative aspect-square w-28 shrink-0 overflow-hidden border border-ink/10 bg-sky-pale/40">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
-            src={item.path}
+            src={item.previewUrl || item.path}
             alt=""
             className="size-full object-contain p-1"
           />

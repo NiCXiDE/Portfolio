@@ -13,6 +13,7 @@ import {
 } from "lucide-react";
 import { deleteGraphicItem, saveGraphicItem } from "@/app/admin/actions";
 import { ClassifyGraphicForm } from "@/components/admin/ClassifyGraphicForm";
+import { useAdminMediaUrl } from "@/components/admin/AdminMediaProvider";
 import { CollapsibleEditor } from "@/components/admin/CollapsibleEditor";
 import { FieldLabel, fieldClass, selectClass } from "@/components/admin/FieldLabel";
 import { ImageDropField } from "@/components/admin/ImageDropField";
@@ -522,18 +523,39 @@ export function GraphicSectionClient({
               </form>
             </WithGraphicPreview>
             {section === "pending" ? (
-              <ClassifyGraphicForm
-                itemId={item.id}
-                srcPath={item.srcPath}
-                originalName={item.assetMeta?.originalName}
-                mime={item.assetMeta?.mime}
-                width={item.assetMeta?.width}
-                height={item.assetMeta?.height}
-              />
+              <PendingClassifyForm item={item} />
             ) : null}
           </CollapsibleEditor>
         ))}
       </div>
     </div>
+  );
+}
+
+function PendingClassifyForm({
+  item,
+}: {
+  item: {
+    id: string;
+    srcPath: string;
+    assetMeta?: {
+      originalName?: string | null;
+      mime?: string | null;
+      width?: number | null;
+      height?: number | null;
+    } | null;
+  };
+}) {
+  const previewUrl = useAdminMediaUrl(item.srcPath);
+  return (
+    <ClassifyGraphicForm
+      itemId={item.id}
+      srcPath={item.srcPath}
+      previewUrl={previewUrl}
+      originalName={item.assetMeta?.originalName}
+      mime={item.assetMeta?.mime}
+      width={item.assetMeta?.width}
+      height={item.assetMeta?.height}
+    />
   );
 }

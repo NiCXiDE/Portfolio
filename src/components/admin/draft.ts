@@ -1,4 +1,5 @@
 import type { Locale } from "@/i18n/config";
+import { resolveMediaUrl } from "@/lib/media";
 
 export type Draft = Record<string, string | boolean>;
 
@@ -59,9 +60,14 @@ export function draftLoc(
   return locale === "en" ? en || es : es || en;
 }
 
-export function mediaSrc(path: string): string | null {
+/**
+ * Preview de un path del draft en el admin.
+ * - `blob:` → preview temporal de input file
+ * - resto → misma semántica que `mediaUrl` vía `resolveMediaUrl` + base del provider
+ */
+export function mediaSrc(path: string, mediaBase = ""): string | null {
   const p = path.trim();
   if (!p) return null;
-  if (/^https?:\/\//i.test(p) || p.startsWith("/")) return p;
-  return `/${p}`;
+  if (p.startsWith("blob:")) return p;
+  return resolveMediaUrl(p, mediaBase) || null;
 }

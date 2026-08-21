@@ -3,12 +3,19 @@
 import { ImagePlus, Loader2, Upload, X } from "lucide-react";
 import { useEffect, useRef, useState, type DragEvent } from "react";
 import { uploadLocalAsset } from "@/app/admin/upload-local";
+import {
+  useAdminMediaUrl,
+  useMediaBase,
+} from "@/components/admin/AdminMediaProvider";
 import { FieldLabel } from "@/components/admin/FieldLabel";
+import { resolveMediaUrl } from "@/lib/media";
 
 type LibraryItem = {
   id: string;
   path: string;
   originalName: string | null;
+  /** Si viene del server ya resuelto; si no, se resuelve con la base del admin */
+  previewUrl?: string;
 };
 
 type Props = {
@@ -18,17 +25,33 @@ type Props = {
   assetName?: string;
   label: string;
   hint?: string;
+  /** Storage path `/assets/...` (valor que se guarda) */
   defaultValue?: string;
+  /** URL resuelta en server con `mediaUrl(defaultValue)` para preview inicial */
+  defaultPreviewUrl?: string;
   defaultAssetId?: string;
   /** Carpeta / prefijo en R2, p.ej. assets/grafico/covers */
   folder: string;
   accept?: string;
   /** Si es PDF u otro no-imagen */
   kind?: "image" | "file";
-  onUploaded?: (path: string, assetId: string) => void;
+  onUploaded?: (path: string, assetId: string, previewUrl: string) => void;
   /** Piezas recientes de la biblioteca para reutilizar */
   library?: LibraryItem[];
 };
+
+function LibraryThumb({ item }: { item: LibraryItem }) {
+  const resolved = useAdminMediaUrl(item.path);
+  const src = item.previewUrl || resolved;
+  return (
+    // eslint-disable-next-line @next/next/no-img-element
+    <img
+      src={src}
+      alt=""
+      className="aspect-square w-full object-contain bg-sky-pale/50"
+    />
+  );
+}
 
 export function ImageDropField({
   name,
@@ -36,6 +59,7 @@ export function ImageDropField({
   label,
   hint,
   defaultValue = "",
+  defaultPreviewUrl,
   defaultAssetId = "",
   folder,
   accept = "image/*,.jpg,.jpeg,.png,.webp,.gif,.svg",
@@ -43,10 +67,14 @@ export function ImageDropField({
   onUploaded,
   library = [],
 }: Props) {
+  const mediaBase = useMediaBase();
   const inputRef = useRef<HTMLInputElement>(null);
   const assetRef = useRef<HTMLInputElement>(null);
   const fileRef = useRef<HTMLInputElement>(null);
   const [path, setPath] = useState(defaultValue);
+  const [previewUrl, setPreviewUrl] = useState(
+    () => defaultPreviewUrl || resolveMediaUrl(defaultValue, mediaBase),
+  );
   const [assetId, setAssetId] = useState(defaultAssetId);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -93,10 +121,12 @@ export function ImageDropField({
         return;
       }
       setPath(res.path);
+      setPreviewUrl(res.previewUrl);
       setAssetId(res.assetId);
-      onUploaded?.(res.path, res.assetId);
+      onUploaded?.(res.path, res.assetId, res.previewUrl);
     } catch {
-      setError("No se pudo subir. Probá de nuevo.");
+      // Fallos de transporte / body limit de Server Actions, etc.: la action no llegó a devolver { ok:false }.
+      setError("Ocurrió un error al subir el archivo.");
     } finally {
       setBusy(false);
     }
@@ -106,6 +136,16 @@ export function ImageDropField({
     e.preventDefault();
     setDragging(false);
     void handleFile(e.dataTransfer.files?.[0]);
+  }
+
+  function selectLibraryItem(item: LibraryItem) {
+    const nextPreview =
+      item.previewUrl || resolveMediaUrl(item.path, mediaBase);
+    setPath(item.path);
+    setPreviewUrl(nextPreview);
+    setAssetId(item.id);
+    setShowLibrary(false);
+    onUploaded?.(item.path, item.id, nextPreview);
   }
 
   return (
@@ -136,10 +176,10 @@ export function ImageDropField({
       >
         {busy ? (
           <Loader2 className="size-5 animate-spin text-ink/50" />
-        ) : path && kind === "image" ? (
+        ) : path && kind === "image" && previewUrl ? (
           // eslint-disable-next-line @next/next/no-img-element
           <img
-            src={path}
+            src={previewUrl}
             alt=""
             className="max-h-32 max-w-full object-contain"
             onError={(e) => {
@@ -148,7 +188,19 @@ export function ImageDropField({
           />
         ) : path ? (
           <p className="max-w-full truncate font-mono text-xs text-ink/70">
-            {path}
+            {kind === "file" && previewUrl ? (
+              <a
+                href={previewUrl}
+                target="_blank"
+                rel="noreferrer"
+                className="underline"
+                onClick={(e) => e.stopPropagation()}
+              >
+                {path}
+              </a>
+            ) : (
+              path
+            )}
           </p>
         ) : (
           <>
@@ -185,6 +237,7 @@ export function ImageDropField({
               disabled={busy}
               onClick={() => {
                 setPath("");
+                setPreviewUrl("");
                 setAssetId("");
               }}
               className="inline-flex items-center gap-1 text-xs text-ink/60 hover:text-ink"
@@ -215,19 +268,9 @@ export function ImageDropField({
                 type="button"
                 className="block w-full border border-transparent p-0.5 hover:border-ink"
                 title={item.originalName || item.path}
-                onClick={() => {
-                  setPath(item.path);
-                  setAssetId(item.id);
-                  setShowLibrary(false);
-                  onUploaded?.(item.path, item.id);
-                }}
+                onClick={() => selectLibraryItem(item)}
               >
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
-                  src={item.path}
-                  alt=""
-                  className="aspect-square w-full object-contain bg-sky-pale/50"
-                />
+                <LibraryThumb item={item} />
               </button>
             </li>
           ))}

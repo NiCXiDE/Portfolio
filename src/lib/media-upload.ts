@@ -2,6 +2,12 @@ import path from "node:path";
 import sharp from "sharp";
 import { isR2Configured, uploadToR2 } from "@/lib/r2";
 import { registerMediaAsset } from "@/lib/media-assets";
+import {
+  failUpload,
+  logUploadEvent,
+  logUploadFailure,
+  type UploadErrorCode,
+} from "@/lib/upload-errors";
 
 const MAX_BYTES = 20 * 1024 * 1024;
 const WEBP_QUALITY = 82;
@@ -19,7 +25,7 @@ export type PreparedUpload = {
 
 export type UploadAssetResult =
   | { ok: true; path: string; assetId: string }
-  | { ok: false; error: string };
+  | { ok: false; code: UploadErrorCode; error: string };
 
 function sanitizeFolder(folderRaw: string): string {
   return folderRaw
@@ -60,20 +66,37 @@ export async function prepareUploadFile(
   file: File,
   folderRaw = "assets/uploads",
 ): Promise<
-  { ok: true; prepared: PreparedUpload } | { ok: false; error: string }
+  | { ok: true; prepared: PreparedUpload }
+  | { ok: false; code: UploadErrorCode; error: string }
 > {
   if (!(file instanceof File) || file.size === 0) {
-    return { ok: false, error: "Elegí un archivo." };
+    return failUpload("INVALID_FILE");
   }
   if (file.size > MAX_BYTES) {
-    return { ok: false, error: "El archivo supera 20 MB." };
+    return failUpload("FILE_TOO_LARGE");
   }
   if (!isAllowed(file)) {
-    return { ok: false, error: "Solo imágenes o PDF." };
+    return failUpload("UNSUPPORTED_FILE");
   }
 
   const folder = sanitizeFolder(folderRaw) || "assets/uploads";
-  const input = Buffer.from(await file.arrayBuffer());
+
+  let input: Buffer;
+  try {
+    input = Buffer.from(await file.arrayBuffer());
+  } catch (e) {
+    logUploadFailure(
+      {
+        operation: "prepareUploadFile.arrayBuffer",
+        mime: file.type || null,
+        byteSize: file.size,
+        folder,
+      },
+      e,
+    );
+    return failUpload("INVALID_FILE");
+  }
+
   const stamp = Date.now();
   const stem = baseNameWithoutExt(file.name);
 
@@ -150,11 +173,17 @@ export async function prepareUploadFile(
         byteSize: data.byteLength,
       },
     };
-  } catch {
-    return {
-      ok: false,
-      error: "No se pudo comprimir la imagen. Probá otro archivo.",
-    };
+  } catch (e) {
+    logUploadFailure(
+      {
+        operation: "prepareUploadFile.sharp",
+        mime: file.type || null,
+        byteSize: input.byteLength,
+        folder,
+      },
+      e,
+    );
+    return failUpload("IMAGE_PROCESS_FAILED");
   }
 }
 
@@ -162,19 +191,40 @@ export async function uploadPreparedToR2(
   prepared: PreparedUpload,
 ): Promise<UploadAssetResult> {
   if (!isR2Configured()) {
-    return {
-      ok: false,
-      error:
-        "R2 no configurado. Completá R2_ACCOUNT_ID, R2_ACCESS_KEY_ID, R2_SECRET_ACCESS_KEY, R2_BUCKET y R2_PUBLIC_URL.",
-    };
+    logUploadEvent("warn", {
+      operation: "uploadPreparedToR2",
+      code: "R2_NOT_CONFIGURED",
+      key: prepared.key,
+      mime: prepared.contentType,
+      byteSize: prepared.byteSize,
+    });
+    return failUpload("R2_NOT_CONFIGURED");
   }
 
+  const bucket = process.env.R2_BUCKET;
+  let publicPath: string;
+
   try {
-    const publicPath = await uploadToR2({
+    publicPath = await uploadToR2({
       key: prepared.key,
       body: prepared.body,
       contentType: prepared.contentType,
     });
+  } catch (e) {
+    logUploadFailure(
+      {
+        operation: "PutObject",
+        bucket,
+        key: prepared.key,
+        mime: prepared.contentType,
+        byteSize: prepared.byteSize,
+      },
+      e,
+    );
+    return failUpload("R2_UPLOAD_FAILED");
+  }
+
+  try {
     const asset = await registerMediaAsset({
       path: publicPath,
       mime: prepared.contentType,
@@ -185,8 +235,19 @@ export async function uploadPreparedToR2(
     });
     return { ok: true, path: publicPath, assetId: asset.id };
   } catch (e) {
-    const message = e instanceof Error ? e.message : "Error subiendo a R2";
-    return { ok: false, error: message };
+    // PutObject ya tuvo éxito; el objeto puede existir en R2 sin fila en media_assets.
+    logUploadFailure(
+      {
+        operation: "registerMediaAsset",
+        bucket,
+        key: prepared.key,
+        path: publicPath,
+        mime: prepared.contentType,
+        byteSize: prepared.byteSize,
+      },
+      e,
+    );
+    return failUpload("MEDIA_REGISTRATION_FAILED");
   }
 }
 
@@ -198,3 +259,5 @@ export async function uploadFileToR2(
   if (!prepared.ok) return prepared;
   return uploadPreparedToR2(prepared.prepared);
 }
+
+export { MAX_BYTES as UPLOAD_MAX_BYTES };

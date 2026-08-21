@@ -147,7 +147,7 @@ export default async function AdminDashboard() {
               <span className="text-green-700">configurado</span>
             ) : (
               <span className="text-amber-700">
-                pendiente — completá variables en `.env`
+                pendiente — almacenamiento no configurado
               </span>
             )}
           </p>

@@ -13,11 +13,15 @@ export function BioClient({
   bio: {
     text: { es: string; en: string };
     photoPath: string;
+    photoPreviewUrl: string;
     photoAlt: { es: string; en: string };
     signaturePath: string;
+    signaturePreviewUrl: string;
     signatureAlt: { es: string; en: string };
     cvPath: string | null;
+    cvPreviewUrl: string;
     cvPathEn: string | null;
+    cvEnPreviewUrl: string;
   };
   saved?: string;
 }) {
@@ -56,6 +60,7 @@ export function BioClient({
               label="Foto"
               folder="assets/inicio"
               defaultValue={bio.photoPath}
+              defaultPreviewUrl={bio.photoPreviewUrl}
             />
             <div className="grid gap-3 sm:grid-cols-2">
               <label className="block">
@@ -82,6 +87,7 @@ export function BioClient({
               label="Firma"
               folder="assets/inicio"
               defaultValue={bio.signaturePath}
+              defaultPreviewUrl={bio.signaturePreviewUrl}
             />
             <div className="grid gap-3 sm:grid-cols-2">
               <label className="block">
@@ -108,6 +114,7 @@ export function BioClient({
                 hint="Currículum en español."
                 folder="assets/cv"
                 defaultValue={bio.cvPath ?? ""}
+                defaultPreviewUrl={bio.cvPreviewUrl}
                 accept="application/pdf,.pdf"
                 kind="file"
               />
@@ -117,6 +124,7 @@ export function BioClient({
                 hint="English résumé / CV."
                 folder="assets/cv"
                 defaultValue={bio.cvPathEn ?? ""}
+                defaultPreviewUrl={bio.cvEnPreviewUrl}
                 accept="application/pdf,.pdf"
                 kind="file"
               />

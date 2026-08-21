@@ -35,8 +35,8 @@ export default async function AdminMediaPage({
 
       {!configured ? (
         <p className="mt-4 rounded bg-amber-50 px-3 py-2 text-sm text-amber-800">
-          R2 no configurado. Completá `R2_ACCOUNT_ID`, `R2_ACCESS_KEY_ID`,
-          `R2_SECRET_ACCESS_KEY`, `R2_BUCKET` y `R2_PUBLIC_URL` en `.env`.
+          El almacenamiento de archivos no está configurado. Las subidas no
+          estarán disponibles hasta completar la configuración del entorno.
         </p>
       ) : (
         <p className="mt-4 text-sm text-green-700">R2 conectado.</p>

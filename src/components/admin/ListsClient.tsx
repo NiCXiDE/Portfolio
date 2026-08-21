@@ -25,6 +25,7 @@ import {
 } from "lucide-react";
 import { saveHomeLayout, saveNamedList } from "@/app/admin/actions";
 import { uploadLocalAsset } from "@/app/admin/upload-local";
+import { useAdminMediaUrl } from "@/components/admin/AdminMediaProvider";
 import { FieldLabel, fieldClass, selectClass } from "@/components/admin/FieldLabel";
 import { pushAdminToast } from "@/lib/admin-toast";
 import type { NamedListKind } from "@/db/entities";
@@ -300,6 +301,7 @@ function ReplaceLogoModal({
   onCancel: () => void;
   onConfirm: () => void;
 }) {
+  const currentPreview = useAdminMediaUrl(current.logoPath);
   return (
     <div
       className="fixed inset-0 z-[90] flex items-center justify-center bg-ink/40 p-4"
@@ -330,7 +332,7 @@ function ReplaceLogoModal({
               {current.logoPath ? (
                 // eslint-disable-next-line @next/next/no-img-element
                 <img
-                  src={current.logoPath}
+                  src={currentPreview}
                   alt=""
                   className="max-h-full max-w-full object-contain"
                 />
@@ -441,7 +443,7 @@ function ListEditor({
       }
       setLogo(index, res.path);
     } catch {
-      setUploadError("No se pudo subir. Probá de nuevo.");
+      setUploadError("Ocurrió un error al subir el archivo.");
     } finally {
       setBusyIndex(null);
     }
@@ -650,12 +652,7 @@ function ListEditor({
                   </div>
                 ) : item.logoPath ? (
                   <>
-                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img
-                      src={item.logoPath}
-                      alt=""
-                      className="h-full w-full object-contain p-1.5"
-                    />
+                    <ListLogoThumb path={item.logoPath} />
                     <button
                       type="button"
                       className="absolute bottom-0.5 left-0.5 right-0.5 bg-white/90 text-[9px] leading-tight text-ink/60 underline hover:text-ink"
@@ -898,5 +895,17 @@ export function ListsClient({ initialLayout, lists, brands }: Props) {
         />
       ))}
     </div>
+  );
+}
+
+function ListLogoThumb({ path }: { path: string }) {
+  const previewUrl = useAdminMediaUrl(path);
+  return (
+    // eslint-disable-next-line @next/next/no-img-element
+    <img
+      src={previewUrl}
+      alt=""
+      className="h-full w-full object-contain p-1.5"
+    />
   );
 }
