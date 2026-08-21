@@ -3,10 +3,16 @@
 import { useState } from "react";
 import { EyeOff, Hash, Plus, Save, User } from "lucide-react";
 import { deleteTestimonial, saveTestimonial } from "@/app/admin/actions";
+import {
+  AdminEditSession,
+  AdminTrackedForm,
+  useAdminEditSession,
+} from "@/components/admin/AdminEditSession";
 import { CollapsibleEditor } from "@/components/admin/CollapsibleEditor";
 import { FieldLabel, fieldClass, selectClass } from "@/components/admin/FieldLabel";
 import { ImageDropField } from "@/components/admin/ImageDropField";
 import { MentionTextarea } from "@/components/admin/MentionTextarea";
+import { useQuietAdminAction } from "@/components/admin/useQuietAdminAction";
 import { WithTestimonialPreview } from "@/components/admin/WithPreview";
 import { TestimonialPreview } from "@/components/admin/previews";
 import type { Draft } from "@/components/admin/draft";
@@ -65,6 +71,7 @@ function Fields({
   const [companyLogoPath, setCompanyLogoPath] = useState(
     item?.companyLogoPath ?? "",
   );
+  const [logoKey, setLogoKey] = useState(0);
 
   function applyBrand(id: string) {
     setBrandId(id);
@@ -74,6 +81,7 @@ function Fields({
     setCompanyHref(brand.href ?? "");
     if (brand.logoPath) setCompanyLogoPath(brand.logoPath);
     else if (brand.logo) setCompanyLogoPath(brand.logo);
+    setLogoKey((k) => k + 1);
   }
 
   return (
@@ -98,6 +106,7 @@ function Fields({
       <ImageDropField
         name="imagePath"
         label="Foto"
+        profile="image"
         folder="assets/inicio/testimonials"
         defaultValue={item?.imagePath}
       />
@@ -173,15 +182,17 @@ function Fields({
         />
       </label>
       <ImageDropField
+        key={`logo-${logoKey}-${companyLogoPath || "empty"}`}
         name="companyLogoPath"
         label="Logo de la empresa (opcional)"
         hint="Si hay marca vinculada, usá su logo salvo que subas otro."
+        profile="logo"
         folder="assets/inicio/testimonials"
         defaultValue={companyLogoPath}
-        key={companyLogoPath || "empty-logo"}
+        onUploaded={(path) => setCompanyLogoPath(path)}
       />
       <label className="block">
-        <FieldLabel hint="Web o red social de la empresa/persona.">
+        <FieldLabel hint="Web o red social. Se muestra aunque no haya logo.">
           Enlace externo
         </FieldLabel>
         <input
@@ -234,6 +245,56 @@ function Fields({
   );
 }
 
+function TestimonialCard({
+  item,
+  brands,
+}: {
+  item: TestimonialDTO;
+  brands: BrandRef[];
+}) {
+  const session = useAdminEditSession();
+  const dirty = session?.isDirty(item.id) ?? false;
+  const { run: runDelete } = useQuietAdminAction(deleteTestimonial);
+
+  return (
+    <CollapsibleEditor
+      dirty={dirty}
+      summary={<TestimonialPreview draft={toDraft(item)} locale="es" />}
+      onDelete={
+        <button
+          type="button"
+          className="underline"
+          onClick={() => {
+            const fd = new FormData();
+            fd.set("id", item.id);
+            void runDelete(fd);
+          }}
+        >
+          Eliminar
+        </button>
+      }
+    >
+      <WithTestimonialPreview initialDraft={toDraft(item)}>
+        <AdminTrackedForm
+          id={item.id}
+          label={item.name || item.id}
+          saveAction={saveTestimonial}
+          className="space-y-4"
+        >
+          <input type="hidden" name="id" value={item.id} />
+          <Fields item={item} brands={brands} />
+          <button
+            type="submit"
+            className="inline-flex items-center gap-1.5 border border-ink/20 px-3 py-2 text-sm text-ink"
+          >
+            <Save className="size-3.5" /> Guardar este
+          </button>
+        </AdminTrackedForm>
+      </WithTestimonialPreview>
+    </CollapsibleEditor>
+  );
+}
+
 export function TestimonialsClient({
   items,
   brands,
@@ -243,68 +304,52 @@ export function TestimonialsClient({
   brands: BrandRef[];
   saved?: string;
 }) {
+  const { run: runCreate } = useQuietAdminAction(saveTestimonial);
+
   return (
-    <div>
-      <h1 className="font-admin-title text-3xl">Testimonios</h1>
-      {saved ? <p className="mt-2 text-sm text-green-700">Guardado.</p> : null}
-      <p className="mt-2 text-sm text-ink/60">
-        Tocá un testimonio para editarlo. Vinculá marcas del catálogo o citá con @.
-      </p>
+    <AdminEditSession pageLabel="Testimonios">
+      <div>
+        <h1 className="font-admin-title text-3xl">Testimonios</h1>
+        {saved ? <p className="mt-2 text-sm text-green-700">Guardado.</p> : null}
+        <p className="mt-2 text-sm text-ink/60">
+          Editá varios y usá Guardar todo. El enlace de empresa no requiere logo.
+        </p>
 
-      <div className="mt-6">
-        <CollapsibleEditor
-          compact
-          summary={
-            <div className="flex items-center gap-2 py-1 text-sm font-medium">
-              <Plus className="size-4" /> Nuevo testimonio
-            </div>
-          }
-        >
-          <WithTestimonialPreview>
-            <form action={saveTestimonial} className="space-y-4">
-              <Fields showId brands={brands} />
-              <button
-                type="submit"
-                className="inline-flex items-center gap-1.5 bg-ink px-3 py-2 text-sm text-sky-pale"
-              >
-                <Save className="size-3.5" /> Crear
-              </button>
-            </form>
-          </WithTestimonialPreview>
-        </CollapsibleEditor>
-      </div>
-
-      <div className="mt-8 space-y-4">
-        {items.map((item) => (
+        <div className="mt-6">
           <CollapsibleEditor
-            key={item.id}
+            compact
             summary={
-              <TestimonialPreview draft={toDraft(item)} locale="es" />
-            }
-            onDelete={
-              <form action={deleteTestimonial}>
-                <input type="hidden" name="id" value={item.id} />
-                <button type="submit" className="underline">
-                  Eliminar
-                </button>
-              </form>
+              <div className="flex items-center gap-2 py-1 text-sm font-medium">
+                <Plus className="size-4" /> Nuevo testimonio
+              </div>
             }
           >
-            <WithTestimonialPreview initialDraft={toDraft(item)}>
-              <form action={saveTestimonial} className="space-y-4">
-                <input type="hidden" name="id" value={item.id} />
-                <Fields item={item} brands={brands} />
+            <WithTestimonialPreview>
+              <form
+                className="space-y-4"
+                onSubmit={(e) => {
+                  e.preventDefault();
+                  void runCreate(new FormData(e.currentTarget));
+                }}
+              >
+                <Fields showId brands={brands} />
                 <button
                   type="submit"
                   className="inline-flex items-center gap-1.5 bg-ink px-3 py-2 text-sm text-sky-pale"
                 >
-                  <Save className="size-3.5" /> Guardar cambios
+                  <Save className="size-3.5" /> Crear
                 </button>
               </form>
             </WithTestimonialPreview>
           </CollapsibleEditor>
-        ))}
+        </div>
+
+        <div className="mt-8 space-y-4">
+          {items.map((item) => (
+            <TestimonialCard key={item.id} item={item} brands={brands} />
+          ))}
+        </div>
       </div>
-    </div>
+    </AdminEditSession>
   );
 }

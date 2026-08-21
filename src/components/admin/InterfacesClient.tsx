@@ -3,6 +3,12 @@
 import { useState } from "react";
 import { Eye, Hash, Link2, Plus, Save } from "lucide-react";
 import { saveUiListItem, saveUiProject } from "@/app/admin/actions";
+import {
+  AdminEditSession,
+  AdminTrackedForm,
+  useAdminEditSession,
+} from "@/components/admin/AdminEditSession";
+import { useAdminMediaUrl } from "@/components/admin/AdminMediaProvider";
 import { CollapsibleEditor } from "@/components/admin/CollapsibleEditor";
 import { FieldLabel, fieldClass, selectClass } from "@/components/admin/FieldLabel";
 import { ImageDropField } from "@/components/admin/ImageDropField";
@@ -11,7 +17,8 @@ import {
   WithUiListPreview,
   WithUiProjectPreview,
 } from "@/components/admin/WithPreview";
-import { UiListPreview, UiProjectPreview } from "@/components/admin/previews";
+import { UiListPreview } from "@/components/admin/previews";
+import { useQuietAdminAction } from "@/components/admin/useQuietAdminAction";
 import type { Draft } from "@/components/admin/draft";
 import type { BrandRef } from "@/lib/brands";
 import { MentionTextarea } from "@/components/admin/MentionTextarea";
@@ -82,6 +89,14 @@ function listDraft(item: UiListDTO): Draft {
   };
 }
 
+const CATEGORY_LABEL: Record<string, string> = {
+  preventas: "Preventas",
+  "sistemas-a-medida": "Sistemas a medida",
+  "apps-mobile": "Apps / Mobile",
+  "proyectos-personales": "Personales",
+  "system-design": "System design",
+};
+
 function ProjectFields({
   item,
   showId,
@@ -91,7 +106,9 @@ function ProjectFields({
   showId?: boolean;
   brands: BrandRef[];
 }) {
-  const [images, setImages] = useState(() => normalizeUiSlides(item?.images ?? []));
+  const [images, setImages] = useState(() =>
+    normalizeUiSlides(item?.images ?? []),
+  );
   const [metaEs, setMetaEs] = useState(item?.meta.es ?? "");
   const [metaEn, setMetaEn] = useState(item?.meta.en ?? "");
 
@@ -120,11 +137,19 @@ function ProjectFields({
       <div className="grid gap-3 sm:grid-cols-2">
         <label className="block">
           <FieldLabel>Título (español)</FieldLabel>
-          <input name="titleEs" defaultValue={item?.title.es} className={fieldClass} />
+          <input
+            name="titleEs"
+            defaultValue={item?.title.es}
+            className={fieldClass}
+          />
         </label>
         <label className="block">
           <FieldLabel>Título (inglés)</FieldLabel>
-          <input name="titleEn" defaultValue={item?.title.en} className={fieldClass} />
+          <input
+            name="titleEn"
+            defaultValue={item?.title.en}
+            className={fieldClass}
+          />
         </label>
       </div>
       <div className="grid gap-3 sm:grid-cols-2">
@@ -150,43 +175,42 @@ function ProjectFields({
         </div>
       </div>
       <UiSlideGalleryField
+        name="images"
         folder="assets/interfaces"
         value={images}
         onChange={setImages}
       />
       <div className="grid gap-3 sm:grid-cols-2">
-        <label className="block sm:col-span-2">
-          <FieldLabel hint="Texto de la ficha al clickear la interfaz.">
-            Resumen / ficha (español)
-          </FieldLabel>
+        <label className="block">
+          <FieldLabel>Resumen (español)</FieldLabel>
           <textarea
             name="summaryEs"
             defaultValue={item?.summary?.es ?? ""}
-            rows={3}
-            className={fieldClass}
-          />
-        </label>
-        <label className="block sm:col-span-2">
-          <FieldLabel>Resumen / ficha (inglés)</FieldLabel>
-          <textarea
-            name="summaryEn"
-            defaultValue={item?.summary?.en ?? ""}
-            rows={3}
+            rows={2}
             className={fieldClass}
           />
         </label>
         <label className="block">
-          <FieldLabel>Cliente</FieldLabel>
+          <FieldLabel>Resumen (inglés)</FieldLabel>
+          <textarea
+            name="summaryEn"
+            defaultValue={item?.summary?.en ?? ""}
+            rows={2}
+            className={fieldClass}
+          />
+        </label>
+      </div>
+      <div className="grid gap-3 sm:grid-cols-2">
+        <label className="block">
+          <FieldLabel>Cliente / entidad</FieldLabel>
           <input
             name="client"
             defaultValue={item?.client ?? ""}
             className={fieldClass}
           />
         </label>
-        <label className="block sm:col-span-2">
-          <FieldLabel hint="Vincula este proyecto a una marca para citar logos/banners relacionados.">
-            Marca / proyecto
-          </FieldLabel>
+        <label className="block">
+          <FieldLabel>Marca</FieldLabel>
           <select
             name="brandId"
             defaultValue={item?.brandId ?? ""}
@@ -195,17 +219,18 @@ function ProjectFields({
             <option value="">Sin marca</option>
             {brands.map((b) => (
               <option key={b.id} value={b.id}>
-                {b.name} ({b.id})
+                {b.name}
               </option>
             ))}
           </select>
         </label>
+      </div>
+      <div className="grid gap-3 sm:grid-cols-2">
         <label className="block">
           <FieldLabel>Periodo (español)</FieldLabel>
           <input
             name="periodEs"
             defaultValue={item?.period?.es ?? ""}
-            placeholder="ene–mar 2024"
             className={fieldClass}
           />
         </label>
@@ -217,12 +242,13 @@ function ProjectFields({
             className={fieldClass}
           />
         </label>
+      </div>
+      <div className="grid gap-3 sm:grid-cols-2">
         <label className="block">
           <FieldLabel>Duración (español)</FieldLabel>
           <input
             name="durationEs"
             defaultValue={item?.duration?.es ?? ""}
-            placeholder="6 semanas"
             className={fieldClass}
           />
         </label>
@@ -236,13 +262,10 @@ function ProjectFields({
         </label>
       </div>
       <label className="block">
-        <FieldLabel icon={Link2} hint="Link al Figma, Framer, o login visitante.">
-          Enlace (prototipo / live / visitante)
-        </FieldLabel>
+        <FieldLabel icon={Link2}>URL prototipo</FieldLabel>
         <input
           name="prototypeUrl"
           defaultValue={item?.prototypeUrl ?? ""}
-          placeholder="https://… o /admin/login"
           className={fieldClass}
         />
       </label>
@@ -301,28 +324,45 @@ function ListFields({
       <div className="grid gap-3 sm:grid-cols-2">
         <label className="block">
           <FieldLabel>Título (español)</FieldLabel>
-          <input name="titleEs" defaultValue={item?.title.es} className={fieldClass} />
+          <input
+            name="titleEs"
+            defaultValue={item?.title.es}
+            className={fieldClass}
+          />
         </label>
         <label className="block">
           <FieldLabel>Título (inglés)</FieldLabel>
-          <input name="titleEn" defaultValue={item?.title.en} className={fieldClass} />
+          <input
+            name="titleEn"
+            defaultValue={item?.title.en}
+            className={fieldClass}
+          />
         </label>
       </div>
       <ImageDropField
         name="logoPath"
         label="Logo"
+        profile="logo"
         folder="assets/interfaces"
         defaultValue={item?.logoPath ?? ""}
       />
       <label className="block">
         <FieldLabel>Pie de texto (opcional)</FieldLabel>
-        <input name="caption" defaultValue={item?.caption ?? ""} className={fieldClass} />
+        <input
+          name="caption"
+          defaultValue={item?.caption ?? ""}
+          className={fieldClass}
+        />
       </label>
       <label className="block">
         <FieldLabel hint="Si no hay logo, se puede mostrar este nombre tipográfico.">
           Wordmark (texto grande)
         </FieldLabel>
-        <input name="wordmark" defaultValue={item?.wordmark ?? ""} className={fieldClass} />
+        <input
+          name="wordmark"
+          defaultValue={item?.wordmark ?? ""}
+          className={fieldClass}
+        />
       </label>
       <div className="flex flex-wrap gap-4 text-sm">
         <label className="inline-flex items-center gap-2">
@@ -347,6 +387,82 @@ function ListFields({
   );
 }
 
+function ProjectRowSummary({ project }: { project: UiProjectDTO }) {
+  const slides = normalizeUiSlides(project.images);
+  const thumb = slides[0]?.src ?? "";
+  const thumbUrl = useAdminMediaUrl(thumb);
+  const title = project.title.es || project.title.en || project.id;
+  return (
+    <div className="flex min-w-0 items-center gap-3">
+      <div className="size-12 shrink-0 overflow-hidden bg-sky-pale/60">
+        {thumbUrl ? (
+          // eslint-disable-next-line @next/next/no-img-element
+          <img src={thumbUrl} alt="" className="size-full object-cover" />
+        ) : null}
+      </div>
+      <div className="min-w-0 flex-1">
+        <p className="truncate text-sm font-semibold text-ink">{title}</p>
+        <p className="truncate text-xs text-ink/55">
+          {[
+            project.client,
+            CATEGORY_LABEL[project.category] ?? project.category,
+            project.published ? "Visible" : "Oculto",
+          ]
+            .filter(Boolean)
+            .join(" · ")}
+        </p>
+      </div>
+    </div>
+  );
+}
+
+function ProjectCard({
+  project,
+  brands,
+  open,
+  onOpenChange,
+}: {
+  project: UiProjectDTO;
+  brands: BrandRef[];
+  open: boolean;
+  onOpenChange: (open: boolean) => void;
+}) {
+  const session = useAdminEditSession();
+  const dirty = session?.isDirty(project.id) ?? false;
+
+  return (
+    <CollapsibleEditor
+      dense
+      dirty={dirty}
+      open={open}
+      onOpenChange={onOpenChange}
+      summary={<ProjectRowSummary project={project} />}
+    >
+      <WithUiProjectPreview
+        initialDraft={projectDraft(project)}
+        brands={brands}
+      >
+        <AdminTrackedForm
+          id={project.id}
+          label={project.title.es || project.id}
+          saveAction={saveUiProject}
+          className="space-y-4"
+        >
+          <input type="hidden" name="id" value={project.id} />
+          <p className="text-xs text-ink/45">ID: {project.id}</p>
+          <ProjectFields item={project} brands={brands} />
+          <button
+            type="submit"
+            className="inline-flex items-center gap-1.5 border border-ink/20 px-3 py-2 text-sm text-ink"
+          >
+            <Save className="size-3.5" /> Guardar este
+          </button>
+        </AdminTrackedForm>
+      </WithUiProjectPreview>
+    </CollapsibleEditor>
+  );
+}
+
 export function InterfacesProjectsClient({
   projects,
   brands,
@@ -356,69 +472,60 @@ export function InterfacesProjectsClient({
   brands: BrandRef[];
   saved?: string;
 }) {
+  const [openId, setOpenId] = useState<string | null>(null);
+  const { run: runCreate } = useQuietAdminAction(saveUiProject);
+
   return (
-    <div>
-      <h1 className="font-admin-title text-3xl">Proyectos</h1>
-      {saved ? <p className="mt-2 text-sm text-green-700">Guardado.</p> : null}
-      <p className="mt-2 text-sm text-ink/60">
-        Tocá un proyecto para editarlo.
-      </p>
+    <AdminEditSession pageLabel="Interfaces">
+      <div>
+        <h1 className="font-admin-title text-3xl">Proyectos</h1>
+        {saved ? <p className="mt-2 text-sm text-green-700">Guardado.</p> : null}
+        <p className="mt-2 text-sm text-ink/60">
+          Filas compactas: abrí uno para editar. Guardá varios con Guardar todo.
+        </p>
 
-      <div className="mt-6">
-        <CollapsibleEditor
-          compact
-          summary={
-            <div className="flex items-center gap-2 py-1 text-sm font-medium">
-              <Plus className="size-4" /> Nuevo proyecto
-            </div>
-          }
-        >
-          <WithUiProjectPreview brands={brands}>
-            <form action={saveUiProject} className="space-y-4">
-              <ProjectFields showId brands={brands} />
-              <button
-                type="submit"
-                className="inline-flex items-center gap-1.5 bg-ink px-3 py-2 text-sm text-sky-pale"
-              >
-                <Save className="size-3.5" /> Crear
-              </button>
-            </form>
-          </WithUiProjectPreview>
-        </CollapsibleEditor>
-      </div>
-
-      <div className="mt-8 space-y-4">
-        {projects.map((p) => (
+        <div className="mt-6">
           <CollapsibleEditor
-            key={p.id}
+            compact
             summary={
-              <UiProjectPreview
-                draft={projectDraft(p)}
-                locale="es"
-                brands={brands}
-              />
+              <div className="flex items-center gap-2 py-1 text-sm font-medium">
+                <Plus className="size-4" /> Nuevo proyecto
+              </div>
             }
           >
-            <WithUiProjectPreview
-              initialDraft={projectDraft(p)}
-              brands={brands}
-            >
-              <form action={saveUiProject} className="space-y-4">
-                <input type="hidden" name="id" value={p.id} />
-                <p className="text-xs text-ink/45">ID: {p.id}</p>
-                <ProjectFields item={p} brands={brands} />
+            <WithUiProjectPreview brands={brands}>
+              <form
+                className="space-y-4"
+                onSubmit={(e) => {
+                  e.preventDefault();
+                  void runCreate(new FormData(e.currentTarget));
+                }}
+              >
+                <ProjectFields showId brands={brands} />
                 <button
                   type="submit"
                   className="inline-flex items-center gap-1.5 bg-ink px-3 py-2 text-sm text-sky-pale"
                 >
-                  <Save className="size-3.5" /> Guardar cambios
+                  <Save className="size-3.5" /> Crear
                 </button>
               </form>
             </WithUiProjectPreview>
           </CollapsibleEditor>
-        ))}
+        </div>
+
+        <div className="mt-6 space-y-2">
+          {projects.map((p) => (
+            <ProjectCard
+              key={p.id}
+              project={p}
+              brands={brands}
+              open={openId === p.id}
+              onOpenChange={(next) => setOpenId(next ? p.id : null)}
+            />
+          ))}
+        </div>
       </div>
-    </div>
+    </AdminEditSession>
   );
 }
 
@@ -429,57 +536,81 @@ export function InterfacesListClient({
   list: UiListDTO[];
   saved?: string;
 }) {
+  const { run: runCreate } = useQuietAdminAction(saveUiListItem);
+
   return (
-    <div>
-      <h1 className="font-admin-title text-3xl">Lista simple</h1>
-      {saved ? <p className="mt-2 text-sm text-green-700">Guardado.</p> : null}
-      <p className="mt-2 text-sm text-ink/60">Logos / wordmarks en grilla.</p>
+    <AdminEditSession pageLabel="Lista UI">
+      <div>
+        <h1 className="font-admin-title text-3xl">Lista simple</h1>
+        {saved ? <p className="mt-2 text-sm text-green-700">Guardado.</p> : null}
+        <p className="mt-2 text-sm text-ink/60">Logos / wordmarks en grilla.</p>
 
-      <div className="mt-6">
-        <CollapsibleEditor
-          compact
-          summary={
-            <div className="flex items-center gap-2 py-1 text-sm font-medium">
-              <Plus className="size-4" /> Nuevo ítem
-            </div>
-          }
-        >
-          <WithUiListPreview>
-            <form action={saveUiListItem} className="space-y-4">
-              <ListFields showId />
-              <button
-                type="submit"
-                className="inline-flex items-center gap-1.5 bg-ink px-3 py-2 text-sm text-sky-pale"
-              >
-                <Save className="size-3.5" /> Crear
-              </button>
-            </form>
-          </WithUiListPreview>
-        </CollapsibleEditor>
-      </div>
-
-      <div className="mt-8 space-y-4">
-        {list.map((item) => (
+        <div className="mt-6">
           <CollapsibleEditor
-            key={item.id}
-            summary={<UiListPreview draft={listDraft(item)} locale="es" />}
+            compact
+            summary={
+              <div className="flex items-center gap-2 py-1 text-sm font-medium">
+                <Plus className="size-4" /> Nuevo ítem
+              </div>
+            }
           >
-            <WithUiListPreview initialDraft={listDraft(item)}>
-              <form action={saveUiListItem} className="space-y-4">
-                <input type="hidden" name="id" value={item.id} />
-                <p className="text-xs text-ink/45">ID: {item.id}</p>
-                <ListFields item={item} />
+            <WithUiListPreview>
+              <form
+                className="space-y-4"
+                onSubmit={(e) => {
+                  e.preventDefault();
+                  void runCreate(new FormData(e.currentTarget));
+                }}
+              >
+                <ListFields showId />
                 <button
                   type="submit"
                   className="inline-flex items-center gap-1.5 bg-ink px-3 py-2 text-sm text-sky-pale"
                 >
-                  <Save className="size-3.5" /> Guardar cambios
+                  <Save className="size-3.5" /> Crear
                 </button>
               </form>
             </WithUiListPreview>
           </CollapsibleEditor>
-        ))}
+        </div>
+
+        <div className="mt-8 space-y-4">
+          {list.map((item) => (
+            <ListItemCard key={item.id} item={item} />
+          ))}
+        </div>
       </div>
-    </div>
+    </AdminEditSession>
+  );
+}
+
+function ListItemCard({ item }: { item: UiListDTO }) {
+  const session = useAdminEditSession();
+  const dirty = session?.isDirty(item.id) ?? false;
+
+  return (
+    <CollapsibleEditor
+      dirty={dirty}
+      summary={<UiListPreview draft={listDraft(item)} locale="es" />}
+    >
+      <WithUiListPreview initialDraft={listDraft(item)}>
+        <AdminTrackedForm
+          id={item.id}
+          label={item.title.es || item.id}
+          saveAction={saveUiListItem}
+          className="space-y-4"
+        >
+          <input type="hidden" name="id" value={item.id} />
+          <p className="text-xs text-ink/45">ID: {item.id}</p>
+          <ListFields item={item} />
+          <button
+            type="submit"
+            className="inline-flex items-center gap-1.5 border border-ink/20 px-3 py-2 text-sm text-ink"
+          >
+            <Save className="size-3.5" /> Guardar este
+          </button>
+        </AdminTrackedForm>
+      </WithUiListPreview>
+    </CollapsibleEditor>
   );
 }

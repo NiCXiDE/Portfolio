@@ -33,6 +33,7 @@ import {
 } from "@/lib/home-layout";
 import {
   finishAdminMutation,
+  isClientAdminMutation,
   snap,
   undoAuditLog,
 } from "@/lib/audit";
@@ -114,7 +115,7 @@ export async function saveBrand(formData: FormData) {
     createdAt: existing?.createdAt ?? new Date(),
   };
   await repo.save(after);
-  await finishAdminMutation({
+  return finishAdminMutation({
     session,
     action: existing ? "update" : "create",
     entityType: "brand",
@@ -124,6 +125,7 @@ export async function saveBrand(formData: FormData) {
     after: snap(after),
     redirectTo: "/admin/brands",
     toastMessage: existing ? "Marca guardada" : "Marca creada",
+    skipRedirect: isClientAdminMutation(formData),
   });
 }
 
@@ -134,7 +136,7 @@ export async function deleteBrand(formData: FormData) {
   const repo = ds.getRepository(BrandEntity);
   const before = snap(await repo.findOneBy({ id }));
   await repo.delete({ id });
-  await finishAdminMutation({
+  return finishAdminMutation({
     session,
     action: "delete",
     entityType: "brand",
@@ -144,6 +146,7 @@ export async function deleteBrand(formData: FormData) {
     after: null,
     redirectTo: "/admin/brands",
     toastMessage: "Marca eliminada",
+    skipRedirect: isClientAdminMutation(formData),
   });
 }
 
@@ -166,7 +169,7 @@ export async function saveBio(formData: FormData) {
     text: loc(formData.get("textEs"), formData.get("textEn")),
   };
   await repo.save(after);
-  await finishAdminMutation({
+  return finishAdminMutation({
     session,
     action: "update",
     entityType: "bio",
@@ -176,6 +179,7 @@ export async function saveBio(formData: FormData) {
     after: snap(after),
     redirectTo: "/admin/bio",
     toastMessage: "Bio guardada",
+    skipRedirect: isClientAdminMutation(formData),
   });
 }
 
@@ -232,7 +236,7 @@ export async function saveHomeLayout(formData: FormData) {
     ...existing,
     homeLayout: layout as unknown as Record<string, unknown>,
   });
-  await finishAdminMutation({
+  return finishAdminMutation({
     session,
     action: "update",
     entityType: "home_layout",
@@ -242,6 +246,7 @@ export async function saveHomeLayout(formData: FormData) {
     after: snap(layout),
     redirectTo: "/admin/lists",
     toastMessage: "Orden del home guardado",
+    skipRedirect: isClientAdminMutation(formData),
   });
 }
 
@@ -389,7 +394,7 @@ export async function saveNamedList(formData: FormData) {
     marquee: layoutAfter.marquees[kind],
   });
 
-  await finishAdminMutation({
+  return finishAdminMutation({
     session,
     action: "replace",
     entityType: "named_list",
@@ -399,6 +404,7 @@ export async function saveNamedList(formData: FormData) {
     after,
     redirectTo: "/admin/lists",
     toastMessage: "Lista guardada",
+    skipRedirect: isClientAdminMutation(formData),
   });
 }
 
@@ -429,7 +435,7 @@ export async function saveTestimonial(formData: FormData) {
     sortOrder: Number(formData.get("sortOrder") ?? 0),
   };
   await repo.save(after);
-  await finishAdminMutation({
+  return finishAdminMutation({
     session,
     action: existing ? "update" : "create",
     entityType: "testimonial",
@@ -441,6 +447,7 @@ export async function saveTestimonial(formData: FormData) {
     after: snap(after),
     redirectTo: "/admin/testimonials",
     toastMessage: existing ? "Testimonio guardado" : "Testimonio creado",
+    skipRedirect: isClientAdminMutation(formData),
   });
 }
 
@@ -451,7 +458,7 @@ export async function deleteTestimonial(formData: FormData) {
   const repo = ds.getRepository(TestimonialEntity);
   const before = snap(await repo.findOneBy({ id }));
   await repo.delete({ id });
-  await finishAdminMutation({
+  return finishAdminMutation({
     session,
     action: "delete",
     entityType: "testimonial",
@@ -461,6 +468,7 @@ export async function deleteTestimonial(formData: FormData) {
     after: null,
     redirectTo: "/admin/testimonials",
     toastMessage: "Testimonio eliminado",
+    skipRedirect: isClientAdminMutation(formData),
   });
 }
 
@@ -589,7 +597,7 @@ export async function saveGraphicItem(formData: FormData) {
     published: bool(formData.get("published")),
   };
   await repo.save(after);
-  await finishAdminMutation({
+  return finishAdminMutation({
     session,
     action: existing ? "update" : "create",
     entityType: "graphic_item",
@@ -601,6 +609,7 @@ export async function saveGraphicItem(formData: FormData) {
     after: snap(after),
     redirectTo: `/admin/graphic/${section}`,
     toastMessage: existing ? "Ítem guardado" : "Ítem creado",
+    skipRedirect: isClientAdminMutation(formData),
   });
 }
 
@@ -811,7 +820,7 @@ export async function deleteGraphicItem(formData: FormData) {
   const repo = ds.getRepository(GraphicItemEntity);
   const before = snap(await repo.findOneBy({ id }));
   await repo.delete({ id });
-  await finishAdminMutation({
+  return finishAdminMutation({
     session,
     action: "delete",
     entityType: "graphic_item",
@@ -821,6 +830,7 @@ export async function deleteGraphicItem(formData: FormData) {
     after: null,
     redirectTo: `/admin/graphic/${section}`,
     toastMessage: "Ítem eliminado",
+    skipRedirect: isClientAdminMutation(formData),
   });
 }
 
@@ -890,7 +900,7 @@ export async function saveUiProject(formData: FormData) {
     published: bool(formData.get("published")),
   };
   await repo.save(after);
-  await finishAdminMutation({
+  return finishAdminMutation({
     session,
     action: existing ? "update" : "create",
     entityType: "ui_project",
@@ -902,6 +912,7 @@ export async function saveUiProject(formData: FormData) {
     after: snap(after),
     redirectTo: "/admin/interfaces/projects",
     toastMessage: existing ? "Proyecto guardado" : "Proyecto creado",
+    skipRedirect: isClientAdminMutation(formData),
   });
 }
 
@@ -923,7 +934,7 @@ export async function saveUiListItem(formData: FormData) {
     published: bool(formData.get("published")),
   };
   await repo.save(after);
-  await finishAdminMutation({
+  return finishAdminMutation({
     session,
     action: existing ? "update" : "create",
     entityType: "ui_list_item",
@@ -933,6 +944,7 @@ export async function saveUiListItem(formData: FormData) {
     after: snap(after),
     redirectTo: "/admin/interfaces/list",
     toastMessage: existing ? "Ítem guardado" : "Ítem creado",
+    skipRedirect: isClientAdminMutation(formData),
   });
 }
 

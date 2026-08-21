@@ -1,7 +1,7 @@
 "use client";
 
 import { ImagePlus, Loader2, Upload, X } from "lucide-react";
-import { useEffect, useRef, useState, type DragEvent } from "react";
+import { useEffect, useMemo, useRef, useState, type DragEvent } from "react";
 import { uploadLocalAsset } from "@/app/admin/upload-local";
 import {
   useAdminMediaUrl,
@@ -9,6 +9,12 @@ import {
 } from "@/components/admin/AdminMediaProvider";
 import { FieldLabel } from "@/components/admin/FieldLabel";
 import { resolveMediaUrl } from "@/lib/media";
+import { uploadErrorMessage, type UploadErrorCode } from "@/lib/upload-errors";
+import {
+  preflightUploadFile,
+  uploadRuleHint,
+  type UploadProfile,
+} from "@/lib/upload-rules";
 
 type LibraryItem = {
   id: string;
@@ -33,6 +39,8 @@ type Props = {
   /** Carpeta / prefijo en R2, p.ej. assets/grafico/covers */
   folder: string;
   accept?: string;
+  /** Perfil de reglas (formatos / recomendado / máx.) */
+  profile?: UploadProfile;
   /** Si es PDF u otro no-imagen */
   kind?: "image" | "file";
   onUploaded?: (path: string, assetId: string, previewUrl: string) => void;
@@ -62,11 +70,17 @@ export function ImageDropField({
   defaultPreviewUrl,
   defaultAssetId = "",
   folder,
-  accept = "image/*,.jpg,.jpeg,.png,.webp,.gif,.svg",
+  accept,
+  profile: profileProp,
   kind = "image",
   onUploaded,
   library = [],
 }: Props) {
+  const profile: UploadProfile =
+    profileProp ?? (kind === "file" ? "pdf" : "image");
+  const rules = useMemo(() => uploadRuleHint(profile), [profile]);
+  const resolvedAccept = accept ?? rules.accept;
+
   const mediaBase = useMediaBase();
   const inputRef = useRef<HTMLInputElement>(null);
   const assetRef = useRef<HTMLInputElement>(null);
@@ -91,10 +105,20 @@ export function ImageDropField({
     setBusy(true);
     setError(null);
     try {
+      const preflight = preflightUploadFile(file, profile);
+      if (preflight) {
+        setError(uploadErrorMessage(preflight));
+        return;
+      }
+
       const fd = new FormData();
       fd.set("file", file);
       fd.set("folder", folder);
-      if (kind === "image" && file.type.startsWith("image/") && !file.type.includes("svg")) {
+      if (
+        kind === "image" &&
+        file.type.startsWith("image/") &&
+        !file.type.includes("svg")
+      ) {
         const size = await new Promise<{ w: number; h: number } | null>(
           (resolve) => {
             const url = URL.createObjectURL(file);
@@ -117,7 +141,12 @@ export function ImageDropField({
       }
       const res = await uploadLocalAsset(fd);
       if (!res.ok) {
-        setError(res.error);
+        setError(
+          res.error ||
+            uploadErrorMessage(
+              (res.code as UploadErrorCode) || "UNKNOWN_UPLOAD_ERROR",
+            ),
+        );
         return;
       }
       setPath(res.path);
@@ -125,8 +154,7 @@ export function ImageDropField({
       setAssetId(res.assetId);
       onUploaded?.(res.path, res.assetId, res.previewUrl);
     } catch {
-      // Fallos de transporte / body limit de Server Actions, etc.: la action no llegó a devolver { ok:false }.
-      setError("Ocurrió un error al subir el archivo.");
+      setError(uploadErrorMessage("UNKNOWN_UPLOAD_ERROR"));
     } finally {
       setBusy(false);
     }
@@ -148,9 +176,15 @@ export function ImageDropField({
     onUploaded?.(item.path, item.id, nextPreview);
   }
 
+  const combinedHint = hint;
+
   return (
     <div className="space-y-1.5">
-      <FieldLabel hint={hint}>{label}</FieldLabel>
+      <FieldLabel hint={combinedHint || undefined}>{label}</FieldLabel>
+      <p className="text-[0.7rem] leading-snug text-ink/55">{rules.summary}</p>
+      {rules.note ? (
+        <p className="text-[0.7rem] leading-snug text-ink/45">{rules.note}</p>
+      ) : null}
 
       {name ? (
         <input ref={inputRef} type="hidden" name={name} value={path} />
@@ -251,7 +285,7 @@ export function ImageDropField({
         <input
           ref={fileRef}
           type="file"
-          accept={accept}
+          accept={resolvedAccept}
           className="hidden"
           onChange={(e) => {
             void handleFile(e.target.files?.[0]);

@@ -3,8 +3,13 @@
 import { useState } from "react";
 import { Plus, Save, Trash2 } from "lucide-react";
 import { deleteBrand, saveBrand } from "@/app/admin/actions";
+import {
+  AdminEditSession,
+  AdminTrackedForm,
+} from "@/components/admin/AdminEditSession";
 import { FieldLabel, fieldClass } from "@/components/admin/FieldLabel";
 import { ImageDropField } from "@/components/admin/ImageDropField";
+import { useQuietAdminAction } from "@/components/admin/useQuietAdminAction";
 import { slugifyBrand } from "@/lib/brands";
 
 export type BrandDTO = {
@@ -18,19 +23,21 @@ export type BrandDTO = {
 
 export function BrandsClient({ brands }: { brands: BrandDTO[] }) {
   return (
-    <div className="space-y-8">
-      <section className="border border-ink/10 p-4">
-        <h2 className="mb-3 text-lg font-bold">Nueva marca</h2>
-        <BrandForm />
-      </section>
-      <div className="space-y-4">
-        {brands.map((b) => (
-          <section key={b.id} className="border border-ink/10 p-4">
-            <BrandForm item={b} />
-          </section>
-        ))}
+    <AdminEditSession pageLabel="Marcas">
+      <div className="space-y-8">
+        <section className="border border-ink/10 p-4">
+          <h2 className="mb-3 text-lg font-bold">Nueva marca</h2>
+          <BrandForm />
+        </section>
+        <div className="space-y-4">
+          {brands.map((b) => (
+            <section key={b.id} className="border border-ink/10 p-4">
+              <BrandForm item={b} />
+            </section>
+          ))}
+        </div>
       </div>
-    </div>
+    </AdminEditSession>
   );
 }
 
@@ -38,9 +45,11 @@ function BrandForm({ item }: { item?: BrandDTO }) {
   const [name, setName] = useState(item?.name ?? "");
   const [id, setId] = useState(item?.id ?? "");
   const isNew = !item;
+  const { run: runCreate } = useQuietAdminAction(saveBrand);
+  const { run: runDelete } = useQuietAdminAction(deleteBrand);
 
-  return (
-    <form action={saveBrand} className="space-y-3">
+  const fields = (
+    <>
       {!isNew ? <input type="hidden" name="id" value={item.id} /> : null}
       <div className="grid gap-3 sm:grid-cols-[1fr_1fr_auto]">
         <label className="block">
@@ -100,6 +109,7 @@ function BrandForm({ item }: { item?: BrandDTO }) {
         name="logoPath"
         assetName="logoAssetId"
         label="Logo"
+        profile="logo"
         folder="assets/inicio/brands"
         defaultValue={item?.logoPath ?? ""}
       />
@@ -120,35 +130,60 @@ function BrandForm({ item }: { item?: BrandDTO }) {
         />
         Visible / usable en menciones
       </label>
-      <div className="flex flex-wrap gap-2">
+    </>
+  );
+
+  if (isNew) {
+    return (
+      <form
+        className="space-y-3"
+        onSubmit={(e) => {
+          e.preventDefault();
+          void runCreate(new FormData(e.currentTarget));
+        }}
+      >
+        {fields}
         <button
           type="submit"
           className="inline-flex items-center gap-2 bg-ink px-4 py-2 text-sm text-sky-pale"
         >
           <Save className="size-3.5" strokeWidth={1.75} />
-          {isNew ? "Crear marca" : "Guardar"}
+          Crear marca
         </button>
-        {!isNew ? (
-          <button
-            formAction={deleteBrand}
-            type="submit"
-            className="inline-flex items-center gap-2 border border-alert-danger/40 px-3 py-2 text-sm text-ink hover:bg-[#fff5f5]"
-            onClick={(e) => {
-              if (!confirm(`¿Eliminar marca “${item.name}”?`)) {
-                e.preventDefault();
-              }
-            }}
-          >
-            <Trash2 className="size-3.5" strokeWidth={1.75} />
-            Eliminar
-          </button>
-        ) : (
-          <span className="inline-flex items-center gap-1 text-xs text-ink/45">
-            <Plus className="size-3.5" />
-            Luego podés citarla con @{id || "id"}
-          </span>
-        )}
+      </form>
+    );
+  }
+
+  return (
+    <AdminTrackedForm
+      id={item.id}
+      label={item.name}
+      saveAction={saveBrand}
+      className="space-y-3"
+    >
+      {fields}
+      <div className="flex flex-wrap gap-2">
+        <button
+          type="submit"
+          className="inline-flex items-center gap-2 border border-ink/20 px-3 py-2 text-sm text-ink"
+        >
+          <Save className="size-3.5" strokeWidth={1.75} />
+          Guardar este
+        </button>
+        <button
+          type="button"
+          className="inline-flex items-center gap-2 border border-alert-danger/40 px-3 py-2 text-sm text-ink hover:bg-[#fff5f5]"
+          onClick={() => {
+            if (!confirm(`¿Eliminar marca “${item.name}”?`)) return;
+            const fd = new FormData();
+            fd.set("id", item.id);
+            void runDelete(fd);
+          }}
+        >
+          <Trash2 className="size-3.5" strokeWidth={1.75} />
+          Eliminar
+        </button>
       </div>
-    </form>
+    </AdminTrackedForm>
   );
 }

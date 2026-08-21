@@ -28,6 +28,9 @@ import {
   type MarqueeSectionConfig,
 } from "@/lib/home-layout";
 import { withToastQuery } from "@/lib/admin-toast";
+import type { AdminMutationResult } from "@/lib/admin-mutation-result";
+
+export type { AdminMutationResult };
 
 export type JsonSnap = Record<string, unknown>;
 
@@ -105,25 +108,38 @@ export async function finishAdminMutation(input: {
   undoable?: boolean;
   redirectTo: string;
   toastMessage?: string;
-  /** Si false, no hace redirect (para acciones client-callable). */
+  /** Si true, no hace redirect (acción client-callable; evita scroll/remount). */
   skipRedirect?: boolean;
-}): Promise<{ auditId: string } | void> {
+}): Promise<AdminMutationResult | void> {
   const log = await writeAuditLog(input);
   revalidatePublic();
   const undoable =
     (input.undoable ?? true) &&
     (input.action === "create" || Boolean(input.before));
+  const variant = input.action === "delete" ? "danger" : "success";
+  const message = input.toastMessage ?? input.summary;
   if (input.skipRedirect) {
-    return { auditId: log.id };
+    return {
+      ok: true,
+      auditId: log.id,
+      message,
+      undoable,
+      variant,
+    };
   }
   redirect(
     withToastQuery(input.redirectTo, {
-      message: input.toastMessage ?? input.summary,
+      message,
       auditId: log.id,
       undoable,
-      variant: input.action === "delete" ? "danger" : "success",
+      variant,
     }),
   );
+}
+
+/** Form actions set `__client=1` to keep scroll/accordion and use client toast. */
+export function isClientAdminMutation(formData: FormData): boolean {
+  return formData.get("__client") === "1";
 }
 
 export async function isLatestAudit(log: AdminAuditLogRow): Promise<boolean> {

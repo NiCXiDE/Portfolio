@@ -21,15 +21,16 @@ const UI_MESSAGES: Record<UploadErrorCode, string> = {
     "Tu sesión no permite realizar esta acción. Volvé a iniciar sesión.",
   FORBIDDEN:
     "Tu sesión no permite realizar esta acción. Volvé a iniciar sesión.",
-  INVALID_FILE: "Elegí un archivo válido.",
-  FILE_TOO_LARGE: "El archivo supera el tamaño máximo permitido.",
-  UNSUPPORTED_FILE: "Este tipo de archivo no está permitido.",
+  INVALID_FILE: "No se pudo leer el archivo seleccionado.",
+  FILE_TOO_LARGE:
+    "No se pudo subir: el archivo supera el tamaño máximo permitido.",
+  UNSUPPORTED_FILE: "No se pudo subir: este formato no está permitido.",
   IMAGE_PROCESS_FAILED:
     "No se pudo procesar la imagen. Probá con otro archivo.",
-  R2_UPLOAD_FAILED: "No pudimos subir el archivo al almacenamiento.",
+  R2_UPLOAD_FAILED: "No se pudo subir el archivo al almacenamiento.",
   MEDIA_REGISTRATION_FAILED:
-    "El archivo se subió, pero no se pudo registrar en la biblioteca.",
-  UNKNOWN_UPLOAD_ERROR: "Ocurrió un error al subir el archivo.",
+    "El archivo se subió, pero no se pudo registrar correctamente.",
+  UNKNOWN_UPLOAD_ERROR: "No se pudo subir el archivo.",
 };
 
 export function uploadErrorMessage(code: UploadErrorCode): string {

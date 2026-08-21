@@ -528,7 +528,18 @@ function ListEditor({
 
   return (
     <form
-      action={saveNamedList}
+      action={async (fd) => {
+        fd.set("__client", "1");
+        const result = await saveNamedList(fd);
+        if (result && "ok" in result && result.ok) {
+          pushAdminToast({
+            message: result.message,
+            auditId: result.auditId,
+            undoable: result.undoable,
+            variant: result.variant,
+          });
+        }
+      }}
       onSubmit={onSubmit}
       className="space-y-4 border border-ink/10 p-4"
     >
@@ -824,7 +835,18 @@ export function ListsClient({ initialLayout, lists, brands }: Props) {
   return (
     <div className="space-y-10">
       <form
-        action={saveHomeLayout}
+        action={async (fd) => {
+          fd.set("__client", "1");
+          const result = await saveHomeLayout(fd);
+          if (result && "ok" in result && result.ok) {
+            pushAdminToast({
+              message: result.message,
+              auditId: result.auditId,
+              undoable: result.undoable,
+              variant: result.variant,
+            });
+          }
+        }}
         className="space-y-4 border border-ink/10 p-4"
       >
         <h2 className="text-lg font-bold">Orden de secciones (Home)</h2>

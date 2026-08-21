@@ -211,13 +211,20 @@ function mapTestimonial(
   locale: Locale,
 ): HomeTestimonialItemV2 {
   const fromEntity = row.entity;
-  const legacy = row.legacyCompany;
+  const override = row.legacyCompany;
 
-  const name = fromEntity
-    ? entityDisplayLabel(fromEntity)
-    : (legacy?.name?.trim() || "");
-  const logoUrl = fromEntity?.logoUrl ?? legacy?.logoUrl ?? null;
-  const href = publicExternalHref(fromEntity?.href ?? legacy?.href ?? null);
+  // company_* (admin) overrides Entity when set; Entity fills gaps.
+  const name =
+    override?.name?.trim() ||
+    (fromEntity ? entityDisplayLabel(fromEntity) : "") ||
+    "";
+  // Non-empty company logo wins; otherwise Entity (or legacy null).
+  const logoUrl = override?.logoUrl
+    ? override.logoUrl
+    : (fromEntity?.logoUrl ?? override?.logoUrl ?? null);
+  const href = publicExternalHref(
+    override?.href?.trim() || fromEntity?.href || null,
+  );
   const linkLabel = pickLocalized(row.linkLabel, locale) || null;
 
   return {

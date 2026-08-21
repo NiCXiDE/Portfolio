@@ -158,7 +158,7 @@ test("entity href never invents /entidades even when pageEnabled", () => {
   assert.equal(home.entities[1]?.href, "https://push.example");
 });
 
-test("testimonials prefer Entity org metadata", () => {
+test("company_* overrides Entity org metadata when set", () => {
   const row: PublicTestimonial = {
     id: "t1",
     name: "Ada",
@@ -187,13 +187,82 @@ test("testimonials prefer Entity org metadata", () => {
     testimonials: [row],
   });
 
-  assert.equal(home.testimonials[0]?.organization.name, "PUSH Software");
+  assert.equal(home.testimonials[0]?.organization.name, "Legacy Co");
+  assert.equal(home.testimonials[0]?.organization.logoUrl, "/legacy.png");
+  assert.equal(
+    home.testimonials[0]?.organization.href,
+    "https://legacy.example",
+  );
+  assert.equal(home.testimonials[0]?.quote, "hola");
+});
+
+test("Entity fills gaps when company has name+href but no logo", () => {
+  const row: PublicTestimonial = {
+    id: "t2",
+    name: "Bea",
+    imageUrl: "/b.jpg",
+    quote: { es: "ok", en: "ok" },
+    role: { es: "rol", en: "role" },
+    linkLabel: { es: "web", en: "web" },
+    sortOrder: 0,
+    entityId: "push",
+    entity: entity({
+      id: "push",
+      name: "PUSH Software",
+      logoUrl: "/push.svg",
+      href: "https://push.example",
+    }),
+    legacyCompany: {
+      name: "Cliente SA",
+      logoUrl: null,
+      href: "https://cliente.example",
+    },
+  };
+
+  const home = buildHomeContentV2("es", {
+    entities: [],
+    projects: [],
+    testimonials: [row],
+  });
+
+  assert.equal(home.testimonials[0]?.organization.name, "Cliente SA");
   assert.equal(home.testimonials[0]?.organization.logoUrl, "/push.svg");
   assert.equal(
     home.testimonials[0]?.organization.href,
-    "https://push.example",
+    "https://cliente.example",
   );
-  assert.equal(home.testimonials[0]?.quote, "hola");
+});
+
+test("name+href without logo still yields clickable org link", () => {
+  const row: PublicTestimonial = {
+    id: "t3",
+    name: "Cata",
+    imageUrl: "/c.jpg",
+    quote: { es: "ok", en: "ok" },
+    role: { es: "rol", en: "role" },
+    linkLabel: null,
+    sortOrder: 0,
+    entityId: null,
+    entity: null,
+    legacyCompany: {
+      name: "Sin Logo SRL",
+      logoUrl: null,
+      href: "https://sinlogo.example",
+    },
+  };
+
+  const home = buildHomeContentV2("es", {
+    entities: [],
+    projects: [],
+    testimonials: [row],
+  });
+
+  assert.equal(home.testimonials[0]?.organization.name, "Sin Logo SRL");
+  assert.equal(home.testimonials[0]?.organization.logoUrl, null);
+  assert.equal(
+    home.testimonials[0]?.organization.href,
+    "https://sinlogo.example",
+  );
 });
 
 test("project does not invent cover or route", () => {

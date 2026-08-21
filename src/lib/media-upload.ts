@@ -8,8 +8,11 @@ import {
   logUploadFailure,
   type UploadErrorCode,
 } from "@/lib/upload-errors";
+import {
+  UPLOAD_MAX_BYTES,
+  isAllowedUploadFile,
+} from "@/lib/upload-rules";
 
-const MAX_BYTES = 20 * 1024 * 1024;
 const WEBP_QUALITY = 82;
 const MAX_EDGE = 4096;
 
@@ -52,11 +55,7 @@ function isPdf(file: File): boolean {
 }
 
 function isAllowed(file: File): boolean {
-  return (
-    file.type.startsWith("image/") ||
-    file.type === "application/pdf" ||
-    /\.(jpe?g|png|webp|gif|svg|pdf)$/i.test(file.name)
-  );
+  return isAllowedUploadFile(file, "any");
 }
 
 /**
@@ -72,7 +71,7 @@ export async function prepareUploadFile(
   if (!(file instanceof File) || file.size === 0) {
     return failUpload("INVALID_FILE");
   }
-  if (file.size > MAX_BYTES) {
+  if (file.size > UPLOAD_MAX_BYTES) {
     return failUpload("FILE_TOO_LARGE");
   }
   if (!isAllowed(file)) {
@@ -260,4 +259,4 @@ export async function uploadFileToR2(
   return uploadPreparedToR2(prepared.prepared);
 }
 
-export { MAX_BYTES as UPLOAD_MAX_BYTES };
+export { UPLOAD_MAX_BYTES };

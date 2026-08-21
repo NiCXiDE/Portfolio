@@ -139,8 +139,8 @@ export type PublicTestimonial = {
   /** Resolved when entity is visible; otherwise null. */
   entity: PublicEntitySummary | null;
   /**
-   * Legacy company_* overrides retained only when no visible Entity
-   * (or as fallback fields). Prefer `entity` when present.
+   * company_* from the testimonial row. When present, overrides Entity
+   * org fields in the Home adapter (admin logo/URL edits must win).
    */
   legacyCompany: {
     name: string;

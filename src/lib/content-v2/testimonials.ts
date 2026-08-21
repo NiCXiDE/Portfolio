@@ -8,8 +8,8 @@ import type { PublicTestimonial } from "./types";
 
 /**
  * Public testimonials: excludes `hidden`.
- * Prefer related Entity (when visible) for organization metadata;
- * keep legacy company_* only as fallback when Entity is absent/invisible.
+ * Entity supplies default org metadata; company_* on the testimonial
+ * overrides when present (admin logo/URL edits must win over entity).
  */
 export async function getPublicTestimonialsV2(): Promise<PublicTestimonial[]> {
   const ds = await getDataSource();
@@ -42,7 +42,7 @@ export async function getPublicTestimonialsV2(): Promise<PublicTestimonial[]> {
     const entity = entityRow ? mapPublicEntitySummary(entityRow) : null;
 
     const legacyCompany =
-      !entity && (row.companyName || row.companyLogoPath || row.companyHref)
+      row.companyName || row.companyLogoPath || row.companyHref
         ? {
             name: row.companyName,
             logoUrl: row.companyLogoPath

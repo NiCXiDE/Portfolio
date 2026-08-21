@@ -12,6 +12,11 @@ import {
   Type,
 } from "lucide-react";
 import { deleteGraphicItem, saveGraphicItem } from "@/app/admin/actions";
+import {
+  AdminEditSession,
+  AdminTrackedForm,
+  useAdminEditSession,
+} from "@/components/admin/AdminEditSession";
 import { ClassifyGraphicForm } from "@/components/admin/ClassifyGraphicForm";
 import { useAdminMediaUrl } from "@/components/admin/AdminMediaProvider";
 import { CollapsibleEditor } from "@/components/admin/CollapsibleEditor";
@@ -19,6 +24,7 @@ import { FieldLabel, fieldClass, selectClass } from "@/components/admin/FieldLab
 import { ImageDropField } from "@/components/admin/ImageDropField";
 import { ImageGalleryField } from "@/components/admin/ImageGalleryField";
 import { LogoGalleryField } from "@/components/admin/LogoGalleryField";
+import { useQuietAdminAction } from "@/components/admin/useQuietAdminAction";
 import { WithGraphicPreview } from "@/components/admin/WithPreview";
 import { GraphicItemPreview } from "@/components/admin/previews";
 import type { Draft } from "@/components/admin/draft";
@@ -183,6 +189,7 @@ function GraphicFields({
         name="srcPath"
         assetName="srcAssetId"
         label="Imagen principal"
+        profile={section === "logos" ? "logo" : "image"}
         hint={
           section === "logos"
             ? "SVG o PNG monocromo (blanco sobre negro). Al subir se etiqueta como vector para recolor del tema."
@@ -330,6 +337,7 @@ function GraphicFields({
             ? "Portada de la ficha (16:9)"
             : "Imagen relacionada (opcional)"
         }
+        profile="image"
         hint={
           section === "eventos"
             ? "Se muestra arriba en la página del evento."
@@ -437,79 +445,48 @@ export function GraphicSectionClient({
   library?: { id: string; path: string; originalName: string | null }[];
   brands?: BrandRef[];
 }) {
+  const { run: runCreate } = useQuietAdminAction(saveGraphicItem);
+
   return (
-    <div>
-      <h1 className="font-admin-title text-3xl">
-        {SECTION_LABELS[section] ?? section}
-      </h1>
-      {saved ? (
-        <p className="mt-2 text-sm text-green-700">Guardado.</p>
-      ) : null}
-      <p className="mt-2 text-sm text-ink/60">
-        {section === "pending"
-          ? "Clasificá cada pieza a su sección definitiva. La sugerencia es solo una guía."
-          : "Tocá una pieza para editarla."}{" "}
-        Etiquetas disponibles:{" "}
-        {tagSlugs.length ? tagSlugs.join(", ") : "ninguna todavía"}.
-      </p>
+    <AdminEditSession pageLabel={SECTION_LABELS[section] ?? "Gráfico"}>
+      <div>
+        <h1 className="font-admin-title text-3xl">
+          {SECTION_LABELS[section] ?? section}
+        </h1>
+        {saved ? (
+          <p className="mt-2 text-sm text-green-700">Guardado.</p>
+        ) : null}
+        <p className="mt-2 text-sm text-ink/60">
+          {section === "pending"
+            ? "Clasificá cada pieza a su sección definitiva. La sugerencia es solo una guía."
+            : "Editá varias piezas y usá Guardar todo."}{" "}
+          Etiquetas disponibles:{" "}
+          {tagSlugs.length ? tagSlugs.join(", ") : "ninguna todavía"}.
+        </p>
 
-      <div className="mt-6">
-        <CollapsibleEditor
-          compact
-          defaultOpen={false}
-          summary={
-            <div className="flex items-center gap-2 py-1 text-sm font-medium">
-              <Plus className="size-4" strokeWidth={1.75} />
-              Nueva pieza
-            </div>
-          }
-        >
-          <WithGraphicPreview>
-            <form action={saveGraphicItem} className="space-y-4">
-              <input type="hidden" name="section" value={section} />
-              <GraphicFields
-                section={section}
-                showIdInput
-                library={library}
-                brands={brands}
-              />
-              <button
-                type="submit"
-                className="inline-flex items-center gap-1.5 bg-ink px-3 py-2 text-sm text-sky-pale"
-              >
-                <Save className="size-3.5" strokeWidth={1.75} />
-                Crear
-              </button>
-            </form>
-          </WithGraphicPreview>
-        </CollapsibleEditor>
-      </div>
-
-      <div className="mt-8 space-y-4">
-        {items.map((item) => (
+        <div className="mt-6">
           <CollapsibleEditor
-            key={item.id}
+            compact
+            defaultOpen={false}
             summary={
-              <GraphicItemPreview draft={itemToDraft(item)} locale="es" />
-            }
-            onDelete={
-              <form action={deleteGraphicItem}>
-                <input type="hidden" name="id" value={item.id} />
-                <input type="hidden" name="section" value={section} />
-                <button type="submit" className="underline">
-                  Eliminar esta pieza
-                </button>
-              </form>
+              <div className="flex items-center gap-2 py-1 text-sm font-medium">
+                <Plus className="size-4" strokeWidth={1.75} />
+                Nueva pieza
+              </div>
             }
           >
-            <WithGraphicPreview initialDraft={itemToDraft(item)}>
-              <form action={saveGraphicItem} className="space-y-4">
+            <WithGraphicPreview>
+              <form
+                className="space-y-4"
+                onSubmit={(e) => {
+                  e.preventDefault();
+                  void runCreate(new FormData(e.currentTarget));
+                }}
+              >
                 <input type="hidden" name="section" value={section} />
-                <input type="hidden" name="id" value={item.id} />
-                <p className="text-xs text-ink/45">ID: {item.id}</p>
                 <GraphicFields
-                  item={item}
                   section={section}
+                  showIdInput
                   library={library}
                   brands={brands}
                 />
@@ -518,17 +495,94 @@ export function GraphicSectionClient({
                   className="inline-flex items-center gap-1.5 bg-ink px-3 py-2 text-sm text-sky-pale"
                 >
                   <Save className="size-3.5" strokeWidth={1.75} />
-                  Guardar cambios
+                  Crear
                 </button>
               </form>
             </WithGraphicPreview>
-            {section === "pending" ? (
-              <PendingClassifyForm item={item} />
-            ) : null}
           </CollapsibleEditor>
-        ))}
+        </div>
+
+        <div className="mt-8 space-y-4">
+          {items.map((item) => (
+            <GraphicItemCard
+              key={item.id}
+              item={item}
+              section={section}
+              library={library}
+              brands={brands}
+            />
+          ))}
+        </div>
       </div>
-    </div>
+    </AdminEditSession>
+  );
+}
+
+function GraphicItemCard({
+  item,
+  section,
+  library,
+  brands,
+}: {
+  item: GraphicItemDTO;
+  section: GraphicSection;
+  library: { id: string; path: string; originalName: string | null }[];
+  brands: BrandRef[];
+}) {
+  const session = useAdminEditSession();
+  const dirty = session?.isDirty(item.id) ?? false;
+  const { run: runDelete } = useQuietAdminAction(deleteGraphicItem);
+  const title =
+    item.title?.es || item.title?.en || item.alt || item.id;
+
+  return (
+    <CollapsibleEditor
+      dirty={dirty}
+      summary={
+        <GraphicItemPreview draft={itemToDraft(item)} locale="es" />
+      }
+      onDelete={
+        <button
+          type="button"
+          className="underline"
+          onClick={() => {
+            const fd = new FormData();
+            fd.set("id", item.id);
+            fd.set("section", section);
+            void runDelete(fd);
+          }}
+        >
+          Eliminar esta pieza
+        </button>
+      }
+    >
+      <WithGraphicPreview initialDraft={itemToDraft(item)}>
+        <AdminTrackedForm
+          id={item.id}
+          label={title}
+          saveAction={saveGraphicItem}
+          className="space-y-4"
+        >
+          <input type="hidden" name="section" value={section} />
+          <input type="hidden" name="id" value={item.id} />
+          <p className="text-xs text-ink/45">ID: {item.id}</p>
+          <GraphicFields
+            item={item}
+            section={section}
+            library={library}
+            brands={brands}
+          />
+          <button
+            type="submit"
+            className="inline-flex items-center gap-1.5 border border-ink/20 px-3 py-2 text-sm text-ink"
+          >
+            <Save className="size-3.5" strokeWidth={1.75} />
+            Guardar este
+          </button>
+        </AdminTrackedForm>
+      </WithGraphicPreview>
+      {section === "pending" ? <PendingClassifyForm item={item} /> : null}
+    </CollapsibleEditor>
   );
 }
 

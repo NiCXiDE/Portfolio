@@ -11,10 +11,17 @@ type Props = {
   /** Acción eliminar opcional */
   onDelete?: ReactNode;
   defaultOpen?: boolean;
+  /** Controlled open (opcional) */
+  open?: boolean;
+  onOpenChange?: (open: boolean) => void;
   /**
    * Botón “nuevo”: ancho al contenido, sin etiqueta EDITAR.
    */
   compact?: boolean;
+  /** Fila densa (Interfaces): summary ocupa poco alto */
+  dense?: boolean;
+  /** Indicador de cambios pendientes en el summary */
+  dirty?: boolean;
 };
 
 export function CollapsibleEditor({
@@ -22,9 +29,20 @@ export function CollapsibleEditor({
   children,
   onDelete,
   defaultOpen = false,
+  open: openProp,
+  onOpenChange,
   compact = false,
+  dense = false,
+  dirty = false,
 }: Props) {
-  const [open, setOpen] = useState(defaultOpen);
+  const [uncontrolledOpen, setUncontrolledOpen] = useState(defaultOpen);
+  const controlled = openProp !== undefined;
+  const open = controlled ? openProp : uncontrolledOpen;
+
+  function setOpen(next: boolean) {
+    if (!controlled) setUncontrolledOpen(next);
+    onOpenChange?.(next);
+  }
 
   return (
     <div
@@ -33,22 +51,29 @@ export function CollapsibleEditor({
       <div
         role="button"
         tabIndex={0}
-        onClick={() => setOpen((o) => !o)}
+        onClick={() => setOpen(!open)}
         onKeyDown={(e) => {
           if (e.key === "Enter" || e.key === " ") {
             e.preventDefault();
-            setOpen((o) => !o);
+            setOpen(!open);
           }
         }}
-        className={`flex cursor-pointer items-start gap-3 bg-white p-3 text-left transition-colors hover:bg-ink/[0.03] ${
-          compact && !open ? "w-fit" : "w-full"
-        }`}
+        className={`flex cursor-pointer items-center gap-3 bg-white text-left transition-colors hover:bg-ink/[0.03] ${
+          dense ? "px-3 py-2" : "items-start p-3"
+        } ${compact && !open ? "w-fit" : "w-full"}`}
       >
         <div className={`min-w-0 ${compact && !open ? "" : "flex-1"}`}>
           {summary}
         </div>
+        {dirty ? (
+          <span
+            className="mt-0.5 size-2 shrink-0 rounded-full bg-amber-500"
+            title="Cambios sin guardar"
+            aria-label="Cambios sin guardar"
+          />
+        ) : null}
         {!compact ? (
-          <span className="mt-1 inline-flex shrink-0 items-center gap-1 text-[0.65rem] font-medium uppercase tracking-wide text-ink/55">
+          <span className="inline-flex shrink-0 items-center gap-1 text-[0.65rem] font-medium uppercase tracking-wide text-ink/55">
             {open ? (
               <>
                 Cerrar
@@ -65,7 +90,7 @@ export function CollapsibleEditor({
             )}
           </span>
         ) : open ? (
-          <span className="mt-1 inline-flex shrink-0 items-center gap-1 text-[0.65rem] font-medium uppercase tracking-wide text-ink/55">
+          <span className="inline-flex shrink-0 items-center gap-1 text-[0.65rem] font-medium uppercase tracking-wide text-ink/55">
             Cerrar
             <ChevronDown className="size-3.5 rotate-180" strokeWidth={1.75} />
           </span>
